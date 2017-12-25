@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oseasy.initiate.modules.analysis.dao.GlobalAnalysisDao">
+
+	<select id="getData1" resultType="java.util.HashMap">
+		select tem.name,count(1) cc
+		from(select (case when o.graduation &lt; SYSDATE() then '毕业学生' else
+		'在校学生' end) name
+		from sys_user u
+		left join sys_student_expansion o on u.id=o.user_id
+		where u.user_type='1'
+		and
+		u.del_flag='0' )tem
+		group by tem.name
+	</select>
+	<select id="getData2" resultType="java.util.HashMap">
+		SELECT
+		tem.name,
+		count(1) cc
+		FROM
+		(
+		SELECT
+		(
+		CASE
+		WHEN FIND_IN_SET('1', o.teacherType)
+		AND FIND_IN_SET('2', o.teacherType) THEN
+		'双导'
+		ELSE
+		CASE
+		WHEN FIND_IN_SET('1', o.teacherType) THEN
+		'校园导师'
+		ELSE
+		'企业导师'
+		END
+		END
+		) name
+		FROM
+		sys_user u
+		LEFT JOIN sys_teacher_expansion o ON u.id = o.user_id
+		WHERE
+		u.user_type = '2'
+		AND u.del_flag = '0'
+		AND o.teacherType IS NOT NULL
+		) tem
+		GROUP BY
+		tem. NAME
+	</select>
+	<select id="getData3" resultType="java.util.HashMap">
+		select tem.label,tem.name,count(1) cc from (select (case when tu.user_type='1' then '学生' else '导师' end) label,date_format(t.apply_time,'%Y') name
+		from project_declare t
+		left join team_user_relation tu
+		on t.team_id=tu.team_id and tu.state='0'
+		where t.status!='0' and
+		t.del_flag='0' )tem
+		group by tem.label,tem.name order by tem.name
+	</select>
+
+	<!--根据年份  查找双创大赛人数-->
+	<select id="getContestNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM (
+		SELECT g.p_name ,g.id ,g.declare_id ,t.user_id
+		FROM g_contest g
+		LEFT JOIN team_user_relation t ON g.team_id=t.team_id
+		WHERE g.audit_state!='0' AND g.del_flag='0'
+		<if test="createDateStart != null">
+			AND g.create_date &gt;= #{createDateStart}
+		</if>
+		<if test="createDateEnd != null">
+			AND g.create_date &lt;= #{createDateEnd}
+		</if>
+		GROUP BY t.user_id
+		) m
+	</select>
+
+	<!--根据年份查找 国创项目的个数 -->
+	<select id="getProjectNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT count(id) FROM project_declare a
+		WHERE a.del_flag='0' AND a.status='9'
+		<if test="createDateStart != null">
+			AND a.create_date &gt;= #{createDateStart}
+		</if>
+		<if test="createDateEnd != null">
+			AND a.create_date &lt;= #{createDateEnd}
+		</if>
+	</select>
+
+	<!-- 根据年份查找 在校生人数 -->
+
+	<!-- 获取学校总学生数 -->
+
+
+
+</mapper>

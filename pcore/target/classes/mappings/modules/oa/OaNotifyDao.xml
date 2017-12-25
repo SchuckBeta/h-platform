@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oseasy.initiate.modules.oa.dao.OaNotifyDao">
+    
+	<sql id="oaNotifyColumns">
+		a.ID AS "id",
+		a.TYPE AS "type",
+		a.TITLE AS "title",
+		a.CONTENT AS "content",
+		a.FILES AS "files",
+		a.STATUS AS "status",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+	    b.read_num,
+	    b.un_read_num,
+	    a.effective_date AS "effectiveDate",
+		a.end_date AS "endDate",
+		a.send_type AS "sendType",
+		a.s_id AS "sId",
+		a.source AS "source",
+		a.views AS "views"
+	</sql>
+
+	<sql id="oaNotifySendColumns">
+		a.ID AS "id",
+		a.TYPE AS "type",
+		a.TITLE AS "title",
+		a.CONTENT AS "content",
+		a.FILES AS "files",
+		a.STATUS AS "status",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+		a.effective_date AS "effectiveDate",
+		a.end_date AS "endDate",
+		a.send_type AS "sendType",
+		a.s_id AS "sId"
+	</sql>
+	
+	<sql id="oaNotifyJoins">
+		<!-- 查询已读和未读条数 -->
+		LEFT JOIN (
+            SELECT r.oa_notify_id, 
+                   sum(case when r.read_flag = '1' then 1 else 0 end) read_num,
+                   sum(case when r.read_flag != '1' then 1 else 0 end) un_read_num 
+            FROM oa_notify_record r GROUP BY r.oa_notify_id
+    	) b ON b.oa_notify_id = a.id
+	</sql>
+    
+	<select id="get" resultType="OaNotify">
+		SELECT 
+			<include refid="oaNotifyColumns"/>
+		FROM oa_notify a
+		<include refid="oaNotifyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OaNotify">
+		SELECT 
+			<include refid="oaNotifyColumns"/>
+			<if test="isSelf">,
+				r.read_flag
+			</if>
+		FROM oa_notify a
+		<include refid="oaNotifyJoins"/>
+		<!-- 我的通知 -->
+		<if test="isSelf">
+			JOIN oa_notify_record r ON r.oa_notify_id = a.id
+		</if>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		
+		<!-- <if test="currentUser.id != null and currentUser.id != 1">
+			 AND r.user_id = #{currentUser.id}
+		</if> -->
+		<if test="userId != null and userId != ''">
+			 AND r.user_id = #{userId}
+		</if>
+		<if test="title != null and title != ''">
+			AND (a.TITLE LIKE  concat('%',#{title},'%')
+				or a.content LIKE concat('%',#{title},'%')
+			)
+		</if>
+		<if test="type != null and type != ''">
+			AND a.TYPE = #{type}
+		</if>
+		<if test="status != null and status != ''">
+			AND a.STATUS = #{status}
+		</if>
+		<if test="isSelf">
+			AND a.STATUS = '1'
+		</if>
+		<if test="sendType != null and sendType != ''">
+			AND a.SEND_TYPE = #{sendType}
+		</if>
+		<if test="sId != null and sId != ''">
+			AND a.s_id = #{sId}
+		</if>
+		<if test="readFlag != null and readFlag != ''">
+			AND r.read_flag = #{readFlag}
+		</if>
+		ORDER BY a.update_date DESC
+	</select>
+
+	<select id="findSendList" resultType="OaNotify">
+			SELECT
+				r.user_id userId,
+				<include refid="oaNotifySendColumns"/>
+			FROM oa_notify a
+			left JOIN oa_notify_record r ON r.oa_notify_id = a.id
+			WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userId != null and userId != ''">
+				 AND a.create_by = #{userId}
+			</if>
+				AND r.user_id is not null
+			<if test="title != null and title != ''">
+				AND (a.TITLE LIKE  concat('%',#{title},'%')
+					or a.content LIKE concat('%',#{title},'%')
+				)
+			</if>
+
+			ORDER BY a.update_date DESC
+		</select>
+
+
+	<select id="findAllList" resultType="OaNotify">
+		SELECT 
+			<include refid="oaNotifyColumns"/>
+		FROM oa_notify a
+		<include refid="oaNotifyJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM oa_notify a
+		<if test="isSelf">
+			JOIN oa_notify_record r ON r.oa_notify_id = a.id AND r.user_id = #{currentUser.id}
+				<if test="readFlag != null and readFlag != ''">
+					AND r.read_flag = #{readFlag}
+				</if>
+		</if>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="isSelf">
+			AND a.STATUS = '1'
+		</if>
+		<if test="title!=null and title!=''">
+			AND a.TITLE = #{title}
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_notify(
+			ID,
+			TYPE,
+			TITLE,
+			CONTENT,
+			FILES,
+			STATUS,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG,
+			effective_date,
+			end_date,
+			send_type,
+			s_id,
+			source,
+			views			
+		) VALUES (
+			#{id},
+			#{type},
+			#{title},
+			#{content},
+			#{files},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{effectiveDate},
+			#{endDate},
+			#{sendType},
+			#{sId},
+			#{source},
+			#{views}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_notify SET 	
+			TYPE = #{type},
+			TITLE = #{title},
+			CONTENT = #{content},
+			FILES = #{files},
+			STATUS = #{status},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			effective_date = #{effectiveDate},
+			end_date = #{endDate},
+			send_type = #{sendType},
+			s_id = #{sId},
+			source=#{source},
+			views=#{views}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE oa_notify SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<!--前台首页跑马灯-->
+	<select id="loginList" resultType="OaNotify" parameterType="java.lang.Integer">
+		SELECT
+		a.id AS "id",
+		a.TITLE AS "title",
+		a.CONTENT AS "content",
+		a.DEL_FLAG AS "delFlag",
+		a.UPDATE_DATE AS "updateDate",
+		a.send_type AS "sendType"
+		FROM oa_notify a 
+		WHERE a.del_flag = '0' and a.send_type='1' and a.status='1' and a.type='3'
+		ORDER BY a.update_date DESC
+		 limit #{number}
+	</select>
+
+	<select id="findLoginList" resultType="OaNotify">
+		SELECT
+		a.id AS "id",
+		a.TITLE AS "title",
+		a.CONTENT AS "content",
+		a.UPDATE_DATE AS "updateDate"
+		FROM oa_notify a
+		WHERE a.del_flag = '0' and a.send_type='1' and a.status='1' and a.type='3'
+		ORDER BY a.update_date DESC
+	</select>
+
+
+
+
+
+
+
+
+	<select id="unReadOaNotifyList" resultType="OaNotify">
+		SELECT 
+			<include refid="oaNotifyColumns"/>
+		FROM oa_notify a 
+		<include refid="oaNotifyJoins"/>
+		JOIN oa_notify_record r ON r.oa_notify_id = a.id AND r.user_id = #{currentUser.id}
+		WHERE a.del_flag = 0 AND r.read_flag = 0 AND a.type IN (5,6,7,10,11)
+	</select>
+	
+	<select id="findNotifyCount" resultType="java.lang.Integer">
+	   <!-- SELECT COUNT(1) FROM oa_notify_record a LEFT JOIN  oa_notify n  ON n.id=a.oa_notify_id
+       WHERE n.create_by=#{0} AND a.user_id=#{1} -->
+       
+       select count(1) from team_user_relation r join team t on r.team_id = t.id 
+       where r.del_flag = '0' and t.del_flag = '0' and t.state in (0,1) and t.sponsor = #{0} and 
+       r.user_id = #{1}
+       
+	</select>
+	<select id="findOaNotifyByTeamID" resultType="OaNotify">
+		SELECT a.ID AS "id",
+		a.TYPE AS "type",
+		a.TITLE AS "title",
+		a.CONTENT AS "content",
+		a.FILES AS "files",
+		a.STATUS AS "status",
+		a.CREATE_BY AS "userId",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.effective_date AS "effectiveDate",
+		a.end_date AS "endDate",
+		a.send_type AS "sendType",
+		a.s_id AS "sId"
+	    FROM oa_notify a where a.CREATE_BY=#{0} AND a.s_id=#{1} 
+	    ORDER BY a.UPDATE_DATE DESC
+	    limit 1
+	</select>
+	<select id="getMore" resultType="java.util.Map">
+		select temp.title,temp.id,temp.update_date from (SELECT distinct a.title,a.id,a.update_date
+		FROM oa_notify a left join oa_notify_keyword b on a.id=b.notify_id
+		WHERE a.del_flag = '0' and a.status='1' and a.type=#{type}
+		<if test="id !=null and id !='' ">
+			and a.id!=#{id}
+		</if>
+		<if test="keys !=null and keys.size>0">
+			and 
+			<foreach collection="keys" item="key" open="(" separator="," close=")">
+				b.keyword like concat('%',#{key},'%')
+			</foreach>
+		</if>) temp
+		order by temp.update_date desc limit 4
+	</select>
+	<update id="updateViews" parameterType="java.util.Map">
+		UPDATE oa_notify SET views = CASE id
+		<foreach collection="param.keys" item="key" separator=" ">
+			WHEN #{key} THEN ifnull(views,0)+#{param[${key}]}
+		</foreach>
+		END
+		where id in 
+		<foreach collection="param.keys" item="key" open="(" separator="," close=")">
+			#{key}
+		</foreach>
+	</update>
+</mapper>

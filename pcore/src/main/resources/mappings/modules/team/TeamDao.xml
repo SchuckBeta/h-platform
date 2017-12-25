@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oseasy.initiate.modules.team.dao.TeamDao">
+    
+	<sql id="teamColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.sponsor AS "sponsor",
+		a.state AS "state",
+		a.summary AS "summary",
+		a.project_name AS "projectName",
+		a.project_introduction AS "projectIntroduction",
+		a.enterprise_teacher_num AS "enterpriseTeacherNum",
+		a.school_teacher_num AS "schoolTeacherNum",
+		a.member_num AS "memberNum",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.del_flag AS "delFlag",
+		a.valid_date AS "validDate",
+		a.membership AS "membership",
+		a.valid_date_start AS "validDateStart",
+		a.valid_date_end AS "validDateEnd",
+		a.local_college AS "localCollege",
+		a.member_names AS "memberNames",
+		a.sch_teacher_names AS "schTeacherNames",
+		a.ent_teacher_names AS "entTeacherNames"
+	</sql>
+	
+	<sql id="teamJoins">
+	/*INNER JOIN team_user_relation as r ON r.team_id=a.id*/
+	</sql>
+    
+	<select id="get" resultType="Team">
+		SELECT  DISTINCT
+			<include refid="teamColumns"/>
+		FROM team a
+		<include refid="teamJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Team">
+		SELECT  DISTINCT
+			<include refid="teamColumns"/>
+		FROM team a
+		<include refid="teamJoins"/>
+		
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND ( a.name LIKE concat('%',#{name},'%')
+				or (select sf.name from sys_office sf where sf.id= a.local_college)
+					LIKE concat('%',#{name},'%')
+				)
+			</if>
+		   <if test="state != null and state != ''">
+				AND a.state=#{state}
+			</if>
+		   <if test="sponsor != null and sponsor != ''">
+				AND a.sponsor = #{sponsor}
+			</if>
+			<if test="beginValidDate != null and endValidDate != null and beginValidDate != '' and endValidDate != ''">
+				AND a.valid_date BETWEEN #{beginValidDate} AND #{endValidDate}
+			</if>
+			<if test="localCollege != null and localCollege != ''">
+				AND (
+				a.local_college = #{localCollege}
+				or a.local_college = (select sf.parent_id from sys_office sf where sf.id= #{localCollege})
+				)
+			</if>
+			<if test="user!=null and user.id!=null and user.id!=''">
+			AND  (a.sponsor = #{user.id}
+				OR a.id IN (SELECT n.s_id FROM oa_notify_record nr LEFT JOIN oa_notify n ON nr.oa_notify_id = n.id
+				 WHERE n.type in (6,7,10,11) AND nr.user_id = #{user.id})
+				OR a.id in(select t.team_id from team_user_relation t where t.user_id= #{user.id})
+				)
+			and a.id not in (
+				select t.team_id from team_user_relation t where t.user_id= #{user.id} and t.state =4
+			)
+			</if>
+			<if test="inResearch!=null and inResearch!='' and inResearch==1">
+				AND a.id IN (SELECT p.team_id FROM project_declare p WHERE p.status BETWEEN 0 AND 7) AND a.state IN(0,1)
+			</if>
+			<if test="inResearch!=null and inResearch!='' and inResearch==0">
+				AND a.id NOT IN (SELECT p.team_id FROM project_declare p WHERE p.status BETWEEN 0 AND 7) OR 
+				(a.id IN (SELECT p.team_id FROM project_declare p WHERE p.status BETWEEN 0 AND 7) AND a.state=2)
+			</if>
+
+			<if test="creator != null and creator != ''">
+				AND a.sponsor IN (SELECT u.id FROM sys_user u where u.name like '%${creator}%')
+			</if>
+			
+		</where> 
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="findListByCreatorId" resultType="Team">
+		SELECT  DISTINCT
+		<include refid="teamColumns"/>
+		FROM team a
+		<include refid="teamJoins"/>
+
+		<where>
+			a.del_flag = 0	AND a.state in (0,1)
+
+			<if test="sponsor != null and sponsor != ''">
+				AND a.sponsor = #{sponsor}
+			</if>
+
+		</where>
+
+	</select>
+
+
+	<select id="findAllList" resultType="Team">
+		SELECT 
+			<include refid="teamColumns"/>
+		FROM team a
+		<include refid="teamJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO team(
+			id,
+			name,
+			sponsor,
+			state,
+			summary,
+			project_name,
+			project_introduction,
+			enterprise_teacher_num,
+			school_teacher_num,
+			member_num,
+			update_date,
+			update_by,
+			create_date,
+			create_by,
+			del_flag,
+			valid_date,
+			membership,
+			valid_date_start,
+			valid_date_end,
+			local_college,
+			member_names,
+			sch_teacher_names,
+			ent_teacher_names
+		) VALUES (
+			#{id},
+			#{name},
+			#{sponsor},
+			#{state},
+			#{summary},
+			#{projectName},
+			#{projectIntroduction},
+			#{enterpriseTeacherNum},
+			#{schoolTeacherNum},
+			#{memberNum},
+			#{updateDate},
+			#{updateBy.id},
+			#{createDate},
+			#{createBy.id},
+			#{delFlag},
+			#{validDate},
+			#{membership},
+			#{validDateStart},
+			#{validDateEnd},
+			#{localCollege},
+			#{memberNames},
+			#{schTeacherNames},
+			#{entTeacherNames}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE team SET 	
+			name = #{name},
+			<!-- sponsor = #{sponsor}, -->
+			state = #{state},
+			summary = #{summary},
+			project_name = #{projectName},
+			project_introduction = #{projectIntroduction},
+			enterprise_teacher_num = #{enterpriseTeacherNum},
+			school_teacher_num = #{schoolTeacherNum},
+			member_num = #{memberNum},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			valid_date = #{validDate},
+			membership = #{membership},
+			valid_date_start = #{validDateStart},
+			valid_date_end = #{validDateEnd},
+			local_college = #{localCollege},
+			member_names = #{memberNames},
+			sch_teacher_names = #{schTeacherNames},
+			ent_teacher_names = #{entTeacherNames}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE team SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findTeamDetails" resultType="com.oseasy.initiate.modules.team.entity.TeamDetails">
+		SELECT 
+		  DISTINCT t.sponsor AS "sponsor",
+		  t.name as "name",
+		  t.valid_date_start as "validDateStart",
+		  t.valid_date_end as "validDateEnd",
+		  t.local_college as "localCollege",
+		  t.summary as "summary",
+		  t.project_introduction as "projectIntroduction",
+		  t.member_num as "memberNum",
+		  t.school_teacher_num as "schoolTeacherNum",
+		  t.enterprise_teacher_num as "enterpriseTeacherNum",
+		  t.membership as "membership"
+		FROM team AS t 
+		LEFT JOIN team_user_relation AS r 
+  	    ON t.id=r.team_id 
+		LEFT JOIN sys_user AS u 
+   		ON u.id=r.user_id
+		LEFT JOIN sys_teacher_expansion te
+   		ON te.user_id=u.id
+		WHERE t.id=#{id}	
+</select>
+
+<!-- 前台查看团队查询团队人员信息 -->
+<select id="findTeamInfo" resultType="com.oseasy.initiate.modules.team.entity.TeamDetails">
+		SELECT 
+		  u.name AS "uName", 
+		  u.degree AS "degree",
+		  u.professional AS "professional",
+		  u.office_id AS "officeId",
+		  u.domain AS "domain",
+		  te.teacherType AS "teacherType",
+		  t.sch_teacher_names AS "schTeacherNames",
+		  t.ent_teacher_names AS "entTeacherNames",
+		  t.membership AS "membership",
+		  r.`user_type` AS "userType",
+		  u.no AS "no",
+		  se.instudy AS "instudy",
+		  r.state AS "state",
+		  u.phone AS "phone",
+		  r.user_id AS "userId",
+		  t.sponsor AS "sponsor",
+		  se.curr_state AS "currState"
+		FROM team_user_relation AS r  
+		LEFT JOIN team AS t
+  	    ON t.id=r.team_id 
+		LEFT JOIN sys_user AS u 
+   		ON u.id=r.user_id
+		LEFT JOIN sys_teacher_expansion te
+   		ON te.user_id=u.id
+   		LEFT JOIN sys_student_expansion se
+   		ON se.user_id=u.id
+		WHERE t.id=#{0} AND (r.state='0' or r.state='4') AND r.user_type=#{1}
+</select>
+
+
+<insert id="saveTeamUserRelation" parameterType="com.oseasy.initiate.modules.team.entity.TeamUserRelation">
+		INSERT INTO team_user_relation(
+			id,
+			user_type,
+			user_id,
+			team_id,
+			update_date,
+			update_by,
+			create_date,
+			create_by,
+			del_flag,
+			state
+		) VALUES (
+			#{id},
+			#{userType},
+			#{user.id},
+			#{teamId},
+			#{updateDate},
+			#{updateBy.id},
+			#{createDate},
+			#{createBy.id},
+			#{delFlag},
+			#{state}
+		)
+	</insert>
+
+	
+ <select id="findTeamUserName" resultType="com.oseasy.initiate.modules.team.entity.Team">
+        SELECT  distinct
+		(SELECT e.name FROM sys_user AS e WHERE e.id= r.user_id ) AS uName,
+		r.user_id,
+		r.user_type AS "teamUserType",
+		te.teacherType AS "teacherType"
+		FROM team_user_relation AS r 
+		INNER JOIN team AS t
+		ON t.id=r.team_id 
+   		LEFT JOIN sys_teacher_expansion AS te
+   		ON te.user_id=r.user_id
+   		WHERE t.id=#{id} AND (r.state='0' or r.state='4')
+ </select> 
+	
+	 <update id="updateTeamState">
+   		UPDATE team  
+   		SET state=#{state}
+   		WHERE id=#{id}
+	</update>
+	
+ <select id="findNumByTeamId" resultType="com.oseasy.initiate.modules.team.entity.Team" parameterType="com.oseasy.initiate.modules.team.entity.TeamUserRelation">
+ 	SELECT  r.team_id,
+ 	te.teacherType as "teacherType", 
+ 	r.user_type as "teamUserType",
+ 	COUNT(*) as "userCount"
+ 	FROM  team_user_relation AS  r 
+	LEFT JOIN  sys_teacher_expansion AS te ON te.user_id= r.user_id 
+	WHERE r.team_id=#{teamId} AND (r.state='0' or  r.state='4')
+	GROUP BY  r.user_type,te.teacherType
+ </select>
+ 
+ 
+ <select id="findStuNumByTeamId" resultType="java.lang.Integer" parameterType="com.oseasy.initiate.modules.team.entity.TeamUserRelation">
+ 	SELECT  count(1)
+ 	FROM  team_user_relation AS  r 
+	WHERE r.team_id=#{teamId} AND  (r.state='0' or  r.state='4') and  r.user_type = '1'
+	AND r.del_flag = '0'
+ </select>
+ 
+ 
+ <select id="findTe1NumByTeamId" resultType="java.lang.Integer" parameterType="com.oseasy.initiate.modules.team.entity.TeamUserRelation">
+ 	SELECT  count(1)
+ 	FROM  team_user_relation AS  r 
+    JOIN  sys_teacher_expansion AS te ON te.user_id= r.user_id 
+	WHERE r.team_id=#{teamId} AND  (r.state='0' or  r.state='4') and  r.user_type = '2'
+	AND r.del_flag = '0' AND te.teacherType = '1'
+ </select>
+ 
+	<select id="findTe2NumByTeamId" resultType="java.lang.Integer" parameterType="com.oseasy.initiate.modules.team.entity.TeamUserRelation">
+ 	SELECT  count(1)
+ 	FROM  team_user_relation AS  r 
+    JOIN  sys_teacher_expansion AS te ON te.user_id= r.user_id 
+	WHERE r.team_id=#{teamId} AND  (r.state='0' or  r.state='4') and  r.user_type = '2'
+	AND r.del_flag = '0' AND te.teacherType = '2'
+ </select>
+	 
+	<select id="findRealityNum" resultType="com.oseasy.initiate.modules.team.entity.Team">
+		SELECT 
+		 DISTINCT t.member_num AS "memberNum",
+		  t.school_teacher_num AS "schoolTeacherNum",
+		  t.enterprise_teacher_num AS "enterpriseTeacherNum"
+		 FROM team_user_relation AS r 
+		INNER JOIN team AS t
+		ON t.id=r.team_id 
+		WHERE r.team_id=#{teamId} 
+</select>	
+
+<!-- 前台团队建设查询 -->
+<select id="findTeamByTeamId" resultType="com.oseasy.initiate.modules.team.entity.TeamDetails">
+     SELECT  distinct
+		  u.name AS "uName", 
+		  u.degree AS "degree",
+		  u.professional AS "professional",
+		  u.office_id AS "officeId",
+		  u.domain AS "domain",
+		  te.teacherType AS "teacherType",
+		  t.sch_teacher_names AS "schTeacherNames",
+		  t.ent_teacher_names AS "entTeacherNames",
+		  t.membership AS "membership",
+		  r.`user_type` AS "userType",
+		  u.no AS "no",
+		  se.instudy AS "instudy",
+		  r.state AS "state",
+		  u.phone AS "phone",
+		  u.mobile AS "mobile",
+		  r.team_id AS "teamId",
+		  r.user_id AS "userId",
+		  r.id AS "turId",
+		  t.sponsor AS "sponsor",
+		  se.curr_state as currState
+		FROM team_user_relation AS r  
+		LEFT JOIN team AS t
+  	    ON t.id=r.team_id 
+		LEFT JOIN sys_user AS u 
+   		ON u.id=r.user_id
+		LEFT JOIN sys_teacher_expansion te
+   		ON te.user_id=u.id
+   		LEFT JOIN sys_student_expansion se
+   		ON se.user_id=u.id
+		WHERE t.id=#{0} AND r.state BETWEEN '0' AND '2' AND r.user_type=#{1}
+</select>
+
+
+<select id="findMyList" resultType="Team">
+	SELECT 
+	<include refid="teamColumns"/>
+	FROM team a JOIN oa_notify o ON a.id = o.s_id 
+	JOIN oa_notify_record b ON o.id= b.oa_notify_id 
+	WHERE o.type=7 AND b.user_id=#{userId} ORDER BY a.update_date DESC
+</select>
+
+<select id="countBuildByUserId" resultType="java.lang.Long">
+SELECT 
+	count(1)
+		FROM team t
+			WHERE t.sponsor=#{id} and t.state in('0','1') and t.del_flag='0'
+</select>
+
+<select id="selectTeamByName" resultType="Team">
+		SELECT  t.id,t.name
+		FROM team t
+		WHERE t.name = #{name} and t.del_flag = '0'
+	</select>
+	
+</mapper>

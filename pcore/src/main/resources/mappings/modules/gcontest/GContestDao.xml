@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oseasy.initiate.modules.gcontest.dao.GContestDao">
+    
+	<sql id="gContestColumns">
+		a.id AS "id",
+		a.p_name AS "pName",
+		a.declare_id AS "declareId",
+		a.profession AS "profession",
+		a.current AS "current",
+		a.tel AS "tel",
+		a.university_id AS "universityId",
+		a.type AS "type",
+		a.level AS "level",
+		a.introduction AS "introduction",
+		a.financing_stat AS "financingStat",
+		a.reg_time AS "regTime",
+		a.good_statement AS "goodStatement",
+		a.team_id AS "teamId",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.del_flag AS "delFlag",
+		a.proc_ins_id AS "procInsId",
+		a.p_id AS "pId",
+		a.source AS "source",
+		a.audit_state AS "auditState",
+		a.current_system AS "currentSystem",
+		a.sub_time AS "subTime",
+		a.g_score AS "gScore",
+		a.announce_id AS "announceId",
+		
+		a.school_score AS "schoolScore",
+		a.college_score AS "collegeScore",
+		a.schoolluyan_score AS "schoolluyanScore",
+		a.schoolExport_score AS "schoolExportScore",
+		a.collegeExport_score AS "collegeExportScore",
+	
+		
+		a.school_sug AS "schoolSug",
+		a.college_sug AS "collegeSug",
+		a.schoolluyan_sug AS "schoolluyanSug",
+		a.schoolend_sug AS "schoolendSug",
+		
+		a.school_result AS "schoolResult",
+		a.college_result AS "collegeResult",
+		a.schoolluyan_result AS "schoolluyanResult",
+		a.schoolend_result AS "schoolendResult",
+		
+		a.competition_number AS "competitionNumber"
+	</sql>
+	
+	<sql id="gContestJoins">
+	</sql>
+    
+	<select id="get" resultType="GContest">
+		SELECT 
+			<include refid="gContestColumns"/>
+		FROM g_contest a
+		<include refid="gContestJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="GContest">
+		SELECT 
+			<include refid="gContestColumns"/>
+		FROM g_contest a
+		<include refid="gContestJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="GContest">
+		SELECT 
+			<include refid="gContestColumns"/>
+		FROM g_contest a
+		<include refid="gContestJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO g_contest(
+			id,
+			p_name,
+			declare_id,
+			announce_id,
+			profession,
+			current,
+			tel,
+			university_id,
+			type,
+			level,
+			introduction,
+			financing_stat,
+			reg_time,
+			good_statement,
+			team_id,
+			update_date,
+			update_by,
+			create_date,
+			create_by,
+			del_flag,
+			proc_ins_id,
+			p_id,
+			source,
+			audit_state,
+			sub_time,
+			current_system,
+			competition_number
+		) VALUES (
+			#{id},
+			#{pName},
+			#{declareId},
+			#{announceId},
+			#{profession},
+			#{current},
+			#{tel},
+			#{universityId},
+			#{type},
+			#{level},
+			#{introduction},
+			#{financingStat},
+			#{regTime},
+			#{goodStatement},
+			#{teamId},
+			#{updateDate},
+			#{updateBy.id},
+			#{createDate},
+			#{createBy.id},
+			#{delFlag},
+			#{procInsId},
+			#{pId},
+			#{source},
+			#{auditState},
+			#{subTime},
+			#{currentSystem},
+			#{competitionNumber}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE g_contest SET 	
+			p_name = #{pName},
+			declare_id = #{declareId},
+			profession = #{profession},
+			current = #{current},
+			tel = #{tel},
+			university_id = #{universityId},
+			type = #{type},
+			level = #{level},
+			introduction = #{introduction},
+			financing_stat = #{financingStat},
+			reg_time = #{regTime},
+			good_statement = #{goodStatement},
+			team_id = #{teamId},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			proc_ins_id = #{procInsId},
+			p_id = #{pId},
+			source = #{source},
+			grade = #{grade},
+			g_score = #{source},
+			audit_state = #{auditState},
+			current_system=#{currentSystem},
+			sub_time = #{subTime},
+			competition_number = #{competitionNumber},
+			audit_state = #{auditState},
+			<if test="collegeScore != null and collegeScore !=''">
+			college_score=#{collegeScore},
+			</if>
+			<if test="collegeResult != null and collegeResult !=''">
+			college_result = #{collegeResult},
+			</if>
+			<if test="collegeSug != null and collegeSug !=''">
+			college_sug = #{collegeSug},
+			</if>
+			<if test="schoolScore != null and schoolScore !=''">
+			school_score=#{schoolScore},
+			</if>
+			<if test="schoolResult != null and schoolResult !=''">
+			school_result = #{schoolResult},
+			</if>
+			<if test="schoolSug != null and schoolSug !=''">
+			school_sug = #{schoolSug},
+			</if>
+			<if test="schoolluyanScore != null and schoolluyanScore !=''">
+			schoolluyan_score=#{schoolluyanScore},
+			</if>
+			<if test="schoolluyanResult != null and schoolluyanResult !=''">
+			schoolluyan_result = #{schoolluyanResult},
+			</if>
+			<if test="schoolluyanSug != null and schoolluyanSug !=''">
+			schoolluyan_sug = #{schoolluyanSug},
+			</if>
+			<if test="schoolendScore != null and schoolendScore !=''">
+			schoolend_score=#{schoolendScore},
+			</if>
+			<if test="schoolendResult != null and schoolendResult !=''">
+			schoolend_result = #{schoolendResult},
+			</if>
+			<if test="schoolendSug != null and schoolendSug !=''">
+			schoolend_sug = #{schoolendSug},
+			</if>
+			<if test="collegeExportScore != null and collegeExportScore !=''">
+			collegeExport_score = #{collegeExportScore},
+			</if>
+			<if test="schoolExportScore != null and schoolExportScore !=''">
+			schoolExport_score = #{schoolExportScore},
+			</if>
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE g_contest SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateState" >
+		UPDATE g_contest SET
+			audit_state = #{auditState},
+			<if test="collegeScore != null and collegeScore !=''">
+			college_score=#{collegeScore},
+			</if>
+			<if test="collegeResult != null and collegeResult !=''">
+			college_result = #{collegeResult},
+			</if>
+			<if test="collegeSug != null and collegeSug !=''">
+			college_sug = #{collegeSug},
+			</if>
+			<if test="schoolScore != null and schoolScore !=''">
+			school_score=#{schoolScore},
+			</if>
+			<if test="schoolResult != null and schoolResult !=''">
+			school_result = #{schoolResult},
+			</if>
+			<if test="schoolSug != null and schoolSug !=''">
+			school_sug = #{schoolSug},
+			</if>
+			<if test="schoolluyanScore != null and schoolluyanScore !=''">
+			schoolluyan_score=#{schoolluyanScore},
+			</if>
+			<if test="schoolluyanResult != null and schoolluyanResult !=''">
+			schoolluyan_result = #{schoolluyanResult},
+			</if>
+			<if test="schoolluyanSug != null and schoolluyanSug !=''">
+			schoolluyan_sug = #{schoolluyanSug},
+			</if>
+			<if test="schoolendScore != null and schoolendScore !=''">
+			schoolend_score=#{schoolendScore},
+			</if>
+			<if test="schoolendResult != null and schoolendResult !=''">
+			schoolend_result = #{schoolendResult},
+			</if>
+			<if test="schoolendSug != null and schoolendSug !=''">
+			schoolend_sug = #{schoolendSug},
+			</if>
+			<if test="collegeExportScore != null and collegeExportScore !=''">
+			collegeExport_score = #{collegeExportScore},
+			</if>
+			<if test="schoolExportScore != null and schoolExportScore !=''">
+			schoolExport_score = #{schoolExportScore},
+			</if>
+			g_score = #{gScore},
+			grade = #{grade},
+			level  = #{level},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="getMyGcontestList" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select t.id,
+		t.competition_number competitionNumber,
+		t.p_name pName,
+		u.name declareName,
+		f.name collegeName,
+		t.level,
+		t.type,
+		t.financing_stat financingStat,
+		t.proc_ins_id,
+		t.current_system currentSystem,
+		t.schoolend_result schoolendResult,
+		t.audit_state auditState	
+	from g_contest t
+	left join sys_user u on t.declare_id=u.id
+	left join sys_office f on t.university_id=f.id
+	where t.del_flag='0' 
+	and t.declare_id=#{userid} 
+	order by t.create_date desc limit #{offset},#{pageSize}
+	</select>
+	
+	<select id="getGcontestChangeList" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select t.id,
+		t.competition_number competitionNumber,
+		t.p_name pName,
+		u.name declareName,
+		f.name collegeName,
+		t.level,
+		t.type,
+		t.financing_stat financingStat,
+		t.college_score collegeScore,
+		t.college_result collegeResult,
+		t.school_score schoolScore,
+		t.school_result schoolResult,
+		t.schoolluyan_score schoolluyanScore,
+		t.schoolluyan_result schoolluyanResult,
+		t.schoolend_result schoolendResult,
+		t.collegeExport_score collegeExportScore,
+		t.schoolExport_score schoolExportScore,
+		t.proc_ins_id,
+		t.current_system currentSystem,
+		t.audit_state auditState	
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0' and t.audit_state!='0'
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat} 
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type} 
+		</if>
+		<if test="collegeId != null and collegeId !=''">
+			AND t.university_id = #{collegeId}
+		</if>
+		<if test="name != null and name !=''">
+			AND t.p_name like CONCAT('%',#{name},'%') 	
+		</if>
+
+		<choose>
+			<when test="orderBy !=null  and orderBy != ''  ">
+				ORDER BY   CONVERT(${orderBy} using GBK)  ${orderByType}
+			</when>
+			<otherwise>
+				order by t.create_date desc
+			</otherwise>
+		</choose>
+ 		limit #{offset},#{pageSize}
+
+	</select>
+
+	<select id="getGcontestChangeListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0' 
+		and t.audit_state!='0'
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat} 
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type} 
+		</if>
+		<if test="collegeId != null and collegeId !=''">
+			AND t.university_id = #{collegeId}
+		</if>
+		<if test="name != null and name !=''">
+			AND t.p_name like CONCAT('%',#{name},'%') 	
+		</if>
+	</select>
+	
+	<select id="getGcontestList" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select
+		t.id,
+		t.competition_number competitionNumber,
+		t.p_name pName,
+		u.name declareName,
+		f.name collegeName,
+		t.level,
+		t.type,
+		t.financing_stat financingStat,
+		t.proc_ins_id,
+		t.current_system currentSystem,
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		aht.ASSIGNEE_ assignee,
+		t.college_Score gScore,
+		(select (count(*)+1) from g_contest 
+		where college_Score > t.college_Score )as sort ,
+		</if>
+		<if test="auditState != null and auditState== '3'.toString() ">
+		t.college_score gScore,
+		(select (count(*)+1) from g_contest 
+		where  college_score > t.college_score)as sort ,
+		</if>
+		<if test="auditState != null and auditState== '4'.toString() ">
+		t.college_score collegeScore,
+		(select (count(*)+1) from g_contest 
+		where  college_score > t.college_score)as collegeSort ,
+		t.school_score gScore, 
+		(select (count(*)+1) from g_contest 
+		where school_score >t.school_score)as sort ,
+		</if>
+		<if test="auditState != null and auditState== '5'.toString() ">
+		(select (count(*)+1) from g_contest 
+		where school_score >t.school_score)as schoolSort ,
+		t.school_score gScore, 
+		(select (count(*)+1) from g_contest 
+		where college_Score >t.college_Score)as collegeSort ,
+		</if>
+		<if test="auditState != null and auditState== '6'.toString() ">
+		t.school_score schoolScore, 
+		t.schoolluyan_score schoolluyanScore, 
+		</if>
+		<if test="auditState != null and auditState== '7'.toString() ">
+		t.schoolend_score gScore, 
+		t.school_score schoolScore, 
+		t.schoolluyan_score schoolluyanScore, 
+		t.schoolend_result schoolendResult, 
+		</if>
+		t.audit_state auditState
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		left join act_hi_taskinst aht on t.proc_ins_id=aht.PROC_INST_ID_
+		</if>
+		where t.del_flag='0' 
+		and 1=1
+		<if test="auditState != null and auditState!= ''">
+			AND t.audit_State = #{auditState} 
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+			AND aht.TASK_DEF_KEY_='audit2'
+		</if>
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat} 
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type} 
+		</if>
+		<if test="name != null and name !=''">
+			AND   
+			t.p_name like CONCAT('%',#{name},'%') 
+			
+		</if>
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId} 
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId} 
+		</if>
+		
+		<if test="auditState != null and  auditState== '1'.toString() ">
+		order by  t.create_date desc 
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		order by  t.college_Score desc 
+		</if>
+		<if test="auditState != null and auditState== '3'.toString() ">
+		order by  t.college_score desc 
+		</if>
+		<if test="auditState != null and auditState== '4'.toString() ">
+		order by  t.school_score desc 
+		</if>
+		<if test="auditState != null and auditState== '5'.toString() ">
+		order by  t.school_score desc 
+		</if>
+		<if test="auditState != null and auditState== '6'.toString() ">
+		order by  t.schoolluyan_score  desc 
+		</if>
+		<if test="auditState != null and auditState== '7'.toString() ">
+		order by  t.schoolend_score  desc 
+		</if>
+		<if test="auditState != null and auditState== '8'.toString() ">
+		order by  t.create_date desc 
+		</if>
+		<if test="auditState != null and auditState== '9'.toString() ">
+		order by  t.create_date desc 
+		</if>
+		limit #{offset},#{pageSize}
+	</select>
+	
+	<select id="getGcontestListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0' 
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId} 
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId} 
+		</if>
+		<if test="auditState != null and auditState!= ''">
+			AND t.audit_State = #{auditState} 
+		</if>
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat} 
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type} 
+		</if>	
+		<if test="name != null and name !=''">
+			AND t.p_name like CONCAT('%',#{name},'%') 
+		</if>
+	</select>
+	
+	
+	<select id="getEndGcontestList" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select
+		t.id,
+		t.competition_number competitionNumber,
+		t.p_name pName,
+		u.name declareName,
+		f.name collegeName,
+		t.level,
+		t.type,
+		t.financing_stat financingStat,
+		t.proc_ins_id,
+		t.current_system currentSystem,
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		t.college_Score gScore,
+		(select (count(*)+1) from g_contest 
+		where college_Score > t.college_Score )as sort ,
+		</if>
+		<if test="auditState != null and auditState== '3'.toString() ">
+		t.college_score gScore,
+		(select (count(*)+1) from g_contest 
+		where  college_score > t.college_score)as sort ,
+		</if>
+		<if test="auditState != null and auditState== '4'.toString() ">
+		t.college_score collegeScore,
+		(select (count(*)+1) from g_contest 
+		where  college_score > t.college_score)as collegeSort ,
+		t.school_score gScore, 
+		(select (count(*)+1) from g_contest 
+		where school_score >t.school_score)as sort ,
+		</if>
+		<if test="auditState != null and auditState== '5'.toString() ">
+		(select (count(*)+1) from g_contest 
+		where school_score >t.school_score)as schoolSort ,
+		t.school_score gScore, 
+		(select (count(*)+1) from g_contest 
+		where college_Score >t.college_Score)as collegeSort ,
+		</if>
+		<if test="auditState != null and auditState== '6'.toString() ">
+		t.school_score schoolScore, 
+		t.schoolluyan_score schoolluyanScore, 
+		</if>
+		<if test="auditState != null and auditState== '7'.toString() ">
+		t.schoolend_score gScore, 
+		t.school_score schoolScore, 
+		t.schoolluyan_score schoolluyanScore, 
+		t.schoolend_result schoolendResult, 
+		</if>
+		t.audit_state auditState
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0' 
+		and 1=1
+		
+		<if test="auditState != null and  auditState== '2'.toString() ">
+			AND t.audit_State in  (2,3,4,5,6,7,8,9)
+		</if>
+		<if test="auditState != null and  auditState== '3'.toString() ">
+			AND t.audit_State in (3,4,5,6,7,8,9)
+		</if>
+		<if test="auditState != null and  auditState== '4'.toString() ">
+			AND t.audit_State in (4,5,6,7,8)
+		</if>
+		<if test="auditState != null and  auditState== '5'.toString() ">
+			AND t.audit_State in (5,6,7,8)
+		</if>
+		<if test="auditState != null and  auditState== '6'.toString() ">
+			AND t.audit_State in (6,7)
+		</if>
+		<if test="auditState != null and  auditState== '7'.toString() ">
+			AND t.audit_State in (7)
+		</if>
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat} 
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type} 
+		</if>
+		<if test="name != null and name !=''">
+			AND   
+			t.p_name like CONCAT('%',#{name},'%') 	
+		</if>
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId} 
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId} 
+		</if>
+		<if test="auditState != null and  auditState== '1'.toString() ">
+		order by  t.create_date desc 
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		order by  t.college_Score desc 
+		</if>
+		<if test="auditState != null and auditState== '3'.toString() ">
+		order by  t.college_score desc 
+		</if>
+		<if test="auditState != null and auditState== '4'.toString() ">
+		order by  t.school_score desc 
+		</if>
+		<if test="auditState != null and auditState== '5'.toString() ">
+		order by  t.school_score desc 
+		</if>
+		<if test="auditState != null and auditState== '6'.toString() ">
+		order by  t.schoolluyan_score  desc 
+		</if>
+		<if test="auditState != null and auditState== '7'.toString() ">
+		order by  t.schoolend_score  desc 
+		</if>
+		<if test="auditState != null and auditState== '8'.toString() ">
+		order by  t.create_date desc 
+		</if>
+		limit #{offset},#{pageSize}
+	</select>
+	
+	<select id="getEndGcontestListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0' 
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId} 
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId} 
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+			AND t.audit_State in  (2,3,4,5,6,7,8,9)
+		</if>
+		<if test="auditState != null and  auditState== '3'.toString() ">
+			AND t.audit_State in (3,4,5,6,7,8,9)
+		</if>
+		<if test="auditState != null and  auditState== '4'.toString() ">
+			AND t.audit_State in (4,5,6,7,8)
+		</if>
+		<if test="auditState != null and  auditState== '5'.toString() ">
+			AND t.audit_State in (5,6,7,8)
+		</if>
+		<if test="auditState != null and  auditState== '6'.toString() ">
+			AND t.audit_State in (6,7,8)
+		</if>
+		<if test="auditState != null and  auditState== '7'.toString() ">
+			AND t.audit_State in (7,8)
+		</if>
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat} 
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type} 
+		</if>	
+		<if test="name != null and name !=''">
+			AND t.p_name like CONCAT('%',#{name},'%') 
+		</if>
+	</select>
+		
+	<select id="getAuditList" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select
+		t.id,
+		t.competition_number competitionNumber,
+		t.p_name pName,
+		u.name declareName,
+		f.name collegeName,
+		t.level,
+		t.type,
+		t.financing_stat financingStat,
+		t.proc_ins_id,
+		t.current_system currentSystem,
+		<if test="auditState != null and  auditState== '1'.toString() ">
+		t.college_Score gScore,
+		(select (count(*)+1) from g_contest
+		where college_Score > t.college_Score )as sort ,
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		aht.ASSIGNEE_ assignee,
+		t.college_Score gScore,
+		(select (count(*)+1) from g_contest
+		where college_Score > t.college_Score and del_flag='0' and audit_State in  (2,3) )as sort ,
+		</if>
+		<if test="auditState != null and auditState== '3'.toString() ">
+		t.college_score gScore,
+		(select (count(*)+1) from g_contest
+		where  college_score > t.college_score and del_flag='0' and audit_State in  (3,4))as sort ,
+		</if>
+		<if test="auditState != null and auditState== '4'.toString() ">
+		t.college_score collegeScore,
+		(select (count(*)+1) from g_contest
+		where  college_score > t.college_score and del_flag='0' and audit_State in  (4,5))as collegeSort ,
+		t.school_score gScore,
+		(select (count(*)+1) from g_contest
+		where school_score >t.school_score and del_flag='0')as sort ,
+		</if>
+		<if test="auditState != null and auditState== '5'.toString() ">
+		(select (count(*)+1) from g_contest
+		where school_score >t.school_score and del_flag='0' and audit_State in  (5,6))as schoolSort ,
+		t.school_score gScore,
+		(select (count(*)+1) from g_contest
+		where college_Score >t.college_Score and del_flag='0'  and audit_State in  (5,6))as collegeSort ,
+		t.schoolluyan_score schoolluyanScore,
+		</if>
+		<if test="auditState != null and auditState== '6'.toString() ">
+		t.school_score schoolScore,
+		t.schoolluyan_score schoolluyanScore,
+		t.schoolend_result schoolendResult,
+		</if>
+		<if test="auditState != null and auditState== '7'.toString() ">
+		t.schoolend_score gScore,
+		t.school_score schoolScore,
+		t.schoolluyan_score schoolluyanScore,
+		t.schoolend_result schoolendResult,
+		</if>
+		t.audit_state auditState
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		<if test="auditState != null and  auditState== '2'.toString() ">
+			left join act_hi_taskinst aht on t.proc_ins_id=aht.PROC_INST_ID_
+		</if>
+		where t.del_flag='0'
+		and 1=1
+		<if test="auditState != null and  auditState== '1'.toString() ">
+			AND t.audit_State in  (1,2)
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+			AND t.audit_State in  (2,3)
+			AND aht.TASK_DEF_KEY_='audit2'
+		</if>
+		<if test="auditState != null and  auditState== '3'.toString() ">
+			AND t.audit_State in (3,4)
+		</if>
+		<if test="auditState != null and  auditState== '4'.toString() ">
+			AND t.audit_State in (4,5)
+		</if>
+		<if test="auditState != null and  auditState== '5'.toString() ">
+			AND t.audit_State in (5,6)
+		</if>
+		<if test="auditState != null and  auditState== '6'.toString() ">
+			AND t.audit_State in (6,7)
+		</if>
+		<if test="auditState != null and  auditState== '7'.toString() ">
+			AND t.audit_State in (7,8)
+		</if>
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat}
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type}
+		</if>
+		<if test="name != null and name !=''">
+			AND
+			t.p_name like CONCAT('%',#{name},'%')
+		</if>
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId}
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId}
+		</if>
+		<if test="auditState != null and  auditState== '1'.toString() ">
+		order by  t.audit_State asc,t.create_date desc
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+		order by  t.audit_State asc, t.college_Score desc
+		</if>
+		<if test="auditState != null and auditState== '3'.toString() ">
+		order by   t.audit_State asc,t.college_score desc
+		</if>
+		<if test="auditState != null and auditState== '4'.toString() ">
+		order by t.audit_State asc, t.school_score desc
+		</if>
+		<if test="auditState != null and auditState== '5'.toString() ">
+		order by t.audit_State asc,t.school_score desc
+		</if>
+		<if test="auditState != null and auditState== '6'.toString() ">
+		order by t.audit_State asc, t.schoolluyan_score  desc
+		</if>
+		<if test="auditState != null and auditState== '7'.toString() ">
+		order by t.audit_State asc,t.schoolend_score  desc
+		</if>
+		<if test="auditState != null and auditState== '8'.toString() ">
+		order by  t.create_date desc
+		</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<select id="getAuditListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0'
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId}
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId}
+		</if>
+		<if test="auditState != null and  auditState== '1'.toString() ">
+			AND t.audit_State in  (1,2)
+		</if>
+		<if test="auditState != null and  auditState== '2'.toString() ">
+			AND t.audit_State in  (2,3)
+		</if>
+		<if test="auditState != null and  auditState== '3'.toString() ">
+			AND t.audit_State in (3,4)
+		</if>
+		<if test="auditState != null and  auditState== '4'.toString() ">
+			AND t.audit_State in (4,5)
+		</if>
+		<if test="auditState != null and  auditState== '5'.toString() ">
+			AND t.audit_State in (5,6)
+		</if>
+		<if test="auditState != null and  auditState== '6'.toString() ">
+			AND t.audit_State in (6,7)
+		</if>
+		<if test="auditState != null and  auditState== '7'.toString() ">
+			AND t.audit_State in (7,8)
+		</if>
+		<if test="financingStat != null and financingStat!= ''">
+			AND t.financing_stat = #{financingStat}
+		</if>
+		<if test="type != null and type !=''">
+			AND t.type = #{type}
+		</if>
+		<if test="name != null and name !=''">
+			AND t.p_name like CONCAT('%',#{name},'%')
+		</if>
+	</select>
+
+
+	<select id="getTodoCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		where t.del_flag='0'
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId}
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId}
+		</if>
+		<if test="auditState != null and  auditState!='' ">
+			AND t.audit_State = #{auditState}
+		</if>
+	</select>
+
+	<select id="getHasdoCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+		from g_contest t
+		left join sys_user u on t.declare_id=u.id
+		left join sys_office f on t.university_id=f.id
+		left join g_audit_info gai on t.id=gai.g_id
+		where t.del_flag='0'
+		<if test="collegeId != null and collegeId !=''">
+			AND u.office_id =#{collegeId}
+		</if>
+		<if test="schoolId != null and schoolId !=''">
+			AND u.company_id =#{schoolId}
+		</if>
+		<if test="auditState != null and  auditState!='' ">
+			AND t.audit_State = #{auditState}
+			AND gai.audit_level = #{auditState}
+		</if>
+		<if test="auditUserName != null and  auditUserName!='' ">
+			AND gai.audit_id = #{auditUserName}
+		</if>
+	</select>
+
+
+
+	<select id="getGcontestByName" resultType="GContest" parameterType="java.lang.String">
+		SELECT 
+			<include refid="gContestColumns"/>
+		FROM g_contest a
+		WHERE a.p_name = #{gContestName}
+	</select>
+	
+	<select id="getGcontestByNameNoId" resultType="GContest" parameterType="java.lang.String">
+		SELECT 
+			<include refid="gContestColumns"/>
+		FROM g_contest a
+		WHERE a.p_name = #{pName}
+		and
+		a.id!=#{id}
+	</select>
+	
+	
+	<select id="getMyGcontestListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select count(1)
+	from g_contest t
+	where t.del_flag='0' and t.declare_id=#{userid} 
+	</select>
+
+	<select id="findGcontestByTeamId" resultType="java.lang.Integer">
+	   SELECT COUNT(1)
+	   FROM g_contest g
+	   LEFT JOIN team t ON g.team_id=t.id
+	   WHERE g.audit_state BETWEEN '1' AND '6' AND g.team_id=#{teamId} AND g.del_flag='0'
+	</select>
+	
+	<select id="getGcontestInfo" resultType="GContest"   parameterType="java.lang.String">
+		select 
+		t.id,
+		t.p_name pName 
+		from g_contest t 
+		where t.del_flag='0' and t.audit_state!='0' and t.audit_state!='7' and t.audit_state!='8' and t.audit_state!='9' 
+		and t.declare_id= #{gcontestUserId}
+	</select>
+	
+	<select id="getLastGcontestInfo" resultType="GContest"   parameterType="java.lang.String">
+		select 
+		t.id,
+		t.p_name pName 
+		from g_contest t 
+		where t.del_flag='0'  
+		and t.declare_id= #{gcontestUserId}
+		order by t.update_date desc limit 1
+	</select>
+	
+	<select id="getMyGcontestListPerson" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT g.id,
+			GROUP_CONCAT(u.name SEPARATOR '/') pname,
+			t.user_type team_user_type
+		FROM g_contest g 
+		left join team_user_relation t on g.team_id=t.team_id
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		where 
+		<foreach collection="list" item="proid" index="index"
+		            open="(" close=")" separator=" or ">
+		            g.id=#{proid}
+		        </foreach>
+		group by g.id,t.user_type
+	</select>
+	
+
+	
+</mapper>
