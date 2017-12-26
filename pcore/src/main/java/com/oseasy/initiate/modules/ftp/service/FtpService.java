@@ -2,14 +2,9 @@ package com.oseasy.initiate.modules.ftp.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
-
-import net.sf.json.JSONObject;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.stereotype.Service;
@@ -17,14 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.jcraft.jsch.Logger;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.DateUtil;
 import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.dao.GAuditInfoDao;
+
+import net.sf.json.JSONObject;
 
 /**
  * 大赛信息Service

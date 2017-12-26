@@ -1,6 +1,7 @@
 package com.oseasy.initiate.modules.cms.web.front;
 
 import com.oseasy.initiate.common.persistence.Page;
+import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
@@ -35,9 +36,9 @@ public class FrontNoticeController extends BaseController {
             OaNotify  oaNotify = oaNotifyService.get(id);
             String title = oaNotify.getTitle();
             String content=StringUtil.unescapeHtml3(oaNotify.getContent());
+            content = content.replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL);
             model.addAttribute("title",title);
             model.addAttribute("content",content);
-
         }
 
         return "modules/website/pages/noticeView";

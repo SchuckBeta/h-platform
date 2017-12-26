@@ -5,213 +5,290 @@
 	<sql id="studentExpansionColumns">
 		a.id AS "id",
 		a.user_id AS "user.id",
-		a.project_experience AS "projectExperience",
+		a.project_experience AS
+		"projectExperience",
 		a.contest_experience AS "contestExperience",
 		a.award AS "award",
 		a.is_open AS "isOpen",
-		a.update_date AS "updateDate",
+		a.update_date AS
+		"updateDate",
 		a.update_by AS "updateBy.id",
-		a.create_date AS "createDate",
+		a.create_date AS
+		"createDate",
 		a.create_by AS "createBy.id",
 		a.enterdate AS "enterdate",
 		a.del_flag AS "delFlag",
 		a.graduation AS "graduation",
-		a.t_class AS "tClass",
+		a.t_class AS
+		"tClass",
 		a.instudy AS "instudy",
-		a.address AS  "address",
+		a.address AS "address",
 		a.temporary_date AS "temporaryDate",
-		a.curr_state  as currState,
-		u.name AS "user.name",
+		a.curr_state as currState,
+		u.name
+		AS "user.name",
 		u.login_name AS "user.loginName",
-		u.password AS "user.password",
+		u.password AS
+		"user.password",
 		u.no AS "user.no",
 		u.email AS "user.email",
-		u.phone AS "user.phone",
-	    u.mobile AS "user.mobile",
+		u.source AS "user.source",
+		u.passc AS "user.passc",
+		u.phone AS
+		"user.phone",
+		u.mobile AS "user.mobile",
 		u.user_type AS "user.userType",
-		u.login_ip AS "user.loginIp",
+		u.login_ip AS
+		"user.loginIp",
 		u.login_date AS "user.loginDate",
-		u.login_flag AS "user.loginFlag",
+		u.login_flag AS
+		"user.loginFlag",
 		u.create_date AS "user.createDate",
-		u.update_date AS "user.updateDate",
+		u.update_date AS
+		"user.updateDate",
 		u.update_by AS "user.updateBy.id",
-		u.remarks AS "user.remarks",
+		u.remarks AS
+		"user.remarks",
 		u.del_flag AS "user.delFlag",
 		u.photo AS "user.photo",
 		u.id_type AS "user.idType",
 		u.id_no AS "user.idNumber",
-		u.national AS "user.national",
+		u.national AS
+		"user.national",
 		u.political AS "user.political",
-		u.education AS "user.education",
+		u.education AS
+		"user.education",
 		u.professional AS "user.professional",
-		u.sex AS "user.sex",
+		u.sex AS
+		"user.sex",
 		u.country AS "user.country",
 		u.area AS "user.area",
-		u.degree AS "user.degree",
+		u.degree
+		AS "user.degree",
 		u.domain AS "user.domain",
+		u.likes AS "user.likes",
+		u.views AS "user.views",
 		so.name AS "user.office.name",
-		so.id AS "user.office.id"
+		so.id AS
+		"user.office.id"
 	</sql>
 	<sql id="AllstudentExpansionColumns">
 		a.id AS "id",
 		a.user_id AS "user.id",
-		a.project_experience AS "projectExperience",
+		a.project_experience AS
+		"projectExperience",
 		a.contest_experience AS "contestExperience",
 		a.award AS "award",
 		a.is_open AS "isOpen",
-		a.update_date AS "updateDate",
+		a.update_date AS
+		"updateDate",
 		a.update_by AS "updateBy.id",
-		a.create_date AS "createDate",
+		a.create_date AS
+		"createDate",
 		a.create_by AS "createBy.id",
 		a.enterdate AS "enterdate",
 		a.del_flag AS "delFlag",
 		a.graduation AS "graduation",
-		a.t_class AS "tClass",
+		a.t_class AS
+		"tClass",
 		a.instudy AS "instudy",
 		a.temporary_date AS "temporaryDate",
 		a.address as "address",
 		a.curr_state as currState,
-		u.name AS "user.name",
+		u.name AS
+		"user.name",
 		u.login_name AS "user.loginName",
-		u.password AS "user.password",
+		u.password AS
+		"user.password",
 		u.no AS "user.no",
+		u.source AS "user.source",
+		u.passc AS "user.passc",
 		u.email AS "user.email",
-		u.phone AS "user.phone",
-	     u.mobile AS "user.mobile",
+		u.phone AS
+		"user.phone",
+		u.mobile AS "user.mobile",
 		u.user_type AS "user.userType",
-		u.login_ip AS "user.loginIp",
+		u.login_ip AS
+		"user.loginIp",
 		u.login_date AS "user.loginDate",
-		u.login_flag AS "user.loginFlag",
+		u.login_flag AS
+		"user.loginFlag",
 		u.create_date AS "user.createDate",
-		u.update_date AS "user.updateDate",
+		u.update_date AS
+		"user.updateDate",
 		u.update_by AS "user.updateBy.id",
-		u.remarks AS "user.remarks",
+		u.remarks AS
+		"user.remarks",
 		u.del_flag AS "user.delFlag",
 		u.photo AS "user.photo",
 		u.id_type AS "user.idType",
 		u.id_no AS "user.idNumber",
-		u.national AS "user.national",
+		u.national AS
+		"user.national",
 		u.political AS "user.political",
-		u.education AS "user.education",
+		u.education AS
+		"user.education",
 		u.professional AS "user.professional",
-		u.sex AS "user.sex",
+		u.sex AS
+		"user.sex",
 		u.country AS "user.country",
 		u.area AS "user.area",
-		u.degree AS "user.degree",
+		u.degree
+		AS "user.degree",
 		u.domain AS "user.domain",
-		u.birthday AS "user.birthday",
+		u.birthday AS
+		"user.birthday",
 		u.company_id as "user.company.id",
-		u.office_id as "user.office.id",
+		u.office_id as
+		"user.office.id",
+		u.likes AS "user.likes",
+		u.views AS "user.views",
 		so.name AS "user.office.name",
 		so.id AS "user.office.id"
 	</sql>
 
 	<sql id="AllstudentExpansionColumns1">
 		a.id AS "id",
-		a.user_id AS "user.id",
-		a.project_experience AS "projectExperience",
+		a.project_experience AS
+		"projectExperience",
 		a.contest_experience AS "contestExperience",
 		a.award AS "award",
 		a.is_open AS "isOpen",
-		a.update_date AS "updateDate",
+		a.update_date AS
+		"updateDate",
 		a.update_by AS "updateBy.id",
-		a.create_date AS "createDate",
+		a.create_date AS
+		"createDate",
 		a.create_by AS "createBy.id",
 		a.enterdate AS "enterdate",
 		a.del_flag AS "delFlag",
 		a.graduation AS "graduation",
-		a.t_class AS "tClass",
+		a.t_class AS
+		"tClass",
 		a.instudy AS "instudy",
 		a.temporary_date AS "temporaryDate",
 		a.address as "address",
 		a.curr_state as currState,
-		u.name AS "user.name",
+		u.id AS "user.id",
+		u.name AS
+		"user.name",
 		u.login_name AS "user.loginName",
-		u.password AS "user.password",
+		u.password AS
+		"user.password",
 		u.no AS "user.no",
+		u.source AS "user.source",
+		u.passc AS "user.passc",
 		u.email AS "user.email",
-		u.phone AS "user.phone",
-	    u.mobile AS "user.mobile",
+		u.phone AS
+		"user.phone",
+		u.mobile AS "user.mobile",
 		u.user_type AS "user.userType",
-		u.login_ip AS "user.loginIp",
+		u.login_ip AS
+		"user.loginIp",
 		u.login_date AS "user.loginDate",
-		u.login_flag AS "user.loginFlag",
+		u.login_flag AS
+		"user.loginFlag",
 		u.create_date AS "user.createDate",
-		u.update_date AS "user.updateDate",
+		u.update_date AS
+		"user.updateDate",
 		u.update_by AS "user.updateBy.id",
-		u.remarks AS "user.remarks",
+		u.remarks AS
+		"user.remarks",
 		u.del_flag AS "user.delFlag",
 		u.photo AS "user.photo",
 		u.id_type AS "user.idType",
 		u.id_no AS "user.idNumber",
-		u.national AS "user.national",
+		u.national AS
+		"user.national",
 		u.political AS "user.political",
-		u.education AS "user.education",
+		u.education AS
+		"user.education",
 		u.professional AS "user.professional",
-		u.sex AS "user.sex",
+		u.sex AS
+		"user.sex",
 		u.country AS "user.country",
 		u.area AS "user.area",
-		u.degree AS "user.degree",
+		u.degree
+		AS "user.degree",
 		u.domain AS "user.domain",
-		u.birthday AS "user.birthday",
+		u.birthday AS
+		"user.birthday",
 		u.company_id as "user.company.id",
-		u.office_id as "user.office.id"
+		u.office_id as
+		"user.office.id",
+		u.likes AS "user.likes",
+		u.views AS "user.views"
 	</sql>
 
 	<sql id="nowProjectColumn">
-		(select 	count(userId) from 	 (select  p1.id,p1.name,p1.team_id,p1.status,r1.user_id as userId from project_declare p1
-				left join team t1 on p1.team_id=t1.id and t1.state='1'
-				left join team_user_relation r1 on r1.team_id=t1.id
-				where p1.status in (1,2,3,4,5,6,7) and p1.del_flag='0' ) user_view where userId=a.user_id
-				)
+		(select count(userId) from (select
+		p1.id,p1.name,p1.team_id,p1.status,r1.user_id as userId from
+		project_declare p1
+		left join team t1 on p1.team_id=t1.id and t1.state='1'
+		left join team_user_relation r1 on r1.team_id=t1.id
+		where p1.status in (1,2,3,4,5,6,7) and p1.del_flag='0' ) user_view where
+		userId=a.user_id
+		)
 	</sql>
 
 	<sql id="contestExperienceColumn">
-		(  SELECT 	COUNT(userId)  FROM (SELECT g1.id,r1.user_id AS userId FROM g_contest g1
-           LEFT JOIN team t1 ON g1.team_id=t1.id
-           LEFT JOIN team_user_relation r1 ON r1.team_id=t1.id
-         WHERE g1.audit_state IN (1,2,3,5,6,7,8) AND g1.del_flag='0') g_user_view WHERE   userId=a.user_id	)
+		( SELECT COUNT(userId) FROM (SELECT g1.id,r1.user_id AS
+		userId FROM g_contest g1
+		LEFT JOIN team t1 ON g1.team_id=t1.id
+		LEFT JOIN team_user_relation r1 ON r1.team_id=t1.id
+		WHERE g1.audit_state IN (1,2,3,5,6,7,8) AND g1.del_flag='0') g_user_view
+		WHERE userId=a.user_id )
 	</sql>
 
 	<sql id="projectExperienceColumn">
-		(select 	count(userId) from 	 (select  p1.id,p1.name,p1.team_id,p1.status,r1.user_id as userId from project_declare p1
+		(select count(userId) from (select
+		p1.id,p1.name,p1.team_id,p1.status,r1.user_id as userId from
+		project_declare p1
 		left join team t1 on p1.team_id=t1.id
-		left join team_user_relation r1 on r1.team_id=t1.id
-		where p1.status in (1,2,3,4,5,6,7,8,9) and p1.del_flag='0' ) user_view where userId=a.user_id
+		left join
+		team_user_relation r1 on r1.team_id=t1.id
+		where p1.status in
+		(1,2,3,4,5,6,7,8,9) and p1.del_flag='0' ) user_view where
+		userId=a.user_id
 		)
 	</sql>
 
 	<sql id="awardColumn">
-		(  SELECT 	COUNT(userId)  FROM (SELECT g1.id,r1.user_id AS userId FROM g_contest g1
+		( SELECT COUNT(userId) FROM (SELECT g1.id,r1.user_id AS
+		userId FROM g_contest g1
 		LEFT JOIN team t1 ON g1.team_id=t1.id
-		LEFT JOIN team_user_relation r1 ON r1.team_id=t1.id
-		WHERE g1.schoolend_result IN (2,3,4)  AND g1.del_flag='0') g_user_view WHERE   userId=a.user_id	)
+		LEFT JOIN
+		team_user_relation r1 ON r1.team_id=t1.id
+		WHERE g1.schoolend_result IN
+		(2,3,4) AND g1.del_flag='0') g_user_view WHERE userId=a.user_id )
 	</sql>
 
 	<sql id="collegeColumn">
-		(select off1.name from sys_office off1 where off1.id=u.office_id )
+		(select off1.name from sys_office off1 where
+		off1.id=u.office_id )
 	</sql>
 
 	<sql id="professionalColumn">
-		(select off1.name from sys_office off1 where off1.id=u.professional)
+		(select off1.name from sys_office off1 where
+		off1.id=u.professional)
 	</sql>
 
-   <sql id="topPriseColumn" >
+	<sql id="topPriseColumn">
 		( SELECT s.label FROM sys_dict s WHERE
-				s.type='competition_college_prise'
-				AND s.value=
-				(SELECT MAX(g.award) FROM g_contest_award g
-					WHERE g.del_flag=0 AND g.contest_id IN (
-					SELECT DISTINCT(e.id)
-					FROM g_contest e
-					WHERE e.del_flag=0 AND e.declare_id IN(
-						SELECT t.sponsor FROM team t WHERE t.del_flag=0 AND t.id IN(
-						SELECT tur.team_id FROM team_user_relation tur WHERE tur.user_id=a.user_id )
-						)
-					)
-				)
- 		  ) AS  "topPrise"
-   </sql>
+		s.type='competition_college_prise'
+		AND s.value=
+		(SELECT MAX(g.award) FROM g_contest_award g
+		WHERE g.del_flag=0 AND g.contest_id IN (
+		SELECT DISTINCT(e.id)
+		FROM g_contest e
+		WHERE e.del_flag=0 AND e.declare_id IN(
+		SELECT t.sponsor FROM team t WHERE t.del_flag=0 AND t.id IN(
+		SELECT tur.team_id FROM team_user_relation tur WHERE tur.user_id=a.user_id )
+		)
+		)
+		)
+		) AS "topPrise"
+	</sql>
 
 
 	<sql id="studentExpansionJoins">
@@ -220,7 +297,7 @@
 
 	<select id="get" resultType="StudentExpansion">
 		SELECT
-			<include refid="AllstudentExpansionColumns"/>
+		<include refid="AllstudentExpansionColumns" />
 		FROM sys_student_expansion a
 		LEFT JOIN sys_user u ON u.id = a.user_id
 		LEFT JOIN sys_office so ON so.id = u.office_id
@@ -229,124 +306,187 @@
 
 	<select id="findList" resultType="StudentExpansion">
 		SELECT
-			<include refid="studentExpansionColumns"/>,
-		    <include refid="nowProjectColumn"/> AS "nowProject",
-		    <include refid="topPriseColumn"/>
+		<include refid="studentExpansionColumns" />
+		,
+		<include refid="nowProjectColumn" />
+		AS "nowProject",
+		(select GROUP_CONCAT(DISTINCT ifnull(s1.label,s2.label)) from
+		team_user_history thu
+		left join sys_dict s1 on s1.value=thu.pro_sub_type and
+		s1.type='project_style' and thu.pro_type='1,'
+		left join sys_dict s2 on s2.value=thu.pro_sub_type and
+		s2.type='competition_type' and thu.pro_type='7,'
+		where thu.user_id=a.user_id and thu.del_flag='0' and thu.finish='0')
+		curJoin,
+		<if test="teamLeaderId != null and teamLeaderId != ''">
+			(select GROUP_CONCAT(tm.id) from team tm where
+			tm.del_flag='0' and tm.state='0' and tm.sponsor=#{teamLeaderId}
+			and tm.id not in(
+			select DISTINCT tur.team_id from team_user_relation tur
+			where tur.state in('0','2','4')
+			and tur.user_id=a.user_id and tur.del_flag='0')
+			) canInviteTeamIds,
+		</if>
+		<include refid="topPriseColumn" />
 		FROM sys_student_expansion a
 		LEFT JOIN sys_user u ON u.id = a.user_id
 		LEFT JOIN sys_office so ON so.id = u.office_id
-
-
 		<where>
-				a.del_flag = 0 and u.del_flag='0' and u.user_type='1'
+			a.del_flag = 0 and u.del_flag='0' and u.user_type='1'
 			<!--学院 -->
-			<if test="user != null and user.office != null and user.office.id != null and user.office.id != ''">
+			<if
+				test="user != null and user.office != null and user.office.id != null and user.office.id != ''">
 				AND u.office_id = #{user.office.id}
 			</if>
 
 			<!-- 专业 -->
-			<if test="user != null and user.professional != null and user.professional != ''">
+			<if
+				test="user != null and user.professional != null and user.professional != ''">
 				AND u.professional = #{user.professional}
 			</if>
 
-			<!--现状-->
+			<!--现状 -->
 			<if test="currState != null and currState != ''">
-				AND a.curr_state =  #{currState}
+				AND a.curr_state = #{currState}
 			</if>
 
-			<!--学位-->
+			<!--学位 -->
 			<if test="user != null and user.degree != null and user.degree != ''">
 				AND u.degree = #{user.degree}
 			</if>
 
 			<!-- 是否有在研项目 -->
 			<if test="nowProject !=null and nowProject != ''">
-				AND <include refid="nowProjectColumn"/> = #{nowProject}
+				AND
+				<include refid="nowProjectColumn" />
+				= #{nowProject}
 			</if>
 
 			<!-- 是否有大赛经历 -->
-			<if test="contestExperience !=null and contestExperience != '' and contestExperience == '0'.toString() ">
-				AND <include refid="contestExperienceColumn"/> = 0
+			<if
+				test="contestExperience !=null and contestExperience != '' and contestExperience == '0'.toString() ">
+				AND
+				<include refid="contestExperienceColumn" />
+				= 0
 			</if>
-			<if test="contestExperience !=null and contestExperience != '' and contestExperience == '1'.toString()  ">
-				AND <include refid="contestExperienceColumn"/>  &gt; 0
+			<if
+				test="contestExperience !=null and contestExperience != '' and contestExperience == '1'.toString()  ">
+				AND
+				<include refid="contestExperienceColumn" />
+				&gt; 0
 			</if>
 
 			<!-- 是否有项目经历 -->
-			<if test="projectExperience !=null and projectExperience != '' and projectExperience == '0'.toString() ">
-				AND <include refid="projectExperienceColumn"/> = 0
+			<if
+				test="projectExperience !=null and projectExperience != '' and projectExperience == '0'.toString() ">
+				AND
+				<include refid="projectExperienceColumn" />
+				= 0
 			</if>
-			<if test="projectExperience !=null and projectExperience != '' and projectExperience == '1'.toString()  ">
-				AND <include refid="projectExperienceColumn"/>  &gt; 0
+			<if
+				test="projectExperience !=null and projectExperience != '' and projectExperience == '1'.toString()  ">
+				AND
+				<include refid="projectExperienceColumn" />
+				&gt; 0
 			</if>
 
-			<!--是否有获奖经历-->
+			<!--是否有获奖经历 -->
 			<if test="award !=null and award != '' and award == '0'.toString() ">
-				AND <include refid="awardColumn"/> = 0
+				AND
+				<include refid="awardColumn" />
+				= 0
 			</if>
 			<if test="award !=null and award != '' and award == '1'.toString()  ">
-				AND <include refid="awardColumn"/>  &gt; 0
+				AND
+				<include refid="awardColumn" />
+				&gt; 0
 			</if>
 
-			<!-- 后台关键字 查询范围 姓名 学院 专业  学号-->
+			<!-- 后台关键字 查询范围 姓名 学院 专业 学号 -->
 			<if test="myFind!=null and myFind!=''">
-				AND (u.name like '%${myFind}%'
-				      or <include refid="collegeColumn"/>  like '%${myFind}%'
-				     or <include refid="professionalColumn"/>  like '%${myFind}%'
-					 or  u.no   like '%${myFind}%'
-				    )
+				AND (u.name like concat('%',#{myFind},'%')
+				or
+				<include refid="collegeColumn" />
+				like concat('%',#{myFind},'%')
+				or
+				<include refid="professionalColumn" />
+				like concat('%',#{myFind},'%')
+				or u.no like concat('%',#{myFind},'%')
+				)
 			</if>
-			<!-- 前台关键字 查询范围 姓名 学院 专业  -->
+			<!-- 前台关键字 查询范围 姓名 学院 专业 -->
 			<if test="keyWord!=null and keyWord!=''">
-				AND (u.name like '%${keyWord}%'
-				or <include refid="collegeColumn"/>  like '%${keyWord}%'
-				or <include refid="professionalColumn"/>  like '%${keyWord}%'
+				AND (u.name like concat('%',#{keyWord},'%')
+				or
+				<include refid="collegeColumn" />
+				like concat('%',#{keyWord},'%')
+				or
+				<include refid="professionalColumn" />
+				like concat('%',#{keyWord},'%')
 				)
 			</if>
 
 			<if test="user != null and user.name != null and user.name != ''">
-				AND u.name like '%${user.name}%'
+				AND u.name like concat('%',#{user.name},'%')
 			</if>
 
-			<if test="user != null and user.education != null and user.education != ''">
+			<if
+				test="user != null and user.education != null and user.education != ''">
 				AND u.education = #{user.education}
 			</if>
 
-			<if test="isOpen != null and isOpen != '' and isFront!=null and isFront !='' and isFront==1">
+			<if
+				test="isOpen != null and isOpen != '' and isFront!=null and isFront !='' and isFront==1">
 				AND a.is_open = 1
 			</if>
-
-
+			<if test="curJoinParam!=null">
+				and a.user_id in( select xx.user_id from team_user_history xx where
+				<foreach collection="curJoinParam" item="cj" index="index"
+					open="((" close="))" separator=") or (">
+					xx.pro_type=CONCAT(#{cj.pType}, ',')
+					and xx.pro_sub_type=#{cj.psType} and xx.del_flag='0' and
+					xx.finish='0'
+				</foreach>
+				)
+			</if>
+			and u.office_id is not null and u.name is not null
 		</where>
-
-
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} ${page.orderByType}
+			</when>
+			<otherwise>
+				ORDER BY u.no, a.update_date DESC
+			</otherwise>
+		</choose>
 	</select>
 
 	<select id="findAllList" resultType="StudentExpansion">
 		SELECT
-			<include refid="studentExpansionColumns"/>
+		<include refid="studentExpansionColumns" />
 		FROM sys_student_expansion a
-		<include refid="studentExpansionJoins"/>
+		<include refid="studentExpansionJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY ${page.orderBy} ${page.orderByType}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY u.no, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
-	
-	<select id="getStuExList" resultType="java.util.HashMap" parameterType="java.util.Map">
+
+	<select id="getStuExList" resultType="java.util.HashMap"
+		parameterType="java.util.Map">
 		SELECT
-		<include refid="AllstudentExpansionColumns1"/>
+		<include refid="AllstudentExpansionColumns1" />
 		FROM sys_student_expansion a
 		inner JOIN sys_user u ON u.id = a.user_id
 		LEFT JOIN sys_office so ON so.id = u.office_id
-		where a.del_flag='0' 
+		where a.del_flag='0'
 		<if test="collegeId!= null and collegeId != ''">
 			AND u.office_id = #{collegeId}
 		</if>
@@ -356,15 +496,26 @@
 		<if test="name != null and name != ''">
 			AND u.name like '%${name}%'
 		</if>
-		order by a.create_date desc limit #{offset},#{pageSize}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} ${page.orderByType}
+			</when>
+			<otherwise>
+				ORDER BY u.no, a.create_date desc limit
+				#{offset},#{pageSize}
+			</otherwise>
+		</choose>
 	</select>
-	
-	<select id="getStuExListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
-		SELECT count(*)				
+
+	<select id="getStuExListCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		SELECT count(*)
 		FROM sys_student_expansion a
-		LEFT JOIN sys_user u ON u.id = a.user_id
+		LEFT JOIN sys_user u ON
+		u.id = a.user_id
 		LEFT JOIN sys_office so ON so.id = u.office_id
-		where a.del_flag='0' 
+		where
+		a.del_flag='0'
 		<if test="collegeId!= null and collegeId != ''">
 			AND u.office_id = #{collegeId}
 		</if>
@@ -372,86 +523,185 @@
 			AND u.professional = #{professional}
 		</if>
 		<if test="name != null and name != ''">
-			AND u.name like '%${name}%'
+			AND u.name like concat('%',#{name},'%')
 		</if>
 	</select>
-	
-	
-	
 
 	<insert id="insert">
 		INSERT INTO sys_student_expansion(
-			id,
-			user_id,
-			project_experience,
-			contest_experience,
-			award,
-			is_open,
-			update_date,
-			update_by,
-			create_date,
-			create_by,
-			enterdate,
-			del_flag,
-			graduation,
-			t_class,
-			instudy,
-			temporary_date,
-			address,
-			curr_state
+		id,
+		user_id,
+		project_experience,
+		contest_experience,
+		award,
+		is_open,
+		update_date,
+		update_by,
+		create_date,
+		create_by,
+		enterdate,
+		del_flag,
+		graduation,
+		t_class,
+		instudy,
+		temporary_date,
+		address,
+		curr_state
 		) VALUES (
-			#{id},
-			#{user.id},
-			#{projectExperience},
-			#{contestExperience},
-			#{award},
-			#{isOpen},
-			#{updateDate},
-			#{updateBy.id},
-			#{createDate},
-			#{createBy.id},
-			#{enterdate},
-			#{delFlag},
-			#{graduation},
-			#{tClass},
-			#{instudy},
-			#{temporaryDate},
-			#{address},
-			#{currState}
+		#{id},
+		#{user.id},
+		#{projectExperience},
+		#{contestExperience},
+		#{award},
+		#{isOpen},
+		#{updateDate},
+		#{updateBy.id},
+		#{createDate},
+		#{createBy.id},
+		#{enterdate},
+		#{delFlag},
+		#{graduation},
+		#{tClass},
+		#{instudy},
+		#{temporaryDate},
+		#{address},
+		#{currState}
 		)
 	</insert>
 
 	<update id="update">
 		UPDATE sys_student_expansion SET
-			user_id = #{user.id},
-			project_experience = #{projectExperience},
-			contest_experience = #{contestExperience},
-			award = #{award},
-			is_open = #{isOpen},
-			update_date = #{updateDate},
-			update_by = #{updateBy.id},
-			enterdate = #{enterdate},
-			graduation = #{graduation},
-			t_class = #{tClass},
-			instudy = #{instudy},
-			temporary_date = #{temporaryDate},
-			address = #{address},
-			curr_state=#{currState}
+		user_id = #{user.id},
+		project_experience = #{projectExperience},
+		contest_experience = #{contestExperience},
+		award = #{award},
+		is_open = #{isOpen},
+		update_date = #{updateDate},
+		update_by = #{updateBy.id},
+		enterdate = #{enterdate},
+		graduation = #{graduation},
+		t_class = #{tClass},
+		instudy = #{instudy},
+		temporary_date = #{temporaryDate},
+		address = #{address},
+		curr_state=#{currState}
 		WHERE id = #{id}
 	</update>
 
 	<update id="delete">
 		UPDATE sys_student_expansion SET
-			del_flag = #{DEL_FLAG_DELETE}
+		del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 
 	<select id="getByUserId" resultType="StudentExpansion">
 		SELECT
-			<include refid="AllstudentExpansionColumns1"/>
+		<include refid="AllstudentExpansionColumns1" />
 		FROM sys_user as u
-		LEFT JOIN sys_student_expansion as a ON u.id = a.user_id
+		LEFT JOIN sys_student_expansion as a ON u.id =
+		a.user_id
 		WHERE u.id = #{userId}
 	</select>
 
+	<select id="getStudentByTeamId" resultType="StudentExpansion"
+		parameterType="java.lang.String">
+		SELECT
+		<include refid="AllstudentExpansionColumns1" />
+		FROM sys_user u
+		LEFT JOIN sys_student_expansion a ON u.id = a.user_id
+		LEFT JOIN team_user_relation t ON t.user_id = u.id
+		WHERE u.user_type =
+		'1' and t.team_id = #{id} and (t.state='0' or t.state='4')
+	</select>
+	<select id="findProjectByStudentId" resultType="com.oseasy.initiate.modules.project.vo.ProjectExpVo"
+		parameterType="java.lang.String">
+		select temp.* from(
+		SELECT a.id AS id , pp.start_date startDate,
+		pp.end_date endDate,
+		a.name,
+		s3.label proName,
+		s1.label level,
+		s2.label result,
+		a.leader leaderId,
+		th.u_type userType,
+		th.finish,
+		a.apply_time orderDate
+		FROM project_declare a
+		LEFT JOIN act_yw ay ON ay.id=a.actyw_id
+		LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+		left join sys_dict s1 on s1.type="project_degree" AND s1.value=a.level
+		left join sys_dict s2 on s2.type="project_result" AND
+		s2.value=a.final_result
+		left join sys_dict s3 on pp.type=s3.value and s3.type='project_style'
+		left JOIN team_user_history th on th.pro_id = a.id
+		where th.pro_type='1,' and th.finish in('0','1') and a.del_flag='0'
+		and th.user_id=#{userId}
+		UNION all
+		SELECT pm.id AS id , pp.start_date startDate ,
+		pp.end_date endDate,
+		pm.p_name name,
+		s3.label proName,
+		s1.label level,
+		s2.label result,
+		pm.declare_id leaderId,
+		th.u_type userType,
+		th.finish,
+		pm.sub_time orderDate
+		FROM pro_model pm
+		LEFT JOIN act_yw ay ON ay.id=pm.actyw_id
+		LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+		left join sys_dict s1 on s1.type="project_degree" AND
+		s1.value=pm.final_status
+		left join sys_dict s2 on s2.type="project_result" AND s2.value=pm.grade
+		left join sys_dict s3 on pp.type=s3.value and s3.type='project_style'
+		left JOIN team_user_history th on th.pro_id = pm.id
+		WHERE pm.del_flag='0' and th.finish in('0','1')
+		and th.pro_type='1,' and th.user_id=#{userId}
+		)temp order by temp.finish,temp.orderDate desc
+
+	</select>
+
+	<select id="findGContestByStudentId"
+		resultType="com.oseasy.initiate.modules.sys.entity.GContestUndergo"
+		parameterType="java.lang.String">
+		select temp.* from(
+		SELECT
+		g.id,
+		s3.label type,
+		g.sub_time createDate,
+		g.p_name pName,
+		s5.label award,
+		g.declare_id leaderId,
+		th.u_type userType,
+		th.finish
+		FROM g_contest g
+		LEFT JOIN g_contest_award gca ON gca.contest_id=g.id
+		LEFT JOIN act_yw ay ON ay.id=g.actyw_id
+		LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+		left join sys_dict s3 on pp.type=s3.value and s3.type='competition_type'
+		left join sys_dict s5 on gca.award=s5.value and
+		s5.type='competition_college_prise'
+		left JOIN team_user_history th on th.pro_id = g.id
+		WHERE g.del_flag='0' and th.finish in('0','1')
+		and th.pro_type='7,' and th.user_id=#{userId}
+		UNION all
+		SELECT
+		p.id,
+		s3.label type,
+		p.sub_time createDate,
+		p.p_name pName,
+		'' award,
+		p.declare_id leaderId,
+		th.u_type userType,
+		th.finish
+		FROM pro_model p
+		LEFT JOIN act_yw ay ON ay.id=p.actyw_id
+		LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+		left join sys_dict s3 on pp.type=s3.value and s3.type='competition_type'
+		left JOIN team_user_history th on th.pro_id = p.id
+		WHERE p.del_flag='0'
+		and th.finish in('0','1')
+		and th.pro_type='7,' and th.user_id=#{userId}
+		)temp order by temp.finish,temp.createDate desc
+	</select>
 </mapper>

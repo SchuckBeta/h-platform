@@ -7,7 +7,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao">
-    
+
     <#-- 输出字段列 -->
 	<sql id="${className}Columns">
 		<#assign columnField>
@@ -38,7 +38,7 @@
 		</#assign>
 ${columnField?substring(0, columnField?last_index_of(","))}
 	</sql>
-	
+
 	<#-- 输出字段关联表 -->
 	<sql id="${className}Joins">
 		<#-- 关联父表 -->
@@ -56,17 +56,17 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			</#if>
 		</#list>
 	</sql>
-    
+
 	<select id="get" resultType="${ClassName}">
-		SELECT 
+		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
 		<include refid="${className}Joins"/>
 		WHERE a.id = ${"#"}{id}
 	</select>
-	
+
 	<select id="findList" resultType="${ClassName}">
-		SELECT 
+		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
 		<include refid="${className}Joins"/>
@@ -82,17 +82,17 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 					<#if c.queryType ?? && c.queryType == 'between'>
 				AND a.${c.name} BETWEEN ${"#"}{begin${c.simpleJavaField?cap_first}} AND ${"#"}{end${c.simpleJavaField?cap_first}}
 					<#elseif c.queryType ?? && c.queryType == 'like'>
-				AND a.${c.name} LIKE 
+				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+${"#"}{${c.javaFieldId}}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}},'%')</if>
 					<#elseif c.queryType ?? && c.queryType == 'left_like'>
-				AND a.${c.name} LIKE 
+				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">'%'||${"#"}{${c.javaFieldId}}</if>
 					<if test="dbName == 'mssql'">'%'+${"#"}{${c.javaFieldId}}</if>
 					<if test="dbName == 'mysql'">concat('%',${"#"}{${c.javaFieldId}})</if>
 					<#elseif c.queryType ?? && c.queryType == 'right_like'>
-				AND a.${c.name} LIKE 
+				AND a.${c.name} LIKE
 					<if test="dbName == 'oracle'">${"#"}{${c.javaFieldId}}||'%'</if>
 					<if test="dbName == 'mssql'">${"#"}{${c.javaFieldId}}+'%'</if>
 					<if test="dbName == 'mysql'">concat(${"#"}{${c.javaFieldId}},'%')</if>
@@ -109,9 +109,9 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			</#if>
 		</#list>
 	</select>
-	
+
 	<select id="findAllList" resultType="${ClassName}">
-		SELECT 
+		SELECT
 			<include refid="${className}Columns"/>
 		FROM ${table.name} a
 		<include refid="${className}Joins"/>
@@ -124,7 +124,7 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			</#if>
 		</#list>
 	</select>
-	
+
 	<select id="findByParentIdsLike" resultType="${ClassName}">
 		SELECT
 			a.id,
@@ -142,7 +142,7 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 			</#if>
 		</#list>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO ${table.name}(
 		<#assign insertField>
@@ -164,10 +164,10 @@ ${insertField?substring(0, insertField?last_index_of(","))}
 ${insertJavaField?substring(0, insertJavaField?last_index_of(","))}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE ${table.name} SET 	
-			<#assign updateField>		
+		UPDATE ${table.name} SET
+			<#assign updateField>
 				<#list table.columnList as c>
 					<#if c.isEdit?? && c.isEdit == "1">
 			${c.name} = ${"#"}{${c.javaFieldId}},
@@ -177,17 +177,17 @@ ${insertJavaField?substring(0, insertJavaField?last_index_of(","))}
 ${updateField?substring(0, updateField?last_index_of(","))}
 		WHERE id = ${"#"}{id}
 	</update>
-	
+
 	<update id="updateParentIds">
-		UPDATE ${table.name} SET 
-			parent_id = ${"#"}{parent.id}, 
+		UPDATE ${table.name} SET
+			parent_id = ${"#"}{parent.id},
 			parent_ids = ${"#"}{parentIds}
 		WHERE id = ${"#"}{id}
 	</update>
-	
+
 	<update id="delete">
 	<#if table.delFlagExists>
-		UPDATE ${table.name} SET 
+		UPDATE ${table.name} SET
 			del_flag = ${"#"}{DEL_FLAG_DELETE}
 	<#else>
 		DELETE FROM ${table.name}
@@ -209,7 +209,11 @@ ${updateField?substring(0, updateField?last_index_of(","))}
 		WHERE id = ${"#"}{id} OR parent_ids LIKE '%,'||${"#"}{id}||',%'
 	</#if>
 	</update>
-	
+
+	<update id="deleteWL">
+		DELETE FROM ${table.name} WHERE id = ${"#"}{id}
+	</update>
+
 </mapper>]]>
 	</content>
 </template>

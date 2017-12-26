@@ -1,7 +1,9 @@
 package com.oseasy.initiate.modules.course.entity;
 
 import com.google.common.collect.Lists;
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
 import com.oseasy.initiate.common.utils.Collections3;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +43,13 @@ public class Course extends DataEntity<Course> {
 
 	private List<CourseCategory> categoryList = Lists.newArrayList();  //拥有的课程专业分类
 	private List<CourseTeacher>  teacherList =  Lists.newArrayList();  //拥有的授课教师
-	private List<CourseAttachment> attachmentList = Lists.newArrayList(); //拥有的课件
+	private List<SysAttachment> attachmentList = Lists.newArrayList(); //拥有的课件
 
 	private List<String> categoryValueList = Lists.newArrayList();
 	private List<String> typeList = Lists.newArrayList();
 	private List<String> statusList = Lists.newArrayList();
+
+	private AttachMentEntity attachMentEntity;
 
 
 
@@ -218,11 +222,11 @@ public class Course extends DataEntity<Course> {
 		this.teacherList = teacherList;
 	}
 
-	public List<CourseAttachment> getAttachmentList() {
+	public List<SysAttachment> getAttachmentList() {
 		return attachmentList;
 	}
 
-	public void setAttachmentList(List<CourseAttachment> attachmentList) {
+	public void setAttachmentList(List<SysAttachment> attachmentList) {
 		this.attachmentList = attachmentList;
 	}
 
@@ -261,5 +265,13 @@ public class Course extends DataEntity<Course> {
 
 	public void setStatusList(List<String> statusList) {
 		this.statusList = statusList;
+	}
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
 	}
 }

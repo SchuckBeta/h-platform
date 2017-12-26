@@ -3,10 +3,19 @@ package com.oseasy.initiate.modules.project.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.persistence.ActEntity;
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowProjectType;
+import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
 
 /**
  * 项目申报Entity
@@ -14,8 +23,8 @@ import com.oseasy.initiate.common.persistence.ActEntity;
  * @version 2017-03-11
  */
 public class ProjectDeclare extends ActEntity<ProjectDeclare> {
-
 	private static final long serialVersionUID = 1L;
+	private String actywId;//流程业务表
 	private String orgId;		// 学院
 	private String planContent;		// 项目实施预案
 	private Date planStartDate;		// 项目预案时间起始
@@ -24,7 +33,9 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 	private String resultType;		// 成果形式
 	private String resultContent;		// 成果说明
 	private String level;		// 立项评级结果(1A+、2A、3B、4不合格 提交给学校评级) 字典type==project_degree
-	private String type;		// 项目类型
+  private String proType;        //大项目 类型（双创，科研等）
+  private List<String> proTypes;//类别
+  private String type;        //项目 类型（大创，互联网+大赛等）//项目类型：project_style；大赛类型：competition_type
 	private String name;		// 项目名称
 	private String leader;		// 项目负责人
 	private String number;		// 项目编号
@@ -38,13 +49,15 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 	private float finalScore;		// 结项评分
 	private float replyScore;      //答辩评分
 	//字典值project_result jsp页面这么写${fns:getDictLabel(projectDeclare.finalResult, "project_result", projectDeclare.finalResult)}
-	private String finalResult;		// 项目结果(0合格，1优秀，2不合格，3立项不合格，4中期不合格,5延期结项）
+	private String finalResult;		// 项目结果(0合格，1优秀，2不合格，3立项不合格，4中期不合格（项目终止）,5延期结项）
 	private String development;		// 项目拓展
 	private String source;		// 项目来源
 	private String status;		//(0未提交，1待学院立项审核，2待学校立项审核，3.待提交中期报告，4待修改中期报告,5待中期检查,6待提交结项报告,7.待结项审核，8项目终止,9.项目结项)
 
 
 	private String teamId;		// 团队id
+	@Transient
+	private String teamName;		// 团队名称
 	private String templateId;		// 项目通告id
 
 	private String comment;   //审核意见  addBy zhangzheng
@@ -58,6 +71,8 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 	private String  finalResultString;
 	private String  keyword;
 
+	private int snumber; //团队学生数量
+
 	private String startDateStr;
 	private Date startDate;
 	private Date endDate;
@@ -69,6 +84,12 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 	private List<ProjectAuditInfo> closeAuditList; //结项评分意见 addBy zhangzheng
 
 	private List<ProjectPlan> planList;  //任务分工 addBy zhangzheng
+	private List<TeamUserRelation>  teamUserRelationList = Lists.newArrayList();
+
+	private List<TeamUserHistory>  teamUserHistoryList = Lists.newArrayList();
+	private List<TeamUserHistory> teacherList = Lists.newArrayList();
+	private List<TeamUserHistory> studentList = Lists.newArrayList();
+	private String pType; //项目类型
 
 	private String financeGrant;//财政拨款（元）
 	private String universityGrant;//校拨（元）
@@ -77,6 +98,25 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 	private String universityCode;//高校代码
 	private String universityName;//高校名称
 
+	List<AuditStandardDetailIns> auditStandardDetailInsList = Lists.newArrayList(); //评分标准
+
+	private AttachMentEntity attachMentEntity;
+
+	public List<TeamUserHistory> getTeamUserHistoryList() {
+		return teamUserHistoryList;
+	}
+
+	public void setTeamUserHistoryList(List<TeamUserHistory> teamUserHistoryList) {
+		this.teamUserHistoryList = teamUserHistoryList;
+	}
+
+	public String getActywId() {
+		return actywId;
+	}
+
+	public void setActywId(String actywId) {
+		this.actywId = actywId;
+	}
 
 	public Date getApprovalDate() {
 		return approvalDate;
@@ -86,7 +126,15 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 		this.approvalDate = approvalDate;
 	}
 
-	public String getProvince() {
+	public String getTeamName() {
+    return teamName;
+  }
+
+  public void setTeamName(String teamName) {
+    this.teamName = teamName;
+  }
+
+  public String getProvince() {
 		return province;
 	}
 
@@ -519,4 +567,102 @@ public class ProjectDeclare extends ActEntity<ProjectDeclare> {
 		return "";
 	}
 
+	public int getSnumber() {
+		return snumber;
+	}
+
+	public void setSnumber(int snumber) {
+		this.snumber = snumber;
+	}
+
+	public List<TeamUserRelation> getTeamUserRelationList() {
+		return teamUserRelationList;
+	}
+
+	public void setTeamUserRelationList(List<TeamUserRelation> teamUserRelationList) {
+		this.teamUserRelationList = teamUserRelationList;
+	}
+
+	public String getProType() {
+	  if(StringUtil.isEmpty(this.proType)){
+	    this.proType = FlowProjectType.PMT_XM.getKey() + StringUtil.DOTH;
+	  }
+    return proType;
+  }
+
+	public String getProTyped() {
+	  if(StringUtil.isNotEmpty(this.proType) && ((this.proType).indexOf(StringUtil.DOTH) != -1)){
+	    return StringUtils.substring(this.proType, 0, ((this.proType).length()-1));
+	  }
+	  return this.proType;
+	}
+
+  public List<String> getProTypes() {
+      if (StringUtils.isNotBlank(proType)) {
+          String[] proCategorysArray = StringUtils.split(proType, StringUtil.DOTH);
+          proTypes = Lists.newArrayList();
+          for (String pCategory : proCategorysArray) {
+            proTypes.add(pCategory);
+          }
+      }
+      return proTypes;
+  }
+
+  public void setProTypes(List<String> proTypes) {
+      if ((proTypes != null) && (proTypes.size() > 0)) {
+          StringBuffer strbuff = new StringBuffer();
+          for (String ptype : proTypes) {
+              strbuff.append(ptype);
+              strbuff.append(StringUtil.DOTH);
+          }
+          String curptype = strbuff.substring(0, strbuff.lastIndexOf(StringUtil.DOTH));
+          setProType(curptype);
+      }
+      this.proTypes = proTypes;
+  }
+
+  public void setProType(String proType) {
+    this.proType = proType;
+  }
+
+  public String getpType() {
+		return pType;
+	}
+
+	public void setpType(String pType) {
+		this.pType = pType;
+	}
+
+	public List<AuditStandardDetailIns> getAuditStandardDetailInsList() {
+		return auditStandardDetailInsList;
+	}
+
+	public void setAuditStandardDetailInsList(List<AuditStandardDetailIns> auditStandardDetailInsList) {
+		this.auditStandardDetailInsList = auditStandardDetailInsList;
+	}
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
+	}
+
+	public List<TeamUserHistory> getTeacherList() {
+		return teacherList;
+	}
+
+	public void setTeacherList(List<TeamUserHistory> teacherList) {
+		this.teacherList = teacherList;
+	}
+
+	public List<TeamUserHistory> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(List<TeamUserHistory> studentList) {
+		this.studentList = studentList;
+	}
+	
 }

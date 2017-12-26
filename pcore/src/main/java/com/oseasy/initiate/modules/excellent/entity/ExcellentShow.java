@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
 import com.oseasy.initiate.common.persistence.DataEntity;
 
 /**
@@ -13,10 +14,11 @@ import com.oseasy.initiate.common.persistence.DataEntity;
  * @version 2017-06-23
  */
 public class ExcellentShow extends DataEntity<ExcellentShow> {
-
+	public final static String  Type_Project="0000000075";
+    public final static String  Type_Gcontest="0000000076";
 	private static final long serialVersionUID = 1L;
 	private String coverImg;		// 封面图片
-	private String type;		// 类别：0-项目，1-大赛，2-科研成果
+	private String type;		// 类别：0000000075-项目，0000000076-大赛
 	private String foreignId;		// 项目、大赛、科研成果id
 	private String content;		// 页面内容
 	private String isRelease;		// 是否发布：0-否，1-是
@@ -25,8 +27,36 @@ public class ExcellentShow extends DataEntity<ExcellentShow> {
 	private String views;		// 浏览量
 	private String likes;		// 点赞量
 	private String comments;		// 评论量
+	private String subType;//项目、大赛小类型，数据字典，project_style、competition_type
+	private String managed;//发布过的需要显示在内容管理下面，0-非，1-是
 	private Date releaseDate;//发布时间
 	private List<String> keywords;
+	private AttachMentEntity attachMentEntity;
+
+
+	public String getManaged() {
+		return managed;
+	}
+
+	public void setManaged(String managed) {
+		this.managed = managed;
+	}
+
+	public String getSubType() {
+		return subType;
+	}
+
+	public void setSubType(String subType) {
+		this.subType = subType;
+	}
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
+	}
 	public ExcellentShow() {
 		super();
 	}
@@ -140,5 +170,33 @@ public class ExcellentShow extends DataEntity<ExcellentShow> {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-
+	protected List<String> fielSize;
+	protected List<String> fielTitle;
+	protected List<String> fielType;
+	protected List<String> fielFtpUrl;
+	
+	public List<String> getFielSize() {
+		return fielSize;
+	}
+	public void setFielSize(List<String> fielSize) {
+		this.fielSize = fielSize;
+	}
+	public List<String> getFielTitle() {
+		return fielTitle;
+	}
+	public void setFielTitle(List<String> fielTitle) {
+		this.fielTitle = fielTitle;
+	}
+	public List<String> getFielType() {
+		return fielType;
+	}
+	public void setFielType(List<String> fielType) {
+		this.fielType = fielType;
+	}
+	public List<String> getFielFtpUrl() {
+		return fielFtpUrl;
+	}
+	public void setFielFtpUrl(List<String> fielFtpUrl) {
+		this.fielFtpUrl = fielFtpUrl;
+	}
 }

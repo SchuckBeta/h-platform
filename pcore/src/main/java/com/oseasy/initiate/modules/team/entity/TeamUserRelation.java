@@ -18,16 +18,16 @@ public class TeamUserRelation extends DataEntity<TeamUserRelation> {
 	private String userType;		// 成员类型（1学生2导师）
 	private User user;		// user_id
 	private String teamId;		// team_id
-	private String state;  //加入状态(0已加入，1申请加入，2负责人发邀请,3不同意，4忽略）
+	private String state;  //加入状态(0已加入，1申请加入，2负责人发邀请,3不同意，4忽略,5加入失败）
     
 	private SysStudentExpansion student;  //addBy zhangzheng
 	private SysTeacherExpansion teacher;  //addBy zhangzheng
     private Integer UserCount;//判断用户是否存在
     private boolean isSelf;
-    
-    
-    
-    
+
+	private int weightVal;   //学分配比
+	private int weightTotal;  //总配比
+
 
     public boolean getIsSelf() {
 		return isSelf;
@@ -101,5 +101,21 @@ public class TeamUserRelation extends DataEntity<TeamUserRelation> {
 
 	public void setTeamId(String teamId) {
 		this.teamId = teamId;
+	}
+
+	public int getWeightVal() {
+		return weightVal;
+	}
+
+	public void setWeightVal(int weightVal) {
+		this.weightVal = weightVal;
+	}
+
+	public int getWeightTotal() {
+		return weightTotal;
+	}
+
+	public void setWeightTotal(int weightTotal) {
+		this.weightTotal = weightTotal;
 	}
 }

@@ -9,12 +9,9 @@
 
 package com.oseasy.initiate.modules.actyw.tool.process.cmd.impl;
 
-import com.oseasy.initiate.common.utils.IdGen;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
 import com.oseasy.initiate.modules.actyw.tool.process.ActYwResult;
-import com.oseasy.initiate.modules.actyw.tool.process.ActYwTool;
 import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwCommand;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.RtSvl;
 
 /**
  * 业务流程根基本属性类.
@@ -27,6 +24,6 @@ import com.oseasy.initiate.modules.actyw.tool.process.vo.RtSvl;
 public class ActYwCgenCore implements ActYwCommand<ActYwGroup>{
   @Override
   public ActYwResult execute(ActYwGroup tpl) {
-    return ActYwTool.initRtMin(new ActYwResult(), RtSvl.RtModelVal.M_PREFIX + IdGen.uuid(), tpl.getKeyss(), tpl.getName(), tpl.getAuthor(), tpl.getVersion());
+    return new ActYwResult();
   }
 }

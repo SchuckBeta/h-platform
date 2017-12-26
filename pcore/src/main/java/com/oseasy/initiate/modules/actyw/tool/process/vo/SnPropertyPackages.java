@@ -12,7 +12,7 @@ package com.oseasy.initiate.modules.actyw.tool.process.vo;
 import java.util.List;
 
 /**
- * 流程属性包.
+ * 自定义流程包.
  *
  * @author chenhao
  * @date 2017年6月2日 上午8:55:17

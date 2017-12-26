@@ -11,29 +11,34 @@ import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
+import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SerialUtils;
 import com.oseasy.initiate.common.utils.SpringContextHolder;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
+import com.oseasy.initiate.modules.interactive.dao.SysLikesDao;
+import com.oseasy.initiate.modules.interactive.entity.SysLikes;
 import com.oseasy.initiate.modules.oa.dao.OaNotifyDao;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
 import com.oseasy.initiate.modules.project.dao.ProjectAnnounceDao;
 import com.oseasy.initiate.modules.project.entity.ProjectAnnounce;
 import com.oseasy.initiate.modules.sys.dao.AreaDao;
+import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
 import com.oseasy.initiate.modules.sys.dao.MenuDao;
 import com.oseasy.initiate.modules.sys.dao.OfficeDao;
 import com.oseasy.initiate.modules.sys.dao.RoleDao;
+import com.oseasy.initiate.modules.sys.dao.StudentExpansionDao;
 import com.oseasy.initiate.modules.sys.dao.UserDao;
 import com.oseasy.initiate.modules.sys.entity.Area;
+import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
 import com.oseasy.initiate.modules.sys.entity.Menu;
 import com.oseasy.initiate.modules.sys.entity.Office;
 import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.SysNo;
+import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.security.SystemAuthorizingRealm.Principal;
-import com.oseasy.initiate.modules.sys.service.SysNoService;
 
 /**
  * 用户工具类
@@ -41,15 +46,18 @@ import com.oseasy.initiate.modules.sys.service.SysNoService;
 
  */
 public class UserUtils {
-
+	private static AuthorizeService authorizeService = SpringContextHolder.getBean(AuthorizeService.class);
 	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
+
+	private static StudentExpansionDao studentExpansionDao = SpringContextHolder.getBean(StudentExpansionDao.class);
+	private static BackTeacherExpansionDao backTeacherExpansionDao = SpringContextHolder.getBean(BackTeacherExpansionDao.class);
 	private static RoleDao roleDao = SpringContextHolder.getBean(RoleDao.class);
 	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
 	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
 	private static ProjectAnnounceDao projectAnnounceDao = SpringContextHolder.getBean(ProjectAnnounceDao.class);
+	private static SysLikesDao sysLikesDao = SpringContextHolder.getBean(SysLikesDao.class);
 	private static OaNotifyDao oaNotifyDao = SpringContextHolder.getBean(OaNotifyDao.class);
-	private static SysNoService sysNoService = SpringContextHolder.getBean(SysNoService.class);
 
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
@@ -66,6 +74,160 @@ public class UserUtils {
 	public static final String CACHE_OANOTIFY_LIST = "oaNotifyList";
 	public static final String CACHE_OFFICE = "office";
 
+	//返回true 说明未完善
+	public static boolean checkInfoPerfect(User user){
+		if(user==null||StringUtil.isEmpty(user.getId())){
+			return false;
+		}
+		if("1".equals(user.getUserType())){//学生
+			StudentExpansion stu=UserUtils.getStudentByUserId(user.getId());
+			if(StringUtil.isEmpty(user.getLoginName())){
+				return true;
+			}
+			if(StringUtil.isEmpty(user.getSex())){
+				return true;
+			}
+			if(StringUtil.isEmpty(user.getName())){
+				return true;
+			}
+			if(StringUtil.isEmpty(user.getIdType())){
+				return true;
+			}
+			if(StringUtil.isEmpty(user.getIdNumber())){
+				return true;
+			}
+			if(StringUtil.isEmpty(user.getMobile())){
+				return true;
+			}
+			if(StringUtil.isEmpty(user.getEmail())){
+				return true;
+			}
+			if(user.getOffice()==null||StringUtil.isEmpty(user.getOffice().getId())){
+				return true;
+			}
+			if(StringUtil.isEmpty(stu.getCurrState())){
+				return true;
+			}
+			if("1".equals(stu.getCurrState())){
+				if(StringUtil.isEmpty(stu.getInstudy())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getNo())){
+					return true;
+				}
+			}
+			if("2".equals(stu.getCurrState())){
+				if(StringUtil.isEmpty(user.getEducation())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getDegree())){
+					return true;
+				}
+				if(stu.getGraduation()==null){
+					return true;
+				}
+			}
+			if("3".equals(stu.getCurrState())){
+				if(stu.getTemporaryDate()==null){
+					return true;
+				}
+			}
+			if(stu.getEnterdate()==null){
+				return true;
+			}
+		}
+		if("2".equals(user.getUserType())){//导师
+			BackTeacherExpansion bt=UserUtils.getTeacherByUserId(user.getId());
+			if(!"2".equals(bt.getTeachertype())){//不是企业导师
+				if(StringUtil.isEmpty(user.getLoginName())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getSex())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getNo())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getName())){
+					return true;
+				}
+				if(StringUtil.isEmpty(bt.getTeachertype())){
+					return true;
+				}
+				if(StringUtil.isEmpty(bt.getServiceIntention())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getIdType())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getIdNumber())){
+					return true;
+				}
+				if(StringUtil.isEmpty(bt.getEducationType())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getEducation())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getEmail())){
+					return true;
+				}
+				if(StringUtil.isEmpty(user.getMobile())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public static StudentExpansion getStudentByUserId(String uid){
+		return studentExpansionDao.getByUserId(uid);
+	}
+	public static BackTeacherExpansion getTeacherByUserId(String uid){
+		return backTeacherExpansionDao.getByUserId(uid);
+	}
+	/**根据编号判断授权信息
+	 * @param num MenuPlusEnum 枚举值序号从0开始
+	 * @return
+	 */
+	public static boolean checkMenuByNum(Integer num){
+		return authorizeService.checkMenuByNum(num);
+	}
+	public static boolean checkMenu(String id){
+		return authorizeService.checkMenu(id);
+	}
+	public static boolean checkChildMenu(String id){
+		return authorizeService.checkChildMenu(id);
+	}
+	public static boolean checkCategory(String id){
+		return authorizeService.checkCategory(id);
+	}
+	public static String hiddenMobile(String mobile){
+		if(StringUtil.isEmpty(mobile)){
+			return mobile;
+		}
+		return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");
+	}
+	/**检查当前用户对foreignId是否点过赞
+	 * @param foreignId
+	 * @return
+	 */
+	public static boolean checkIsLikeForUserInfo(String foreignId){
+		User user=UserUtils.getUser();
+		if(StringUtil.isEmpty(user.getId())){
+			return true;
+		}
+		if(user.getId().equals(foreignId)){
+			return true;
+		}
+		SysLikes sc=new SysLikes();
+		sc.setUserId(user.getId());
+		sc.setForeignId(foreignId);
+		if(sysLikesDao.getExistsLike(sc)>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	/**
 	 * 根据ID获取用户
 	 * @param id
@@ -107,7 +269,7 @@ public class UserUtils {
 	public static User getByLoginNameOrNo(String loginNameOrNo) {
 		User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginNameOrNo);
 		if (user == null) {
-			user = userDao.getByLoginNameOrNo(loginNameOrNo);
+			user = userDao.getByLoginNameOrNo(loginNameOrNo,null);
 			if (user == null) {
 				return null;
 			}
@@ -119,7 +281,7 @@ public class UserUtils {
 
 
 	public static boolean isExistNo(String no) {
-		User	user = userDao.getByLoginNameOrNo(no);
+		User	user = userDao.getByLoginNameOrNo(no,null);
 		if (user == null) {
 			return false;
 		}
@@ -336,7 +498,6 @@ public class UserUtils {
 		@SuppressWarnings("unchecked")
 		List<Office> officeList = (List<Office>)getCache("officeListFront");
 		if (officeList == null) {
-			User user = getUser();
 			/*if (user.isAdmin()) {*/
 				officeList = officeDao.findAllList(new Office());
 			/*}else{
@@ -464,66 +625,11 @@ public class UserUtils {
 		return oaNotifyList;
 	}
 
-
-	/******************************************************************************
-	 * 获取全局序号最大值
-	 * @param officeId
-	 * @return
-	 */
-	public static SysNo getMaxNo() {
-		return sysNoService.getMaxNo();
-	}
-
 	/**
-	 * 获取机构序号最大值
-	 * @param officeId
-	 * @return
+	 * 跳转登录页面.
+	 * @return String
 	 */
-	public static SysNo getMaxNoByOffice(String officeId) {
-		return sysNoService.getMaxNo(officeId);
+	public static String toLogin() {
+	  return "redirect:" + Global.getFrontPath() + "/toLogin";
 	}
-
-	/**
-	* @author chenhao
-	* @date 2016年12月2日 上午11:45:47
-	* @Description [[_编号标识定义_]] SNOKey类
-	*/
-	public static class SNOKey{
-		public static final String SNO_PREFIX = "OS";
-		public static final String SNO_OFFICE = SNO_PREFIX+"OFF";
-		public static final String SNO_ORDER = SNO_PREFIX+"ORD";
-		public static final String SNO_SITE = SNO_PREFIX+"SITE";//还款
-
-	}
-
-   /**
-	* @author chenhao
-	* @date 2016年12月2日 上午11:48:15
-	* @Description [[_编号生成规则定义_]] SNOGener类
-	*/
-	public static class SNOGener{
-		public static String getOrderSno() {
-			//TODO
-			return null;
-		}
-
-		public static String getOfficeSno() {
-			//TODO
-			return null;
-		}
-
-		public static String getSiteSno(String officeId) {
-			SysNo sysNo = getMaxNoByOffice(officeId);
-			sysNo.getOffice();
-//			StringBuffer siteNo = new StringBuffer();
-//			siteNo = StringUtil.formatStr("#####|#######|######", sysNo.getOffice())+ StringUtil.formatStr("#####|#######|######", sysNo.getSiteNo());
-			return SerialUtils.getOrderNo(SNOKey.SNO_SITE);
-		}
-	}
-
-
-//	public static String formatStr(String format, Office office) {
-//		String disStr = "";
-//		return "";
-//	}
 }

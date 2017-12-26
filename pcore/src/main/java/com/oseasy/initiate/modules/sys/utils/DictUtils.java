@@ -3,8 +3,10 @@
  */
 package com.oseasy.initiate.modules.sys.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,6 +15,7 @@ import com.google.common.collect.Maps;
 import com.oseasy.initiate.common.mapper.JsonMapper;
 import com.oseasy.initiate.common.utils.CacheUtils;
 import com.oseasy.initiate.common.utils.SpringContextHolder;
+import com.oseasy.initiate.modules.sco.service.ScoAffirmConfService;
 import com.oseasy.initiate.modules.sys.dao.DictDao;
 import com.oseasy.initiate.modules.sys.entity.Dict;
 
@@ -22,11 +25,30 @@ import com.oseasy.initiate.modules.sys.entity.Dict;
 
  */
 public class DictUtils {
-
+	private static ScoAffirmConfService scoAffirmConfService = SpringContextHolder.getBean(ScoAffirmConfService.class);
 	private static DictDao dictDao = SpringContextHolder.getBean(DictDao.class);
-
+	
 	public static final String CACHE_DICT_MAP = "dictMap";
-
+	public static List<Dict> getPublishDictList(){
+		List<Dict> l=new ArrayList<Dict>();
+		Set<String> pset=scoAffirmConfService.getTypeSetData("1,");
+		Set<String> gset=scoAffirmConfService.getTypeSetData("7,");
+		if(pset!=null&&pset.size()>0){
+			List<Dict> l2=scoAffirmConfService.getDictForScoAffirm(pset,"project_style");
+			for(Dict d:l2){
+				d.setValue("1-"+d.getValue());
+				l.add(d);
+			}
+		}
+		if(gset!=null&&gset.size()>0){
+			List<Dict> l2=scoAffirmConfService.getDictForScoAffirm(gset,"competition_type");
+			for(Dict d:l2){
+				d.setValue("7-"+d.getValue());
+				l.add(d);
+			}
+		}
+		return l;
+	}
 	public static String getDictLabelByBoolean(Boolean value, String type, String defaultValue) {
 		if (StringUtils.isNotBlank(type)) {
 			for (Dict dict : getDictList(type)) {

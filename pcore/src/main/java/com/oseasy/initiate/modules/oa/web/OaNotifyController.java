@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oseasy.initiate.modules.actyw.entity.ActYw;
+import com.oseasy.initiate.modules.actyw.service.ActYwService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.persistence.Page;
+import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
@@ -52,6 +55,9 @@ public class OaNotifyController extends BaseController {
 	TeamUserRelationService  teamUserRelationService;
 	@Autowired
 	private ProjectAnnounceService projectAnnounceService;
+	@Autowired
+	ActYwService actYwService;
+
 	@ModelAttribute
 	public OaNotify get(@RequestParam(required=false) String id) {
 		OaNotify entity = null;
@@ -83,7 +89,7 @@ public class OaNotifyController extends BaseController {
 	@RequiresPermissions("oa:oaNotify:view")
 	@RequestMapping(value = {"broadcastList"})
 	public String broadcastList(OaNotify oaNotify, HttpServletRequest request, HttpServletResponse response, Model model) {
-		//oaNotify.setSendType("1");
+		oaNotify.setSendType("1");
 		Page<OaNotify> page = oaNotifyService.find(new Page<OaNotify>(request, response), oaNotify);
 		model.addAttribute("page", page);
 		return "modules/oa/oaNotifyListBroadcast";
@@ -192,7 +198,12 @@ public class OaNotifyController extends BaseController {
 				projectAnnounce.setProjectState("1");
 				projectAnnounceService.save(projectAnnounce);
 				return "redirect:" + adminPath + "/project/projectAnnounce?repage";
-			}else{
+			}else if("3".equals(protype)){  //actYw
+				ActYw actYw = actYwService.get(sId);
+				actYw.setStatus("1");
+				actYwService.save(actYw);
+				return "redirect:" + adminPath + "/actyw/actYw?repage";
+			} else{
 				return "redirect:" + adminPath + "/gcontest/gContestAnnounce?repage";
 			}
 		}
@@ -311,6 +322,9 @@ public class OaNotifyController extends BaseController {
 		if (StringUtil.isNotBlank(oaNotify.getId())) {
 			oaNotifyService.updateReadFlag(oaNotify);
 			oaNotify = oaNotifyService.getRecordList(oaNotify);
+			if (oaNotify!=null&&StringUtil.isNotEmpty(oaNotify.getContent())) {
+				oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
+			}
 			model.addAttribute("oaNotify", oaNotify);
 			/*if ("1".equals(oaNotify.getType())) {  //团建通知
 				//根据team 查询团建信息
@@ -333,11 +347,11 @@ public class OaNotifyController extends BaseController {
 				return "modules/oa/oaNotifyTeam";
 			}*/
 			if (oaNotify!=null) {
-			if ("1".equals(oaNotify.getSendType())) {
-				return "modules/oa/oaNotifyFormBroadcast";
-			}else if ("2".equals(oaNotify.getSendType())) {
-				return "modules/oa/oaNotifyFormAssign";
-			}
+				if ("1".equals(oaNotify.getSendType())) {
+					return "modules/oa/oaNotifyFormBroadcast";
+				}else if ("2".equals(oaNotify.getSendType())) {
+					return "modules/oa/oaNotifyFormAssign";
+				}
 			}else{
 			  return "redirect:" + adminPath + "/oa/oaNotify/self?repage";
 			}
@@ -414,12 +428,18 @@ public class OaNotifyController extends BaseController {
 	//通告添加
 	@RequestMapping(value = "allNoticeForm")
 	public String allNoticeForm(OaNotify oaNotify, Model model, RedirectAttributes redirectAttributes) {
-		//处理关键字
-		if(StringUtil.isNotEmpty(oaNotify.getId())){
-			if("4".equals(oaNotify.getType())||"8".equals(oaNotify.getType())||"9".equals(oaNotify.getType())){
-					oaNotify.setKeywords(oaNotifyKeywordService.findListByEsid(oaNotify.getId()));
-			}
-		}
+
+	    if(oaNotify != null){
+	  	  //处理关键字
+	  		if(StringUtil.isNotEmpty(oaNotify.getId())){
+	  			if("4".equals(oaNotify.getType())||"8".equals(oaNotify.getType())||"9".equals(oaNotify.getType())){
+	  					oaNotify.setKeywords(oaNotifyKeywordService.findListByEsid(oaNotify.getId()));
+	  			}
+	  		}
+	  		if (oaNotify!=null&&StringUtil.isNotEmpty(oaNotify.getContent())) {
+	  			oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
+	  		}
+	    }
 		return  "modules/oa/notice/allNoticeForm";
 	}
 	@RequestMapping(value = "saveAllNotice")

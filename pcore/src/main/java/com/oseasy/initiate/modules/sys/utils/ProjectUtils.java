@@ -7,6 +7,8 @@ import com.oseasy.initiate.modules.act.entity.Act;
 import com.oseasy.initiate.modules.act.service.ProjectActTaskService;
 import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.oseasy.initiate.modules.project.enums.ProjectStatusEnum;
+import com.oseasy.initiate.modules.project.vo.ProjectDeclareListVo;
 import com.oseasy.initiate.modules.proproject.dao.ProProjectDao;
 import com.oseasy.initiate.modules.proproject.entity.ProProject;
 import com.oseasy.initiate.modules.sys.entity.User;
@@ -24,6 +26,11 @@ public class ProjectUtils {
         return projectDeclare;
     }
 
+    public static ProjectDeclareListVo getProjectDeclareListVoById(String id) {
+        ProjectDeclareListVo projectDeclareListVo = projectDeclareDao.getProjectDeclareListVoById(id);
+        return projectDeclareListVo;
+    }
+
     public static String getProProjectName(String id) {
         ProProject proProject = proProjectDao.get(id);
         if (proProject!=null) {
@@ -32,6 +39,15 @@ public class ProjectUtils {
         return null;
     }
 
+    public static String getTeamNum(String name) {
+         String[] statusStr= name.split("/");
+         return String.valueOf(statusStr.length);
+     }
+
+    public static String getAuditStatus(String status) {
+        String statusStr= ProjectStatusEnum.getNameByValue(status);
+        return statusStr;
+    }
 
     //根据projectId 获得该项目的状态
     public static String getStatus(String id) {
@@ -43,7 +59,7 @@ public class ProjectUtils {
                 statusStr="立项不合格";
             }
             if (StringUtil.equals("4",projectDeclare.getFinalResult())) {
-                statusStr="中期不合格";
+                statusStr="项目终止";
             }
         }else if (StringUtil.equals("9",status)) {
             if (StringUtil.equals("5",projectDeclare.getFinalResult())) {

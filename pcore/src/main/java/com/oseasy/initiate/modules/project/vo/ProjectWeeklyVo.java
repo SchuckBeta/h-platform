@@ -1,8 +1,9 @@
 package com.oseasy.initiate.modules.project.vo;
 
 import java.util.List;
-import java.util.Map;
 
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
 import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
 
 /**
@@ -10,13 +11,20 @@ import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
  * @author 9527
  * @version 2017-03-11
  */
-public class ProjectWeeklyVo  {
+public class ProjectWeeklyVo {
 	private ProjectWeekly projectWeekly;
 	private ProjectWeekly lastpw;
-	private List<Map<String,String>> fileInfo;
-	
-	
+	private List<SysAttachment> fileInfo;
+	private AttachMentEntity attachMentEntity;
 
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
+	}
 	public ProjectWeekly getProjectWeekly() {
 		return projectWeekly;
 	}
@@ -33,11 +41,11 @@ public class ProjectWeeklyVo  {
 		this.lastpw = lastpw;
 	}
 
-	public List<Map<String, String>> getFileInfo() {
+	public List<SysAttachment> getFileInfo() {
 		return fileInfo;
 	}
 
-	public void setFileInfo(List<Map<String, String>> fileInfo) {
+	public void setFileInfo(List<SysAttachment> fileInfo) {
 		this.fileInfo = fileInfo;
 	}
 

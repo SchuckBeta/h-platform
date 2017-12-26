@@ -1,0 +1,191 @@
+@charset "UTF-8";
+
+.content{
+	width:960px;
+	overflow: hidden;
+	margin: 43px auto;
+}
+
+.content li{
+	float: left;
+	width:220px;
+	max-height:315px;
+	background:#f8f8f8;
+	border-bottom:1px solid #e5e5e5;
+	margin: 43px 10px;
+}
+
+.content li .up{
+	width:100%;
+	height:220px;
+	overflow: hidden;
+	position: relative;
+}
+
+.content li .up img{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	transform: scale(1,1);
+	-webkit-transform: scale(1,1);
+	-moz-transform: scale(1,1);
+	-ms-transform: scale(1,1);
+	-o-transform: scale(1,1);
+	transition: all 0.3s ease-in;
+	-webkit-transition: all 0.3s ease-in;
+	-moz-transition: all 0.3s ease-in;
+	-ms-transition: all 0.3s ease-in;
+	-o-transition: all 0.3s ease-in;
+}
+
+.content li .up span{
+	display: block;
+	width: 100%;
+	height:42px;
+	text-align: center;
+	line-height:42px;
+	background: rgba(34,34,34,0.75);
+	position:absolute;
+	left:0px;
+	top:158px;
+	color: white;
+	font-size: 24px;
+}
+
+.content li:hover{
+	border-bottom:1px solid #fd7752;
+}
+
+.content li:hover .up span{
+	background: rgba(233,67,45,0.75);
+}
+
+.content li:hover .up img{
+	transform: scale(1.2,1.2);
+	-webkit-transform: scale(1.2,1.2);
+	-moz-transform: scale(1.2,1.2);
+	-ms-transform: scale(1.2,1.2);
+	-o-transform: scale(1.2,1.2);
+	transition: all 0.3s ease-in;
+	-webkit-transition: all 0.3s ease-in;
+	-moz-transition: all 0.3s ease-in;
+	-ms-transition: all 0.3s ease-in;
+	-o-transition: all 0.3s ease-in;
+}
+
+.content li p{
+	width: 100%;
+	height: 90px;
+	overflow: hidden;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	padding: 10px;
+	font-size: 14px;
+	color: #505050;
+	line-height: 18px;
+}
+
+.sys-menu-container{
+	width: 1090px;
+}
+
+.sys-menu-container .sys-menu-row{
+	margin-left: -70px;
+	margin-top: 70px;
+}
+
+.sys-menu-container .sys-menu-row .span3{
+	margin-left: 70px;
+}
+
+.sys-menu-row .menu-item{
+	position: relative;
+	width: 220px;
+	margin: 0 auto 60px;
+	background-color:#f8f8f8;
+	border-bottom:1px solid #e5e5e5;
+}
+.sys-menu-row .menu-item>a{
+	display: block;
+	height: 220px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.sys-menu-row .menu-item .name{
+	position: absolute;
+	left:0;
+	top:158px;
+	right: 0;
+	padding: 0 8px;
+	line-height: 1.8;
+	display: block;
+	color: white;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 20px;
+	background: rgba(34,34,34,0.75);
+}
+
+.sys-menu-row .menu-item .menu-pic{
+	transform: scale(1,1);
+	transform-origin: 50% 50%;
+	-webkit-transform-origin: 50% 50%;
+	-webkit-transform: scale(1,1);
+	-moz-transform: scale(1,1);
+	-o-transform: scale(1,1);
+	-webkit-transition: transform 0.3s ease-in;
+	-moz-transition: transform 0.3s ease-in;
+	-o-transition: transform 0.3s ease-in;
+	transition: transform 0.3s ease-in;
+}
+.sys-menu-row .menu-item .desc{
+	margin: 10px;
+	height: 80px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #505050;
+	overflow: hidden;
+}
+.sys-menu-row .menu-item:hover{
+	border-bottom: 1px solid #fd7752;
+}
+
+.sys-menu-row .menu-item:hover .name{
+	background: rgba(233,67,45,0.75);
+}
+
+.sys-menu-row .menu-item:hover .menu-pic{
+	transform: scale(1.2,1.2);
+	-webkit-transform: scale(1.2,1.2);
+	-moz-transform: scale(1.2,1.2);
+	-o-transform: scale(1.2,1.2);
+}
+
+.sys-menu-row .menu-item .layer-jurisdiction{
+	display: none;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	padding: 0 8px;
+	line-height: 320px;
+	text-align: center;
+	background-color: rgba(0,0,0,.5);
+	z-index: 100;
+}
+
+.sys-menu-row .menu-item .layer-jurisdiction .text{
+	font-size: 20px;
+	color: #fff;
+}
+
+.sys-menu-row .menu-item-qx:hover .layer-jurisdiction{
+	display: block;
+}
+.sys-menu-row .menu-item-qx:hover .name{
+	display: none;
+}

@@ -9,6 +9,7 @@ import com.oseasy.initiate.modules.analysis.vo.EchartVo;
 import com.oseasy.initiate.modules.analysis.vo.FakeBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,8 +29,9 @@ public class GlobalAnalysisController extends BaseController {
 	@Autowired
 	private GlobalAnalysisService globalAnalysisService;
 	@RequestMapping(value = "toPage")
-	public String toPage(HttpServletRequest request, HttpServletResponse response) {
-
+	public String toPage(HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<String> years =globalAnalysisService.getYears();
+		model.addAttribute("years",years);
 		return "modules/analysis/globalAnalysis";
 //		return "modules/analysis/globalAnalysis2";
 	}
@@ -49,7 +51,7 @@ public class GlobalAnalysisController extends BaseController {
 	public List<EchartVo> getContestTypeData(String year) {
 		List<EchartVo> list=new ArrayList<>();
 		//设置 "创青春","挑战杯","蓝桥杯","i创杯","其他" 的数据
-		int number;
+		/*int number;
 		if (StringUtil.equals("2014",year)) {
 			list= FakeBase.getContestList2014();
 			number=5;
@@ -65,17 +67,18 @@ public class GlobalAnalysisController extends BaseController {
 		}else{
 			list= FakeBase.getContestListAll();
 			number=29;
-		}
+		}*/
+		list=globalAnalysisService.findAllGcontestType(year);
         //查找互联网+大赛数据
 //		int number=globalAnalysisService.getContestNumber(year);
-		EchartVo vo=new EchartVo("互联网+大赛",number);
-		list.add(vo);
+		//EchartVo vo=new EchartVo("互联网+大赛",number);
+		//list.add(vo);
 
 		return list;
 	}
 
 	/**
-	 * 获得 双创项目申报 数据
+	 * 获得 双创项目类别
 	 * @param year
 	 * @return
      */
@@ -84,7 +87,7 @@ public class GlobalAnalysisController extends BaseController {
 	public List<EchartVo> getProjectTypeData(String year) {
 		List<EchartVo> list=new ArrayList<>();
 		//设置 "创业项目","创新项目" 的数据
-		if (StringUtil.equals("2014",year)) {
+		/*if (StringUtil.equals("2014",year)) {
 			list= FakeBase.getProjectList2014();
 		}else if (StringUtil.equals("2015",year)) {
 			list= FakeBase.getProjectList2015();
@@ -94,12 +97,9 @@ public class GlobalAnalysisController extends BaseController {
 			list= FakeBase.getProjectList2017();
 		}else{
 			list= FakeBase.getProjectListAll();
-		}
-
-		int gcNumber=globalAnalysisService.getProjectNumber(year);
-		EchartVo vo=new EchartVo("国创项目",gcNumber);
-		list.add(vo);
-
+		}*/
+		list=globalAnalysisService.findAllProjectType(year);
+		//int gcNumber=globalAnalysisService.getProjectNumber(year);
 		return list;
 	}
 
@@ -112,7 +112,9 @@ public class GlobalAnalysisController extends BaseController {
 	@ResponseBody
 	public List<EchartVo> getProjectStudentData(String year) {
 		List<EchartVo> list=new ArrayList<>();
-		int num1;  //在校学生数
+		list=globalAnalysisService.findAllGcontestStuCurrState(year);
+
+		/*int num1;  //在校学生数
 		int num2; //毕业学生数
 		int num3; //休学学生数
 		if (StringUtil.equals("2014",year)) {
@@ -142,7 +144,7 @@ public class GlobalAnalysisController extends BaseController {
 		EchartVo vo3=new EchartVo("休学学生",num3);
 		list.add(vo1);
 		list.add(vo2);
-		list.add(vo3);
+		list.add(vo3);*/
 
 		return list;
 	}
@@ -156,18 +158,17 @@ public class GlobalAnalysisController extends BaseController {
 	@ResponseBody
 	public List<BarVo> getStuDtn (String year) {
 		List<BarVo> list=new ArrayList<>();
-		List<String> categeries=new ArrayList<>();
+		list=globalAnalysisService.findAllProjectStuCurrState(year);
+		/*List<String> categeries=new ArrayList<>();
 		categeries.add("国创项目");
 		categeries.add("创业项目");
 		categeries.add("创新项目");
 		BarVo bar1=new BarVo("在校学生");  //统计在校学生的数据  依次为 国创项目数、创业项目数、创新项目数
 		BarVo bar2=new BarVo("毕业学生");
 		BarVo bar3=new BarVo("休学学生");
-
 		int[] gcNums=new int[3];  // 国创项目  在校学生、毕业学生、休学学生数
 		int[] cyNums=new int[3];  // 创业项目  在校学生、毕业学生、休学学生数
 		int[] cxNums=new int[3]; // 创新项目  在校学生、毕业学生、休学学生数
-
 		if (StringUtil.equals("2014",year)) {
 			gcNums[0]=300; gcNums[1]=10; gcNums[2]=8;
 			cyNums[0]=100; cyNums[1]=5; cyNums[2]=2;
@@ -193,21 +194,17 @@ public class GlobalAnalysisController extends BaseController {
 		bar1.addValue(cyNums[0]);
 		bar1.addValue(cxNums[0]);
 		bar1.setCategories(categeries);
-
-
 		bar2.addValue(gcNums[1]);
 		bar2.addValue(cyNums[1]);
 		bar2.addValue(cxNums[1]);
 		bar2.setCategories(categeries);
-
 		bar3.addValue(gcNums[2]);
 		bar3.addValue(cyNums[2]);
 		bar3.addValue(cxNums[2]);
 		bar3.setCategories(categeries);
-
 		list.add(bar1);
 		list.add(bar2);
-		list.add(bar3);
+		list.add(bar3);*/
 
 		return list;
 	}
@@ -221,7 +218,7 @@ public class GlobalAnalysisController extends BaseController {
 	@ResponseBody
 	public List<EchartVo> getProjectTerData(String year) {
 		List<EchartVo> list=new ArrayList<>();
-		int inNumber; //在校园导师数
+		/*int inNumber; //在校园导师数
 		int outNumber; //企业导师数
 		if (StringUtil.equals("2014",year)) {
 			inNumber=10;
@@ -239,12 +236,11 @@ public class GlobalAnalysisController extends BaseController {
 			inNumber=100;
 			outNumber=10;
 		}
-
 		EchartVo vo1=new EchartVo("校园导师",inNumber);
 		EchartVo vo2=new EchartVo("企业导师",outNumber);
 		list.add(vo1);
-		list.add(vo2);
-
+		list.add(vo2);*/
+		list=globalAnalysisService.findAllTeacherByType(year);
 		return list;
 	}
 
@@ -259,6 +255,9 @@ public class GlobalAnalysisController extends BaseController {
 	@ResponseBody
 	public List<BarVo> getTeacherDtn (String year) {
 		List<BarVo> list=new ArrayList<>();
+
+		list=globalAnalysisService.findTeacherDtn(year);
+	/*
 		List<String> categeries;
 		BarVo bar1=new BarVo("指导频率");
 		BarVo bar2=new BarVo("学生点赞数");
@@ -365,7 +364,7 @@ public class GlobalAnalysisController extends BaseController {
 
 		list.add(bar1);
 		list.add(bar2);
-
+*/
 		return list;
 	}
 
@@ -379,7 +378,10 @@ public class GlobalAnalysisController extends BaseController {
 	@ResponseBody
 	public List<BarVo> getDomainDtn (String year) {
 		List<BarVo> list=new ArrayList<>();
-		List<String> categeries;
+
+		list=globalAnalysisService.findHotTechnology(year);
+
+		/*List<String> categeries;
 		BarVo bar1=new BarVo("国创项目数");
 		BarVo bar2=new BarVo("创新项目数");
 		BarVo bar3=new BarVo("创业项目数");
@@ -474,7 +476,6 @@ public class GlobalAnalysisController extends BaseController {
 			bar3.addValue(60);
 			bar3.addValue(30);
 			bar3.setCategories(categeries);
-
 		}else if (StringUtil.equals("2016",year)) {
 			categeries=new ArrayList<>();
 			categeries.add("电子与信息");
@@ -565,7 +566,6 @@ public class GlobalAnalysisController extends BaseController {
 			bar3.addValue(70);
 			bar3.addValue(40);
 			bar3.setCategories(categeries);
-
 		}else{
 			categeries=new ArrayList<>();
 			categeries.add("电子与信息");
@@ -612,17 +612,9 @@ public class GlobalAnalysisController extends BaseController {
 			bar3.addValue(80);
 			bar3.setCategories(categeries);
 		}
-
 		list.add(bar1);
 		list.add(bar2);
-		list.add(bar3);
-
+		list.add(bar3);*/
 		return list;
 	}
-
-
-
-
-
-
 }

@@ -9,6 +9,8 @@
 
 package com.oseasy.initiate.modules.actyw.tool.process.cmd;
 
+import com.oseasy.initiate.modules.actyw.tool.process.cmd.vo.ActYwPgroot;
+
 /**
  * 命令执行前后检查接口.
  * @author chenhao
@@ -24,6 +26,14 @@ public interface ActYwCommandCheck<T extends ActYwPtpl> {
    * @return Boolean
    */
   public abstract ActYwRstatus checkBeforeExecute(T tpl);
+
+  /**
+   * 流程节点初始化参数.
+   * @author chenhao
+   * @param tpl 模板类
+   * @return Boolean
+   */
+  public abstract ActYwRstatus initParams(T tpl);
 
   /**
    * 流程节点初始化参数完整性.

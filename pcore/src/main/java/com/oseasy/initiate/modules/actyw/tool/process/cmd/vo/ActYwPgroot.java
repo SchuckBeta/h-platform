@@ -19,14 +19,14 @@ import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
 
 /**
  * 业务流程参数-业务根节点.
- * 1、根据流程组判断是否需要生成基本节点（开始和结束）
+ * 1、根据自定义流程判断是否需要生成基本节点（开始和结束）
  * 2、
  * @author chenhao
  * @date 2017年6月18日 下午2:25:33
  *
  */
-public class ActYwPgroot extends ActYwRstatus implements ActYwPtpl{
-  private ActYwGroup group; //流程组
+public class ActYwPgroot extends ActYwRstatus<ActYwGnode> implements ActYwPtpl{
+  private ActYwGroup group; //自定义流程
   private ActYwGnode gnode; //当前新增的业务节点(node 为 StenType.ST_TASK_USER)
   private ActYwGnode startGnode; //流程前一节点
   private ActYwGnode endGnode; //流程后一节点
@@ -42,6 +42,11 @@ public class ActYwPgroot extends ActYwRstatus implements ActYwPtpl{
   public ActYwPgroot(ActYwGroup group) {
     super();
     this.group = group;
+  }
+
+  public ActYwPgroot(ActYwGnode gnode) {
+    super();
+    this.gnode = gnode;
   }
 
   public ActYwPgroot(ActYwGroup group, ActYwGnode gnode, ActYwGnode startGnode, ActYwGnode endGnode,
@@ -136,6 +141,7 @@ public class ActYwPgroot extends ActYwRstatus implements ActYwPtpl{
     return new ActYwPgroot(actYwGnode.getGroup(), actYwGnode, actYwGnode.getPreGnode(), actYwGnode.getNextGnode(),
         actYwGnode.getPreFunGnode(), actYwGnode.getNextFunGnode(), startSflowGnode, endSflowGnode);
   }
+
   /**
    * 下一个业务节点为空时，初始化下一个节点为结束节点.
    * @author chenhao

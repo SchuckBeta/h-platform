@@ -1,14 +1,11 @@
 package com.oseasy.initiate.modules.gcontest.service;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.druid.util.StringUtils;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -20,14 +17,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oseasy.initiate.common.persistence.Page;
+import com.oseasy.initiate.common.service.CommonService;
 import com.oseasy.initiate.common.service.CrudService;
+import com.oseasy.initiate.common.utils.FloatUtils;
 import com.oseasy.initiate.common.utils.IdGen;
 import com.oseasy.initiate.common.utils.IdUtils;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.act.dao.ActDao;
 import com.oseasy.initiate.modules.act.entity.Act;
 import com.oseasy.initiate.modules.act.service.ActTaskService;
+import com.oseasy.initiate.modules.actyw.dao.ActYwDao;
+import com.oseasy.initiate.modules.actyw.entity.ActYw;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
+import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
+import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailInsService;
+import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
+import com.oseasy.initiate.modules.auditstandard.vo.AsdVo;
+import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
+import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
 import com.oseasy.initiate.modules.gcontest.dao.GContestDao;
 import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
 import com.oseasy.initiate.modules.gcontest.entity.GContest;
@@ -35,10 +47,26 @@ import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
 import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
 import com.oseasy.initiate.modules.gcontest.enums.AuditStatusEnum;
 import com.oseasy.initiate.modules.gcontest.enums.GContestStatusEnum;
+import com.oseasy.initiate.modules.gcontest.vo.GContestListVo;
+import com.oseasy.initiate.modules.gcontest.vo.GContestNodeVo;
+import com.oseasy.initiate.modules.oa.entity.OaNotify;
+import com.oseasy.initiate.modules.oa.service.OaNotifyService;
+import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
+import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
+import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionDao;
+import com.oseasy.initiate.modules.sco.dao.ScoAffirmDao;
+import com.oseasy.initiate.modules.sco.dao.ScoAllotRatioDao;
+import com.oseasy.initiate.modules.sco.dao.ScoScoreDao;
+import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
+import com.oseasy.initiate.modules.sco.entity.ScoScore;
+import com.oseasy.initiate.modules.sco.vo.ScoAffrimCriterionVo;
+import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.UserService;
 import com.oseasy.initiate.modules.sys.utils.DictUtils;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
+import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -76,13 +104,62 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 
 	@Autowired
 	private OaNotifyService oaNotifyService;
-
+	@Autowired
+	private ExcellentShowService excellentShowService;
+	
 	@Autowired
 	TaskService taskService;
 
 	@Autowired
 	ActDao actDao;
 
+	@Autowired
+	TeamUserRelationDao teamUserRelationDao;
+	@Autowired
+	TeamUserHistoryService teamUserHistoryService;
+	@Autowired
+	ScoAffirmDao scoAffirmDao;
+	@Autowired
+	ScoScoreDao scoScoreDao;
+	@Autowired
+	ScoAllotRatioDao scoAllotRatioDao;
+	@Autowired
+	ScoAffirmCriterionDao scoAffirmCriterionDao;
+	@Autowired
+	private AuditStandardDetailService auditStandardDetailService;
+	@Autowired
+	private AuditStandardDetailInsService auditStandardDetailInsService;
+  	@Autowired
+  	ActYwDao actYwDao;
+	@Autowired
+	ActYwGnodeService actYwGnodeService;
+	@Autowired
+	private CommonService commonService;
+	@Autowired
+	ProjectDeclareService projectDeclareService;
+	
+  	public void  getPersonNumForAsdIndexFromModel(AsdVo asdVo){
+		Map<String,Object> map=dao.getPersonNumForAsdIndexFromModel(asdVo);
+		Map<String,Long> map2=dao.getProjectNumForAsdIndexFromModel(asdVo);
+		if(map!=null){
+			asdVo.setInnovateNum(StringUtil.getString(map.get("st")));
+			asdVo.setTeacherNum(StringUtil.getString(map.get("te")));
+		}
+		if(map2!=null){
+			asdVo.setApplyNum(StringUtil.getString(map2.get("st")));
+		}
+	}
+	public void  getPersonNumForAsdIndex(AsdVo asdVo){
+		Map<String,Object> map=dao.getPersonNumForAsdIndex(asdVo.getDataYear()+"-01-01 00:00:00");
+		Map<String,Long> map2=dao.getProjectNumForAsdIndex(asdVo.getDataYear()+"-01-01 00:00:00");
+		if(map!=null){
+			asdVo.setInnovateNum(StringUtil.getString(map.get("st")));
+			asdVo.setTeacherNum(StringUtil.getString(map.get("te")));
+		}
+		if(map2!=null){
+			asdVo.setApplyNum(StringUtil.getString(map2.get("st")));
+		}
+	}
 	public GContest get(String id) {
 		return super.get(id);
 	}
@@ -94,7 +171,61 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 	public Page<GContest> findPage(Page<GContest> page, GContest gContest) {
 		return super.findPage(page, gContest);
 	}
+	 public Page<GContestListVo>  getMyProjectListPlus(Page<GContestListVo> page,GContestListVo vo) {
+			vo.setPage(page);
+			page.setList(dao.getMyGcontestListPlus(vo));
+			//处理组成员、导师名称
+			if (!page.getList().isEmpty()) {
+		        List<String> ids=new ArrayList<String>();
+		        for(GContestListVo v:page.getList()) {
+		          ids.add(v.getId());
+		        }
+		        List<Map<String,String>> ps=dao.getMyGcontestListPersonPlus(ids);
+		        Map<String,String> psm=new HashMap<String,String>();
+		        if (ps!=null&&ps.size()>0) {
+		          for(Map<String,String> map:ps) {
+		            psm.put(map.get("id")+map.get("team_user_type"), map.get("pname"));
+		          }
+		        }
+		        for(GContestListVo v:page.getList()) {
+		        	if(psm.size()>0){
+			        	v.setSnames(psm.get(v.getId()+"1"));
+			        	v.setTnames(psm.get(v.getId()+"2"));
+		        	}
+		        	if("-999".equals(v.getAuditCode())){
+		        		if(StringUtil.isEmpty(v.getProc_ins_id())){
+		        			v.setAuditState("未提交");
+		        		}else{
+		        			ActYwGnode actYwGnode=actTaskService.getNodeByProInsId(v.getProc_ins_id());
+		        			if(actYwGnode!=null){
 
+								if(v.getState()!=null && v.getState().equals("1")){
+									v.setAuditState(actYwGnode.getName()+"不通过");
+								}else {
+									v.setAuditState("待" + actYwGnode.getName());
+								}
+		        			}else{
+								//表明流程走到最后一步
+								String actywId=v.getActywId();
+								ActYw actYw=actYwDao.get(actywId);
+								if(actYw!=null){
+									String groupId=actYw.getGroupId();
+									ActYwGnode newactYwGnode=actYwGnodeService.getEndPreFun(groupId);
+									if(newactYwGnode!=null){
+										if(v.getGrade()!=null && v.getGrade().equals("0")){
+											v.setAuditState(newactYwGnode.getName()+"不通过");
+										}else {
+											v.setAuditState( newactYwGnode.getName()+"通过");
+										}
+									}
+								}
+							}
+		        		}
+		        	}
+		        }
+			}
+			return page;
+	 }
 	public Page<Map<String,String>> getMyGcontestList(Page<Map<String,String>> page,Map<String,Object> param) {
 		if (page.getPageNo()<=0) {
 			page.setPageNo(1);
@@ -334,6 +465,9 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		gContest.setUniversityId(user.getOffice().getId());
 		gContest.setAuditState("0");
 		super.save(gContest);
+		sysAttachmentService.saveByVo(gContest.getAttachMentEntity(),gContest.getId(), FileTypeEnum.S2, FileStepEnum.S300);
+		//保存团队的学分分配权重
+		commonService.disposeTeamUserHistoryOnSave(gContest.getTeamUserHistoryList(), gContest.getActywId(),gContest.getTeamId(),gContest.getId());
 	}
 
 	@Transactional(readOnly = false)
@@ -350,7 +484,6 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		gContest.setCompetitionNumber(IdUtils.getGContestNumberByDb());
 		gContest.setSubTime(new Date());
 		gContest.setUniversityId(user.getOffice().getId());
-		//super.save(gContest);
 		//启动大赛工作流
 		String roleName=actTaskService.getStartNextRoleName("gcontest");  //从工作流中查询 下一步的角色集合
 		List<String> roles=userService.getCollegeExperts(gContest.getDeclareId());
@@ -358,11 +491,8 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			Map<String,Object> vars=new HashMap<String,Object>();
 			vars=gContest.getVars();
 			vars.put(roleName+"s",roles);
-			//vars.put("projectName",gContest.getPName());
-			//vars.put("collegeName", UserUtils.getUser().getCompany().getName());
 			String key="gcontest";
 			String userId = UserUtils.getUser().getLoginName();
-			//vars.put("sumbitter",userId);
 			identityService.setAuthenticatedUserId(userId);
 			ProcessInstance procIns=runtimeService.startProcessInstanceByKey(key, "g_contest"+":"+gContest.getId(),vars);
 
@@ -375,6 +505,10 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			gContest.setProcInsId(act.getProcInsId());
 			gContest.setCurrentSystem("校赛");
 			super.save(gContest);
+			/*提交时处理TeamUserHistory信息*/
+			commonService.disposeTeamUserHistoryOnSubmit(gContest.getTeamUserHistoryList(), gContest.getActywId(),gContest.getTeamId(),gContest.getId());
+			/*提交时生成默认优秀展示*/
+			excellentShowService.saveExcellentShow(gContest.getIntroduction(), gContest.getTeamId(),ExcellentShow.Type_Gcontest,gContest.getId(),gContest.getActywId());
 			return 1;
 		}else{
 			return 0;
@@ -435,6 +569,8 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 
 	@Transactional(readOnly = false)
 	public void delete(GContest gContest) {
+		//更改完成后团队历史表中的状态
+		teamUserHistoryService.updateDelByProid(gContest.getId());
 		super.delete(gContest);
 	}
 
@@ -456,11 +592,34 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		}
 		pai.setSuggest(gContest.getComment());
 		gAuditInfoService.save(pai);
-		User apply_User=UserUtils.getUser();
+
+		List<String> scoreList= gContest.getScoreList();
+		//查找审核标准
+		List<ProjectStandardDetailVo> asList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+		if(asList!=null && asList.size()>0) {
+			String isScore = asList.get(0).getIsEescoreNodes();
+			String firstNode = GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_FIRST_ID);
+			if (isScore!=null && isScore.contains(firstNode)) {
+				if (asList != null && asList.size() > 0 && scoreList != null && scoreList.size() > 0) {
+					for (int i = 0; i < asList.size(); i++) {
+						AuditStandardDetailIns auditStandardDetailIns = new AuditStandardDetailIns();
+						auditStandardDetailIns.setCheckElement(asList.get(i).getCheckElement());
+						auditStandardDetailIns.setFid(gContest.getId());
+						auditStandardDetailIns.setCheckPoint(asList.get(i).getCheckPoint());
+						auditStandardDetailIns.setViewScore(asList.get(i).getViewScore());
+						auditStandardDetailIns.setScore(scoreList.get(i));
+						auditStandardDetailIns.setSort(asList.get(i).getSort());
+						auditStandardDetailIns.setAuditInfoId(pai.getId());
+						auditStandardDetailInsService.save(auditStandardDetailIns);
+					}
+				}
+			}
+		}
+
 		User rec_User=new User();
 		rec_User.setId(gContest.getDeclareId());
-		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学院专家审核",
-				"学院专家"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
+//		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学院专家审核",
+//				"学院专家"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
 
 		gContest=get(gContest.getId());
 		Map<String,Object> vars=new HashMap<String,Object>();
@@ -561,12 +720,40 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		User apply_User=UserUtils.getUser();
 		User rec_User=new User();
 		rec_User.setId(gContest.getDeclareId());
-		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学院秘书审核",
-				"学院秘书"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
+
+
+		List<String> scoreList= gContest.getScoreList();
+		//查找审核标准
+		List<ProjectStandardDetailVo> asList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+		if(asList!=null && asList.size()>0) {
+			String isScore = asList.get(0).getIsEescoreNodes();
+			String firstNode = GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_SECOND_ID);
+			if (isScore!=null && isScore.contains(firstNode)) {
+				if (asList != null && asList.size() > 0 && scoreList != null && scoreList.size() > 0) {
+					for (int i = 0; i < asList.size(); i++) {
+						AuditStandardDetailIns auditStandardDetailIns = new AuditStandardDetailIns();
+						auditStandardDetailIns.setCheckElement(asList.get(i).getCheckElement());
+						auditStandardDetailIns.setFid(gContest.getId());
+						auditStandardDetailIns.setCheckPoint(asList.get(i).getCheckPoint());
+						auditStandardDetailIns.setViewScore(asList.get(i).getViewScore());
+						auditStandardDetailIns.setScore(scoreList.get(i));
+						auditStandardDetailIns.setSort(asList.get(i).getSort());
+						auditStandardDetailIns.setAuditInfoId(pai.getId());
+						auditStandardDetailInsService.save(auditStandardDetailIns);
+					}
+				}
+			}
+		}
 
 		String taskId=actTaskService.getTaskidByProcInsId(gContest.getAct().getProcInsId());
 		Map<String,Object> vars=new HashMap<String,Object>();
 		vars=gContest.getVars();
+		ActYw actyw =actYwDao.get(gContest.getActywId());
+		String typeName="";
+		if(actyw.getProProject()!=null){
+			typeName=actyw.getProProject().getProjectName();
+		}
+
 		if (grade!=null) {
 			vars.put("grade",grade);
 			if (grade.equals("1")) {
@@ -577,14 +764,23 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				gContest.setAuditState("3");
 				vars.put("schoolExperts",schoolExperts);
 				taskService.complete(taskId, vars);
+
+				oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学院秘书审核",
+						typeName+" "+gContest.getpName()+"项目，学院审核合格", OaNotify.Type_Enum.TYPE14.getValue(),gContest.getId());
+
 			}else{
 				gContest.setCollegeResult(grade);
 				gContest.setCollegeSug(comment);
 				gContest.setAuditState("9");
+				teamUserHistoryService.updateFinishAsClose(gContest.getId());
+				oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学院秘书审核",
+						typeName+" "+gContest.getpName()+"项目，学院审核不合格", OaNotify.Type_Enum.TYPE14.getValue(),gContest.getId());
+
 			}
 		}else{
 			vars.put("grade","0");
 			gContest.setAuditState("9");
+			teamUserHistoryService.updateFinishAsClose(gContest.getId());
 		}
 
 		// 改变主表的审核状态
@@ -630,10 +826,12 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				gContest.setCollegeResult(grade);
 				gContest.setCollegeSug(comment);
 				gContest.setAuditState("9");
+				teamUserHistoryService.updateFinishAsClose(gContest.getId());
 			}
 		}else{
 			vars.put("grade","0");
 			gContest.setAuditState("9");
+			teamUserHistoryService.updateFinishAsClose(gContest.getId());
 		}
 
 		// 改变主表的审核状态
@@ -657,11 +855,33 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		String userId = UserUtils.getUser().getLoginName();
 		pai.setAuditId(userId);
 		gAuditInfoService.save(pai);
-		User apply_User=UserUtils.getUser();
+		//完成评分标准
+		List<String> scoreList= gContest.getScoreList();
+		//查找审核标准
+		List<ProjectStandardDetailVo> asList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+		if(asList!=null && asList.size()>0) {
+			String isScore = asList.get(0).getIsEescoreNodes();
+			String firstNode = GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_THREE_ID);
+			if (isScore!=null && isScore.contains(firstNode)) {
+				if (asList != null && asList.size() > 0 && scoreList != null && scoreList.size() > 0) {
+					for (int i = 0; i < asList.size(); i++) {
+						AuditStandardDetailIns auditStandardDetailIns = new AuditStandardDetailIns();
+						auditStandardDetailIns.setCheckElement(asList.get(i).getCheckElement());
+						auditStandardDetailIns.setFid(gContest.getId());
+						auditStandardDetailIns.setCheckPoint(asList.get(i).getCheckPoint());
+						auditStandardDetailIns.setViewScore(asList.get(i).getViewScore());
+						auditStandardDetailIns.setScore(scoreList.get(i));
+						auditStandardDetailIns.setSort(asList.get(i).getSort());
+						auditStandardDetailIns.setAuditInfoId(pai.getId());
+						auditStandardDetailInsService.save(auditStandardDetailIns);
+					}
+				}
+			}
+		}
+
 		User rec_User=new User();
 		rec_User.setId(gContest.getDeclareId());
-		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校专家审核",
-				"学校专家"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
+
 		gContest=get(gContest.getId());
 		Map<String,Object> vars=new HashMap<String,Object>();
 		String taskId=actTaskService.getTaskidByProcInsId(gContest.getAct().getProcInsId());
@@ -747,15 +967,44 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		pai.setAuditId(userId);
 		pai.setSuggest(comment);
 		gAuditInfoService.save(pai);
+
+		List<String> scoreList= gContest.getScoreList();
+		//查找审核标准
+		List<ProjectStandardDetailVo> asList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+		if(asList!=null && asList.size()>0) {
+			String isScore = asList.get(0).getIsEescoreNodes();
+			String firstNode = GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_FOUR_ID);
+			if (isScore!=null && isScore.contains(firstNode)) {
+				if (asList != null && asList.size() > 0 && scoreList != null && scoreList.size() > 0) {
+					for (int i = 0; i < asList.size(); i++) {
+						AuditStandardDetailIns auditStandardDetailIns = new AuditStandardDetailIns();
+						auditStandardDetailIns.setCheckElement(asList.get(i).getCheckElement());
+						auditStandardDetailIns.setFid(gContest.getId());
+						auditStandardDetailIns.setCheckPoint(asList.get(i).getCheckPoint());
+						auditStandardDetailIns.setViewScore(asList.get(i).getViewScore());
+						auditStandardDetailIns.setScore(scoreList.get(i));
+						auditStandardDetailIns.setSort(asList.get(i).getSort());
+						auditStandardDetailIns.setAuditInfoId(pai.getId());
+						auditStandardDetailInsService.save(auditStandardDetailIns);
+					}
+				}
+			}
+		}
+
 		User apply_User=UserUtils.getUser();
 		User rec_User=new User();
 		rec_User.setId(gContest.getDeclareId());
-		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
-				"学校管理员"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
+
+
 		Map<String,Object> vars=new HashMap<String,Object>();
 		vars=gContest.getVars();
 		vars.put("grade",grade);
 		String taskId=actTaskService.getTaskidByProcInsId(gContest.getAct().getProcInsId());
+		ActYw actyw =actYwDao.get(gContest.getActywId());
+		String typeName="";
+		if(actyw.getProProject()!=null){
+			typeName=actyw.getProProject().getProjectName();
+		}
 		if (grade!=null) {
 			if (grade.equals("1")) {
 				List<String> schoolSecs=userService.getSchoolSecs();
@@ -765,17 +1014,25 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				gContest.setSchoolSug(comment);
 				gContest.setAuditState("5");//网评审核完成
 				taskService.complete(taskId, vars);
+				oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
+					typeName+" "+gContest.getpName()+"项目，学校审核合格", OaNotify.Type_Enum.TYPE14.getValue(),gContest.getId());
+
 				actTaskService.claimByProcInsId(gContest.getProcInsId(),schoolSecs);
 			}else{
 				gContest.setSchoolResult(grade);
 				gContest.setSchoolSug(comment);
 				gContest.setAuditState("8");
+				teamUserHistoryService.updateFinishAsClose(gContest.getId());
+				oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
+												typeName+" "+gContest.getpName()+"项目，学校审核不合格", OaNotify.Type_Enum.TYPE14.getValue(),gContest.getId());
+
 				//taskService.complete(taskId, vars);
 			}
 		}else{
 			gContest.setSchoolResult(grade);
 			gContest.setSchoolSug(comment);
 			gContest.setAuditState("8");
+			teamUserHistoryService.updateFinishAsClose(gContest.getId());
 			//taskService.complete(taskId, vars);
 		}
 
@@ -819,12 +1076,14 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				gContest.setSchoolResult(grade);
 				gContest.setSchoolSug(comment);
 				gContest.setAuditState("8");
+				teamUserHistoryService.updateFinishAsClose(gContest.getId());
 				//taskService.complete(taskId, vars);
 			}
 		}else{
 			gContest.setSchoolResult(grade);
 			gContest.setSchoolSug(comment);
 			gContest.setAuditState("8");
+			teamUserHistoryService.updateFinishAsClose(gContest.getId());
 			//taskService.complete(taskId, vars);
 		}
 		gContest.preUpdate();
@@ -847,11 +1106,33 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		//保存审核意见
 		pai.setSuggest(gContest.getComment());
 		gAuditInfoService.save(pai);
-		User apply_User=UserUtils.getUser();
+
+		List<String> scoreList= gContest.getScoreList();
+		//查找审核标准
+		List<ProjectStandardDetailVo> asList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_LY_ID),GContestNodeVo.YW_ID);
+		if(asList!=null && asList.size()>0) {
+			String isScore = asList.get(0).getIsEescoreNodes();
+			String firstNode = GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_FIVE_ID);
+
+			if (isScore!=null && isScore.contains(firstNode)) {
+				if (asList != null && asList.size() > 0 && scoreList != null && scoreList.size() > 0) {
+					for (int i = 0; i < asList.size(); i++) {
+						AuditStandardDetailIns auditStandardDetailIns = new AuditStandardDetailIns();
+						auditStandardDetailIns.setCheckElement(asList.get(i).getCheckElement());
+						auditStandardDetailIns.setFid(gContest.getId());
+						auditStandardDetailIns.setCheckPoint(asList.get(i).getCheckPoint());
+						auditStandardDetailIns.setViewScore(asList.get(i).getViewScore());
+						auditStandardDetailIns.setScore(scoreList.get(i));
+						auditStandardDetailIns.setSort(asList.get(i).getSort());
+						auditStandardDetailIns.setAuditInfoId(pai.getId());
+						auditStandardDetailInsService.save(auditStandardDetailIns);
+					}
+				}
+			}
+		}
 		User rec_User=new User();
 		rec_User.setId(gContest.getDeclareId());
-		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
-				"学校管理员"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
+
 		//完成工作流
 		/*String roleName=actTaskService.getNextRoleName("audit2","gcontest");  //从工作流中查询 下一步的角色集合
 		//List<String> roles=userService.getRolesByName(roleName);*/
@@ -937,11 +1218,31 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		float m=(gContest.getSchoolScore()+gContest.getSchoolluyanScore())/2;
 		pai.setScore(m);
 		gAuditInfoService.save(pai);
+		List<String> scoreList= gContest.getScoreList();
+		//查找审核标准
+		List<ProjectStandardDetailVo> asList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_PJ_ID),GContestNodeVo.YW_ID);
+		if(asList!=null && asList.size()>0) {
+			String isScore = asList.get(0).getIsEescoreNodes();
+			String firstNode = GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_SIX_ID);
+			if (isScore!=null && isScore.contains(firstNode)) {
+				if (asList != null && asList.size() > 0 && scoreList != null && scoreList.size() > 0) {
+					for (int i = 0; i < asList.size(); i++) {
+						AuditStandardDetailIns auditStandardDetailIns = new AuditStandardDetailIns();
+						auditStandardDetailIns.setCheckElement(asList.get(i).getCheckElement());
+						auditStandardDetailIns.setFid(gContest.getId());
+						auditStandardDetailIns.setCheckPoint(asList.get(i).getCheckPoint());
+						auditStandardDetailIns.setViewScore(asList.get(i).getViewScore());
+						auditStandardDetailIns.setScore(scoreList.get(i));
+						auditStandardDetailIns.setSort(asList.get(i).getSort());
+						auditStandardDetailIns.setAuditInfoId(pai.getId());
+						auditStandardDetailInsService.save(auditStandardDetailIns);
+					}
+				}
+			}
+		}
 		User apply_User=UserUtils.getUser();
 		User rec_User=new User();
 		rec_User.setId(gContest.getDeclareId());
-		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
-				"学校管理员"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
 		Map<String,Object> vars=new HashMap<String,Object>();
 		vars=gContest.getVars();
 		//应该通过act来获取
@@ -953,6 +1254,11 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		gContest.setAuditState("7");//审核完成
 		gContest.setSchoolendScore(m);
 		taskService.complete(taskId, vars);
+		ActYw actyw =actYwDao.get(gContest.getActywId());
+		String typeName="";
+		if(actyw.getProProject()!=null){
+			typeName=actyw.getProProject().getProjectName();
+		}
 		if (grade.equals("2")||grade.equals("3")||grade.equals("4")) {
 			//保存获奖信息
 			GContestAward gContestAward=new GContestAward();
@@ -965,8 +1271,16 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			}
 			gContestAwardService.save(gContestAward);
 		}
+		String result=DictUtils.getDictLabel(grade,"competition_college_prise","");
+		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
+					typeName+" "+gContest.getpName()+"项目，学校审核结果为："+result, OaNotify.Type_Enum.TYPE14.getValue(),gContest.getId());
+
 		gContest.preUpdate();
 		dao.updateState(gContest);
+		//更改完成后团队历史表中的状态
+		teamUserHistoryService.updateFinishAsClose(gContest.getId());
+		//保存学分
+		saveScore(gContest.getId(),grade);
 	}
 
 	public void  saveAuditSix(GContest gContest,Act act,GAuditInfo pai) {
@@ -1011,6 +1325,10 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		}
 		gContest.preUpdate();
 		dao.updateState(gContest);
+		//更改完成后团队历史表中的状态
+		teamUserHistoryService.updateFinishAsClose(gContest.getId());
+		saveScore(gContest.getId(),grade);
+
 	}
 
 	//得到当前项目
@@ -1019,7 +1337,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 	}
 	//得到最后一个项目
 	public GContest getLastGcontestInfo(String gcontestUserId) {
-		// TODO Auto-generated method stub
+
 		return dao.getLastGcontestInfo(gcontestUserId);
 	}
 
@@ -1524,6 +1842,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			pai=gAuditInfoService.getGAuditInfoByIdAndState(pai);
 			pai.setGrade(schoolendResult);
 	    	pai.setSuggest(schoolendSuggest);
+			saveScore(gContest.getId(),schoolendResult);
 	    	//审核update方法
 	    	gAuditInfoService.updateData(pai);
 	    	gContest.setSchoolendSug(schoolendSuggest);
@@ -1533,20 +1852,35 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				//保存获奖信息
 				GContestAward gContestAward=gContestAwardService.getByGid(gContest.getId());
 				if (gContestAward!=null) {
-					if ((gContestAward.getAward()).equals(schoolendResult)) {
-						gContestAward.setContestId(gContest.getId());
-						gContestAward.setAward(schoolendResult);
-						gContestAward.setAwardLevel("3");
-						gContestAwardService.save(gContestAward);
+					gContestAward.setContestId(gContest.getId());
+					gContestAward.setAward(schoolendResult);
+					gContestAward.setAwardLevel("3");
+					if (schoolendResult.equals("2")||schoolendResult.equals("3")||schoolendResult.equals("4")) {
+						String money = DictUtils.getDictLabel(schoolendResult, "competition_college_money", "");
+						if (money != null) {
+							gContestAward.setMoney(money);
+						}
 					}
+					gContestAwardService.save(gContestAward);
 				}else{
 					gContestAward=new GContestAward();
 					gContestAward.setContestId(gContest.getId());
 					gContestAward.setAward(schoolendResult);
 					gContestAward.setAwardLevel("3");
+					if (schoolendResult.equals("2")||schoolendResult.equals("3")||schoolendResult.equals("4")) {
+						String money = DictUtils.getDictLabel(schoolendResult, "competition_college_money", "");
+						if (money != null) {
+							gContestAward.setMoney(money);
+						}
+					}
 					gContestAwardService.save(gContestAward);
 				}
 
+			}else{
+				GContestAward gContestAward=gContestAwardService.getByGid(gContest.getId());
+				if (gContestAward!=null) {
+					gContestAwardService.delete(gContestAward);
+				}
 			}
 		}else{
         	Act act=new Act();
@@ -2157,6 +2491,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				}
 			}else{
 				changeSchool(schoolObject,gContest,true);
+				delScore(gContest.getId());
 				//后续添加失败流程
 			}
 		}
@@ -2206,12 +2541,14 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 						}else if (schoolResult.equals("0")) {
 							//校赛失败后续添加流程
 							changeSchool(schoolObject,gContest,true);
+							delScore(gContest.getId());
 						}
 					}
 				}
 			}else{
 				//后续添加失败流程
 				changeCollege(collegeObject,gContest,true);
+				delScore(gContest.getId());
 			}
 		}
 		return js;
@@ -2229,5 +2566,111 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 	public int hasdoCount(Map<String, Object> param) {
 		int count=dao.getHasdoCount(param);
 		return count;
+	}
+
+
+	//删除学分
+	@Transactional(readOnly = false)
+	public void delScore(String gContestId) {
+		GContest gContest = dao.getScoreConfigure(gContestId);
+
+		//插入学分前，先根据项目id删除对应的学分信息（sco_affirm表和sco_score表）
+		scoAffirmDao.deleteByProId(gContest.getId());
+		scoScoreDao.deleteProject(gContest.getId());
+	}
+
+
+
+	//保存学分
+	@Transactional(readOnly = false)
+	public void saveScore(String gContestId,String grade){
+		GContest gContest = dao.getScoreConfigure(gContestId);
+
+		//插入学分前，先根据项目id删除对应的学分信息（sco_affirm表和sco_score表）
+		scoAffirmDao.deleteByProId(gContest.getId());
+		scoScoreDao.deleteProject(gContest.getId());
+
+		//保存学分到对应的表（先保存到sco_affirm表、再保存到soc_score表）
+		//根据 type（学分类型)、item（学分项）、category（课程、项目、大赛、技能大类）、subdivision（课程、项目、大赛小类）、number(人数)查询后台配比
+		ScoAffirm scoAffirm = new ScoAffirm();
+		scoAffirm.setProId(gContest.getId());
+
+		ScoRatioVo scoRatioVo = new ScoRatioVo();
+		ScoAffrimCriterionVo scoAffrimCriterionVo = new ScoAffrimCriterionVo();
+
+		scoRatioVo.setType("0000000125"); //设置查询的学分类型（素质学分）
+		scoAffrimCriterionVo.setType("0000000125");
+
+		scoRatioVo.setItem("0000000129"); //双创大赛
+		scoAffrimCriterionVo.setItem("0000000129"); //双创大赛
+		scoRatioVo.setCategory("1"); //互联网+大赛
+		scoAffrimCriterionVo.setCategory("1");
+
+		scoRatioVo.setNumber(gContest.getSnumber());
+		ScoRatioVo ratioResult = scoAllotRatioDao.findRatio(scoRatioVo);
+		scoAffrimCriterionVo.setCategory2("1"); //校级初赛
+		scoAffrimCriterionVo.setResult(grade);
+		boolean hasConfig;  //判断后台是否配置了规则
+		if(ratioResult!=null){
+			hasConfig=true;
+		}else{
+			hasConfig=false;
+		}
+		//查找 学分认定标准 scoAffirmCriterion
+		ScoAffrimCriterionVo criterionResult = scoAffirmCriterionDao.findCriter(scoAffrimCriterionVo);
+		if(criterionResult!=null){  //有学分认定标准，则插入值
+			//插入scoAffirm表
+			scoAffirm.setScoreStandard(criterionResult.getScore());
+			scoAffirm.setScoreVal(criterionResult.getScore());
+			scoAffirm.setAffirmDate(new Date());
+			scoAffirm.preInsert();
+			scoAffirmDao.insert(scoAffirm);
+			//查找组成员的信息
+			/*TeamUserRelation teamUserRelation = new TeamUserRelation();
+			teamUserRelation.setTeamId(gContest.getTeamId());*/
+			//List<TeamUserRelation>  studentList=  teamUserRelationDao.getStudents(teamUserRelation);
+			List<Map<String,String>>  studentList=  projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId());
+			if(!hasConfig){ //如果后台没有配比规则、则所有成员一样的分数
+				for(Map<String,String> teamUser:studentList ){
+					ScoScore scoScore = new ScoScore();
+					User user =new User();
+					user.setId(teamUser.get("userId"));
+					scoScore.setUser(user);
+					float score = criterionResult.getScore();
+					if(score>0&score<0.5){
+						score = 0.5f;
+					}
+					scoScore.setCreditScore((double)score);
+					scoScore.setCreditId(gContestId);
+					scoScore.preInsert();
+					scoScoreDao.insert(scoScore);
+				}
+			}else{ //有配比，则查询team_user_relation中的配比
+				//查找学分分配权重之和
+				//int weigthTotal = teamUserRelationDao.getWeightTotalByTeamId(gContest.getTeamId());
+				int weigthTotal = teamUserHistoryService.getWeightTotalByTeamId(gContest.getTeamId(),gContest.getId());
+				for(Map<String,String> teamUser:studentList ){
+					ScoScore scoScore = new ScoScore();
+					User user =new User();
+					user.setId(teamUser.get("userId"));
+					scoScore.setUser(user);
+					String number=String.valueOf(teamUser.get("weightVal"));
+					int weightVal = Integer.parseInt(number);
+					float score = FloatUtils.getOnePoint( ((float)weightVal/(float)weigthTotal)*criterionResult.getScore() ) ;
+					if(score>0&score<0.5){
+						score = 0.5f;
+					}
+					scoScore.setCreditScore((double)score);
+					scoScore.setCreditId(gContestId);
+					scoScore.preInsert();
+					scoScoreDao.insert(scoScore);
+
+				}
+			}
+		}
+	}
+
+	public List<Map<String,String>>  getInGcontestNameList(String userId) {
+		return dao.getInGcontestNameList(userId);
 	}
 }

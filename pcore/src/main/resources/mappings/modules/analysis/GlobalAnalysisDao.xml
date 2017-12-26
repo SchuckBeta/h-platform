@@ -28,7 +28,7 @@
 		ELSE
 		CASE
 		WHEN FIND_IN_SET('1', o.teacherType) THEN
-		'校园导师'
+		'校内导师'
 		ELSE
 		'企业导师'
 		END
@@ -84,10 +84,266 @@
 		</if>
 	</select>
 
-	<!-- 根据年份查找 在校生人数 -->
+	<select id="findAllGcontestType" resultType="java.util.HashMap">
+		select d.label, count(*) as num from pro_model t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		where d.type='competition_type'
+		and t.del_flag='0' and d.del_flag='0' and p.pro_type='7,'
+		and t.sub_time is not null
+		group by  d.label
+		UNION
+		select d.label, count(*) as num from g_contest t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		where d.type='competition_type'
+		and t.del_flag='0' and d.del_flag='0'
+		and t.sub_time is not null
+		group by  d.label
+	</select>
 
-	<!-- 获取学校总学生数 -->
+	<select id="findAllProjectType" resultType="java.util.HashMap">
+				select d.label, count(*) as num from pro_model t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		where d.type='project_style'
+		and t.del_flag='0' and d.del_flag='0' and p.pro_type='1,' and p.del_flag='0'
+		and t.sub_time is not null
+		group by  d.label
+		UNION
+		select d.label, count(*) as num from project_declare t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		where d.type='project_style'
+		and t.del_flag='0' and d.del_flag='0' and p.del_flag='0'
+		and t.apply_time is not null
+		group by  d.label
+	</select>
 
+	<select id="findAllGcontestStuCurrState" resultType="java.util.HashMap" parameterType="java.util.Map">
+		SELECT d.label,t2.state,SUM(t2.num) as num from (
+			select CASE WHEN t1.state='' THEN '1' ELSE t1.state END as state,t1.num
+			from (
+				select  IFNULL(sse.curr_state,1) state ,COUNT(*) num
+				from sys_student_expansion sse
+				inner JOIN (
+					select * from (
+						SELECT g.p_name,t.user_id,t.team_id,t.user_type
+						FROM g_contest g
+						LEFT JOIN team_user_relation t ON g.team_id=t.team_id
+						WHERE g.sub_time is not null AND g.del_flag='0' and t.del_flag='0' and (t.state='0' or t.state='4')
+						<if test="year != null and year!= ''">
+							AND SUBSTRING(g.sub_time,1,4) = #{year}
+						</if>
+						union ALL
+						SELECT pd.name,t.user_id,t.team_id,t.user_type
+						FROM project_declare pd
+						LEFT JOIN team_user_relation t ON pd.team_id=t.team_id
+						WHERE pd.apply_time is not null AND pd.del_flag='0' and t.del_flag='0' and (t.state='0' or t.state='4')
+						<if test="year != null and year!= ''">
+							AND SUBSTRING(pd.apply_time,1,4) = #{year}
+						</if>
+						union ALL
+						select pm.p_name,t.user_id,t.team_id,t.user_type
+						from pro_model pm
+						LEFT JOIN team_user_relation t ON pm.team_id=t.team_id
+						LEFT JOIN act_yw a on a.id=pm.actyw_id
+						LEFT JOIN pro_project p on p.id=a.rel_id
+						where p.type is not null  and t.del_flag='0' and pm.proc_ins_id is not null and (t.state='0' or t.state='4')
+						and pm.sub_time is not null
+						<if test="year != null and year!= ''">
+							AND SUBSTRING(pm.sub_time,1,4) = #{year}
+						</if>
+					)m GROUP BY m.user_id
+				)t on sse.user_id=t.user_id
+				where t.user_id is not null
+				GROUP BY sse.curr_state
+			)t1
+		) t2
+		LEFT JOIN sys_dict d on d.value=t2.state
+		where d.type='current_sate' and d.del_flag='0'
+		GROUP BY  t2.state
+	</select>
 
+	<select id="findAllTeacherByType" resultType="java.util.HashMap">
+		select d.label,ste.teacherType,count(*) as num from sys_teacher_expansion ste
+			INNER JOIN (
+				select * from (
+					SELECT p.name,t.user_id,t.team_id,t.user_type
+					FROM project_declare p
+					LEFT JOIN team_user_relation t ON p.team_id=t.team_id
+					WHERE p.`status`!='0' and t.user_type='2' AND p.del_flag='0' and t.state='0'
+					and p.actyw_id is not null
+					union ALL
+					SELECT g.p_name,t.user_id,t.team_id,t.user_type
+					FROM g_contest g
+					LEFT JOIN team_user_relation t ON g.team_id=t.team_id
+					WHERE g.audit_state!='0' and t.user_type='2' AND g.del_flag='0' and t.state='0'
+					and g.actyw_id is not null and (t.state='0' or t.state='4')
+					union ALL
+					select pm.p_name,t.user_id,t.team_id,t.user_type
+					from pro_model pm
+					LEFT JOIN team_user_relation t ON pm.team_id=t.team_id
+					LEFT JOIN act_yw a on a.id=pm.actyw_id
+					where pm.del_flag='0' and t.user_type='2' and pm.proc_ins_id is not null
+					and pm.actyw_id is not null and (t.state='0' or t.state='4')
+				)m GROUP BY m.user_id
+			)pt on pt.user_id=ste.user_id
+		LEFT JOIN sys_dict d on d.value=ste.teacherType
+		where d.type='master_type' and d.del_flag='0'
+		GROUP BY ste.teacherType
+	</select>
 
+	<select id="getProjecTypes" resultType="java.lang.String">
+		select d.label from  sys_dict d
+		inner JOIN pro_project p on d.value=p.type
+		where d.type='project_style'	and p.del_flag='0' and p.type is not null and p.pro_type='1,' and d.del_flag='0'
+		UNION
+		select d.label from  sys_dict d
+		inner JOIN pro_project p on d.value=p.type
+		where d.type='competition_type'	and p.del_flag='0' and p.type is not null and p.pro_type='7,' and d.del_flag='0'
+	</select>
+
+	<select id="getYears" resultType="java.lang.String">
+		select * from (
+		select SUBSTRING(pd.apply_time,1,4) year from project_declare pd
+		LEFT join act_yw ay on ay.id=pd.actyw_id
+		where pd.apply_time is not null and pd.del_flag='0' and ay.rel_id is not null
+		UNION
+		select SUBSTRING(pm.sub_time,1,4) year from pro_model pm
+		LEFT join act_yw ay on ay.id=pm.actyw_id
+		where pm.sub_time is not null and pm.del_flag='0' and ay.rel_id is not null
+		UNION
+		select SUBSTRING(g.sub_time,1,4) year from g_contest g
+		LEFT join act_yw ay on ay.id=g.actyw_id
+		where g.sub_time is not null and g.del_flag='0' and ay.rel_id is not null
+		) m
+		group by year
+		ORDER by year
+	</select>
+
+	<select id="findAllProjectStuCurrState" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select t2.label proType,t2.value proTypeValue,t2.user_id,
+		d1.value curStateValue,
+		d1.label curState ,
+		year,
+		count(*) as num from
+		(select d.label,d.value, SUBSTRING(t.sub_time,1,4) year,tm.user_id ,IFNULL(sse.curr_state,'1') curr_state from pro_model t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_student_expansion sse on tm.user_id=sse.user_id
+		where d.type='project_style' and p.pro_type='1,'
+		and t.del_flag='0' and t.actyw_id is not null and (tm.state='0' or tm.state='4')
+		and tm.user_type='1' and t.sub_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.sub_time,1,4) = #{year}
+		</if>
+		UNION
+		select d.label, d.value , SUBSTRING(t.apply_time,1,4) year,tm.user_id ,IFNULL(sse.curr_state,'1') curr_state from project_declare t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_student_expansion sse on tm.user_id=sse.user_id
+		where d.type='project_style'
+		and t.del_flag='0' and t.actyw_id is not null and (tm.state='0' or tm.state='4')
+		and tm.user_type='1'  and t.apply_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.apply_time,1,4) = #{year}
+		</if>
+		UNION
+		select d.label, d.value , SUBSTRING(t.sub_time,1,4) year,tm.user_id ,IFNULL(sse.curr_state,'1') curr_state from g_contest t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_student_expansion sse on tm.user_id=sse.user_id
+		where d.type='competition_type'
+		and t.del_flag='0' and t.actyw_id is not null and (tm.state='0' or tm.state='4')
+		and tm.user_type='1'  and t.sub_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.sub_time,1,4) = #{year}
+		</if>
+		UNION
+		select d.label,d.value, SUBSTRING(t.sub_time,1,4) year,tm.user_id ,IFNULL(sse.curr_state,'1') curr_state from pro_model t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_student_expansion sse on tm.user_id=sse.user_id
+		where d.type='competition_type' and p.pro_type='7,'
+		and t.del_flag='0' and t.actyw_id is not null and (tm.state='0' or tm.state='4')
+		and tm.user_type='1'  and t.sub_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.sub_time,1,4) = #{year}
+		</if>
+		) t2 LEFT JOIN sys_dict d1 on d1.value=t2.curr_state
+		where d1.type='current_sate' and t2.user_id is not null
+		GROUP BY proType , curState
+	</select>
+	<select id="findHotTechnology" resultType="java.util.HashMap" parameterType="java.util.Map">
+		select d.label,d.value proTypeValue,sse.user_type,sse.id,sse.domain from pro_model t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_user sse on tm.user_id=sse.id
+		where d.type='project_style' and (tm.state='0' or tm.state='4')and sse.user_type='1'
+		and t.del_flag='0' and t.actyw_id is not null and tm.user_id is not null and sse.domain is not null
+		and p.pro_type='1,' and t.sub_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.sub_time,1,4) = #{year}
+		</if>
+		UNION
+		select d.label,d.value proTypeValue,sse.user_type,sse.id,sse.domain from pro_model t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_user sse on tm.user_id=sse.id
+		where d.type='competition_type' and (tm.state='0' or tm.state='4')and sse.user_type='1'
+		and t.del_flag='0' and t.actyw_id is not null and tm.user_id is not null and sse.domain is not null
+		and p.pro_type='7,'and t.sub_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.sub_time,1,4) = #{year}
+		</if>
+		UNION
+		select d.label, d.value proTypeValue ,sse.user_type,sse.id ,sse.domain from project_declare t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_user sse on tm.user_id=sse.id
+		where d.type='project_style' and (tm.state='0' or tm.state='4') and sse.user_type='1'
+		and t.del_flag='0' and t.actyw_id is not null and tm.user_id is not null and sse.domain is not null
+		and t.apply_time is not null
+				<if test="year != null and year!= ''">
+					AND SUBSTRING(t.apply_time,1,4) = #{year}
+				</if>
+		UNION
+		select d.label, d.value proTypeValue ,sse.user_type,sse.id ,sse.domain from g_contest t
+		LEFT JOIN act_yw a on a.id=t.actyw_id
+		LEFT JOIN pro_project p on p.id=a.rel_id
+		LEFT JOIN sys_dict d on d.value=p.type
+		LEFT JOIN team_user_relation tm ON tm.team_id=t.team_id
+		LEFT JOIN sys_user sse on tm.user_id=sse.id
+		where d.type='competition_type' and (tm.state='0' or tm.state='4') and sse.user_type='1'
+		and t.del_flag='0' and t.actyw_id is not null and tm.user_id is not null and sse.domain is not null
+		and t.sub_time is not null
+		<if test="year != null and year!= ''">
+			AND SUBSTRING(t.sub_time,1,4) = #{year}
+		</if>
+	</select>
+
+	<select id="findTeacherDtn" resultType="java.util.HashMap">
+		select t.likes,t.name from sys_user  t
+		where t.user_type='2' and t.likes is not null and t.likes !=0
+		ORDER BY t.likes desc
+	</select>
 </mapper>

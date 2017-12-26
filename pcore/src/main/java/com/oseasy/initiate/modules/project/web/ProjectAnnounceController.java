@@ -2,7 +2,10 @@ package com.oseasy.initiate.modules.project.web;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,19 +24,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.common.utils.DateUtil;
 import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
 import com.oseasy.initiate.modules.project.entity.ProjectAnnounce;
 import com.oseasy.initiate.modules.project.service.ProjectAnnounceService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-
-import net.sf.ehcache.search.expression.And;
 
 /**
  * 项目通告Controller
@@ -143,7 +143,7 @@ public class ProjectAnnounceController extends BaseController {
 				}
 				SysAttachment sysAttachment=new SysAttachment();
 				sysAttachment.setUid(projectAnnounce.getId());
-				sysAttachment.setType("3");
+				sysAttachment.setType(FileTypeEnum.S3);
 				sysAttachment.setName(arrNames[i]);
 				sysAttachment.setUrl(arrUrl[i]);
 				sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));
@@ -163,65 +163,65 @@ public class ProjectAnnounceController extends BaseController {
 	}
 
 	//删除文件
-			@RequestMapping(value = {"delload"})
-			@ResponseBody
-			public JSONObject delload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping(value = {"delload"})
+	@ResponseBody
+	public JSONObject delload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-				//path ftp上文件 目录
-				//String path=(String)request.getParameter("path");//
-				//fileName ftp上文件名
-				String fileName=(String)request.getParameter("fileName");
-				boolean ftpdel=ftpService.del(fileName);
-				/*FtpUtil ftpUtil = new FtpUtil();
-				FTPClient ftpClient=ftpUtil.getftpClient();*/
-				//ftpUtil.remove(ftpClient, fileName.substring(0,fileName.lastIndexOf("/")+1), fileName.substring(fileName.lastIndexOf("/")+1));
-				JSONObject obj = new JSONObject();
-				SysAttachment sysAttachment = new SysAttachment();
-				sysAttachment = sysAttachmentService.getByUrl(fileName);
-				sysAttachmentService.delete(sysAttachment);
-				if (ftpdel) {
-					obj.put("state",1);//删除成功
-				}else{
-					obj.put("state", 2);
-					obj.put("msg", "文件太大");
-				}
-				//response.getWriter().print(obj.toString());
-				return obj;
-				//downloadFile(ftpClient, response, fileName.substring(fileName.lastIndexOf("/")+1), fileName.substring(0,fileName.lastIndexOf("/")+1));
-			}
-			@RequestMapping(value="validateName")
-			@ResponseBody
-			public String validateName(HttpServletRequest request) {
-				String id=(String)request.getParameter("id");
-				String name=(String)request.getParameter("name");
-				Map<String,String> map=new HashMap<String,String>();
-				map.put("name",name);
-				if (!StringUtil.isEmpty(id)) {
-					map.put("id",id);
-				}
-				if (projectAnnounceService.getProjectByName(map)>0) {
-					return "1";
-				}
-				return "0";
+		//path ftp上文件 目录
+		//String path=(String)request.getParameter("path");//
+		//fileName ftp上文件名
+		String fileName=(String)request.getParameter("fileName");
+		boolean ftpdel=ftpService.del(fileName);
+		/*FtpUtil ftpUtil = new FtpUtil();
+		FTPClient ftpClient=ftpUtil.getftpClient();*/
+		//ftpUtil.remove(ftpClient, fileName.substring(0,fileName.lastIndexOf("/")+1), fileName.substring(fileName.lastIndexOf("/")+1));
+		JSONObject obj = new JSONObject();
+		SysAttachment sysAttachment = new SysAttachment();
+		sysAttachment = sysAttachmentService.getByUrl(fileName);
+		sysAttachmentService.delete(sysAttachment);
+		if (ftpdel) {
+			obj.put("state",1);//删除成功
+		}else{
+			obj.put("state", 2);
+			obj.put("msg", "文件太大");
+		}
+		//response.getWriter().print(obj.toString());
+		return obj;
+		//downloadFile(ftpClient, response, fileName.substring(fileName.lastIndexOf("/")+1), fileName.substring(0,fileName.lastIndexOf("/")+1));
+	}
+	@RequestMapping(value="validateName")
+	@ResponseBody
+	public String validateName(HttpServletRequest request) {
+		String id=(String)request.getParameter("id");
+		String name=(String)request.getParameter("name");
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("name",name);
+		if (!StringUtil.isEmpty(id)) {
+			map.put("id",id);
+		}
+		if (projectAnnounceService.getProjectByName(map)>0) {
+			return "1";
+		}
+		return "0";
 
-			}
+	}
 
-			@RequestMapping(value="publish")
-			@ResponseBody
-			public String publish(String type) {
-				ProjectAnnounce projectAnnounce = new ProjectAnnounce();
-				projectAnnounce.setProType(type);
-				List<ProjectAnnounce> list = projectAnnounceService.findList(projectAnnounce);
-				for (ProjectAnnounce projectAnnounce2 : list) {
-					String status = projectAnnounce2.getStatus();
-					if ("1".equals(status)) {
-						return "1";
-					}else if ("0".equals(status)) {
-						return "2";
-					}else {
-						continue;
-					}
-				}
-				return "-1";
+	@RequestMapping(value="publish")
+	@ResponseBody
+	public String publish(String type) {
+		ProjectAnnounce projectAnnounce = new ProjectAnnounce();
+		projectAnnounce.setProType(type);
+		List<ProjectAnnounce> list = projectAnnounceService.findList(projectAnnounce);
+		for (ProjectAnnounce projectAnnounce2 : list) {
+			String status = projectAnnounce2.getStatus();
+			if ("1".equals(status)) {
+				return "1";
+			}else if ("0".equals(status)) {
+				return "2";
+			}else {
+				continue;
 			}
+		}
+		return "-1";
+	}
 }

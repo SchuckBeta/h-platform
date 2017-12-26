@@ -21,7 +21,7 @@ import java.util.List;
  * 国创大赛后台测试
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-context.xml","classpath:spring-context-activiti.xml"})
+@ContextConfiguration(locations = {"classpath:spring-context.xml","classpath:spring-context-activiti.xml","classpath:spring-context-jedis.xml","classpath:spring-context-scheduler.xml","classpath:spring-context-shiro.xml","classpath:spring-mvc.xml"})
 public class UserServiceTest {
 
 

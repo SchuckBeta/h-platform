@@ -92,7 +92,7 @@ public class FtpController extends BaseController {
 
 		long m=imgFile1.getSize();
 		//上传文件过大 超过10m
-		if (m>Integer.valueOf(FTP_FILE_SIZE)*1024*1024) {
+		if (m> Long.valueOf(FTP_FILE_SIZE)*1024*1024) {
 			obj.put("state",4);//文件同名
 			obj.put("msg", "上传文件过大，超过100m");
 			return obj;
@@ -112,14 +112,14 @@ public class FtpController extends BaseController {
 		FTPClient ftpClient=FtpUtil.getftpClient();
 
 		//判断是否有同名文件
-		boolean isSame=FtpUtil.checkName(ftpClient, "/tool/oseasy/temp/"+ftpPath, saveFileName);
+		boolean isSame=FtpUtil.checkName(ftpClient, "/tool/oseasy/"+ftpPath, saveFileName);
 		if (isSame) {
 			//流形式保存
-			boolean res=FtpUtil.uploadInputSteam(ftpClient,is,"/tool/oseasy/temp/"+ftpPath,saveFileName);
+			boolean res=FtpUtil.uploadInputSteam(ftpClient,is,"/tool/oseasy/"+ftpPath,saveFileName);
 			if (res) {
 				obj.put("state",1);//上传成功
 				obj.put("fileName", urlFileName);
-				obj.put("arrUrl", "/tool/oseasy/temp/"+ftpPath+"/"+saveFileName);
+				obj.put("arrUrl", "/tool/oseasy/"+ftpPath+"/"+saveFileName);
 				obj.put("ftpId", ftpId);
 			}else{
 				obj.put("state", 2);
@@ -171,8 +171,7 @@ public class FtpController extends BaseController {
 
 	//下载文件
 	@RequestMapping(value = {"download"})
-	public void upload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	public void download(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//path ftp上文件 目录
 		//String path=(String)request.getParameter("path");//
 		//fileName ftp上文件名
@@ -181,12 +180,7 @@ public class FtpController extends BaseController {
 		//String url=(String)request.getParameter("url");//
 		String fileName=(String)request.getParameter("fileName");//
 		ftpService.downloadFile(fileName,response);
-
-
-
-
 	}
-
 
 	//下载文件
 	@RequestMapping(value = {"loadUrl"})
@@ -202,8 +196,6 @@ public class FtpController extends BaseController {
 		fileName=URLDecoder.decode(fileName,"UTF-8");
 		ftpService.downloadUrlFile(url,fileName,response);
 	}
-
-
 
 	//删除文件
 	@RequestMapping(value = {"delload"})

@@ -2,6 +2,11 @@ package com.oseasy.initiate.modules.analysis.service;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowPtype;
+import com.oseasy.initiate.modules.analysis.vo.BarVo;
+import com.oseasy.initiate.modules.analysis.vo.EchartVo;
+import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.oseasy.initiate.modules.sys.utils.DictUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,7 @@ import net.sf.json.JSONObject;
 public class GlobalAnalysisService {
 	@Autowired
 	private GlobalAnalysisDao globalAnalysisDao;
+
 	public JSONObject getData() {
 		JSONObject data=new JSONObject();
 		data.put("data1", getData1());
@@ -223,6 +229,189 @@ public class GlobalAnalysisService {
 		}
 		int count=globalAnalysisDao.getContestNumber(map);
 		return count;
+	}
+	//获得所有大赛类型参数数量
+	public List<EchartVo> findAllGcontestType(String year) {
+		List<EchartVo> listnew=new ArrayList<EchartVo>();
+		List<Dict> distList=DictUtils.getDictList(FlowPtype.PTT_DASAI.getKey());
+		List<Map<String,Object>> list=globalAnalysisDao.findAllGcontestType(year);
+		/*for(Dict dist:distList){
+			Boolean isTrue = true;*/
+			EchartVo echartV = null;
+			for(Map<String,Object> echartVo:list){
+				/*if(echartVo.get("label").toString().equals(dist.getLabel())){
+					isTrue = false;*/
+					int num=Integer.valueOf(echartVo.get("num").toString());
+					echartV = new EchartVo(echartVo.get("label").toString(),num);
+					listnew.add(echartV);
+				/*}*/
+			}
+		/*	if(isTrue){
+				echartV = new EchartVo(dist.getLabel(),0);
+			}*/
+			//listnew.add(echartV);
+		/*}*/
+		return listnew;
+	}
+	//获得所有项目类型参数数量
+	public List<EchartVo> findAllProjectType(String year) {
+		List<EchartVo> listnew=new ArrayList<EchartVo>();
+		List<Map<String,Object>> list=globalAnalysisDao.findAllProjectType(year);
+		for(Map<String,Object> echartVo:list){
+			int num=Integer.valueOf(echartVo.get("num").toString());
+			EchartVo vo1=new EchartVo(echartVo.get("label").toString(),num);
+			listnew.add(vo1);
+		}
+		return listnew;
+	}
+	//获得所有大赛参赛学生分布数量
+	public List<EchartVo> findAllGcontestStuCurrState(String year) {
+		List<EchartVo> listnew=new ArrayList<EchartVo>();
+		Map<String,String> map=new HashMap<>();
+		map.put("year",year);
+		List<Map<String,Object>> list=globalAnalysisDao.findAllGcontestStuCurrState(map);
+		for(Map<String,Object> echartVo:list){
+			int num=Integer.valueOf(echartVo.get("num").toString());
+			EchartVo vo1=new EchartVo(echartVo.get("label").toString(),num);
+			listnew.add(vo1);
+		}
+		return listnew;
+	}
+
+	//获得所有大赛导师分布数量
+	public List<EchartVo> findAllTeacherByType(String year) {
+		List<EchartVo> listnew=new ArrayList<EchartVo>();
+		List<Map<String,Object>> list=globalAnalysisDao.findAllTeacherByType(year);
+		for(Map<String,Object> echartVo:list){
+			int num=Integer.valueOf(echartVo.get("num").toString());
+			EchartVo vo1=new EchartVo(echartVo.get("label").toString(),num);
+			listnew.add(vo1);
+		}
+		return listnew;
+	}
+
+	public List<String> getProjecTypes() {
+		return globalAnalysisDao.getProjecTypes();
+	}
+
+	public List<BarVo> findAllProjectStuCurrState(String year) {
+		List<BarVo> listnew=new ArrayList<BarVo>();
+
+		Map<String,String> map=new HashMap<>();
+		map.put("year",year);
+		List<Map<String,Object>> list=globalAnalysisDao.findAllProjectStuCurrState(map);
+
+		List<String> types=getProjecTypes();
+
+		List<String> categeries=new ArrayList<>();
+		for(int i=0;i<types.size();i++){
+			categeries.add(types.get(i));
+		}
+		List<Dict> distList=DictUtils.getDictList("current_sate");
+		for(int i=0;i<distList.size();i++){
+			BarVo bar=new BarVo(distList.get(i).getLabel());
+			for(int j=0;j<types.size();j++){
+				String label=types.get(j);
+				int stateNum=0;
+				for(Map<String,Object> echartVo:list){
+					String proTypeValue=echartVo.get("proType").toString();
+					String curStateValue=echartVo.get("curStateValue").toString();
+					int num=Integer.valueOf(echartVo.get("num").toString());
+					//符合创新项目
+					if(proTypeValue.equals(label)){
+						//符合在校学生
+						if(curStateValue.equals(distList.get(i).getValue())){
+							stateNum=num;
+						}
+					}
+				}
+				bar.addValue(stateNum);
+			}
+			bar.setCategories(categeries);
+			listnew.add(bar);
+		}
+		return listnew;
+	}
+
+	public List<BarVo> findHotTechnology(String year) {
+		List<BarVo> listnew=new ArrayList<BarVo>();
+		Map<String,String> map=new HashMap<>();
+		map.put("year",year);
+		List<Map<String,Object>> list=globalAnalysisDao.findHotTechnology(map);
+
+		List<Dict> distList=DictUtils.getDictList("technology_field");
+		List<String> bars=new ArrayList<>();
+		/*bars.add("国创项目");
+		bars.add("创业项目");
+		bars.add("创新项目");*/
+
+		List<String> types=getProjecTypes();
+
+		for(int i=0;i<types.size();i++){
+			bars.add(types.get(i));
+		}
+
+		List<String> categeries=new ArrayList<>();
+		for(int j=0;j<distList.size();j++){
+			categeries.add(distList.get(j).getLabel());
+		}
+		//List<Dict> distList=DictUtils.getDictList("current_sate");
+
+		for(int i=0;i<bars.size();i++){
+			BarVo bar=new BarVo(bars.get(i));
+			//领域
+			for(int j=0;j<distList.size();j++){
+				int techNum=0;
+				for(Map<String,Object> echartVo:list) {
+					String proTypeValue = echartVo.get("label").toString();
+					String domain = echartVo.get("domain").toString();
+					//符合创新项目
+					if (proTypeValue.equals(bar.getName())) {
+						//符合领域
+						if (domain.contains(distList.get(j).getValue())) {
+							techNum = techNum + 1;
+						}
+					}
+				}
+				bar.addValue(techNum);
+			}
+			bar.setCategories(categeries);
+			listnew.add(bar);
+		}
+		return listnew;
+	}
+
+	public List<BarVo> findTeacherDtn(String year) {
+		List<BarVo> listnew=new ArrayList<BarVo>();
+		List<Map<String,Object>> list=globalAnalysisDao.findTeacherDtn(year);
+
+		BarVo bar1=new BarVo("学生点赞数");
+		List<String> categeries=new ArrayList<>();
+		for(int j=0;j<list.size();j++){
+			if(j>4){
+				break;
+			}
+			int num=Integer.valueOf(list.get(j).get("likes").toString());
+			categeries.add(list.get(j).get("name").toString());
+			bar1.addValue(num);
+		}
+		bar1.setCategories(categeries);
+		listnew.add(bar1);
+
+		return listnew;
+	}
+
+	public List<String> getYears() {
+		List<String> years=globalAnalysisDao.getYears();
+		if(years.size()>0){
+			int minYear=Integer.valueOf(years.get(0));
+			int maxYear=Integer.valueOf(years.get((years.size()-1)));
+			years.clear();
+			for(int j=minYear;j<=maxYear;j++){
+				years.add(String.valueOf(j));
+			}
+		}
+		return years;
 	}
 
 }

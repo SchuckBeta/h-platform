@@ -88,7 +88,7 @@
 					<form:textarea path="${c.javaFieldId}" htmlEscape="false" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-xxlarge <#if c.isNull != "1">required</#if>"/>
 				<#elseif c.showType == "select">
 					<form:select path="${c.javaFieldId}" class="input-xlarge <#if c.isNull != "1">required</#if>">
-						<form:option value="" label=""/>
+						<form:option value="" label="--请选择--"/>
 						<form:options items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select>
 				<#elseif c.showType == "checkbox">
@@ -156,7 +156,7 @@
 									<textarea id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" rows="4"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-small <#if c.isNull != "1">required</#if>">{{row.${c.javaFieldId}}}</textarea>
 								<#elseif c.showType == "select">
 									<select id="${child.className?uncap_first}List{{idx}}_${c.simpleJavaField}" name="${child.className?uncap_first}List[{{idx}}].${c.javaFieldId}" data-value="{{row.${c.javaFieldId}}}" class="input-small <#if c.isNull != "1">required</#if>">
-										<option value=""></option>
+										<option value="">--请选择--</option>
 										<c:forEach items="${"$"}{fns:getDictList('${c.dictType}')}" var="dict">
 											<option value="${"$"}{dict.value}">${"$"}{dict.label}</option>
 										</c:forEach>

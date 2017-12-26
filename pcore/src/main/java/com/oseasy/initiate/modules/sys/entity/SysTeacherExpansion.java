@@ -27,7 +27,7 @@ public class SysTeacherExpansion extends User {
 	private String joinReviewTime;		// 参与评审年份
 	private String firstBank;		// 开户银行
 	private Integer bankAccount;		// 银行账号
-	private String teachertype;		// 导师类型
+	private String teachertype;		// 导师来源
 
 	public SysTeacherExpansion() {
 		super();

@@ -4,8 +4,9 @@ import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.utils.FileUpUtils;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
 import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.project.entity.*;
 import com.oseasy.initiate.modules.project.service.*;
@@ -102,13 +103,10 @@ public class BackProjectCloseController extends BaseController {
 			//查找项目团队相关信息 projectDeclare.id
 			Team team=teamService.get(projectDeclare.getTeamId());
 			model.addAttribute("team",team);
-			//查找学生
-			TeamUserRelation tur1=new TeamUserRelation();
-			tur1.setTeamId(projectDeclare.getTeamId());
-			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+			List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turStudents",turStudents);
 			//查找导师
-			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turTeachers",turTeachers);
 
 			//查找项目分工
@@ -132,11 +130,11 @@ public class BackProjectCloseController extends BaseController {
 			model.addAttribute("projectCloseResultList",projectCloseResultList);
 
 			//查找结项附件
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid",projectClose.getProjectId());
-			map.put("file_step", FileTypeEnum.S103.getValue());
-			map.put("type",FileSourceEnum.S0.getValue());
-			List<Map<String,String>> fileListMap=sysAttachmentService.getFileInfo(map);
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectClose.getProjectId());
+			sa.setFileStep(FileStepEnum.S103);
+			sa.setType(FileTypeEnum.S0);
+			List<SysAttachment> fileListMap =  sysAttachmentService.getFiles(sa);
 			model.addAttribute("fileListMap",fileListMap);
 
 

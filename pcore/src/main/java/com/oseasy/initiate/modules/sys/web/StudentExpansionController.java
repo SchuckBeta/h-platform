@@ -8,10 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.*;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,15 +20,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
+import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
+import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
+import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
+import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
 import com.oseasy.initiate.modules.sys.service.UserService;
 import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
 import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
 import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
 
@@ -54,8 +54,6 @@ public class StudentExpansionController extends BaseController {
 	private UserService  userService;
 	@Autowired
 	private FtpService ftpService;
-	@Autowired
-	private OfficeService officeService;
 	@Autowired
 	private TeamUserRelationService teamUserRelationService;
 	@Autowired
@@ -94,11 +92,11 @@ public class StudentExpansionController extends BaseController {
 					model.addAttribute("user", user);
 				}
 
-	      List<ProjectExpVo> projectExpVo=projectDeclareService.getExpsByUserId(user.getId());//查询项目经历
-	      List<gContestUndergo> gContest=userService.findContestByUserId(user.getId()); //查询大赛经历
-	      model.addAttribute("projectExpVo", projectExpVo);
-	      model.addAttribute("gContest", gContest);
-	      model.addAttribute("showExperice", "1");
+			List<ProjectExpVo> projectExpVo=studentExpansionService.findProjectByStudentId(studentExpansion.getUser().getId());//查询项目经历
+			List<GContestUndergo> gContest=studentExpansionService.findGContestByStudentId(studentExpansion.getUser().getId()); //查询大赛经历
+			model.addAttribute("projectExpVo", projectExpVo);
+			model.addAttribute("gContestExpVo", gContest);
+			model.addAttribute("cuser", studentExpansion.getUser().getId());
 			}
 		}
 		model.addAttribute("studentExpansion", studentExpansion);
@@ -175,8 +173,7 @@ public class StudentExpansionController extends BaseController {
 	@RequestMapping(value = "addStu")
 	public String AddStu(StudentExpansion studentExpansion, RedirectAttributes redirectAttributes) {
 		String uid = UUID.randomUUID().toString().replaceAll("-", "");
-		studentExpansion.getUser().setId(uid);;
-		User user = studentExpansion.getUser();
+		studentExpansion.getUser().setId(uid);
 		studentExpansionService.save(studentExpansion);
 		return "redirect:" + Global.getAdminPath() + "/sys/studentExpansion/?repage";
 	}

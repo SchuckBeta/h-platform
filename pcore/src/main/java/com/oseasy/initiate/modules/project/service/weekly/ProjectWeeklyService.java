@@ -10,10 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
 import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.project.dao.weekly.ProjectWeeklyDao;
 import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
@@ -50,24 +48,7 @@ public class ProjectWeeklyService extends CrudService<ProjectWeeklyDao, ProjectW
 	@Transactional(readOnly = false)
 	public void submitVo(ProjectWeeklyVo vo) {
 		super.save(vo.getProjectWeekly());
-		if (vo.getFileInfo()!=null) {
-			for(Map<String,String> map:vo.getFileInfo()) {
-				SysAttachment sa=new SysAttachment();
-				sa.setUid(vo.getProjectWeekly().getId());
-				sa.setName(map.get("arrName"));
-				String[] ss=map.get("arrName").split("\\.");
-				sa.setSuffix(ss[ss.length-1]);
-				sa.setType(FileSourceEnum.S0.getValue());
-				sa.setFileStep(FileTypeEnum.S101.getValue());
-				FtpUtil t = new FtpUtil();
-				try {
-					sa.setUrl(t.moveFile(t.getftpClient(),map.get("arrUrl")));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				sysAttachmentService.save(sa);
-			}
-		}
+		sysAttachmentService.saveByVo(vo.getAttachMentEntity(),vo.getProjectWeekly().getId(),FileTypeEnum.S0,FileStepEnum.S101);
 	}
 	@Transactional(readOnly = false)
 	public void saveVo(ProjectWeeklyVo vo) {
@@ -76,24 +57,7 @@ public class ProjectWeeklyService extends CrudService<ProjectWeeklyDao, ProjectW
 		vo.getProjectWeekly().setUpdateBy(u);
 		vo.getProjectWeekly().setUpdateDate(new Date());
 		dao.saveSuggest(vo.getProjectWeekly());
-		if (vo.getFileInfo()!=null) {
-			for(Map<String,String> map:vo.getFileInfo()) {
-				SysAttachment sa=new SysAttachment();
-				sa.setUid(vo.getProjectWeekly().getId());
-				sa.setName(map.get("arrName"));
-				String[] ss=map.get("arrName").split("\\.");
-				sa.setSuffix(ss[ss.length-1]);
-				sa.setType(FileSourceEnum.S0.getValue());
-				sa.setFileStep(FileTypeEnum.S101.getValue());
-				FtpUtil t = new FtpUtil();
-				try {
-					sa.setUrl(t.moveFile(t.getftpClient(),map.get("arrUrl")));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				sysAttachmentService.save(sa);
-			}
-		}
+		sysAttachmentService.saveByVo(vo.getAttachMentEntity(),vo.getProjectWeekly().getId(),FileTypeEnum.S0,FileStepEnum.S101);
 	}
 	@Transactional(readOnly = false)
 	public void delete(ProjectWeekly projectWeekly) {

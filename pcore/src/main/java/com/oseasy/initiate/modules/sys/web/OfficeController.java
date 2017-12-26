@@ -96,7 +96,7 @@ public class OfficeController extends BaseController {
 					size++;
 				}
 			}
-			office.setCode(office.getParent().getCode() + StringUtil.leftPad(String.valueOf(size > 0 ? size+1 : 1), 3, "0"));
+			office.setCode((office.getParent().getCode()==null?"":office.getParent().getCode()) + StringUtil.leftPad(String.valueOf(size > 0 ? size+1 : 1), 3, "0"));
 		}
 		model.addAttribute("office", office);
 		return "modules/sys/officeForm";
@@ -159,7 +159,32 @@ public class OfficeController extends BaseController {
 //		}
 		return "redirect:" + adminPath + "/sys/office/list?id="+office.getParentId()+"&parentIds="+office.getParentIds();
 	}
-
+	@ResponseBody
+	@RequestMapping(value = "treeDataForUserSel")
+	public List<Map<String, Object>> treeDataForUserSel(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
+			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		List<Office> list = officeService.findListFront(isAll);
+		for (int i=0; i<list.size(); i++) {
+			Office e = list.get(i);
+			if ((StringUtil.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))
+					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
+					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
+					) {
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", e.getParentId());
+				map.put("pIds", e.getParentIds());
+				map.put("name", e.getName());
+				map.put("grade", e.getGrade());
+				if (type != null && "3".equals(type)) {
+					map.put("isParent", true);
+				}
+				mapList.add(map);
+			}
+		}
+		return mapList;
+	}
 	/**
 	 * 获取机构JSON数据。
 	 * @param extId 排除的ID

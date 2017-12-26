@@ -17,7 +17,7 @@ package com.oseasy.initiate.modules.actyw.tool.process.vo;
  */
 public enum StenFuntype {
   SFT_NOT_SELECT("0", "不可选"),
-  SFT_SELECT("1", "不可选");
+  SFT_SELECT("1", "可选");
 
   private String val;
   private String remark;

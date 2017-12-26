@@ -4,8 +4,9 @@ import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.utils.FileUpUtils;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
 import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.project.entity.*;
 import com.oseasy.initiate.modules.project.service.*;
@@ -96,35 +97,33 @@ public class BackProMidController extends BaseController {
 			model.addAttribute("team",team);
 
 			//查找学生
-			TeamUserRelation tur1=new TeamUserRelation();
-			tur1.setTeamId(projectDeclare.getTeamId());
-			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
-//			model.addAttribute("turStudents",turStudents);
-
-
-
-			//组成项目组成员
-			StringBuffer stuNames=new StringBuffer("");
-			for(TeamUserRelation turStudent:turStudents) {
-				String name=turStudent.getStudent().getName();
-				stuNames.append(name+"/");
-			}
-			String teamList=stuNames.toString().substring(0,stuNames.toString().length()-1);
-			model.addAttribute("teamList",teamList);
-
-
+			List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
+			model.addAttribute("turStudents",turStudents);
 			//查找导师
-			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turTeachers",turTeachers);
-			//组成项目导师
-			StringBuffer teaNames=new StringBuffer("");
-			for (TeamUserRelation turTeacher:turTeachers) {
-				String name=turTeacher.getTeacher().getName();
-				teaNames.append(name+"/");
-			}
-			String teacher=teaNames.toString().substring(0,teaNames.toString().length()-1);
-			model.addAttribute("teacher",teacher);
 
+			if(turStudents!=null && turStudents.size()>0){
+				//组成项目组成员
+				StringBuffer stuNames=new StringBuffer("");
+				for(Map<String,String> turStudent:turStudents) {
+					String name=turStudent.get("name");
+					stuNames.append(name+"/");
+				}
+				String teamList=stuNames.toString().substring(0,stuNames.toString().length()-1);
+				model.addAttribute("teamList",teamList);
+			}
+
+			//组成项目导师
+			if(turTeachers!=null && turTeachers.size()>0) {
+				StringBuffer teaNames = new StringBuffer("");
+				for (Map<String, String> turTeacher : turTeachers) {
+					String name = turTeacher.get("name");
+					teaNames.append(name + "/");
+				}
+				String teacher = teaNames.toString().substring(0, teaNames.toString().length() - 1);
+				model.addAttribute("teacher", teacher);
+			}
 			//查找项目分工
 			List<ProjectPlan> plans=projectPlanService.findListByProjectId(projectDeclare.getId());
 			model.addAttribute("plans",plans);
@@ -138,11 +137,19 @@ public class BackProMidController extends BaseController {
 			model.addAttribute("proProgressList",proProgressList);
 
 			//查找中期附件
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid",proMid.getProjectId());
-			map.put("file_step", FileTypeEnum.S102.getValue());
-			map.put("type",FileSourceEnum.S0.getValue());
-			List<Map<String,String>> fileListMap=sysAttachmentService.getFileInfo(map);
+//			Map<String,String> map=new HashMap<String,String>();
+//			map.put("uid",proMid.getProjectId());
+//			map.put("file_step", FileStepEnum.S102.getValue());
+//			map.put("type",FileTypeEnum.S0.getValue());
+//			List<Map<String,String>> fileListMap=sysAttachmentService.getFileInfo(map);
+//			model.addAttribute("fileListMap",fileListMap);
+
+			//查找中期附件
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(proMid.getProjectId());
+			sa.setFileStep(FileStepEnum.S102);
+			sa.setType(FileTypeEnum.S0);
+			List<SysAttachment> fileListMap =  sysAttachmentService.getFiles(sa);
 			model.addAttribute("fileListMap",fileListMap);
 
 		}

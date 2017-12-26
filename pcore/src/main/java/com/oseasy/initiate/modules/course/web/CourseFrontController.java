@@ -8,6 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +25,8 @@ import com.oseasy.initiate.common.utils.CacheUtils;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.course.entity.Course;
-import com.oseasy.initiate.modules.course.entity.CourseAttachment;
 import com.oseasy.initiate.modules.course.entity.CourseCategory;
 import com.oseasy.initiate.modules.course.entity.CourseTeacher;
-import com.oseasy.initiate.modules.course.service.CourseAttachmentService;
 import com.oseasy.initiate.modules.course.service.CourseCategoryService;
 import com.oseasy.initiate.modules.course.service.CourseService;
 import com.oseasy.initiate.modules.course.service.CourseTeacherService;
@@ -47,7 +49,7 @@ public class CourseFrontController extends BaseController {
     @Autowired
     CourseTeacherService courseTeacherService;
     @Autowired
-    CourseAttachmentService courseAttachmentService;
+    SysAttachmentService sysAttachmentService;
 
 
     @ModelAttribute
@@ -69,13 +71,18 @@ public class CourseFrontController extends BaseController {
         courseService.updateViews(course);*/
 		/*更改浏览量 夏添的方法*/
         InteractiveUtil.updateViews(course.getId(),request,CacheUtils.COURSE_VIEWS_QUEUE);
-      //查找课程专业分类 授课老师  课件
+      //查找课程专业分类 授课老师
         if(StringUtil.isNotBlank(course.getId())){
             List<CourseCategory> categoryList = courseCategoryService.getByCourseId(course.getId());  //查找课程专业分类
             course.setCategoryList(categoryList);
             List<CourseTeacher> teacherList =  courseTeacherService.getByCourseId(course.getId());  //查找授课老师
             course.setTeacherList(teacherList);
-            List<CourseAttachment> attachmentList = courseAttachmentService.getByCourseId(course.getId()); //查找课件
+            //查找课件
+            SysAttachment sa=new SysAttachment();
+            sa.setUid(course.getId());
+            sa.setType(FileTypeEnum.S9);
+            sa.setFileStep(FileStepEnum.S900);
+            List<SysAttachment> attachmentList =  sysAttachmentService.getFiles(sa);
             course.setAttachmentList(attachmentList);
         }
 
@@ -107,7 +114,13 @@ public class CourseFrontController extends BaseController {
                   }
                 }
             }
-            List<CourseAttachment> attachmentList = courseAttachmentService.getByCourseId(courseItem.getId()); //查找课件
+
+            //查找课件
+            SysAttachment sa=new SysAttachment();
+            sa.setUid(courseItem.getId());
+            sa.setType(FileTypeEnum.S9);
+            sa.setFileStep(FileStepEnum.S900);
+            List<SysAttachment> attachmentList =  sysAttachmentService.getFiles(sa);
             courseItem.setAttachmentList(attachmentList);
         }
 

@@ -25,6 +25,7 @@ import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.cms.entity.CmsIndexResource;
 import com.oseasy.initiate.modules.cms.service.CmsIndexResourceService;
@@ -113,7 +114,7 @@ public class CmsIndexResourceController extends BaseController {
 				}
 				SysAttachment sysAttachment=new SysAttachment();
 				sysAttachment.setUid(cmsIndexResource.getId());
-				sysAttachment.setType("4");
+				sysAttachment.setType(FileTypeEnum.S4);
 				sysAttachment.setName(arrNames[i]);
 				sysAttachment.setUrl(arrUrl[i]);
 				sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));

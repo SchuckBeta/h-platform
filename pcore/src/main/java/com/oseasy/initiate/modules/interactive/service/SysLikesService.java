@@ -22,6 +22,7 @@ import com.oseasy.initiate.modules.interactive.dao.SysCommentDao;
 import com.oseasy.initiate.modules.interactive.dao.SysLikesDao;
 import com.oseasy.initiate.modules.interactive.entity.SysLikes;
 import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
+import com.oseasy.initiate.modules.sys.dao.UserDao;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
 
@@ -43,6 +44,43 @@ public class SysLikesService extends CrudService<SysLikesDao, SysLikes> {
 	private ExcellentShowDao excellentShowDao;
 	@Autowired
 	private CourseDao courseDao;
+	@Autowired
+	private UserDao userDao;
+
+	/**
+	 * 导师、学生详情赞队列的处理
+	 * @return 处理的数据条数
+	 */
+	@Transactional(readOnly = false)
+	public int handleUserInfoLikes(){
+		Map<String,Integer> map=new HashMap<String,Integer>();//需要更新点赞数量的map
+		int tatol=10000;
+		int count=0;
+		Integer up=null;
+		SysLikes sc=(SysLikes)CacheUtils.rpop(CacheUtils.USER_LIKES_QUEUE);
+		while(count<tatol&&sc!=null){
+			if(sysLikesDao.getExistsLike(sc)==0){
+				count++;//增加了一条数据
+				sysLikesDao.insert(sc);
+				up=map.get(sc.getForeignId());
+				if(up==null){
+					map.put(sc.getForeignId(), 1);	
+				}else{
+					map.put(sc.getForeignId(), up+1);
+				}
+			}
+			if(count<tatol){
+				sc=(SysLikes)CacheUtils.rpop(CacheUtils.USER_LIKES_QUEUE);
+			}
+		}
+		if(count>0){//有数据需要处理
+			userDao.updateLikes(map);
+			for(String userid:map.keySet()){
+				CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_ID_ +userid);
+			}
+		}
+		return count;
+	}
 	/**
 	 * 评论的点赞队列的处理
 	 * @return 处理的数据条数
@@ -135,6 +173,40 @@ public class SysLikesService extends CrudService<SysLikesDao, SysLikes> {
 			courseDao.updateLikes(map);
 		}
 		return count;
+	}
+	public JSONObject saveForUserInfo(JSONObject param,HttpServletRequest request){
+		JSONObject js= new JSONObject();
+		js.put("ret", "1");
+		js.put("msg", "点赞成功");
+		User user=UserUtils.getUser();
+		String foreignId=param.getString("foreignId");
+		String userid=user.getId();
+		if(StringUtil.isEmpty(userid)){
+			js.put("ret", "0");
+			js.put("msg", "点赞失败，请重新登录");
+			return js;
+		}
+		if(userid.equals(foreignId)){
+			js.put("ret", "0");
+			js.put("msg", "点赞失败，不能给自己点赞");
+			return js;
+		}
+		String ip=InteractiveUtil.getIpAddr(request);
+		if(StringUtil.isEmpty(foreignId)){
+			js.put("ret", "0");
+			js.put("msg", "发生了意外~");
+			return js;
+		}
+		SysLikes sc=new SysLikes();
+		sc.setId(IdGen.uuid());
+		sc.setCreateDate(new Date());
+		sc.setUserId(userid);
+		sc.setForeignId(foreignId);
+		sc.setToken("unknown");
+		sc.setDelFlag("0");
+		sc.setIp(ip);
+		CacheUtils.lpush(CacheUtils.USER_LIKES_QUEUE, sc);
+		return js;
 	}
 	public JSONObject save(JSONObject param,HttpServletRequest request){
 		JSONObject js= new JSONObject();

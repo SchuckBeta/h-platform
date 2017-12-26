@@ -3,7 +3,6 @@ package com.oseasy.initiate.modules.sys.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oseasy.initiate.common.utils.CacheUtils;
 import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.sms.SMSUtil;
+import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.SeekPwdService;

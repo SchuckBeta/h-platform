@@ -38,15 +38,17 @@ public class LoginController extends BaseController{
 
 	@Autowired
 	private SessionDAO sessionDAO;
+
 	@RequestMapping(value = "${adminPath}/sysMenuIndex", method = RequestMethod.GET)
 	public String sysMenuIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
-
 		return "modules/sys/sysMenuIndex";
 	}
+
 	@RequestMapping(value = "${adminPath}/sysOldIndex", method = RequestMethod.GET)
 	public String sysOldIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
-		return "modules/sys/sysIndex";
+	  return "modules/sys/sysIndex";
 	}
+
 	/**
 	 * 管理登录
 	 */

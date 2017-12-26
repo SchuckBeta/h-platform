@@ -69,7 +69,7 @@
 					<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-medium"/>
 				<#elseif c.showType == "select">
 					<form:select path="${c.javaFieldId}" class="input-medium">
-						<form:option value="" label=""/>
+						<form:option value="" label="--请选择--"/>
 						<form:options items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select>
 				<#elseif c.showType == "checkbox">
@@ -140,9 +140,9 @@
 				</#if>
 			</#list>
 			<shiro:hasPermission name="${permissionPrefix}:edit"><td>
-   				<a href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}">修改</a>
-				<a href="${r"${ctx}"}/${urlPrefix}/delete?id={{row.id}}" onclick="return confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', this.href)">删除</a>
-				<a href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{row.id}}">添加下级${functionNameSimple}</a>
+   				<a class="check_btn btn-pray btn-lx-primary" href="${r"${ctx}"}/${urlPrefix}/form?id={{row.id}}">修改</a>
+				<a class="check_btn btn-pray btn-lx-primary" href="${r"${ctx}"}/${urlPrefix}/delete?id={{row.id}}" onclick="return confirmx('确认要删除该${functionNameSimple}及所有子${functionNameSimple}吗？', this.href)">删除</a>
+				<a class="check_btn btn-pray btn-lx-primary" href="${r"${ctx}"}/${urlPrefix}/form?parent.id={{row.id}}">添加下级${functionNameSimple}</a>
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

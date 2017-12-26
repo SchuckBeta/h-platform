@@ -12,16 +12,22 @@ import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.CacheUtils;
 import com.oseasy.initiate.modules.impdata.dao.BackUserErrorDao;
+import com.oseasy.initiate.modules.impdata.dao.GcontestErrorDao;
 import com.oseasy.initiate.modules.impdata.dao.ImpInfoDao;
 import com.oseasy.initiate.modules.impdata.dao.ImpInfoErrmsgDao;
 import com.oseasy.initiate.modules.impdata.dao.OfficeErrorDao;
+import com.oseasy.initiate.modules.impdata.dao.ProMdApprovalErrorDao;
+import com.oseasy.initiate.modules.impdata.dao.ProMdCloseErrorDao;
+import com.oseasy.initiate.modules.impdata.dao.ProMdMidErrorDao;
+import com.oseasy.initiate.modules.impdata.dao.ProjectErrorDao;
+import com.oseasy.initiate.modules.impdata.dao.ProjectHsErrorDao;
 import com.oseasy.initiate.modules.impdata.dao.StudentErrorDao;
 import com.oseasy.initiate.modules.impdata.dao.TeacherErrorDao;
 import com.oseasy.initiate.modules.impdata.entity.ImpInfo;
 
 /**
  * 导入数据信息表Service
- * 
+ *
  * @author 9527
  * @version 2017-05-16
  */
@@ -37,7 +43,35 @@ public class ImpInfoService extends CrudService<ImpInfoDao, ImpInfo> {
 	private OfficeErrorDao officeErrorDao;
 	@Autowired
 	private TeacherErrorDao teacherErrorDao;
+	@Autowired
+	private ProjectErrorDao projectErrorDao;
+	@Autowired
+	private ProjectHsErrorDao projectHsErrorDao;
+	@Autowired
+	private ProMdCloseErrorDao proMdCloseErrorDao;
+	@Autowired
+	private ProMdApprovalErrorDao proMdApprovalErrorDao;
+	@Autowired
+	private ProMdMidErrorDao proMdMidErrorDao;
+	@Autowired
+	private GcontestErrorDao gcontestErrorDao;
 	public static Logger logger = Logger.getLogger(ImpInfoService.class);
+	public Page<Map<String, String>> getMdList(Page<Map<String, String>> page, Map<String, Object> param) {
+		if (page.getPageNo() <= 0) {
+			page.setPageNo(1);
+		}
+		int count = dao.getMdListCount(param);
+		param.put("offset", (page.getPageNo() - 1) * page.getPageSize());
+		param.put("pageSize", page.getPageSize());
+		List<Map<String, String>> list = null;
+		if (count > 0) {
+			list = dao.getMdList(param);
+		}
+		page.setCount(count);
+		page.setList(list);
+		page.initialize();
+		return page;
+	}
 	public Page<Map<String, String>> getList(Page<Map<String, String>> page, Map<String, Object> param) {
 		if (page.getPageNo() <= 0) {
 			page.setPageNo(1);
@@ -73,7 +107,7 @@ public class ImpInfoService extends CrudService<ImpInfoDao, ImpInfo> {
 		return super.findPage(page, impInfo);
 	}
 	@Transactional(readOnly = false)
-//	@Transactional(propagation=Propagation.REQUIRED) 
+//	@Transactional(propagation=Propagation.REQUIRED)
 	public void save(ImpInfo impInfo) {
 		super.save(impInfo);
 	}
@@ -82,14 +116,26 @@ public class ImpInfoService extends CrudService<ImpInfoDao, ImpInfo> {
 	public void delete(ImpInfo impInfo) {
 		String type=impInfo.getImpTpye();
 		super.delete(impInfo);
-		if ("1".equals(type)) {
+		if (ImpDataService.impStu.equals(type)) {
 			studentErrorDao.deleteByImpId(impInfo.getId());
-		}else if ("2".equals(type)) {
+		}else if (ImpDataService.impTea.equals(type)) {
 			teacherErrorDao.deleteByImpId(impInfo.getId());
-		}else if ("3".equals(type)) {
+		}else if (ImpDataService.impBackUser.equals(type)) {
 			backUserErrorDao.deleteByImpId(impInfo.getId());
-		}else if ("4".equals(type)) {
+		}else if (ImpDataService.impOrg.equals(type)) {
 			officeErrorDao.deleteByImpId(impInfo.getId());
+		}else if (ImpDataService.impProject.equals(type)) {
+			projectErrorDao.deleteByImpId(impInfo.getId());
+		}else if (ImpDataService.impMdAppr.equals(type)) {
+			proMdApprovalErrorDao.deleteByImpId(impInfo.getId());
+		}else if (ImpDataService.impMdMid.equals(type)) {
+			proMdMidErrorDao.deleteByImpId(impInfo.getId());
+		}else if (ImpDataService.impMdClose.equals(type)) {
+			proMdCloseErrorDao.deleteByImpId(impInfo.getId());
+		}else if (ImpDataService.impProjectHs.equals(type)) {
+			projectHsErrorDao.deleteByImpId(impInfo.getId());
+		}else if (ImpDataService.impGcontest.equals(type)) {
+			gcontestErrorDao.deleteByImpId(impInfo.getId());
 		}
 		impInfoErrmsgDao.deleteByImpId(impInfo.getId());
 	}

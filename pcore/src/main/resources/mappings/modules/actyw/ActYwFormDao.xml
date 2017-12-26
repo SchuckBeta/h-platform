@@ -4,6 +4,10 @@
 
 	<sql id="actYwFormColumns">
 		a.id AS "id",
+		a.list_id AS "listId",
+		a.flow_type AS "flowType",
+		a.style_type AS "styleType",
+		a.client_type AS "clientType",
 		a.pro_type AS "proType",
 		a.name AS "name",
 		a.type AS "type",
@@ -18,10 +22,22 @@
 		a.create_by AS "createBy.id",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-		o6.name AS "office.name"
+		o6.name AS "office.name",
+
+		b.id AS "listForm.id",
+		b.flow_type AS "listForm.flowType",
+		b.style_type AS "listForm.styleType",
+		b.client_type AS "listForm.clientType",
+		b.pro_type AS "listForm.proType",
+		b.name AS "listForm.name",
+		b.type AS "listForm.type",
+		b.model AS "listForm.model",
+		b.path AS "listForm.path"
+
 	</sql>
 
 	<sql id="actYwFormJoins">
+		LEFT JOIN act_yw_form b ON b.id = a.list_id
 		LEFT JOIN sys_office o6 ON o6.id = a.office_id
 	</sql>
 
@@ -46,6 +62,21 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="flowType != null and flowType != ''">
+				AND a.flow_type LIKE
+					<if test="dbName == 'oracle'">'%'||#{flowType}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{flowType}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{flowType},'%')</if>
+			</if>
+			<if test="styleType != null and styleType != ''">
+				AND a.style_type = #{styleType}
+			</if>
+			<if test="clientType != null and clientType != ''">
+				AND a.client_type = #{clientType}
+			</if>
+			<if test="proType != null and proType != ''">
+				AND a.pro_type = #{proType}
+			</if>
 			<if test="type != null and type != ''">
 				AND a.type = #{type}
 			</if>
@@ -61,7 +92,60 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date DESC, a.flow_type, a.type
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByInStyle" resultType="ActYwForm" parameterType="ActYwFormVo">
+		SELECT
+			<include refid="actYwFormColumns"/>
+		FROM act_yw_form a
+		<include refid="actYwFormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="flowType != null and flowType != ''">
+				AND a.flow_type LIKE
+					<if test="dbName == 'oracle'">'%'||#{flowType}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{flowType}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{flowType},'%')</if>
+			</if>
+			<if test="inStyleList != null">
+				<if test="inStyleList == true">
+					AND a.style_type = 1
+				</if>
+				<if test="inStyleList == false">
+					AND (a.style_type = 2 OR a.style_type = 3)
+				</if>
+			</if>
+			<if test="clientType != null and clientType != ''">
+				AND a.client_type = #{clientType}
+			</if>
+			<if test="proType != null and proType != ''">
+				AND a.pro_type = #{proType}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="model != null and model != ''">
+				AND a.model = #{model}
+			</if>
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC, a.flow_type, a.type
 			</otherwise>
 		</choose>
 	</select>
@@ -79,7 +163,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date DESC, a.flow_type, a.type
 			</otherwise>
 		</choose>
 	</select>
@@ -87,6 +171,10 @@
 	<insert id="insert">
 		INSERT INTO act_yw_form(
 			id,
+			list_id,
+			flow_type,
+			style_type,
+			client_type,
 			pro_type,
 			name,
 			type,
@@ -103,6 +191,10 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{listId},
+			#{flowType},
+			#{styleType},
+			#{clientType},
 			#{proType},
 			#{name},
 			#{type},
@@ -122,6 +214,10 @@
 
 	<update id="update">
 		UPDATE act_yw_form SET
+			list_id=#{listId},
+			flow_type=#{flowType},
+			style_type=#{styleType},
+			client_type=#{clientType},
 			pro_type=#{proType},
 			name = #{name},
 			type = #{type},

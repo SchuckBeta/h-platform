@@ -144,14 +144,41 @@ public class RtSvl {
   }
   /**
    * 节点类型常量类.
+   * 字典：act_node_type.
    * @author chenhao
    * @date 2017年6月28日 下午2:06:55
    *
    */
   public static class RtTypeVal {
-    public static final String RT_T0 = "0";
-    public static final String RT_T1 = "1";
-    public static final String RT_T2 = "2";
-    public static final String RT_T3 = "3";
+    public static final String RT_T0 = "0";//流程图形节点
+
+    public static final String RT_T1 = "1";//立项审核
+    public static final String RT_T2 = "2";//中期审核
+    public static final String RT_T3 = "3";//结项审核
+    public static final String RT_T4 = "4";//结果评定
+    public static final String RT_T5 = "5";//学分认定
+    public static final String RT_T10 = "10";//学分
+
+    public static final String RT_T20 = "20";//网评
+    public static final String RT_T30 = "30";//路演
+    public static final String RT_T40 = "40";//评级
+
+    public static final String RT_TBLACK = "100";//空白节点
+
+  }
+
+  /**
+   * 节点类型必填项常量类.
+   * 字典：act_node_require_type
+   * 可选(任意个数)/必要(只有一个)/必要(至少一个)/没有或一个
+   * @author chenhao
+   * @date 2017年6月28日 下午2:06:55
+   *
+   */
+  public static class RtRequireVal {
+    public static final String RT_T1 = "1";//可选(任意个数)
+    public static final String RT_T2 = "2";//必要(只有一个)
+    public static final String RT_T3 = "3";//必要(至少一个)
+    public static final String RT_T4 = "4";//没有或一个
   }
 }

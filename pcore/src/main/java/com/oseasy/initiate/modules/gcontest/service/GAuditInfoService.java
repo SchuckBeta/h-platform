@@ -70,6 +70,10 @@ public class GAuditInfoService extends CrudService<GAuditInfoDao, GAuditInfo> {
 		return dao.getInfo(gAuditInfo);
 	}
 
+	public GAuditInfo getInfoByLoginname(GAuditInfo gAuditInfo) {
+		return dao.getInfoByLoginname(gAuditInfo);
+	}
+
 	public float getAuditAvgInfo(GAuditInfo infoSerch) {
 		// TODO Auto-generated method stub
 		List<GAuditInfo> infos=dao.getInfo(infoSerch);

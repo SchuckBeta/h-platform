@@ -42,11 +42,20 @@
 		b.update_by AS "category.updateBy.id",
 		b.update_date AS "category.updateDate",
 		b.remarks AS "category.remarks",
-		b.del_flag AS "category.delFlag"
+		b.del_flag AS "category.delFlag",
+
+		bp.name AS "category.parent.name",
+		bpp.id AS "category.parent.parent.id",
+		bpp.name AS "category.parent.parent.name",
+		bppp.id AS "category.parent.parent.parent.id",
+		bppp.name AS "category.parent.parent.parent.name"
 	</sql>
 
 	<sql id="cmsIndexRegionJoins">
 	    LEFT JOIN cms_category b ON b.id = a.category_id
+	    LEFT JOIN cms_category bp ON bp.id = b.parent_id
+	    LEFT JOIN cms_category bpp ON bpp.id = bp.parent_id
+	    LEFT JOIN cms_category bppp ON bppp.id = bpp.parent_id
 	</sql>
 
 	<select id="get" resultType="CmsIndexRegion">
@@ -93,10 +102,10 @@
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,b.parent_id,${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,b.parent_id,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -111,10 +120,10 @@
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,b.parent_id,${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,b.parent_id,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>

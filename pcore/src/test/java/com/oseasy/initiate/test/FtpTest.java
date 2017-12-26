@@ -18,10 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 附件后台测试
@@ -30,11 +27,12 @@ import java.util.Map;
 public class FtpTest {
 
 	public static void main(String[] args) throws IOException {
-     /*   FtpUtil t = new FtpUtil();
-      //  t.upload(ftpUrl, userName, port, password, directory, srcFileName, destName)
-        t.upload("192.168.0.105","ftponly",2121,"os-easy",
+      //  FtpUtil.upload(ftpUrl, userName, port, password, directory, srcFileName, destName)
+      	/*FtpUtil.upload("192.168.0.122","ftponly",21,"1qazse4",
         		"/tool/oseasy/gcontest",
-        		"C:\\Users\\Administrator\\Desktop\\大赛审核步骤参数.txt","副本.txt");*/
+        		"C:\\Users\\Administrator\\Desktop\\Sonar持续集成安装配置.docx","work中文.docx");*/
+		//FtpClient ftpClient =FtpUtil.getftpClient();
+		//t.download()
 		/*Map<String,Object> vars=new HashMap<String,Object>();
 		vars.put("grade","1");
 		vars.put("grade","0");
@@ -54,10 +52,20 @@ public class FtpTest {
 		String str = "&lt;p&gt;";
 		str = StringEscapeUtils.unescapeHtml4(str);
 		System.out.println(str);*/
-		String s="yyyyMMdd HH:mm:ss";
+	/*	String s="yyyyMMdd HH:mm:ss";
 		//DateUtil.formatDate(new Date(), s);
-		DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss");
+		DateUtil.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss");*/
 		//DateFormatUtils.format(new Date(), s);
+		List<String> idsList=new ArrayList<String>();
+		idsList.add("1");
+		idsList.add("2");
+		idsList.add("3");
+		String ids ="";
+		for(String id:idsList){
+			ids=ids+id+",";
+		}
+		ids=ids.substring(0,ids.lastIndexOf(","));
+		System.out.println(ids);
 	}
 
 	public static void changeState(GContest gc) {

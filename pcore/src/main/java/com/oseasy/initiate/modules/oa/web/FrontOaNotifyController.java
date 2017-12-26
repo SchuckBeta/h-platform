@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.utils.CacheUtils;
+import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
@@ -28,6 +29,8 @@ import com.oseasy.initiate.modules.oa.service.OaNotifyKeywordService;
 import com.oseasy.initiate.modules.oa.service.OaNotifyService;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
+
+import net.sf.json.JSONObject;
 
 /**
  * 通知通告Controller
@@ -41,7 +44,6 @@ public class FrontOaNotifyController extends BaseController {
 	private OaNotifyKeywordService oaNotifyKeywordService;
 	@Autowired
 	private OaNotifyService oaNotifyService;
-
 	@ModelAttribute
 	public OaNotify get(@RequestParam(required=false) String id) {
 		OaNotify entity = null;
@@ -53,7 +55,6 @@ public class FrontOaNotifyController extends BaseController {
 		}
 		return entity;
 	}
-
 	@RequestMapping(value = {"viewList"})
 	public String viewList(OaNotify oaNotify, HttpServletRequest request, HttpServletResponse response, Model model) {
 //		User currUser = UserUtils.getUser();
@@ -65,6 +66,24 @@ public class FrontOaNotifyController extends BaseController {
 //		Page<OaNotify> page = oaNotifyService.find(new Page<OaNotify>(request, response), oaNotify);
 //		model.addAttribute("page", page);
 		return "modules/oa/oaNotifyViewList";
+	}
+	@RequestMapping(value = {"getUnreadCount"})
+	@ResponseBody
+	public JSONObject getUnreadCount() {
+		String uid=UserUtils.getUser().getId();
+		JSONObject js=new JSONObject();
+		js.put("ret", "1");
+		if(StringUtil.isEmpty(uid)){
+			js.put("ret", "0");
+			js.put("count", 0);
+			return js;
+		}
+		Integer c=oaNotifyService.getUnreadCount(uid);
+		if(c==null){
+			c=0;
+		}
+		js.put("count",c);
+		return js;
 	}
 
 
@@ -106,7 +125,16 @@ public class FrontOaNotifyController extends BaseController {
 		return "modules/oa/indexOaNotifySendList";
 	}
 
-
+	@RequestMapping(value = "getReadFlag")
+	@ResponseBody
+	public String getReadFlag(String oaNotifyId) {
+		String flag="0";
+		String uid=UserUtils.getUser().getId();
+		if(StringUtil.isNotEmpty(uid)){
+			return oaNotifyService.getReadFlag(oaNotifyId, uid);
+		}
+		return flag;
+	}
 	/**
 	 * 查看我的通知
 	 */
@@ -117,7 +145,16 @@ public class FrontOaNotifyController extends BaseController {
 		oaNotify.setId(oaNotifyId);
 		oaNotifyService.updateReadFlag(oaNotify);
 		oaNotify = oaNotifyService.get(oaNotify.getId());
+		if(oaNotify == null){
+		  return null;
+		}
 		OaNotify  oaNotifyTmp = oaNotifyService.getRecordList(oaNotify);
+		if(oaNotifyTmp == null){
+      		return null;
+    	}
+		if((oaNotify == null) || (oaNotifyTmp == null)){
+		  return oaNotify;
+		}
 		oaNotify.setOaNotifyRecordList(oaNotifyTmp.getOaNotifyRecordList());
 		SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if (oaNotify.getEffectiveDate()!=null) {
@@ -127,6 +164,9 @@ public class FrontOaNotifyController extends BaseController {
 		if (oaNotify.getContent()!=null) {
 			oaNotify.setContent(StringUtil.replaceEscapeHtml(oaNotify.getContent()));
 		}
+		if (oaNotify!=null&&StringUtil.isNotEmpty(oaNotify.getContent())) {
+			oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
+		}
 		return oaNotify;
 	}
 	/**
@@ -134,28 +174,33 @@ public class FrontOaNotifyController extends BaseController {
 	 */
 	@RequestMapping(value = "viewDynamic")
 	public String viewDynamic(OaNotify oaNotify,Model model,HttpServletRequest request) {
-		if(StringUtil.isEmpty(oaNotify.getViews())){
-			oaNotify.setViews("0");
-		}
-		if(StringUtil.isNotEmpty(oaNotify.getId())){
-			oaNotify.setKeywords(oaNotifyKeywordService.findListByEsid(oaNotify.getId()));
-		}
-		if(StringUtil.isNotEmpty(oaNotify.getContent())){
-			oaNotify.setContent(StringEscapeUtils.unescapeHtml4(oaNotify.getContent()));
-		}
-		if(StringUtil.isNotEmpty(oaNotify.getId())){
-			model.addAttribute("more",oaNotifyService.getMore(oaNotify.getType(),oaNotify.getId(),oaNotify.getKeywords()));
-		}
-		if(StringUtil.isNotEmpty(oaNotify.getId())){
-			InteractiveUtil.updateViews(oaNotify.getId(), request,CacheUtils.DYNAMIC_VIEWS_QUEUE);
-		}
+		if(oaNotify != null){
+	  	  	if(StringUtil.isEmpty(oaNotify.getViews())){
+	  			oaNotify.setViews("0");
+	  		}
+	  		if(StringUtil.isNotEmpty(oaNotify.getId())){
+	  			oaNotify.setKeywords(oaNotifyKeywordService.findListByEsid(oaNotify.getId()));
+	  		}
+	  		if(StringUtil.isNotEmpty(oaNotify.getContent())){
+	  			oaNotify.setContent(StringEscapeUtils.unescapeHtml4(oaNotify.getContent()));
+	  		}
+	  		if (oaNotify!=null&&StringUtil.isNotEmpty(oaNotify.getContent())) {
+	  			oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
+	  		}
+	  		if(StringUtil.isNotEmpty(oaNotify.getId())){
+	  			model.addAttribute("more",oaNotifyService.getMore(oaNotify.getType(),oaNotify.getId(),oaNotify.getKeywords()));
+	  		}
+	  		if(StringUtil.isNotEmpty(oaNotify.getId())){
+	  			InteractiveUtil.updateViews(oaNotify.getId(), request,CacheUtils.DYNAMIC_VIEWS_QUEUE);
+	  		}
+	    }
 		return "modules/oa/dynamicView";
 	}
 
 	@RequestMapping(value = "deleteRec")
 	public String deleteRec(OaNotify oaNotify, RedirectAttributes redirectAttributes) {
 		oaNotifyService.deleteRec(oaNotify);
-		addMessage(redirectAttributes, "删除发送通知成功");
+		addMessage(redirectAttributes, "删除成功");
 		return "redirect:" + frontPath + "/oa/oaNotify/indexMyNoticeList/?repage";
 	}
 
@@ -163,7 +208,7 @@ public class FrontOaNotifyController extends BaseController {
 	@RequestMapping(value = "deleteSend")
 	public String deleteSend(OaNotify oaNotify, RedirectAttributes redirectAttributes) {
 		oaNotifyService.deleteSend(oaNotify);
-		addMessage(redirectAttributes, "删除接收通知成功");
+		addMessage(redirectAttributes, "删除成功");
 		return "redirect:" + frontPath + "/oa/oaNotify/indexMySendNoticeList/?repage";
 	}
 
@@ -211,5 +256,4 @@ public class FrontOaNotifyController extends BaseController {
 		page = oaNotifyService.findPage(page, oaNotify);
 		return page;
 	}
-
 }

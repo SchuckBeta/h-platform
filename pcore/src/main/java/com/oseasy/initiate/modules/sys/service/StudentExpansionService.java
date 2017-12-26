@@ -2,12 +2,10 @@ package com.oseasy.initiate.modules.sys.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,14 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.gContestUndergo;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.enums.GContestStatusEnum;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.oa.dao.OaNotifyRecordDao;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
 import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
@@ -30,6 +21,15 @@ import com.oseasy.initiate.modules.oa.service.OaNotifyService;
 import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
 import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
 import com.oseasy.initiate.modules.sys.dao.StudentExpansionDao;
+import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import com.oseasy.initiate.modules.sys.entity.Office;
+import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
+import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+
+import net.sf.json.JSONObject;
 
 /**
  * 学生扩展信息表Service
@@ -54,7 +54,51 @@ public class StudentExpansionService extends CrudService<StudentExpansionDao, St
 	private OfficeService officeService;
 	@Autowired
 	private ProjectDeclareService projectDeclareService;
-	
+	@Autowired
+	private TeamUserRelationService teamUserRelationService;
+	public List<ProjectExpVo> findProjectByStudentId(String id) {
+		return dao.findProjectByStudentId(id);
+	}
+
+	public List<GContestUndergo> findGContestByStudentId(String id) {
+		return dao.findGContestByStudentId(id);
+	}
+	@Transactional(readOnly = false)
+	public JSONObject toInvite(String userIds,String userType,String teamId) {
+		JSONObject js=new JSONObject();
+		List<String> list=new ArrayList<String>();
+		js.put("ret", 0);
+		js.put("msg", "邀请失败");
+		int count=0;
+		if(StringUtil.isEmpty(userIds)||StringUtil.isEmpty(userType)||StringUtil.isEmpty(teamId)){
+			js.put("msg", "参数错误");
+			return js;
+		}
+		for(String tid:teamId.split(",")){
+			JSONObject tem=teamUserRelationService.frontToInvite(null, userIds, userType, tid);
+			if(tem.getBoolean("success")&&tem.getInt("res")!=0){
+				count++;
+				list.add(tid);
+			}
+		}
+		if(count==0){
+			js.put("msg", "邀请失败(人员已满或者该团队不在建设中或者检查该人员是否已在团队)");
+			return js;
+		}
+		if(count==teamId.split(",").length){
+			js.put("msg", "邀请成功");
+			js.put("teamIds",  org.apache.commons.lang3.StringUtils.join(list, ","));
+			js.put("ret", 1);
+			return js;
+		}
+		if(count<=teamId.split(",").length){
+			js.put("msg", "成功为"+count+"个团队发出邀请(人员已满或者该团队不在建设中或者检查该人员是否已在团队)");
+			js.put("teamIds",  org.apache.commons.lang3.StringUtils.join(list, ","));
+			js.put("ret", 1);
+			return js;
+		}
+		return js;
+	}
 	public StudentExpansion get(String id) {
 		return super.get(id);
 	}
@@ -148,22 +192,6 @@ public class StudentExpansionService extends CrudService<StudentExpansionDao, St
 				teamUserRelation.setUser(studentExpansion.getUser());
 				teamUserRelation.setTeamId(studentExpansion.getTeam().getId());
 				relationDao.update(teamUserRelation);
-			} else {
-				String tid = IdGen.uuid();
-				TeamUserRelation relation = new TeamUserRelation();
-				relation.setId(tid);
-				relation.setCreateBy(UserUtils.getUser());
-				relation.setCreateDate(new Date());
-				relation.setDelFlag("0");
-				// 发送邀请状态
-				relation.setState("2");
-				// 导师类型
-				relation.setUserType("1");
-				relation.setTeamId(studentExpansion.getTeam().getId());
-				relation.setUser(studentExpansion.getUser());
-				relation.setUpdateBy(UserUtils.getUser());
-				relation.setUpdateDate(new Date());
-				relationDao.insert(relation);
 			}
 			
 		} catch (Exception e) {
@@ -190,7 +218,7 @@ public class StudentExpansionService extends CrudService<StudentExpansionDao, St
 			for(Map<String,String> map:listStudentExpansion) {
 				StudentExpansion newse=get(String.valueOf(map.get("id")));//查出用户基本信息
 				List<ProjectExpVo> projectList=projectDeclareService.getExpsByUserId(newse.getUser().getId());//查询项目经历
-			    List<gContestUndergo> gContestList=userService.findContestByUserId(newse.getUser().getId()); 
+			    List<GContestUndergo> gContestList=userService.findContestByUserId(newse.getUser().getId());
 			    
 			    if (gContestList.size()>0) {
 			    	 newse.setgContestList(gContestList);
@@ -206,5 +234,8 @@ public class StudentExpansionService extends CrudService<StudentExpansionDao, St
 		page.initialize();
 		return page;
 	}
-	
+
+	public List<StudentExpansion> getStudentByTeamId(String teamId) {
+		return studentExpansionDao.getStudentByTeamId(teamId);
+	}
 }

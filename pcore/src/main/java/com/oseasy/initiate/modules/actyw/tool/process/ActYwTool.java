@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.GnodeTypeRt;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtBounds;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtBoundsX;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtChildShapes;
@@ -32,6 +34,9 @@ import com.oseasy.initiate.modules.actyw.tool.process.vo.RtModel;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtOutgoing;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtProperties;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtPropertiesX;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.RtPxFormproperties;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.RtPxTasklisteners;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.RtPxUsertaskassignment;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtStencil;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtStencilX;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtStencilset;
@@ -41,8 +46,6 @@ import com.oseasy.initiate.modules.actyw.tool.process.vo.RtUpperLeft;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtUpperLeftX;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.StenEsubType;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.StenType;
-
-import net.sf.json.JSONObject;
 
 
 
@@ -55,70 +58,15 @@ import net.sf.json.JSONObject;
  */
 public class ActYwTool {
   private static Logger logger = LoggerFactory.getLogger(ActYwTool.class);
-
-  public static void main(String[] args) {
-    getRtJson();
-
-  }
-
-  private static void getRtJson() {
-    ActYwResult rt = initRtMin(new ActYwResult(), "ea90727d34c24285802473744a9893e8", "process119",
-        "大赛流程119", "chenhao", "1.0");
-    // RtChildShapes rtcs = initRtChildShapes(new RtChildShapes(),
-    // "sid-E76260EF-151A-49A4-B235-825E54BAFF5B");
-    // rtcs = initRtcsPropertiesX(rt, rtcs, "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）");
-    // rtcs = initRtcsStencilX(rt, rtcs, StenType.ST_START_NONE_EVENT);
-    // rtcs = initRtcsBoundsX(rt, rtcs, 0);
-    // rtcs = initRtcsOutgoings(rt, rtcs, new String[]{"sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-    // "sid-E76260EF-151A-49A4-B235-825E54BAFF5B"});
-    // rtcs = initRtcsTarget(rt, rtcs, "sid-E76260EF-151A-49A4-B235-825E54BAFF5B");
-    // rtcs = initRtcsDockers(rt, rtcs, Lists.newArrayList(Arrays.asList(new Double[][]{{1.0, 1.0},
-    // {2.0, 2.0}})));
-    // addRtChildShapes(rt, rtcs);
-
-    addRtChildShapes(rt,
-        initRtChildShapesByName(rt, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", StenType.ST_START_EVENT_NONE,
-            0,
-            new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-                "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
-            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-            Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
-
-    // RtChildShapes rtcs2 = initRtChildShapes(new RtChildShapes(),
-    // "sid-35EB7BDF-E1A5-44F9-B00B-5F975A497D46");
-    // rtcs2 = initRtcsPropertiesX(rtcs2, "sid-35EB7BDF-E1A5-44F9-B00B-5F975A497D46", "学院审核（教学秘书）");
-    // rtcs2 = initRtcsStencilX(rtcs2, StenType.ST_USER_TASK);
-    // rtcs2 = initRtcsBoundsX(rtcs2, rt.getChildShapes().size());
-    // rtcs2 = initRtcsOutgoings(rtcs2, new String[]{"sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-    // "sid-E76260EF-151A-49A4-B235-825E54BAFF5B"});
-    // rtcs2 = initRtcsTarget(rtcs2, "sid-E76260EF-151A-49A4-B235-825E54BAFF5B");
-    // rtcs2 = initRtcsDockers(rtcs2, Lists.newArrayList(Arrays.asList(new Double[][]{{10.0, 10.0},
-    // {20.0, 20.0}})));
-    // addRtChildShapes(rt, rtcs2);
-
-    addRtChildShapes(rt,
-        initRtChildShapesByName(rt, new RtChildShapes(), "sid-35EB7BDF-E1A5-44F9-B00B-5F975A497D46",
-            "sid-35EB7BDF-E1A5-44F9-B00B-5F975A497D46", "学院审核（教学秘书）", StenType.ST_TASK_USER,
-            rt.getChildShapes().size(),
-            new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-                "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
-            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-            Lists.newArrayList(Arrays.asList(new Double[][] { { 10.0, 10.0 }, { 20.0, 20.0 } }))));
-
-    addRtChildShapes(rt,
-        initRtChildShapesByName(rt, new RtChildShapes(), "sid-5A95E338-ACE9-4666-BF72-A6FD49E40E8F",
-            "sid-5A95E338-ACE9-4666-BF72-A6FD49E40E8F", "学校审核（教务处）", StenType.ST_TASK_USER,
-            rt.getChildShapes().size(),
-            new String[] { "sid-B3D94D40-AB2D-49D5-81A4-C0B04AE49A19" }));
-
-    addRtChildShapes(rt,
-        initRtChildShapesByName(rt, new RtChildShapes(), "sid-6D43F4CC-A9EE-46FB-B40D-5765FF4E1D17",
-            "sid-6D43F4CC-A9EE-46FB-B40D-5765FF4E1D17", "审核结束（项目评级）", StenType.ST_TASK_USER,
-            rt.getChildShapes().size()));
-
-    System.out.println(JSONObject.fromObject(rt).toString());
-  }
+  public static final String FLOW_ID_START = "start";
+  public static final String FLOW_ID_PREFIX = "sid-";
+  public static final String FLOW_ROLE_ID_PREFIX = "R";
+  public static final String FLOW_ROLE_PREFIX = "${";
+  public static final String FLOW_ROLE_POSTFIX = "}";
+  public static final String FLOW_ROLE_POSTFIX_S = "s";
+  public static final String FLOW_PROP_OBJECT = "{}";
+  public static final String FLOW_PROP_NULL = "";
+  public static final String FLOW_PROP_LIST = "[]";
 
   /**
    * 初始化结果集属性数据(自定义画布大小) .
@@ -309,7 +257,7 @@ public class ActYwTool {
     }
 
     if (documentation == null) {
-      rtp.setDocumentation("");
+      rtp.setDocumentation(FLOW_PROP_NULL);
     } else {
       rtp.setDocumentation(documentation);
     }
@@ -327,13 +275,13 @@ public class ActYwTool {
     }
 
     if (signaldefinitions == null) {
-      rtp.setSignaldefinitions("[]");
+      rtp.setSignaldefinitions(FLOW_PROP_LIST);
     } else {
       rtp.setSignaldefinitions(signaldefinitions);
     }
 
     if (messagedefinitions == null) {
-      rtp.setMessagedefinitions("[]");
+      rtp.setMessagedefinitions(FLOW_PROP_LIST);
     } else {
       rtp.setMessagedefinitions(messagedefinitions);
     }
@@ -584,18 +532,6 @@ public class ActYwTool {
     return initRtChildShapes(rtcs, resourceId, null, null, null, null, null, null, null);
   }
 
-  public static RtChildShapes initRtChildShapes(RtChildShapes rtcs, String resourceId,
-      RtPropertiesX properties, RtStencilX stencil, RtBoundsX bounds, List<RtOutgoing> outgoings) {
-    return initRtChildShapes(rtcs, resourceId, properties, stencil, bounds, outgoings, null, null,
-        null);
-  }
-
-  public static RtChildShapes initRtChildShapes(RtChildShapes rtcs, String resourceId,
-      RtPropertiesX properties, RtStencilX stencil, RtBoundsX bounds, List<RtOutgoing> outgoings,
-      RtTarget target, List<?> dockers) {
-    return initRtChildShapes(rtcs, resourceId, properties, stencil, bounds, outgoings, target,
-        dockers, null);
-  }
 
   /**
    * 初始化节点属性(全属性=名称+id+表单+监听) .
@@ -635,16 +571,20 @@ public class ActYwTool {
    *          节点关联子节点
    * @return RtChildShapes
    */
-  public static RtChildShapes initRtChildShapes(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, String prXdocumentation, String prXexecutionlisteners,
-      String prXformkeydefinition, String prXformproperties, String prXinitiator, StenType stXstenType,
-      Integer boXsort, String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys,
-      List<RtChildShapes> suSsubs) {
+  public static RtChildShapes initRtChildShapes(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId, String prXoverrideid, String prXname, String prXdocumentation,
+      RtPropertiesX prxRtPropertiesX,
+      StenType stXstenType,
+      Integer boXsort, String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys, List<RtChildShapes> suSsubs,
+      ActYwGnode gnode, GnodeTypeRt gtrt, RtChildShapes preCshap, RtChildShapes parentCshap) {
 
     rtcs = initRtChildShapes(rtcs, rtcSresourceId);
 
-    rtcs = initRtcsPropertiesX(rtcs, prXoverrideid, prXname, prXdocumentation, prXexecutionlisteners,
-        prXformkeydefinition, prXformproperties, prXinitiator);
+    rtcs = initRtcsPropertiesX(rtcs, prXoverrideid, prXname, prXdocumentation,
+        prxRtPropertiesX.getExecutionlisteners(), prxRtPropertiesX.getFormkeydefinition(), prxRtPropertiesX.getFormproperties(),
+        prxRtPropertiesX.getTasklisteners(), prxRtPropertiesX.getUsertaskassignment(),
+        prxRtPropertiesX.getMultiinstance_type(), prxRtPropertiesX.getMultiinstance_cardinality(), prxRtPropertiesX.getMultiinstance_collection(), prxRtPropertiesX.getMultiinstance_variable(), prxRtPropertiesX.getMultiinstance_condition(), prxRtPropertiesX.getIsforcompensation(),
+        prxRtPropertiesX.getAsynchronousdefinition(), prxRtPropertiesX.getExclusivedefinition(), prxRtPropertiesX.getDuedatedefinition(), prxRtPropertiesX.getPrioritydefinition(), prxRtPropertiesX.getDefaultflow(),
+        prxRtPropertiesX.getInitiator());
 
     rtcs = initRtcsStencilX(rtcs, stXstenType);
 
@@ -653,9 +593,9 @@ public class ActYwTool {
     }
 
     if(doSxys == null){
-      rtcs = initRtcsBoundsX(rt, rtcs, boXsort);
+      rtcs = initRtcsBoundsX(rt, rtcs, boXsort, gnode, gtrt, preCshap, parentCshap);
     }else{
-      rtcs = initRtcsBoundsX(rtcs, doSxys.get(0)[0], doSxys.get(0)[1], doSxys.get(1)[0], doSxys.get(1)[1]);
+      rtcs = initRtcsBoundsX(rtcs, doSxys.get(0)[0], doSxys.get(0)[1], doSxys.get(1)[0], doSxys.get(1)[1], gnode, gtrt, preCshap, parentCshap);
     }
 
     rtcs = initRtcsOutgoings(rtcs, ouSresourceId);
@@ -665,7 +605,6 @@ public class ActYwTool {
      * 需要先执行 initRtcsBoundsX 方法获取BoundsX
      */
     rtcs = initRtcsDockers(rtcs);
-//    rtcs = initRtcsDockers(rtcs, doSxys, false);
 
 //    rtcs = initRtcsSubs(rtcs, suSsubs);
 
@@ -692,14 +631,16 @@ public class ActYwTool {
    * @param doSxys 节点关联资源坐标
    * @return RtChildShapes
    */
-  public static RtChildShapes initRtChildShapes(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, String prXdocumentation, String prXexecutionlisteners,
-      String prXformkeydefinition, String prXformproperties, String prXinitiator, StenType stXstenType,
-      Integer boXsort, String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys) {
-    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, prXdocumentation,
-        prXexecutionlisteners, prXformkeydefinition, prXformproperties, prXinitiator, stXstenType,
-        boXsort, ouSresourceId, taTresourceId, doSxys, null);
-  }
+//  public static RtChildShapes initRtChildShapes(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId, String prXoverrideid, String prXname, String prXdocumentation,
+//      String prXexecutionlisteners,
+//      String prXformkeydefinition, RtPxFormproperties prXformproperties,
+//
+//      String prXinitiator, RtPxTasklisteners tasklisteners, RtPxUsertaskassignment usertaskassignment, StenType stXstenType,
+//      Integer boXsort, String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys) {
+//    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, prXdocumentation,
+//        RtPropertiesX rtPropertiesX, stXstenType,
+//        boXsort, ouSresourceId, taTresourceId, doSxys, null);
+//  }
 
   /**
    * 初始化节点属性(名称+id) .
@@ -715,6 +656,10 @@ public class ActYwTool {
    *          节点Id
    * @param prXname
    *          节点名称
+   * @param prXdocumentation
+   *          节点文档说明
+   * @param rtPropertiesX
+   *          节点业务属性
    * @param stXstenType
    *          节点标识类型
    * @param boXsort
@@ -727,101 +672,12 @@ public class ActYwTool {
    *          节点关联资源坐标
    * @return RtChildShapes
    */
-  public static RtChildShapes initRtChildShapesByName(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, StenType stXstenType, Integer boXsort,
-      String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys) {
-    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, null, null, null, null,
-        null, stXstenType, boXsort, ouSresourceId, taTresourceId, doSxys, null);
-  }
-
-  public static RtChildShapes initRtChildShapesByName(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, StenType stXstenType, Integer boXsort,
-      String[] ouSresourceId) {
-    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, null, null, null, null,
-        null, stXstenType, boXsort, ouSresourceId, null, null, null);
-  }
-
-  public static RtChildShapes initRtChildShapesByName(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, StenType stXstenType, Integer boXsort) {
-    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, null, null, null, null,
-        null, stXstenType, boXsort, null, null, null, null);
-  }
-
-  /**
-   * 初始化节点属性(名称+id+表单) .
-   *
-   * @author chenhao
-   * @param rt
-   *          结果对象
-   * @param rtcs
-   *          需初始化节点对象
-   * @param rtcSresourceId
-   *          资源Id
-   * @param prXoverrideid
-   *          节点Id
-   * @param prXname
-   *          节点名称
-   * @param prXformkeydefinition
-   *          节点关联表单
-   * @param prXformproperties
-   *          节点关联表单属性
-   * @param stXstenType
-   *          节点标识类型
-   * @param boXsort
-   *          节点排序位置
-   * @param ouSresourceId
-   *          节点关联Outgoings资源ID
-   * @param taTresourceId
-   *          节点关联Target资源ID
-   * @param doSxys
-   *          节点关联资源坐标
-   * @return RtChildShapes
-   */
-  public static RtChildShapes initRtChildShapesByForm(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, String prXformkeydefinition, String prXformproperties,
-      StenType stXstenType, Integer boXsort, String[] ouSresourceId, String taTresourceId,
-      List<Double[]> doSxys) {
-    // , String prXdocumentation, String prXexecutionlisteners, String prXinitiator
-    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, null, null,
-        prXformkeydefinition, prXformproperties, null, stXstenType, boXsort, ouSresourceId, taTresourceId,
-        doSxys, null);
-  }
-
-  /**
-   * 初始化节点属性(名称+id+监听) .
-   *
-   * @author chenhao
-   * @param rt
-   *          结果对象
-   * @param rtcs
-   *          需初始化节点对象
-   * @param rtcSresourceId
-   *          资源Id
-   * @param prXoverrideid
-   *          节点Id
-   * @param prXname
-   *          节点名称
-   * @param prXexecutionlisteners
-   *          节点监听事件
-   * @param stXstenType
-   *          节点标识类型
-   * @param boXsort
-   *          节点排序位置
-   * @param ouSresourceId
-   *          节点关联Outgoings资源ID
-   * @param taTresourceId
-   *          节点关联Target资源ID
-   * @param doSxys
-   *          节点关联资源坐标
-   * @return RtChildShapes
-   */
-  public static RtChildShapes initRtChildShapesByListener(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId,
-      String prXoverrideid, String prXname, String prXexecutionlisteners, StenType stXstenType,
-      Integer boXsort, String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys) {
-    // , String prXdocumentation, String prXformkeydefinition, String prXformproperties, String
-    // prXinitiator
-    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, null, prXexecutionlisteners,
-        null, null, null, stXstenType, boXsort, ouSresourceId, taTresourceId, doSxys, null);
+  public static RtChildShapes initRtChildShapesByName(ActYwResult rt, RtChildShapes rtcs, String rtcSresourceId, String prXoverrideid, String prXname, String prXdocumentation,
+      RtPropertiesX rtPropertiesX,
+      StenType stXstenType, Integer boXsort,
+      String[] ouSresourceId, String taTresourceId, List<Double[]> doSxys,
+      ActYwGnode gnode, GnodeTypeRt gtrt, RtChildShapes preCshap, RtChildShapes parentCshap) {
+    return initRtChildShapes(rt, rtcs, rtcSresourceId, prXoverrideid, prXname, prXdocumentation, rtPropertiesX, stXstenType, boXsort, ouSresourceId, taTresourceId, doSxys, null, gnode, gtrt, preCshap, parentCshap);
   }
 
   /**
@@ -844,67 +700,147 @@ public class ActYwTool {
    *          节点发起人
    * @return RtChildShapes
    */
-  public static RtChildShapes initRtcsPropertiesX(RtChildShapes rtcs, String overrideid,
-      String name, String documentation, String executionlisteners, String formkeydefinition,
-      String formproperties, String initiator) {
+  public static RtChildShapes initRtcsPropertiesX(RtChildShapes rtcs, String overrideid, String name, String documentation,
+      String executionlisteners, String formkeydefinition, RtPxFormproperties formproperties,
+      RtPxTasklisteners tasklisteners, RtPxUsertaskassignment usertaskassignment,
+      String multiinstanceType, String multiinstanceCardinality, String multiinstanceCollection, String multiinstanceVariable, String multiinstanceCondition, String isforcompensation,
+      String asynchronousdefinition, String exclusivedefinition, String duedatedefinition, String prioritydefinition, String defaultflow,
+      String initiator) {
+
     if (rtcs == null) {
       return null;
     }
 
+    RtPropertiesX rtpx = null;
     if (rtcs.getProperties() != null) {
-      RtPropertiesX rtpx = rtcs.getProperties();
+      rtpx = rtcs.getProperties();
+    }else{
+      rtpx = new RtPropertiesX();
+    }
 
-      if (StringUtil.isNotEmpty(overrideid)) {
-        rtpx.setOverrideid(overrideid);
-      } else {
-        logger.warn("RtChildShapes.overrideid is undefind");
-      }
-
-      if (StringUtil.isNotEmpty(name)) {
-        rtpx.setName(name);
-      } else {
-        logger.warn("RtChildShapes.name is undefind");
-      }
-
-      if (StringUtil.isNotEmpty(documentation)) {
-        rtpx.setDocumentation(documentation);
-      } else {
-        rtpx.setDocumentation("");
-      }
-
-      if (StringUtil.isNotEmpty(executionlisteners)) {
-        rtpx.setExecutionlisteners(executionlisteners);
-      } else {
-        rtpx.setExecutionlisteners("");
-      }
-
-      if (StringUtil.isNotEmpty(formkeydefinition)) {
-        rtpx.setFormkeydefinition(formkeydefinition);
-      } else {
-        rtpx.setFormkeydefinition("");
-      }
-
-      if (StringUtil.isNotEmpty(formproperties)) {
-        rtpx.setFormproperties(formproperties);
-      } else {
-        rtpx.setFormproperties("");
-      }
-
-      if (StringUtil.isNotEmpty(initiator)) {
-        rtpx.setInitiator(initiator);
-      } else {
-        rtpx.setInitiator("");
-      }
+    if (StringUtil.isNotEmpty(overrideid)) {
+      rtpx.setOverrideid(overrideid);
     } else {
-      logger.warn("RtChildShapes.properties is undefind");
+      rtpx.setOverrideid(FLOW_PROP_NULL);
+      logger.warn("RtChildShapes.overrideid is undefind");
+    }
+
+    if (StringUtil.isNotEmpty(name)) {
+      rtpx.setName(name);
+    } else {
+      rtpx.setName(FLOW_PROP_NULL);
+      logger.warn("RtChildShapes.name is undefind");
+    }
+
+    if (StringUtil.isNotEmpty(documentation)) {
+      rtpx.setDocumentation(documentation);
+    } else {
+      rtpx.setDocumentation(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(executionlisteners)) {
+      rtpx.setExecutionlisteners(executionlisteners);
+    } else {
+      rtpx.setExecutionlisteners(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(formkeydefinition)) {
+      rtpx.setFormkeydefinition(formkeydefinition);
+    } else {
+      rtpx.setFormkeydefinition(FLOW_PROP_NULL);
+    }
+
+    if (formproperties != null) {
+      rtpx.setFormproperties(formproperties);
+    }else{
+      rtpx.setFormproperties(new RtPxFormproperties());
+    }
+
+    if (tasklisteners != null) {
+      rtpx.setTasklisteners(tasklisteners);
+    }else{
+      rtpx.setTasklisteners(new RtPxTasklisteners());
+    }
+
+    if (usertaskassignment != null) {
+      rtpx.setUsertaskassignment(usertaskassignment);
+    }else{
+      rtpx.setUsertaskassignment(new RtPxUsertaskassignment());
+    }
+
+    if (multiinstanceCollection != null) {
+      rtpx.setMultiinstance_collection(multiinstanceCollection);
+    }else{
+      rtpx.setMultiinstance_collection(null);
+    }
+
+    if (StringUtil.isNotEmpty(multiinstanceType)) {
+      rtpx.setMultiinstance_type(multiinstanceType);
+    } else {
+      rtpx.setMultiinstance_type(RtPropertiesX.MULTIINSTANCE_TYPE_PARALLEL);
+    }
+
+    if (StringUtil.isNotEmpty(multiinstanceCardinality)) {
+      rtpx.setMultiinstance_cardinality(multiinstanceCardinality);
+    } else {
+      rtpx.setMultiinstance_cardinality(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(multiinstanceVariable)) {
+      rtpx.setMultiinstance_variable(multiinstanceVariable);
+    } else {
+      rtpx.setMultiinstance_variable(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(multiinstanceCondition)) {
+      rtpx.setMultiinstance_condition(multiinstanceCondition);
+    } else {
+      rtpx.setMultiinstance_condition(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(isforcompensation)) {
+      rtpx.setIsforcompensation(isforcompensation);
+    } else {
+      rtpx.setMultiinstance_condition(RtPropertiesX.ISFORCOMPENSATION_FALSE);
+    }
+
+    if (StringUtil.isNotEmpty(asynchronousdefinition)) {
+      rtpx.setAsynchronousdefinition(asynchronousdefinition);
+    } else {
+      rtpx.setAsynchronousdefinition(RtPropertiesX.ASYNCHRONOUSDEFINITION_FALSE);
+    }
+
+    if (StringUtil.isNotEmpty(exclusivedefinition)) {
+      rtpx.setExclusivedefinition(exclusivedefinition);
+    } else {
+      rtpx.setExclusivedefinition(RtPropertiesX.EXCLUSIVEDEFINITION_TRUE);
+    }
+
+    if (StringUtil.isNotEmpty(duedatedefinition)) {
+      rtpx.setDuedatedefinition(duedatedefinition);
+    } else {
+      rtpx.setDuedatedefinition(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(prioritydefinition)) {
+      rtpx.setPrioritydefinition(prioritydefinition);
+    } else {
+      rtpx.setPrioritydefinition(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(defaultflow)) {
+      rtpx.setDefaultflow(defaultflow);
+    } else {
+      rtpx.setDefaultflow(FLOW_PROP_NULL);
+    }
+
+    if (StringUtil.isNotEmpty(initiator)) {
+      rtpx.setInitiator(initiator);
+    } else {
+      rtpx.setInitiator(FLOW_PROP_NULL);
     }
 
     return rtcs;
-  }
-
-  public static RtChildShapes initRtcsPropertiesX(RtChildShapes rtcs, String overrideid,
-      String name) {
-    return initRtcsPropertiesX(rtcs, overrideid, name, null, null, null, null, null);
   }
 
   /**
@@ -920,9 +856,11 @@ public class ActYwTool {
     if (properties == null) {
       return rtcs;
     }
-    return initRtcsPropertiesX(rtcs, properties.getOverrideid(), properties.getName(),
-        properties.getDocumentation(), properties.getExecutionlisteners(),
-        properties.getFormkeydefinition(), properties.getFormproperties(),
+    return initRtcsPropertiesX(rtcs, properties.getOverrideid(), properties.getName(), properties.getDocumentation(),
+        properties.getExecutionlisteners(), properties.getFormkeydefinition(), properties.getFormproperties(),
+        properties.getTasklisteners(), properties.getUsertaskassignment(),
+        properties.getMultiinstance_type(), properties.getMultiinstance_cardinality(), properties.getMultiinstance_collection(), properties.getMultiinstance_variable(), properties.getMultiinstance_condition(), properties.getIsforcompensation(),
+        properties.getAsynchronousdefinition(), properties.getExclusivedefinition(), properties.getDuedatedefinition(), properties.getPrioritydefinition(), properties.getDefaultflow(),
         properties.getInitiator());
   }
 
@@ -987,8 +925,7 @@ public class ActYwTool {
    *          左上Y坐标
    * @return ActYwResult
    */
-  public static RtChildShapes initRtcsBoundsX(RtChildShapes rtcs, Double lrx, Double lry,
-      Double ulx, Double uly) {
+  public static RtChildShapes initRtcsBoundsX(RtChildShapes rtcs, Double lrx, Double lry, Double ulx, Double uly, ActYwGnode gnode, GnodeTypeRt gtrt, RtChildShapes preCshap, RtChildShapes parentCshap) {
     RtBoundsX rtbx = rtcs.getBounds();
     if (rtbx == null) {
       rtbx = new RtBoundsX();
@@ -1046,13 +983,11 @@ public class ActYwTool {
    *          节点排序位置
    * @return ActYwResult
    */
-  public static RtChildShapes initRtcsBoundsX(ActYwResult rt, RtChildShapes rtcs, Integer sort) {
+  public static RtChildShapes initRtcsBoundsX(ActYwResult rt, RtChildShapes rtcs, Integer sort, ActYwGnode gnode, GnodeTypeRt gtrt, RtChildShapes preCshap, RtChildShapes parentCshap) {
     RtBounds rtb = rt.getBounds();
     RtUpperLeft rtbul = rtb.getUpperLeft();
     RtLowerRight rtblr = rtb.getLowerRight();
     List<RtChildShapes> rtcscshapes = rtcs.getChildShapes();
-
-    System.out.println(rtcs);
 
     Double centerx = (double) ((rtblr.getX() - rtbul.getX()) / 2);
     Double zeroX = (double) (centerx - RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
@@ -1083,52 +1018,39 @@ public class ActYwTool {
       lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT);
     }
 
-//    if ((stype.getSubtype()).equals(StenEsubType.SES_FLOW)) {
-//      ulx = (double) (zeroX + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      uly = (double) (zeroY + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * (rate * sort - 2) / 2));
-//
-//      lrx = (double) (zeroX + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      lry = (double) (uly + RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 2);
-//    } else if ((stype.getSubtype()).equals(StenEsubType.SES_JG)) {
-//      Integer subSize = rtcscshapes.size();
-//      ulx = (double) (zeroX - area + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      uly = (double) (zeroY + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * rate * (sort - 1)) / 2);
-//
-//      lrx = (double) (zeroX + area  + RtSvl.RtBoundsVal.RT_COLS_WIDTH);
-//      lry = (double) (uly + RtSvl.RtBoundsVal.RT_COLS_HEIGHT * (subSize * (rate + 1) * sort) + RtSvl.RtBoundsVal.RT_COLS_HEIGHT * rate);
-//    } else {
-//      ulx = (double) (zeroX);
-//      uly = (double) (zeroY + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * rate * (sort - 1)) / 2);
-//
-//      lrx = (double) (ulx + RtSvl.RtBoundsVal.RT_COLS_WIDTH);
-//      lry = (double) (uly + RtSvl.RtBoundsVal.RT_COLS_HEIGHT);
-//    }
-//    System.out.println(sort+"-"+rtcs.getProperties().getName()+"--> lrx="+lrx+" lry="+lry+" ulx="+ulx+" uly="+uly);
 
-//    /**
-//     * 判断是否为连接节点.
-//     */
-//    StenType stype = StenType.getByKey(rtcs.getStencil().getId());
-//    if ((stype.getSubtype()).equals(StenEsubType.SES_FLOW)) {
-//      ulx = (double) (centerx - RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT - (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 4));
-//
-//      lrx = (double) (centerx + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 4));
-//    }else if ((stype.getSubtype()).equals(StenEsubType.SES_JG)) {
-//      ulx = (double) (centerx - RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT - (RtSvl.RtBoundsVal.RT_COLS_HEIGHT + RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2));
-//
-//      lrx = (double) (centerx + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT + RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2));
-//    }else{
-//      ulx = (double) (centerx - RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT);
-//      lrx = (double) (centerx + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
-//      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT);
-//    }
-//    System.out.println(sort+"-"+rtcs.getProperties().getName()+"--> lrx="+lrx+" lry="+lry+" ulx="+ulx+" uly="+uly);
-    return initRtcsBoundsX(rtcs, lrx, lry, ulx, uly);
+//    if(gtrt.getIsRootStart()){
+//    }else if(gtrt.getIsRootEnd()){}else
+    if(gtrt.getIsRootFlow()){
+      ulx = (double) (centerx);
+      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT - (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 4));
+
+      lrx = (double) (centerx);
+      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 4));
+    }else if(gtrt.getIsSub()){
+      ulx = (double) (centerx - RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
+      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT - (RtSvl.RtBoundsVal.RT_COLS_HEIGHT + RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2));
+
+      lrx = (double) (centerx + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
+      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT + RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2));
+//    }else if(gtrt.getIsSubRootStart()){
+//    }else if(gtrt.getIsSubRootEnd()){
+    }else if(gtrt.getIsSubRootFlow()){
+      ulx = (double) (centerx);
+      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT - (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 4));
+
+      lrx = (double) (centerx);
+      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT + (RtSvl.RtBoundsVal.RT_COLS_HEIGHT * 4));
+    }else{
+      ulx = (double) (centerx - RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
+      uly = (double) ((sort * 2 - 1) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT);
+      lrx = (double) (centerx + RtSvl.RtBoundsVal.RT_COLS_WIDTH / 2);
+      lry = (double) ((sort * 2) * RtSvl.RtBoundsVal.RT_COLS_HEIGHT);
+    }
+
+
+
+    return initRtcsBoundsX(rtcs, lrx, lry, ulx, uly, gnode, gtrt, preCshap, parentCshap);
   }
 
   /**
@@ -1155,6 +1077,7 @@ public class ActYwTool {
     } else {
       logger.warn("RtChildShapes.outgoing.resourceId.. is undefind");
     }
+    rtcs.setOutgoing(rtogs);
     return rtcs;
   }
 
@@ -1202,16 +1125,14 @@ public class ActYwTool {
       Double centerx = ((rtblrX.getX() + rtbulX.getX()) / 2);
       Double centery = ((rtblrX.getY() + rtbulX.getY()) / 2);
 
-      Double[] preDocker = new Double[]{centerx, centery - RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2};
-      Double[] nextDocker = new Double[]{centerx, centery + RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2};
+      Double[] preDocker = new Double[]{centerx, centery};
+      Double[] nextDocker = new Double[]{centerx, centery};
+//      Double[] preDocker = new Double[]{centerx, centery - RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2};
+//      Double[] nextDocker = new Double[]{centerx, centery + RtSvl.RtBoundsVal.RT_COLS_HEIGHT / 2};
       xys = Lists.newArrayList(Arrays.asList(new Double[][] { preDocker, nextDocker }));
-
-//      System.out.println("--------------------------------------------------------------------------------------------");
-//      System.out.println("(centerx, centery) = (" + centerx + ", " + centery + ")");
-//      System.out.println("xys = (" + preDocker[0] + "," + preDocker[1] + ") - (" + nextDocker[0] + "," + nextDocker[1] + ")");
-//      System.out.println("--------------------------------------------------------------------------------------------");
     }
 
+//    xys = Lists.newArrayList(Arrays.asList(new Double[][] { new Double[]{10.0, 10.0}, new Double[]{10.0, 10.0} }));
     if (xys == null || xys.isEmpty()) {
       return rtcs;
     }
@@ -1223,7 +1144,8 @@ public class ActYwTool {
     List<RtDocker> rtds = rtcs.getDockers();
 
     for (Double[] xy : xys) {
-      rtds.add(new RtDocker(xy[0], xy[1]));
+      rtds.add(new RtDocker(0.0, 0.0));
+//      rtds.add(new RtDocker(xy[0], xy[1]));
     }
 
     return rtcs;

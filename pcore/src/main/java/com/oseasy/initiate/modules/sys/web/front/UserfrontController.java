@@ -1,15 +1,11 @@
 package com.oseasy.initiate.modules.sys.web.front;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.oa.dao.OaNotifyRecordDao;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,6 +61,7 @@ public class UserfrontController extends BaseController {
 		model.addAttribute("teamId", teamId);
 		model.addAttribute("opType", opType);
 		model.addAttribute("userType", userType);
+		model.addAttribute("user", user);
 		return "modules/sys/userIndex";
 
 	}
@@ -82,7 +79,6 @@ public class UserfrontController extends BaseController {
 
 	}
 
-
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "treeData")
@@ -99,13 +95,16 @@ public class UserfrontController extends BaseController {
 		}
 		return mapList;
 	}
+
 	@RequestMapping("userListTree")
-	public String userListTree(User user,String grade,String professionId,String allTeacher,HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String userListTree(User user, String grade, String professionId,String allTeacher,HttpServletRequest request, HttpServletResponse response, Model model) {
 		String userType = request.getParameter("userType");
 		String teacherType = request.getParameter("teacherType");
-		logger.info("=========userType:"+userType);
-		logger.info("grade:"+grade);
-		logger.info("teacherType:"+teacherType);
+		String userName = request.getParameter("userName");
+		if (StringUtil.isNotBlank(userName)) {
+			user.setName(userName);
+			model.addAttribute("userName", userName);
+		}
 		if (StringUtil.isNotBlank(teacherType)) {
 			user.setTeacherType(teacherType);
 			model.addAttribute("teacherType", teacherType);
@@ -113,28 +112,25 @@ public class UserfrontController extends BaseController {
 		if ("1".equals(allTeacher)) {
 			user.setTeacherType(null);
 		}
-		user.setUserType(userType);
-		if (StringUtil.isNotBlank(grade)&&"3".equals(grade)) {
+		if (StringUtil.isNotBlank(grade) && "3".equals(grade)) {
 			user.setProfessional(professionId);
 		}
-		Page<User> page = systemService.findListTree(new Page<User>(request, response), user);
-      /* if (page!=null) {
-    	   List<User> userList = page.getList();
-    	   if (userList!=null&&userList.size()>0) {
-    		   for(User usertmp:userList) {
-    			   List<Role> roleList = systemService.findListByUserId(usertmp.getId());
-    			   usertmp.setRoleList(roleList);
-    		   }
-    	   }
-       }
 
-        List<Role>  roleList = systemService.findAllRole();
+    Page<User> page = null;
+    if(StringUtil.isNotEmpty(userType)){
+      user.setUserType(userType);
 
-        model.addAttribute("roleList",roleList);*/
+      if((userType).equals("1")){
+        page = systemService.findListTreeByStudent(new Page<User>(request, response), user);
+      }else if((userType).equals("2")){
+        page = systemService.findListTreeByTeacher(new Page<User>(request, response), user);
+      }else{
+        page = systemService.findListTreeByUser(new Page<User>(request, response), user);
+      }
+    }
 
 		model.addAttribute("page", page);
 		model.addAttribute("userType", userType);
-		//	return "modules/sys/userList";
 		return "modules/sys/userListTree";
 	}
 
@@ -142,9 +138,18 @@ public class UserfrontController extends BaseController {
 	@RequestMapping("userListTreePublish")
 	public String userListTreePublish(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String userType = request.getParameter("userType");
-		logger.info("=========userType:"+userType);
-		user.setUserType(userType);
-		Page<User> page = systemService.findListTree(new Page<User>(request, response), user);
+    Page<User> page = null;
+    if(StringUtil.isNotEmpty(userType)){
+      user.setUserType(userType);
+      if((userType).equals("1")){
+        page = systemService.findListTreeByStudent(new Page<User>(request, response), user);
+      }else if((userType).equals("2")){
+        page = systemService.findListTreeByTeacher(new Page<User>(request, response), user);
+      }else{
+        page = systemService.findListTreeByUser(new Page<User>(request, response), user);
+      }
+    }
+
 		if (page!=null) {
 			List<User> userList = page.getList();
 			if (userList!=null&&userList.size()>0) {
@@ -191,10 +196,8 @@ public class UserfrontController extends BaseController {
 	 */
 	@RequestMapping(value = "checkLoginName")
 	@ResponseBody
-	public String checkLoginName(String oldLoginName, String loginName,String oldNo) {
-		if ( loginName.equals(oldLoginName)||loginName.equals(oldNo)) { //与旧loginName可以相同，与旧学号可以相同
-			return "true";
-		} else if (userService.getByLoginNameOrNo(loginName) == null) {
+	public String checkLoginName(String loginName,String userid) {
+		if (userService.getByLoginNameOrNo(loginName, userid)== null) {
 			return "true";
 		}
 		return "false";
@@ -209,10 +212,8 @@ public class UserfrontController extends BaseController {
 	 */
 	@RequestMapping(value = "checkNo")
 	@ResponseBody
-	public String checkNo(String oldNo, String no,String oldLoginName) {
-		if (no.equals(oldNo)||no.equals(oldLoginName)) { //与旧学号可以相同，与旧loginName可以相同
-			return "true";
-		} else if (userService.getByLoginNameOrNo(no) == null) {
+	public String checkNo(String no,String userid) {
+		if (userService.getByLoginNameOrNo(no, userid)== null) {
 			return "true";
 		}
 		return "false";
@@ -228,7 +229,12 @@ public class UserfrontController extends BaseController {
 	public Boolean checkMobileExist(String mobile) {
 		User userForSearch=new User();
 		userForSearch.setMobile(mobile);
-		User user = userService.getByMobile(userForSearch);
+		User cuser=UserUtils.getUser();
+		if(cuser==null||StringUtil.isEmpty(cuser.getId())){
+			return false;
+		}
+		userForSearch.setId(cuser.getId());
+		User user = userService.getByMobileWithId(userForSearch);
 		if (user==null) {
 			return true;
 		}else{
@@ -265,7 +271,15 @@ public class UserfrontController extends BaseController {
 		}
 		return true;
 	}
-
+	@ResponseBody
+	@RequestMapping(value="checkUserInfoPerfect")
+	public boolean checkUserInfoPerfect() {
+		if(UserUtils.checkInfoPerfect(UserUtils.getUser())){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 
 }

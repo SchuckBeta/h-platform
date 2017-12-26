@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,9 @@ import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.CacheUtils;
 import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.gcontesthots.dao.GcontestHotsDao;
 import com.oseasy.initiate.modules.gcontesthots.dao.GcontestHotsKeywordDao;
 import com.oseasy.initiate.modules.gcontesthots.entity.GcontestHots;
@@ -32,7 +36,8 @@ public class GcontestHotsService extends CrudService<GcontestHotsDao, GcontestHo
 	private GcontestHotsKeywordDao gcontestHotsKeywordDao;
 	@Autowired
 	private GcontestHotsDao gcontestHotsDao;
-	
+	@Autowired
+	private SysAttachmentService sysAttachmentService;
 	
 	/**
 	 *大赛热点浏览量队列的处理
@@ -78,10 +83,17 @@ public class GcontestHotsService extends CrudService<GcontestHotsDao, GcontestHo
 	public Page<GcontestHots> findPage(Page<GcontestHots> page, GcontestHots gcontestHots) {
 		return super.findPage(page, gcontestHots);
 	}
-
+	private boolean savegcontestHotsContent(GcontestHots es){
+		Map<String,String> map=sysAttachmentService.moveAndSaveTempFile(es.getContent(), es.getId(), FileTypeEnum.S7, FileStepEnum.S701);
+		if("1".equals(map.get("ret"))){
+			es.setContent(map.get("content"));
+			return true;
+		}
+		return false;
+	}
 	@Transactional(readOnly = false)
 	public void save(GcontestHots gcontestHots) {
-		if (StringUtil.isNotEmpty(gcontestHots.getId())) {
+		if (StringUtil.isNotEmpty(gcontestHots.getContent())) {
 			gcontestHots.setContent(gcontestHots.getContent().replaceAll(FtpUtil.FTP_HTTPURL, FtpUtil.FTP_MARKER));
 		}
 		if (StringUtil.isNotEmpty(gcontestHots.getId())) {
@@ -102,6 +114,19 @@ public class GcontestHotsService extends CrudService<GcontestHotsDao, GcontestHo
 			gcontestHots.setViews("0");
 		}
 		super.save(gcontestHots);
+		//处理内容里的临时url---start(需要在entity保存之后，需要id)
+		//反转义
+		gcontestHots.setContent(StringEscapeUtils.unescapeHtml4(gcontestHots.getContent()));
+		//处理之前替换回占位字符串
+		gcontestHots.setContent(gcontestHots.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
+		boolean saveContent=savegcontestHotsContent(gcontestHots);
+		if(saveContent){
+			gcontestHots.setContent(gcontestHots.getContent().replaceAll(FtpUtil.FTP_HTTPURL, FtpUtil.FTP_MARKER));
+			//转义
+			gcontestHots.setContent(StringEscapeUtils.escapeHtml4(gcontestHots.getContent()));
+			super.save(gcontestHots);//更新
+		}
+		//处理内容里的临时url---end
 		if (StringUtil.isNotEmpty(gcontestHots.getId())) {
 			gcontestHotsKeywordDao.delByEsid(gcontestHots.getId());
 		}

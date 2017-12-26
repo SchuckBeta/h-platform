@@ -28,7 +28,6 @@ public class GcontestUtils {
     public static long collegeExportCount(){
         Map<String,Object> param =new HashMap<String,Object>();
         User user = UserUtils.getUser();
-        param.put("collegeId",user.getOffice().getId());
         param.put("auditUserName", user.getLoginName());
         String userType=user.getUserType();
         if (userType.equals("4")) {
@@ -41,6 +40,8 @@ public class GcontestUtils {
             param.put("auditState", "3");
         }else if (userType.equals("6")) {
             param.put("auditState", "4");
+        }else{
+            return 0;
         }
         int todoCount=gContestService.todoCount(param);
         int hasdoCount=gContestService.hasdoCount(param);

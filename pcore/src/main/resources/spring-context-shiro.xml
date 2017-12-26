@@ -88,13 +88,17 @@
 				${frontPath}/project/**=frontuser
 				${frontPath}/course/downLoad = frontuser
 				${frontPath}/gcontest/gContest/**=frontuser
-				${frontPath}/upload/** = frontuser
 				${frontPath}/act/task/** = frontuser
-				${frontPath}/team/indexMyTeamList = frontuser
+				${frontPath}/team/** = frontuser
 				${frontPath}/sys/frontStudentExpansion/** = frontuser
 				${frontPath}/sys/user/indexMyNoticeList = frontuser
 				${frontPath}/sys/frontTeacherExpansion/** = frontuser
 				${frontPath}/excellent/** = frontuser
+				${frontPath}/scoapply/**=frontuser
+				${frontPath}/myscore/**=frontuser
+				${frontPath}/cms/form/** = frontuser
+				${frontPath}/pw/pwAppointment/** = frontuser
+				${frontPath}/proprojectmd/** = frontuser
 			</value>
 		</constructor-arg>
 	</bean>

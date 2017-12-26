@@ -31,6 +31,11 @@ public class SysLikesController extends BaseController {
 	public JSONObject save(@RequestBody JSONObject param,HttpServletRequest request) {
 		return sysLikesService.save(param,request);
 	}
+	@RequestMapping(value = "saveForUserInfo")
+	@ResponseBody
+	public JSONObject saveForUserInfo(@RequestBody JSONObject param,HttpServletRequest request) {
+		return sysLikesService.saveForUserInfo(param,request);
+	}
 	@RequestMapping(value = "uuid")
 	@ResponseBody
 	public String uuid() {

@@ -6,13 +6,44 @@
 	<content><![CDATA[
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>${functionNameSimple}管理</title>
 	<%@include file="/WEB-INF/views/include/backtable.jsp" %>
+	<style>
+		.table-thead-bg thead tr{
+			background-color: #f4e6d4;
+		}
+		.table th{
+			background: none;
+		}
+		#searchForm{
+			height: auto;
+			padding: 15px 0 0;
+			overflow: hidden;
+		}
+		.ul-form input[type="text"]{
+			height: 20px;
+		}
+		.ul-form select{
+			height: 30px;
+			width: 174px;
+			max-width: 174px;
+		}
+		.form-search .ul-form li{
+			margin-bottom: 15px;
+		}
+		.form-search .ul-form li.btns{
+			float: right;
+		}
+		.table{
+			margin-bottom: 20px;
+		}
+	</style>
 	<script type="text/javascript">
 		$(document).ready(function() {
-
+			$("#ps").val($("#pageSize").val());
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -35,6 +66,7 @@
 			<input id="pageNo" name="pageNo" type="hidden" value="${r"${page.pageNo}"}"/>
 			<input id="pageSize" name="pageSize" type="hidden" value="${r"${page.pageSize}"}"/>
 			<ul class="ul-form">
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<#list table.columnList as c>
 				<#if c.isQuery?? && c.isQuery == "1">
 				<li><label>${c.comments}：</label>
@@ -42,7 +74,7 @@
 					<form:input path="${c.javaFieldId}" htmlEscape="false"<#if c.dataLength != "0"> maxlength="${c.dataLength}"</#if> class="input-medium"/>
 				<#elseif c.showType == "select">
 					<form:select path="${c.javaFieldId}" class="input-medium">
-						<form:option value="" label=""/>
+						<form:option value="" label="--请选择--"/>
 						<form:options items="${"$"}{fns:getDictList('${c.dictType}')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select>
 				<#elseif c.showType == "checkbox">
@@ -73,12 +105,10 @@
 				</li>
 				</#if>
 			</#list>
-				<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
-				<li class="clearfix"></li>
 			</ul>
 		</form:form>
 		<sys:message content="${r"${message}"}"/>
-		<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<table id="contentTable" class="table table-striped table-bordered table-condensed table-thead-bg">
 			<thead>
 				<tr>
 					<#list table.columnList as c>
@@ -110,14 +140,14 @@
 						</#if>
 					</#list>
 					<shiro:hasPermission name="${permissionPrefix}:edit"><td>
-	    				<a href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}">修改</a>
-						<a href="${r"${ctx}"}/${urlPrefix}/delete?id=${"${"+className+".id}"}" onclick="return confirmx('确认要删除该${functionNameSimple}吗？', this.href)">删除</a>
+	    				<a class="check_btn btn-pray btn-lx-primary" href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}">修改</a>
+						<a class="check_btn btn-pray btn-lx-primary" href="${r"${ctx}"}/${urlPrefix}/delete?id=${"${"+className+".id}"}" onclick="return confirmx('确认要删除该${functionNameSimple}吗？', this.href)">删除</a>
 					</td></shiro:hasPermission>
 				</tr>
 			</c:forEach>
 			</tbody>
 		</table>
-		<div class="pagination">${r"${page}"}</div>
+		${r"${page.footer}"}
 	</div>
 	<div id="dialog-message" title="信息">
 		<p id="dialog-content"></p>

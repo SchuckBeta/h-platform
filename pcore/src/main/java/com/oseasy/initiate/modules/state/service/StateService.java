@@ -1,32 +1,36 @@
 package com.oseasy.initiate.modules.state.service;
 
+import java.util.List;
+import java.util.Map;
+
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.utils.FileUpUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
+import com.oseasy.initiate.common.service.CommonService;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.attachment.dao.SysAttachmentDao;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
 import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
 import com.oseasy.initiate.modules.project.dao.ProjectPlanDao;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import com.oseasy.initiate.modules.project.entity.ProjectPlan;
+import com.oseasy.initiate.modules.project.service.ProjectAuditInfoService;
+import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
 import com.oseasy.initiate.modules.state.vo.MidVo;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import org.activiti.engine.*;
-import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
-import org.activiti.spring.ProcessEngineFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import net.sf.json.JSONObject;
 
 /**
  * Created by zhangzheng on 2017/4/11.
@@ -46,8 +50,14 @@ public class StateService {
     SysAttachmentService sysAttachmentService;
     @Autowired
     SysAttachmentDao sysAttachmentDao;
-
-
+    @Autowired
+    private ProjectDeclareService projectDeclareService;
+    @Autowired
+    private RuntimeService runtimeService;
+    @Autowired
+    private ProjectAuditInfoService projectAuditInfoService;
+	@Autowired
+	private CommonService commonService;
     public static String procDefKey="state_project_audit";
 
     /**
@@ -114,7 +124,7 @@ public class StateService {
      * 5评审信息
      */
     @Transactional(readOnly = false)
-    public void saveEdit(ProjectDeclare projectDeclare, List<Map<String,String>> fileListMap) {
+    public void saveEdit(ProjectDeclare projectDeclare) {
        // 1先保存主表信息
         projectDeclare.preUpdate();
         projectDeclareDao.update(projectDeclare);
@@ -128,13 +138,45 @@ public class StateService {
             projectPlanDao.insert(plan);
             sort++;
         }
-        //3附件信息
-        sysAttachmentDao.deleteByUid(projectDeclare.getId());
-        sysAttachmentService.saveList(fileListMap,
-                FileSourceEnum.S0.getValue(),
-                FileTypeEnum.S100.getValue(),
-                projectDeclare.getId());
 
+    }
+    @Transactional(readOnly = false)
+    public JSONObject saveModify(ProjectDeclare projectDeclare,String modifyPros){
+    	JSONObject js=new JSONObject();
+    	List<TeamUserHistory> stus=projectDeclare.getStudentList();
+		List<TeamUserHistory> teas=projectDeclare.getTeacherList();
+		String actywId=projectDeclare.getActywId();
+		String teamId=projectDeclare.getTeamId();
+		String proId=projectDeclare.getId();
+		String category=projectDeclare.getType();
+		js=commonService.checkProjectOnModify(stus,teas,proId, actywId,category, teamId);
+		if("0".equals(js.getString("ret"))){
+			return js;
+		}
+    	saveEdit(projectDeclare);
+    	commonService.disposeTeamUserHistoryForModify(stus, teas, actywId, teamId, proId);
+        sysAttachmentService.saveByVo(projectDeclare.getAttachMentEntity(),projectDeclare.getId(),FileTypeEnum.S0,FileStepEnum.S100);
+
+        //保存变更的审核信息
+        if("1".equals(modifyPros)){
+	        projectAuditInfoService.updateInfoList(projectDeclare.getAuditInfoList(),projectDeclare.getMidAuditList(),
+	                projectDeclare.getCloseAuditList(),  projectDeclare.getId(),projectDeclare.getLevel(),
+	                projectDeclare.getNumber(),projectDeclare.getMidScore(),projectDeclare.getFinalScore());
+        }
+        //变更学分信息
+        ProjectDeclare pd=projectDeclareService.getScoreConfigure(projectDeclare.getId());
+        if(pd!=null&&StringUtil.isNotEmpty(pd.getLevel())&&StringUtil.isNotEmpty(pd.getFinalResult())){
+        	projectDeclareService.saveScore(projectDeclare.getId());
+        }
+        if("1".equals(modifyPros)){
+	        if (StringUtils.equals("1",projectDeclare.getStatus())||StringUtils.equals("2",projectDeclare.getStatus())||StringUtils.equals("3",projectDeclare.getStatus())||
+	                StringUtils.equals("4",projectDeclare.getStatus())||StringUtils.equals("5",projectDeclare.getStatus())||StringUtils.equals("6",projectDeclare.getStatus())||
+	                StringUtils.equals("7",projectDeclare.getStatus())    ) {
+	            runtimeService.deleteProcessInstance(projectDeclare.getProcInsId(),"");
+	        }
+        }
+        js.put("msg", "保存成功");
+        return js;
     }
 
 }

@@ -97,6 +97,21 @@ public class CmsUtils {
 		}
 		return content;
 	}
+	/**根据模板获取html代码*/
+	public static String getHtmlByTemplatePath(String path,Map<String ,Object> model) {
+		CmsTemplate ct=fileToObject(path);
+		if (ct!=null) {
+			String html="";
+			try {
+				html = FreeMarkers.renderString(ct.getContent(), model);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "渲染模板出错，请检查参数和模板";
+			}
+			return html;
+		}
+		return "";
+	}
 	/**获取模板模式资源的html代码*/
 	public static String getHtmlByTemplate(String resid) {
 		CmsIndexResource res=cmsIndexResourceService.get(resid);
@@ -123,8 +138,11 @@ public class CmsUtils {
 		return "";
 	}
 	public static CmsTemplate fileToObject(String path,String fileName) {
+		String pathName =  path+ fileName;
+		return fileToObject(pathName);
+	}
+	public static CmsTemplate fileToObject(String pathName) {
 		try {
-			String pathName =  path+ fileName;
 			Resource resource = new ClassPathResource(pathName);
 			InputStream is = resource.getInputStream();
 			if(is != null){

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oseasy.initiate.modules.actyw.dao.ActYwGtimeDao">
-    
+
 	<sql id="actYwGtimeColumns">
 		a.id AS "id",
 		a.project_id AS "projectId",
@@ -10,27 +10,70 @@
 		a.begin_date AS "beginDate",
 		a.end_date AS "endDate",
 		a.status AS "status",
+		a.rate AS "rate",
+		a.rate_status AS "rateStatus",
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
 		a.create_date AS "createDate",
 		a.create_by AS "createBy.id",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+
+		gn.id AS "gnode.id",
+		gn.name AS "gnode.name",
+		gn.pre_idss AS "gnode.preIdss",
+		n.id AS "gnode.node.id",
+		n.name AS "gnode.node.name"
 	</sql>
-	
+
 	<sql id="actYwGtimeJoins">
+		left JOIN act_yw_gnode gn on gn.id= a.gnode_id
+		left JOIN act_yw_node n on n.id= gn.node_id
 	</sql>
-    
+
 	<select id="get" resultType="ActYwGtime">
-		SELECT 
+		SELECT
 			<include refid="actYwGtimeColumns"/>
 		FROM act_yw_gtime a
 		<include refid="actYwGtimeJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
+
+	<select id="getTimeByGnodeId" resultType="ActYwGtime">
+		SELECT
+			<include refid="actYwGtimeColumns"/>
+		FROM act_yw_gtime a
+		<include refid="actYwGtimeJoins"/>
+		WHERE a.gnode_id = #{gnodeId}
+		and a.grounp_id = #{grounpId}
+		and a.project_id = #{projectId}
+	</select>
+
+
 	<select id="findList" resultType="ActYwGtime">
-		SELECT 
+		SELECT
+			<include refid="actYwGtimeColumns"/>
+		FROM act_yw_gtime a
+		<include refid="actYwGtimeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY gn.pre_idss ASC, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ActYwGtime">
+		SELECT
 			<include refid="actYwGtimeColumns"/>
 		FROM act_yw_gtime a
 		<include refid="actYwGtimeJoins"/>
@@ -42,29 +85,11 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY gn.pre_idss ASC, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
-	
-	<select id="findAllList" resultType="ActYwGtime">
-		SELECT 
-			<include refid="actYwGtimeColumns"/>
-		FROM act_yw_gtime a
-		<include refid="actYwGtimeJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO act_yw_gtime(
 			id,
@@ -74,6 +99,8 @@
 			begin_date,
 			end_date,
 			status,
+			rate,
+			rate_status,
 			update_date,
 			update_by,
 			create_date,
@@ -88,6 +115,8 @@
 			#{beginDate},
 			#{endDate},
 			#{status},
+			#{rate},
+			#{rateStatus},
 			#{updateDate},
 			#{updateBy.id},
 			#{createDate},
@@ -96,7 +125,7 @@
 			#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
 		UPDATE act_yw_gtime SET
 			project_id = #{projectId},
@@ -105,16 +134,22 @@
 			begin_date = #{beginDate},
 			end_date = #{endDate},
 			status = #{status},
+			rate = #{rate},
+			rate_status = #{rateStatus},
 			update_date = #{updateDate},
 			update_by = #{updateBy.id},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE act_yw_gtime SET 
+		UPDATE act_yw_gtime SET
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
+	<update id="deleteByGroupId">
+		DELETE FROM  act_yw_gtime WHERE project_id = #{projectId}
+	</update>
+
 </mapper>

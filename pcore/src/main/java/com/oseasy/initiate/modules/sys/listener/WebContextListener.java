@@ -1,6 +1,7 @@
 package com.oseasy.initiate.modules.sys.listener;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 
 import org.springframework.web.context.WebApplicationContext;
 
@@ -15,4 +16,15 @@ public class WebContextListener extends org.springframework.web.context.ContextL
 		}
 		return super.initWebApplicationContext(servletContext);
 	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent event) {
+		super.contextDestroyed(event);
+	}
+
+	@Override
+	public void closeWebApplicationContext(ServletContext arg0) {
+		super.closeWebApplicationContext(arg0);
+	}
+	
 }

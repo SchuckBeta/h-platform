@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oseasy.initiate.modules.pw.dao.PwEnterDao">
+
+	<sql id="pwEnterColumns">
+		a.id AS "id",
+		a.no AS "no",
+		a.applicant AS "applicant.id",
+		a.status AS "status",
+		a.is_temp AS "isTemp",
+		a.term AS "term",
+		a.start_date AS "startDate",
+		a.end_date AS "endDate",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+
+		u3.name AS "applicant.name",
+		u3.no AS "applicant.no",
+		u3.sex AS "applicant.sex",
+		u3.email AS "applicant.email",
+		u3.phone AS "applicant.phone",
+		u3.mobile AS "applicant.mobile",
+		u3.id_type AS "applicant.idType",
+		u3.id_no AS "applicant.idNumber",
+		u3.professional AS "applicant.professional",
+		o.name AS "applicant.office.name"
+	</sql>
+
+	<sql id="pwEnterByGroupColumns">
+		a.id AS "id",
+		a.no AS "no",
+		a.applicant AS "applicant.id",
+		a.status AS "status",
+		a.is_temp AS "isTemp",
+		a.term AS "term",
+		a.start_date AS "startDate",
+		a.end_date AS "endDate",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+
+		ay.id AS "apply.id",
+		ay.yw_id AS "apply.actYw.id",
+		ay.proc_ins_id AS "apply.procInsId",
+		ay.no AS "apply.no",
+		ay.type AS "apply.type",
+		ay.rel_id AS "apply.relId",
+		ay.apply_user_id AS "apply.applyUser.id",
+		ay.update_date AS "apply.updateDate",
+		ay.update_by AS "apply.updateBy.id",
+		ay.create_date AS "apply.createDate",
+		ay.create_by AS "apply.createBy.id",
+		ay.remarks AS "apply.remarks",
+		ay.del_flag AS "apply.delFlag",
+
+		et.id AS "eteam.id",
+		et.type AS "eteam.type",
+		et.status AS "eteam.status",
+		et.pteam AS "eteam.pteam",
+		et.update_date AS "eteam.updateDate",
+		et.update_by AS "eteam.updateBy.id",
+		et.create_date AS "eteam.createDate",
+		et.create_by AS "eteam.createBy.id",
+		et.remarks AS "eteam.remarks",
+		et.del_flag AS "eteam.delFlag",
+
+		et.rid AS "eteam.team.id",
+		et.tname AS "eteam.team.name",
+
+		ep.id AS "eproject.id",
+		ep.type AS "eproject.type",
+		ep.status AS "eproject.status",
+		ep.pteam AS "eproject.pteam",
+		ep.update_date AS "eproject.updateDate",
+		ep.update_by AS "eproject.updateBy.id",
+		ep.create_date AS "eproject.createDate",
+		ep.create_by AS "eproject.createBy.id",
+		ep.remarks AS "eproject.remarks",
+		ep.del_flag AS "eproject.delFlag",
+
+		ep.rid AS "eproject.project.id",
+		ep.pname AS "eproject.project.name",
+		ep.pnumber AS "eproject.project.number",
+		ep.ppro_type AS "eproject.project.proType",
+		ep.ptype AS "eproject.project.type",
+		ep.plevel AS "eproject.project.level",
+		ep.psource AS "eproject.project.source",
+		ep.pdevelopment AS "eproject.project.development",
+		ep.pactyw_id AS "eproject.project.actywId",
+		ep.pteam_id AS "eproject.project.teamId",
+		ep.pteam_name AS "eproject.project.teamName",
+
+
+		ec.id AS "ecompany.id",
+		ec.type AS "ecompany.type",
+		ec.status AS "ecompany.status",
+		ec.pteam AS "ecompany.pteam",
+		ec.update_date AS "ecompany.updateDate",
+		ec.update_by AS "ecompany.updateBy.id",
+		ec.create_date AS "ecompany.createDate",
+		ec.create_by AS "ecompany.createBy.id",
+		ec.remarks AS "ecompany.remarks",
+		ec.del_flag AS "ecompany.delFlag",
+
+		ec.rid AS "ecompany.pwCompany.id",
+		ec.cno AS "ecompany.pwCompany.no",
+		ec.cname AS "ecompany.pwCompany.name",
+		ec.cphone AS "ecompany.pwCompany.phone",
+		ec.cmobile AS "ecompany.pwCompany.mobile",
+		ec.caddress AS "ecompany.pwCompany.address",
+		ec.cremarks AS "ecompany.pwCompany.remarks",
+		ec.creg_money AS "ecompany.pwCompany.regMoney",
+		ec.creg_mtype AS "ecompany.pwCompany.regMtype",
+		ec.creg_person AS "ecompany.pwCompany.regPerson",
+
+		er.id AS "eroom.id",
+		er.eid AS "eroom.pwEnter.id",
+		er.rid AS "eroom.pwRoom.id",
+		er.update_date AS "eroom.updateDate",
+		er.update_by AS "eroom.updateBy.id",
+		er.create_date AS "eroom.createDate",
+		er.create_by AS "eroom.createBy.id",
+		er.remarks AS "eroom.remarks",
+		er.del_flag AS "eroom.delFlag",
+
+		er.rname AS "eroom.pwRoom.name",
+		er.ralias AS "eroom.pwRoom.alias",
+		er.rperson AS "eroom.pwRoom.person",
+		er.rphone AS "eroom.pwRoom.phone",
+		er.rmobile AS "eroom.pwRoom.mobile",
+		er.rtype AS "eroom.pwRoom.type",
+		er.rcolor AS "eroom.pwRoom.color",
+		er.rnum AS "eroom.pwRoom.num",
+		er.ris_allowm AS "eroom.pwRoom.isAllowm",
+		er.ris_usable AS "eroom.pwRoom.isUsable",
+		er.rsid AS "eroom.pwRoom.sid",
+
+		er.psparent_id AS "eroom.pwRoom.pwSpace.parent.id",
+		er.psparent_ids AS "eroom.pwRoom.pwSpace.parentIds",
+		er.psname AS "eroom.pwRoom.pwSpace.name",
+		er.psperson AS "eroom.pwRoom.pwSpace.person",
+		er.pstype AS "eroom.pwRoom.pwSpace.type",
+		er.psphone AS "eroom.pwRoom.pwSpace.phone",
+		er.psmobile AS "eroom.pwRoom.pwSpace.mobile",
+		er.psopen_week AS "eroom.pwRoom.pwSpace.openWeek",
+		er.psopen_start_time AS "eroom.pwRoom.pwSpace.amOpenStartTime",
+		er.psopen_end_time AS "eroom.pwRoom.pwSpace.amOpenEndTime",
+		er.psfloor_num AS "eroom.pwRoom.pwSpace.floorNum",
+		er.psarea AS "eroom.pwRoom.pwSpace.area",
+		er.psupdate_date AS "eroom.pwRoom.pwSpace.updateDate",
+		er.psupdate_by AS "eroom.pwRoom.pwSpace.updateBy.id",
+		er.pscreate_date AS "eroom.pwRoom.pwSpace.createDate",
+		er.pscreate_by AS "eroom.pwRoom.pwSpace.createBy.id",
+		er.psremarks AS "eroom.pwRoom.pwSpace.remarks",
+		er.psdel_flag AS "eroom.pwRoom.pwSpace.delFlag",
+
+		er.pspparent_id AS "eroom.pwRoom.pwSpace.parent.parent.id",
+		er.pspparent_ids AS "eroom.pwRoom.pwSpace.parent.parentIds",
+		er.pspname AS "eroom.pwRoom.pwSpace.parent.name",
+
+		er.psppparent_id AS "eroom.pwRoom.pwSpace.parent.parent.parent.id",
+		er.psppparent_ids AS "eroom.pwRoom.pwSpace.parent.parent.parentIds",
+		er.psppname AS "eroom.pwRoom.pwSpace.parent.parent.name",
+
+		er.pspppparent_id AS "eroom.pwRoom.pwSpace.parent.parent.parent.parent.id",
+		er.pspppparent_ids AS "eroom.pwRoom.pwSpace.parent.parent.parent.parentIds",
+		er.pspppname AS "eroom.pwRoom.pwSpace.parent.parent.parent.name",
+
+		er.psppppparent_id AS "eroom.pwRoom.pwSpace.parent.parent.parent.parent.parent.id",
+		er.psppppparent_ids AS "eroom.pwRoom.pwSpace.parent.parent.parent.parent.parentIds",
+		er.psppppname AS "eroom.pwRoom.pwSpace.parent.parent.parent.parent.name",
+
+		u3.name AS "applicant.name",
+		u3.no AS "applicant.no",
+		u3.sex AS "applicant.sex",
+		u3.email AS "applicant.email",
+		u3.phone AS "applicant.phone",
+		u3.mobile AS "applicant.mobile",
+		u3.id_type AS "applicant.idType",
+		u3.id_no AS "applicant.idNumber",
+		u3.professional AS "applicant.professional",
+		o.name AS "applicant.office.name"
+	</sql>
+
+	<sql id="pwEnterByGroupTeamColumns">
+		et.id AS "id",
+		et.eid AS "eid",
+		et.rid AS "rid",
+		et.type AS "type",
+		et.status AS "status",
+		et.pteam AS "pteam",
+		et.update_date AS "update_date",
+		et.update_by AS "update_by",
+		et.create_date AS "create_date",
+		et.create_by AS "create_by",
+		et.remarks AS "remarks",
+		et.del_flag AS "del_flag",
+
+		et.rid AS "tid",
+		t.name AS "tname"
+	</sql>
+
+	<sql id="pwEnterByGroupXmColumns">
+		ep.id AS "id",
+		ep.eid AS "eid",
+		ep.rid AS "rid",
+		ep.type AS "type",
+		ep.status AS "status",
+		ep.pteam AS "pteam",
+		ep.update_date AS "update_date",
+		ep.update_by AS "update_by",
+		ep.create_date AS "create_date",
+		ep.create_by AS "create_by",
+		ep.remarks AS "remarks",
+		ep.del_flag AS "del_flag",
+
+		ep.rid AS "pid",
+		p.name AS "pname",
+		p.number AS "pnumber",
+		p.level AS "plevel",
+		p.pro_type AS "ppro_type",
+		p.type AS "ptype",
+		p.source AS "psource",
+		p.development AS "pdevelopment",
+		p.actyw_id AS "pactyw_id",
+		p.team_id AS "pteam_id",
+		t.name AS "pteam_name"
+	</sql>
+
+	<sql id="pwEnterByGroupQyColumns">
+		ec.id AS "id",
+		ec.eid AS "eid",
+		ec.rid AS "rid",
+		ec.type AS "type",
+		ec.status AS "status",
+		ec.pteam AS "pteam",
+		ec.update_date AS "update_date",
+		ec.update_by AS "update_by",
+		ec.create_date AS "create_date",
+		ec.create_by AS "create_by",
+		ec.remarks AS "remarks",
+		ec.del_flag AS "del_flag",
+
+		ec.rid AS "cid",
+		pc.name AS "cname",
+		pc.no AS "cno",
+		pc.phone AS "cphone",
+		pc.mobile AS "cmobile",
+		pc.address AS "caddress",
+		pc.remarks AS "cremarks",
+		pc.reg_money AS "creg_money",
+		pc.reg_mtype AS "creg_mtype",
+		pc.reg_person AS "creg_person"
+	</sql>
+
+	<sql id="pwEnterByGroupRoomColumns">
+		er.id AS "id",
+		er.eid AS "eid",
+		er.rid AS "rid",
+		er.update_date AS "update_date",
+		er.update_by AS "update_by",
+		er.create_date AS "create_date",
+		er.create_by AS "create_by",
+		er.remarks AS "remarks",
+		er.del_flag AS "del_flag",
+
+		pr.name AS "rname",
+		pr.alias AS "ralias",
+		pr.person AS "rperson",
+		pr.phone AS "rphone",
+		pr.mobile AS "rmobile",
+		pr.type AS "rtype",
+		pr.color AS "rcolor",
+		pr.num AS "rnum",
+		pr.is_allowm AS "ris_allowm",
+		pr.is_usable AS "ris_usable",
+		pr.sid AS "rsid",
+
+		ps.parent_id AS "psparent_id",
+		ps.parent_ids AS "psparent_ids",
+		ps.name AS "psname",
+		ps.person AS "psperson",
+		ps.type AS "pstype",
+		ps.phone AS "psphone",
+		ps.mobile AS "psmobile",
+		ps.open_week AS "psopen_week",
+		ps.am_open_start_time AS "psopen_start_time",
+		ps.am_open_end_time AS "psopen_end_time",
+		ps.floor_num AS "psfloor_num",
+		ps.area AS "psarea",
+		ps.update_date AS "psupdate_date",
+		ps.update_by AS "psupdate_by",
+		ps.create_date AS "pscreate_date",
+		ps.create_by AS "pscreate_by",
+		ps.del_flag AS "psdel_flag",
+		ps.remarks AS "psremarks",
+
+		psp.parent_id AS "pspparent_id",
+		psp.parent_ids AS "pspparent_ids",
+		psp.name AS "pspname",
+
+		pspp.parent_id AS "psppparent_id",
+		pspp.parent_ids AS "psppparent_ids",
+		pspp.name AS "psppname",
+
+		psppp.parent_id AS "pspppparent_id",
+		psppp.parent_ids AS "pspppparent_ids",
+		psppp.name AS "pspppname",
+
+		pspppp.parent_id AS "psppppparent_id",
+		pspppp.parent_ids AS "psppppparent_ids",
+		pspppp.name AS "psppppname"
+	</sql>
+
+	<sql id="pwEnterJoins">
+		LEFT JOIN sys_user u3 ON u3.id = a.applicant
+		LEFT JOIN sys_office o ON o.id = u3.office_id
+	</sql>
+
+	<sql id="pwEnterByGroupTeamJoins">
+		LEFT JOIN (
+			SELECT
+				<include refid="pwEnterByGroupTeamColumns"/>
+			FROM pw_enter_detail et
+			LEFT JOIN team t ON t.id = et.rid
+			WHERE et.type = 0
+		) et ON et.eid = a.id
+	</sql>
+
+	<sql id="pwEnterByGroupXmJoins">
+		LEFT JOIN (
+			SELECT
+				<include refid="pwEnterByGroupXmColumns"/>
+			FROM pw_enter_detail ep
+			LEFT JOIN project_declare p ON p.id = ep.rid
+			LEFT JOIN team t ON t.id = p.team_id
+			WHERE ep.type = 1
+		) ep ON ep.eid = a.id
+	</sql>
+
+	<sql id="pwEnterByGroupXmsJoins">
+		LEFT JOIN (
+			SELECT
+				<include refid="pwEnterByGroupXmColumns"/>
+			FROM pw_enter_detail ep
+			LEFT JOIN (
+				SELECT
+					p.id AS "id",
+					p.`name` AS "name",
+					p.leader AS "declareId",
+					pdpp.pro_type AS "pro_type",
+					pdpp.type AS "type",
+					p.team_id AS "team_id",
+					p.actyw_id AS "actyw_id",
+					p.proc_ins_id AS "proc_ins_id",
+					p.number AS "number",
+					'0' AS "level",
+					'0' AS "source",
+					'0' AS "development"
+				FROM project_declare p
+				LEFT JOIN act_yw pdy on pdy.id = p.actyw_id
+				LEFT JOIN pro_project pdpp on pdpp.id = pdy.rel_id
+				UNION ALL SELECT
+					p.id AS "id",
+					p.p_name AS "name",
+					p.declare_id AS "declareId",
+					pmpp.pro_type AS "pro_type",
+					pmpp.type AS "type",
+					p.team_id AS "team_id",
+					p.actyw_id AS "actyw_id",
+					p.proc_ins_id AS "proc_ins_id",
+					p.competition_number AS "number",
+					'0' AS "level",
+					'0' AS "source",
+					'0' AS "development"
+				FROM pro_model p
+				LEFT JOIN act_yw pmy on pmy.id = p.actyw_id
+				LEFT JOIN pro_project pmpp on pmpp.id = pmy.rel_id
+				UNION ALL SELECT
+					g.id AS "id",
+					g.p_name AS "name",
+					g.declare_id AS "declareId",
+					gpp.pro_type AS "pro_type",
+					gpp.type AS "type",
+					g.team_id AS "team_id",
+					g.actyw_id AS "actyw_id",
+					g.proc_ins_id AS "proc_ins_id",
+					g.competition_number AS "number",
+					'0' AS "level",
+					'0' AS "source",
+					'0' AS "development"
+				FROM g_contest g
+				LEFT JOIN act_yw gy on gy.id = g.actyw_id
+				LEFT JOIN pro_project gpp on gpp.id = gy.rel_id
+			) p ON p.id = ep.rid
+			LEFT JOIN team t ON t.id = p.team_id
+			WHERE ep.type = 1
+		) ep ON ep.eid = a.id
+	</sql>
+
+	<sql id="pwEnterByGroupQyJoins">
+		LEFT JOIN (
+			SELECT
+				<include refid="pwEnterByGroupQyColumns"/>
+			FROM pw_enter_detail ec
+			LEFT JOIN pw_company pc ON pc.id = ec.rid
+			WHERE ec.type = 2
+		) ec ON ec.eid = a.id
+	</sql>
+
+	<sql id="pwEnterByGroupRoomJoins">
+		LEFT JOIN (
+			SELECT
+				<include refid="pwEnterByGroupRoomColumns"/>
+			FROM pw_enter_room er
+			LEFT JOIN pw_room pr ON pr.id = er.rid
+			LEFT JOIN pw_space ps ON ps.id = pr.sid
+			LEFT JOIN pw_space psp ON psp.id = ps.parent_id
+			LEFT JOIN pw_space pspp ON pspp.id = psp.parent_id
+			LEFT JOIN pw_space psppp ON psppp.id = pspp.parent_id
+			LEFT JOIN pw_space pspppp ON pspppp.id = psppp.parent_id
+		) er ON er.eid = a.id
+	</sql>
+
+	<sql id="pwEnterByGroupJoins">
+		<include refid="pwEnterByGroupTeamJoins"/>
+		<!-- <include refid="pwEnterByGroupXmJoins"/> -->
+		<include refid="pwEnterByGroupXmsJoins"/>
+		<include refid="pwEnterByGroupQyJoins"/>
+		<include refid="pwEnterByGroupRoomJoins"/>
+		LEFT JOIN act_yw_apply ay ON ay.rel_id = a.id
+		LEFT JOIN sys_user u3 ON u3.id = a.applicant
+		LEFT JOIN sys_office o ON o.id = u3.office_id
+	</sql>
+
+	<select id="get" resultType="PwEnter">
+		SELECT
+			<include refid="pwEnterColumns"/>
+		FROM pw_enter a
+		<include refid="pwEnterJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByGroup" resultType="PwEnter">
+		SELECT
+			<include refid="pwEnterByGroupColumns"/>
+		FROM pw_enter a
+		<include refid="pwEnterByGroupJoins"/>
+		WHERE a.id = #{id}
+		GROUP BY a.id
+	</select>
+
+	<select id="findList" resultType="PwEnter">
+		SELECT
+			<include refid="pwEnterColumns"/>
+		FROM pw_enter a
+		<include refid="pwEnterJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="no != null and no != ''">
+				AND a.no LIKE
+					<if test="dbName == 'oracle'">'%'||#{no}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{no}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{no},'%')</if>
+			</if>
+			<if test="applicant != null">
+				<if test="applicant.id != null and applicant.id != ''">
+					AND a.applicant = #{applicant.id}
+				</if>
+				<if test="applicant.name != null and applicant.name != ''">
+					AND u3.name LIKE
+						<if test="dbName == 'oracle'">'%'||#{applicant.name}||'%'</if>
+						<if test="dbName == 'mssql'">'%'+#{applicant.name}+'%'</if>
+						<if test="dbName == 'mysql'">concat('%',#{applicant.name},'%')</if>
+				</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="isTemp != null and isTemp != ''">
+				AND a.is_temp = #{isTemp}
+			</if>
+			<if test="pstatuss != null">
+				AND a.status in
+				<foreach item="pstatus" collection="pstatuss" open="(" separator="," close=")">
+					#{pstatus}
+				</foreach>
+			</if>
+			<if test="startDate != null and startDate != ''">
+				AND a.start_date <![CDATA[ >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND a.end_date <![CDATA[ <= #{endDate} ]]>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} ${page.orderByType}, a.applicant ASC, a.status ASC, a.no DESC
+			</when>
+			<otherwise>
+				ORDER BY a.applicant ASC, a.status ASC, a.no DESC, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByGroup" resultType="PwEnter">
+		SELECT
+			<include refid="pwEnterByGroupColumns"/>
+		FROM pw_enter a
+		<include refid="pwEnterByGroupJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND ay.id is not NULL
+			<if test="ids != null">
+				AND er.rid in
+				<foreach item="id" collection="ids" open="(" separator=","
+					close=")">
+					#{id}
+				</foreach>
+			</if>
+			<if test="no != null and no != ''">
+				AND a.no LIKE
+					<if test="dbName == 'oracle'">'%'||#{no}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{no}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{no},'%')</if>
+			</if>
+			<if test="applicant != null">
+				<if test="applicant.id != null and applicant.id != ''">
+					AND a.applicant = #{applicant.id}
+				</if>
+				<if test="applicant.name != null and applicant.name != ''">
+					AND u3.name LIKE
+						<if test="dbName == 'oracle'">'%'||#{applicant.name}||'%'</if>
+						<if test="dbName == 'mssql'">'%'+#{applicant.name}+'%'</if>
+						<if test="dbName == 'mysql'">concat('%',#{applicant.name},'%')</if>
+				</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="isTemp != null and isTemp != ''">
+				AND a.is_temp = #{isTemp}
+			</if>
+			<if test="pstatuss != null">
+				AND a.status in
+				<foreach item="pstatus" collection="pstatuss" open="(" separator="," close=")">
+					#{pstatus}
+				</foreach>
+			</if>
+			<if test="startDate != null and startDate != ''">
+				AND a.start_date <![CDATA[ >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND a.end_date <![CDATA[ <= #{endDate} ]]>
+			</if>
+			GROUP BY a.id
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} ${page.orderByType}, a.applicant ASC, a.status ASC, a.no DESC
+			</when>
+			<otherwise>
+				ORDER BY a.applicant ASC, a.status ASC, a.no DESC, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="PwEnter">
+		SELECT
+			<include refid="pwEnterColumns"/>
+		FROM pw_enter a
+		<include refid="pwEnterJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} ${page.orderByType}, a.applicant ASC, a.status ASC, a.no DESC
+			</when>
+			<otherwise>
+				ORDER BY a.applicant ASC, a.status ASC, a.no DESC, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO pw_enter(
+			id,
+			no,
+			applicant,
+			status,
+			is_temp,
+			term,
+			start_date,
+			end_date,
+			update_date,
+			update_by,
+			create_date,
+			create_by,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{no},
+			#{applicant.id},
+			#{status},
+			#{isTemp},
+			#{term},
+			#{startDate},
+			#{endDate},
+			#{updateDate},
+			#{updateBy.id},
+			#{createDate},
+			#{createBy.id},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE pw_enter SET
+			no = #{no},
+			applicant = #{applicant.id},
+			status = #{status},
+			is_temp = #{isTemp},
+			term = #{term},
+			start_date = #{startDate},
+			end_date = #{endDate},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateStatus">
+		UPDATE pw_enter SET
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE pw_enter SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteWL">
+		DELETE FROM pw_enter WHERE id = #{id}
+	</update>
+</mapper>

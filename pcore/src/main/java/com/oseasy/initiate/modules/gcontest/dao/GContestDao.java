@@ -1,14 +1,15 @@
 package com.oseasy.initiate.modules.gcontest.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+
+import com.oseasy.initiate.common.persistence.CrudDao;
+import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
+import com.oseasy.initiate.modules.auditstandard.vo.AsdVo;
+import com.oseasy.initiate.modules.gcontest.entity.GContest;
+import com.oseasy.initiate.modules.gcontest.vo.GContestListVo;
 
 /**
  * 大赛信息DAO接口
@@ -17,6 +18,12 @@ import org.apache.ibatis.annotations.Param;
  */
 @MyBatisDao
 public interface GContestDao extends CrudDao<GContest> {
+	public void modifyLeaderAndTeam(@Param("uid")String uid,@Param("tid")String tid,@Param("pid")String pid);
+	public Map<String,Long> getProjectNumForAsdIndexFromModel(@Param("vo")AsdVo vo);
+	public Map<String,Object> getPersonNumForAsdIndexFromModel(@Param("vo")AsdVo vo);
+	public List<GContestListVo> getMyGcontestListPlus(GContestListVo vo);
+	public Map<String,Long> getProjectNumForAsdIndex(String date);
+	public Map<String,Object> getPersonNumForAsdIndex(String date);
     public void updateState(GContest gContest);
 
 	public int getMyGcontestListCount(Map<String, Object> param);
@@ -24,6 +31,7 @@ public interface GContestDao extends CrudDao<GContest> {
 	public List<Map<String, String>> getMyGcontestList(Map<String, Object> param);
 
 	public List<Map<String, String>> getMyGcontestListPerson(List<String> ids);
+	public List<Map<String, String>> getMyGcontestListPersonPlus(List<String> ids);
 	
 	public List<Map<String, String>> getGcontestList(Map<String, Object> param);
 	
@@ -56,5 +64,11 @@ public interface GContestDao extends CrudDao<GContest> {
 	int getTodoCount(Map<String, Object> param);
 
 	int getHasdoCount(Map<String, Object> param);
+
+	public GContest getScoreConfigure(String id);
+
+	List<GContest> getGcontestInfoByActywId(@Param("userId") String userId,@Param("actywId")  String actywId);
+
+	List<Map<String,String>>  getInGcontestNameList(@Param("userId") String userId );
 }
 

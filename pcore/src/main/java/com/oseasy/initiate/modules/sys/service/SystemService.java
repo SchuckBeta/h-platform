@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.oseasy.initiate.modules.sys.service;
 
@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.oseasy.initiate.modules.sys.dao.StudentExpansionDao;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
 import org.apache.shiro.session.Session;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.security.Digests;
@@ -29,8 +29,10 @@ import com.oseasy.initiate.common.utils.CacheUtils;
 import com.oseasy.initiate.common.utils.Encodes;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.Servlets;
+import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
 import com.oseasy.initiate.modules.sys.dao.MenuDao;
 import com.oseasy.initiate.modules.sys.dao.RoleDao;
+import com.oseasy.initiate.modules.sys.dao.StudentExpansionDao;
 import com.oseasy.initiate.modules.sys.dao.UserDao;
 import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
 import com.oseasy.initiate.modules.sys.entity.Menu;
@@ -50,11 +52,11 @@ import com.oseasy.initiate.modules.sys.utils.UserUtils;
 @Service
 @Transactional(readOnly = true)
 public class SystemService extends BaseService implements InitializingBean {
-	
+
 	public static final String HASH_ALGORITHM = "SHA-1";
 	public static final int HASH_INTERATIONS = 1024;
 	public static final int SALT_SIZE = 8;
-	
+
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -68,8 +70,8 @@ public class SystemService extends BaseService implements InitializingBean {
 	@Autowired
 	private StudentExpansionDao  studentExpansionDao;
 	@Autowired
-	private BackTeacherExpansionService BackTeacherExpansionService;
-	
+	private BackTeacherExpansionService backTeacherExpansionService;
+
 	public SessionDAO getSessionDao() {
 		return sessionDao;
 	}
@@ -78,7 +80,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	private IdentityService identityService;
 
 	//-- User Service --//
-	
+
 	/**
 	 * 获取用户
 	 * @param id
@@ -98,13 +100,13 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	public User getUserByLoginNameOrNo(String loginNameOrNo) {
-		return userDao.getByLoginNameOrNo(loginNameOrNo);
+		return userDao.getByLoginNameOrNo(loginNameOrNo,null);
 	}
-
+	public User getUserByLoginNameAndNo(String loginNameOrNo,String no) {
+		return userDao.getByLoginNameAndNo(loginNameOrNo,no);
+	}
 	public User getUserByNo(String no) {
-		User p=new User();
-		p.setNo(no);
-		return 	 userDao.getByNo(p);
+		return 	 userDao.getByNo(no);
 	}
 
 	public User getUserByMobile(String mobile) {
@@ -122,7 +124,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		page.setList(userDao.findList(user));
 		return page;
 	}
-	
+
 	public String getTeacherTypeByUserId(String userId) {
 		return  userDao.getTeacherTypeByUserId(userId);
 	}
@@ -136,7 +138,56 @@ public class SystemService extends BaseService implements InitializingBean {
 		page.setList(userDao.findListTree(user));
 		return page;
 	}
-	
+
+	/**
+	 * 查询导师.
+	 * @param page 分页
+	 * @param user 用户
+	 * @return Page
+	 */
+	public Page<User> findListTreeByTeacher(Page<User> page, User user) {
+	  // 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
+	  //user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
+	  // 设置分页参数
+	  user.setPage(page);
+	  // 执行分页查询
+	  page.setList(userDao.findListTreeByTeacher(user));
+	  return page;
+	}
+
+	/**
+	 * 查询学生.
+	 * @param page 分页
+	 * @param user 用户
+	 * @return Page
+	 */
+	public Page<User> findListTreeByStudent(Page<User> page, User user) {
+	  // 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
+	  //user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
+	  // 设置分页参数
+	  user.setPage(page);
+	  // 执行分页查询
+	  List<User> list=userDao.findListTreeByStudent(user);
+	  page.setList(list);
+	  return page;
+	}
+
+	/**
+	 * 查询学生.
+	 * @param page 分页
+	 * @param user 用户
+	 * @return Page
+	 */
+	public Page<User> findListTreeByUser(Page<User> page, User user) {
+	  // 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
+	  //user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
+	  // 设置分页参数
+	  user.setPage(page);
+	  // 执行分页查询
+	  page.setList(userDao.findListTreeByUser(user));
+	  return page;
+	}
+
 	/**
 	 * 无分页查询人员列表
 	 * @param user
@@ -183,7 +234,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 		return list;
 	}
-	
+
 	@Transactional(readOnly = false)
 	private void saveStudentExpansion(StudentExpansion entity) {
 		if (entity.getIsNewRecord()) {
@@ -194,7 +245,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			studentExpansionDao.update(entity);
 		}
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
 		if (StringUtil.isBlank(user.getId())) {
@@ -210,7 +261,7 @@ public class SystemService extends BaseService implements InitializingBean {
 				//backTeacherExpansion.setId(IdGen.uuid());
 				backTeacherExpansion.setUser(user);
 				backTeacherExpansion.setTeachertype(user.getTeacherType());
-				BackTeacherExpansionService.save(backTeacherExpansion);
+				backTeacherExpansionService.save(backTeacherExpansion);
 			}
 		}else{
 			// 清除原用户机构用户缓存
@@ -221,15 +272,15 @@ public class SystemService extends BaseService implements InitializingBean {
 			// 更新用户数据
 			user.preUpdate();
 			userDao.update(user);
-			
+
 			if ("2".equals(user.getUserType())) {
-				BackTeacherExpansion backTeacherExpansion = new BackTeacherExpansion();
-				//backTeacherExpansion.setId(IdGen.uuid());
-				String teacherId = BackTeacherExpansionService.findTeacherIdByUser(user.getId());
-				backTeacherExpansion.setId(teacherId);
+				BackTeacherExpansion backTeacherExpansion = backTeacherExpansionService.findTeacherByUserId(user.getId());
+				if(backTeacherExpansion==null){
+					backTeacherExpansion=new BackTeacherExpansion();
+				}
 				backTeacherExpansion.setUser(user);
 				backTeacherExpansion.setTeachertype(user.getTeacherType());
-				BackTeacherExpansionService.save(backTeacherExpansion);
+				backTeacherExpansionService.save(backTeacherExpansion);
 			}
 		}
 		if (StringUtil.isNotBlank(user.getId())) {
@@ -248,7 +299,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //			systemRealm.clearAllCachedAuthorizationInfo();
 		}
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void updateUserInfo(User user) {
 		user.preUpdate();
@@ -258,7 +309,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void deleteUser(User user) {
 		userDao.delete(user);
@@ -269,7 +320,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void updatePasswordById(String id, String loginName, String newPassword) {
 		User user = new User(id);
@@ -281,7 +332,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void updateUserLoginInfo(User user) {
 		// 保存上次登录信息
@@ -292,7 +343,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		user.setLoginDate(new Date());
 		userDao.updateLoginInfo(user);
 	}
-	
+
 	/**
 	 * 生成安全的密码，生成随机的16位salt并经过1024次 sha-1 hash
 	 */
@@ -302,7 +353,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		byte[] hashPassword = Digests.sha1(plain.getBytes(), salt, HASH_INTERATIONS);
 		return Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword);
 	}
-	
+
 	/**
 	 * 验证密码
 	 * @param plainPassword 明文密码
@@ -315,7 +366,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		byte[] hashPassword = Digests.sha1(plain.getBytes(), salt, HASH_INTERATIONS);
 		return password.equals(Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword));
 	}
-	
+
 	/**
 	 * 获得活动会话
 	 * @return
@@ -323,33 +374,37 @@ public class SystemService extends BaseService implements InitializingBean {
 	public Collection<Session> getActiveSessions() {
 		return sessionDao.getActiveSessions(false);
 	}
-	
+
 	//-- Role Service --//
-	
+
 	public Role getRole(String id) {
 		return roleDao.get(id);
 	}
+
+	public Role getNamebyId(String id) {
+			return roleDao.getNamebyId(id);
+		}
 
 	public Role getRoleByName(String name) {
 		Role r = new Role();
 		r.setName(name);
 		return roleDao.getByName(r);
 	}
-	
+
 	public Role getRoleByEnname(String enname) {
 		Role r = new Role();
 		r.setEnname(enname);
 		return roleDao.getByEnname(r);
 	}
-	
+
 	public List<Role> findRole(Role role) {
 		return roleDao.findList(role);
 	}
-	
+
 	public List<Role> findAllRole() {
 		return UserUtils.getRoleList();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void saveRole(Role role) {
 		if (StringUtil.isBlank(role.getId())) {
@@ -389,7 +444,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public Boolean outUserInRole(Role role, User user) {
 		List<Role> roles = user.getRoleList();
@@ -402,7 +457,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 		return false;
 	}
-	
+
 	@Transactional(readOnly = false)
 	public User assignUserToRole(Role role, User user) {
 		if (user == null) {
@@ -418,10 +473,14 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	//-- Menu Service --//
-	
-	public Menu getMenu(String id) {
-		return menuDao.get(id);
-	}
+
+  public Menu getMenu(String id) {
+    return menuDao.get(id);
+  }
+
+  public Menu getMenuById(String id) {
+    return menuDao.getById(id);
+  }
 
 	public Menu getMenuByName(String name) {
 		return menuDao.getMenuByName(name);
@@ -430,16 +489,17 @@ public class SystemService extends BaseService implements InitializingBean {
 	public List<Menu> findAllMenu() {
 		return UserUtils.getMenuList();
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void saveMenu(Menu menu) {
-		
+
 		// 获取父节点实体
-		menu.setParent(this.getMenu(menu.getParent().getId()));
-		
+//		menu.setParent(this.getMenu(menu.getParent().getId()));
+		menu.setParent(this.getMenuById(menu.getParent().getId()));
+
 		// 获取修改前的parentIds，用于更新子节点的parentIds
-		String oldParentIds = menu.getParentIds(); 
-		
+		String oldParentIds = menu.getParentIds();
+
 		// 设置新的父节点串
 		menu.setParentIds(menu.getParent().getParentIds()+menu.getParent().getId()+",");
 
@@ -451,7 +511,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			menu.preUpdate();
 			menuDao.update(menu);
 		}
-		
+
 		// 更新子节点 parentIds
 		Menu m = new Menu();
 		m.setParentIds("%,"+menu.getId()+",%");
@@ -489,7 +549,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		// 清除日志相关缓存
 		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
 	}
-	
+
 	/**
 	 * 获取Key加载信息
 	 */
@@ -501,9 +561,9 @@ public class SystemService extends BaseService implements InitializingBean {
 		System.out.println(sb.toString());*/
 		return true;
 	}
-	
+
 	///////////////// Synchronized to the Activiti //////////////////
-	
+
 	// 已废弃，同步见：ActGroupEntityServiceFactory.java、ActUserEntityServiceFactory.java
 
 	/**
@@ -535,18 +595,18 @@ public class SystemService extends BaseService implements InitializingBean {
 			}
 		}
 	}
-	
+
 	private void saveActivitiGroup(Role role) {
 		if (!Global.isSynActivitiIndetity()) {
 			return;
 		}
 		String groupId = role.getEnname();
-		
+
 		// 如果修改了英文名，则删除原Activiti角色
 		if (StringUtil.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())) {
 			identityService.deleteGroup(role.getOldEnname());
 		}
-		
+
 		Group group = identityService.createGroupQuery().groupId(groupId).singleResult();
 		if (group == null) {
 			group = identityService.newGroup(groupId);
@@ -554,7 +614,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		group.setName(role.getName());
 		group.setType(role.getRoleType());
 		identityService.saveGroup(group);
-		
+
 		// 删除用户与用户组关系
 		List<org.activiti.engine.identity.User> activitiUserList = identityService.createUserQuery().memberOfGroup(groupId).list();
 		for (org.activiti.engine.identity.User activitiUser : activitiUserList) {
@@ -603,7 +663,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		activitiUser.setEmail(user.getEmail());
 		activitiUser.setPassword(StringUtil.EMPTY);
 		identityService.saveUser(activitiUser);
-		
+
 		// 删除用户与用户组关系
 		List<Group> activitiGroups = identityService.createGroupQuery().groupMember(userId).list();
 		for (Group group : activitiGroups) {
@@ -633,15 +693,44 @@ public class SystemService extends BaseService implements InitializingBean {
 			identityService.deleteUser(userId);
 		}
 	}
-	
+
 	///////////////// Synchronized to the Activiti end //////////////////
-	
-	
+
+
 	public List<Role> findListByUserId(String userId) {
-		
+
 		List<Role> roleList= roleDao.findListByUserId(userId);
-		
+
 		return roleList;
-	};
-	
+	}
+
+	/**
+	 * 批量添加用户角色.
+	 * @param rid 角色ID
+	 * @param uids 用户IDS
+	 */
+	@Transactional(readOnly = false)
+  public ActYwRstatus<List<String>> insertPLUserRole(String rid, List<String> uids) {
+	  if (StringUtil.isNotEmpty(rid)) {
+      Role role = new Role(rid);
+      List<String> repairedIds = Lists.newArrayList();
+      for (String id : uids) {
+        User user = new User(id);
+        user.getRoleList().add(role);
+        insertUserRole(user);
+        repairedIds.add(id);
+      }
+      return new  ActYwRstatus<List<String>>(true, "修复成功，角色ID为:["+rid+"],共修复 " + repairedIds.size() + "条", repairedIds);
+    }
+    return new  ActYwRstatus<List<String>>(false, "修复失败,角色ID为空!");
+  };
+
+  /**
+   * 添加用户角色.
+   * @param user
+   */
+  @Transactional(readOnly = false)
+  public void insertUserRole(User user) {
+    userDao.insertUserRole(user);
+  };
 }

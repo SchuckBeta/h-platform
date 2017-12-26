@@ -1,23 +1,36 @@
 package com.oseasy.initiate.modules.project.enums;
 
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
+
 public enum ProjectStatusEnum {
-	 S0("0","未提交")
-	,S1("1","待学院立项审核")
-	,S2("2","待学校立项审核")
-	,S3("3","待提交中期报告")
-	,S4("4","待修改中期报告")
-	,S5("5","待中期检查")
-	,S6("6","待提交结项报告")
-	,S7("7","待结项审核")
-	,S8("8","项目终止")
-	,S9("9","项目结项")
+	 S0("0", ProjectNodeVo.P_START_ID, ProjectNodeVo.PN_START_ID, "未提交")
+	,S1("1", ProjectNodeVo.PNODE_START_ID, ProjectNodeVo.PNNODE_START_ID, "待学院立项审核")
+	,S2("2", ProjectNodeVo.PNODE_START_ID, ProjectNodeVo.PNNODE_START_ID, "待学校立项审核")
+	,S3("3", ProjectNodeVo.PNODE_MIDDLE_ID, ProjectNodeVo.PNNODE_MIDDLE_ID, "待提交中期报告")
+	,S4("4", ProjectNodeVo.PNODE_MIDDLE_ID, ProjectNodeVo.PNNODE_MIDDLE_ID, "待修改中期报告")
+	,S5("5", ProjectNodeVo.PNODE_MIDDLE_ID, ProjectNodeVo.PNNODE_MIDDLE_ID, "待中期检查")
+	,S6("6", ProjectNodeVo.PNODE_CLOSE_ID, ProjectNodeVo.PNNODE_CLOSE_ID, "待提交结项报告")
+	,S7("7", ProjectNodeVo.PNODE_CLOSE_ID, ProjectNodeVo.PNNODE_CLOSE_ID, "待结项审核")
+	,S8("8", ProjectNodeVo.P_END_ID, ProjectNodeVo.PN_END_ID, "项目终止")
+	,S9("9", ProjectNodeVo.P_END_ID, ProjectNodeVo.PN_END_ID, "项目结项")
 	;
 
 	//(0未提交，1待学院立项审核，2待学校立项审核，3.待提交中期报告，4待修改中期报告,5待中期检查,6待提交结项报告,7.待结项审核，8项目终止)
 	private String value;
+  private String gnodeId;
+  private String nodeId;
 	private String name;
-	
-	public String getValue() {
+
+  public String getNodeId() {
+    return nodeId;
+  }
+
+  public String getGnodeId() {
+    return gnodeId;
+  }
+
+  public String getValue() {
 		return value;
 	}
 
@@ -33,12 +46,14 @@ public enum ProjectStatusEnum {
 		this.name = name;
 	}
 
-	private ProjectStatusEnum(String value, String name) {
+	private ProjectStatusEnum(String value, String gnodeId, String nodeId, String name) {
 		this.value=value;
+		this.gnodeId=gnodeId;
+		this.nodeId=nodeId;
 		this.name=name;
 	}
 	public static String getNameByValue(String value) {
-		if (value!=null) {
+    if (StringUtil.isNotEmpty(value)) {
 			for(ProjectStatusEnum e:ProjectStatusEnum.values()) {
 				if (e.value.equals(value)) {
 					return e.name;
@@ -47,5 +62,16 @@ public enum ProjectStatusEnum {
 		}
 		return "";
 	}
-	
+
+	public static ProjectStatusEnum getByValue(String value) {
+	  if (StringUtil.isNotEmpty(value)) {
+	    for(ProjectStatusEnum e:ProjectStatusEnum.values()) {
+	      if ((e.value).equals(value)) {
+	        return e;
+	      }
+	    }
+	  }
+	  return null;
+	}
+
 }

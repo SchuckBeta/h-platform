@@ -1,28 +1,21 @@
 package com.oseasy.initiate.modules.sys.dao;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.sys.entity.SysNo;
+import com.oseasy.initiate.modules.sys.entity.SysNumRule;
 
 /**
- * 系统编号DAO接口
- * @author chenh
- * @version 2017-05-05
+ * 系统全局编号DAO接口.
+ * @author chenhao
+ * @version 2017-07-17
  */
 @MyBatisDao
 public interface SysNoDao extends CrudDao<SysNo> {
-	/**
-	 * 获取全局序号最大值
-	 * @return
-	 */
-	public SysNo getMaxNo();
-
-	/**
-	 * 获取机构序号最大值
-	 * @param officeId
-	 * @return
-	 */
-	public SysNo getMaxNoByOffice(@Param("officeId")String officeId);
+  /**
+   * 根据唯一标识获取编号对象.
+   * @param key 唯一标识
+   * @return SysNo
+   */
+  public SysNo getByKeyss(String key);
 }

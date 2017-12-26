@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,16 +33,18 @@ import net.sf.json.JSONObject;
  */
 @Controller
 public class ExcellentShowController extends BaseController {
-	public static final String FRONT_URL = Global.getConfig("frontUrl");
+	public static final String FRONT_URL = Global.getConfig("sysFrontIp")+Global.getConfig("frontPath");
 	@Autowired
 	private ExcellentKeywordService excellentKeywordService;
 	@Autowired
 	private ExcellentShowService excellentShowService;
 	/*后台添加编辑大赛展示信息*/
+	@RequiresPermissions("excellent:gcontestShow:edit")
 	@RequestMapping(value = {"${adminPath}/excellent/gcontestShowForm"})
 	public String gcontestShowForm( HttpServletRequest request, HttpServletResponse response, Model model) {
 		String gcontestId=request.getParameter("gcontestId");
 		ExcellentShow es=excellentShowService.getByForid(gcontestId);
+		Map<String, String> projectInfo=excellentShowService.getGcontestInfo(gcontestId);
 		if (es!=null) {
 			es.setKeywords(excellentKeywordService.findListByEsid(es.getId()));
 			es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
@@ -51,11 +54,12 @@ public class ExcellentShowController extends BaseController {
 			es.setIsRelease("1");
 			es.setIsTop("0");
 			es.setIsComment("1");
-			es.setType("0000000076");
+			es.setType(ExcellentShow.Type_Gcontest);
+			es.setSubType(projectInfo.get("subtype"));
 			es.setForeignId(gcontestId);
 		}
 		model.addAttribute("es", es);
-		model.addAttribute("projectInfo", excellentShowService.getGcontestInfo(gcontestId));
+		model.addAttribute("projectInfo", projectInfo);
 		model.addAttribute("projectTeacherInfo", excellentShowService.getGcontestTeacherInfo(gcontestId));
 		model.addAttribute("front_url", FRONT_URL);
 		return "modules/excellent/excellentForm";
@@ -65,20 +69,23 @@ public class ExcellentShowController extends BaseController {
 	public String frontGcontestShowForm( HttpServletRequest request, HttpServletResponse response, Model model) {
 		String gcontestId=request.getParameter("gcontestId");
 		ExcellentShow es=excellentShowService.getByForid(gcontestId);
+		Map<String, String> projectInfo=excellentShowService.getGcontestInfo(gcontestId);
 		if (es!=null) {
 			if("1".equals(es.getIsRelease())){
-				return "redirect:${frontPath}/frontExcellentView-"+es.getId();
+				return "redirect:"+frontPath+"/frontExcellentView-"+es.getId();
 			}
 			es.setKeywords(excellentKeywordService.findListByEsid(es.getId()));
 			es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
 			es.setContent(es.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
 		}else{
 			es=new ExcellentShow();
-			es.setType("0000000076");
+			es.setType(ExcellentShow.Type_Gcontest);
+			es.setSubType(projectInfo.get("subtype"));
 			es.setForeignId(gcontestId);
 		}
+		model.addAttribute("fromPage", "gcontest");
 		model.addAttribute("es", es);
-		model.addAttribute("projectInfo", excellentShowService.getGcontestInfo(gcontestId));
+		model.addAttribute("projectInfo", projectInfo);
 		model.addAttribute("projectTeacherInfo", excellentShowService.getGcontestTeacherInfo(gcontestId));
 		return "modules/excellent/frontExcellentForm";
 	}
@@ -111,13 +118,13 @@ public class ExcellentShowController extends BaseController {
 				if(parameterMap.get("keywords")!=null){
 					es.setKeywords(Arrays.asList((String[])parameterMap.get("keywords")));
 			    }
-			    if (es!=null&&"0000000075".equals(es.getType())&&"0".equals(es.getDelFlag())) {
+			    if (es!=null&&ExcellentShow.Type_Project.equals(es.getType())&&"0".equals(es.getDelFlag())) {
 			      es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
 			      model.addAttribute("es", es);
 			      model.addAttribute("projectInfo", excellentShowService.getProjectInfo(es.getForeignId()));
 			      model.addAttribute("projectTeacherInfo", excellentShowService.getProjectTeacherInfo(es.getForeignId()));
 			    }
-			    if (es!=null&&"0000000076".equals(es.getType())&&"0".equals(es.getDelFlag())) {
+			    if (es!=null&&ExcellentShow.Type_Gcontest.equals(es.getType())&&"0".equals(es.getDelFlag())) {
 			      es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
 			      model.addAttribute("es", es);
 			      model.addAttribute("projectInfo", excellentShowService.getGcontestInfo(es.getForeignId()));
@@ -130,13 +137,13 @@ public class ExcellentShowController extends BaseController {
 	/*前台预览优秀展示*/
 	@RequestMapping(value = {"${frontPath}/frontExcellentPreview"})
 	public String frontExcellentPreview(ExcellentShow es,HttpServletRequest request, HttpServletResponse response, Model model) {
-		if (es!=null&&"0000000075".equals(es.getType())&&"0".equals(es.getDelFlag())) {
+		if (es!=null&&ExcellentShow.Type_Project.equals(es.getType())&&"0".equals(es.getDelFlag())) {
 			es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
 			model.addAttribute("es", es);
 			model.addAttribute("projectInfo", excellentShowService.getProjectInfo(es.getForeignId()));
 			model.addAttribute("projectTeacherInfo", excellentShowService.getProjectTeacherInfo(es.getForeignId()));
 		}
-		if (es!=null&&"0000000076".equals(es.getType())&&"0".equals(es.getDelFlag())) {
+		if (es!=null&&ExcellentShow.Type_Gcontest.equals(es.getType())&&"0".equals(es.getDelFlag())) {
 			es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
 			model.addAttribute("es", es);
 			model.addAttribute("projectInfo", excellentShowService.getGcontestInfo(es.getForeignId()));
@@ -156,11 +163,11 @@ public class ExcellentShowController extends BaseController {
 			/*记录浏览量*/
 			InteractiveUtil.updateViews(excid, request,CacheUtils.EXCELLENT_VIEWS_QUEUE);
 			/*记录浏览量*/
-			if ("0000000075".equals(es.getType())) {//大创项目
+			if (ExcellentShow.Type_Project.equals(es.getType())) {//双创项目
 				model.addAttribute("projectInfo", excellentShowService.getProjectInfo(es.getForeignId()));
 				model.addAttribute("projectTeacherInfo", excellentShowService.getProjectTeacherInfo(es.getForeignId()));
 			}
-			if ("0000000076".equals(es.getType())) {//互联网+大赛
+			if (ExcellentShow.Type_Gcontest.equals(es.getType())) {//互联网+大赛
 				model.addAttribute("projectInfo", excellentShowService.getGcontestInfo(es.getForeignId()));
 				model.addAttribute("projectTeacherInfo", excellentShowService.getGcontestTeacherInfo(es.getForeignId()));
 			}
@@ -168,10 +175,12 @@ public class ExcellentShowController extends BaseController {
 		return "modules/excellent/frontExcellentView";
 	}
 	/*后台添加编辑项目展示信息*/
+	@RequiresPermissions("excellent:projectShow:edit")
 	@RequestMapping(value = {"${adminPath}/excellent/projectShowForm"})
 	public String projectShowForm( HttpServletRequest request, HttpServletResponse response, Model model) {
 		String projectId=request.getParameter("projectId");
 		ExcellentShow es=excellentShowService.getByForid(projectId);
+		Map<String, String> projectInfo=excellentShowService.getProjectInfo(projectId);
 		if (es!=null) {
 			es.setKeywords(excellentKeywordService.findListByEsid(es.getId()));
 			es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
@@ -181,11 +190,12 @@ public class ExcellentShowController extends BaseController {
 			es.setIsRelease("1");
 			es.setIsTop("0");
 			es.setIsComment("1");
-			es.setType("0000000075");
+			es.setType(ExcellentShow.Type_Project);
+			es.setSubType(projectInfo.get("subtype"));
 			es.setForeignId(projectId);
 		}
 		model.addAttribute("es", es);
-		model.addAttribute("projectInfo", excellentShowService.getProjectInfo(projectId));
+		model.addAttribute("projectInfo", projectInfo);
 		model.addAttribute("projectTeacherInfo", excellentShowService.getProjectTeacherInfo(projectId));
 		model.addAttribute("front_url", FRONT_URL);
 		return "modules/excellent/excellentForm";
@@ -195,20 +205,23 @@ public class ExcellentShowController extends BaseController {
 	public String frontProjectShowForm( HttpServletRequest request, HttpServletResponse response, Model model) {
 		String projectId=request.getParameter("projectId");
 		ExcellentShow es=excellentShowService.getByForid(projectId);
+		Map<String, String> projectInfo=excellentShowService.getProjectInfo(projectId);
 		if (es!=null) {
-			if("1".equals(es.getIsRelease())){
-				return "redirect:${frontPath}/frontExcellentView-"+es.getId();
-			}
+			/*if("1".equals(es.getIsRelease())){
+				return "redirect:"+frontPath+"/frontExcellentView-"+es.getId();
+			}*/
 			es.setKeywords(excellentKeywordService.findListByEsid(es.getId()));
 			es.setContent(StringEscapeUtils.unescapeHtml4(es.getContent()));
 			es.setContent(es.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
 		}else{
 			es=new ExcellentShow();
-			es.setType("0000000075");
+			es.setType(ExcellentShow.Type_Project);
+			es.setSubType(projectInfo.get("subtype"));
 			es.setForeignId(projectId);
 		}
+		model.addAttribute("fromPage", "project");
 		model.addAttribute("es", es);
-		model.addAttribute("projectInfo", excellentShowService.getProjectInfo(projectId));
+		model.addAttribute("projectInfo", projectInfo);
 		model.addAttribute("projectTeacherInfo", excellentShowService.getProjectTeacherInfo(projectId));
 		return "modules/excellent/frontExcellentForm";
 	}
@@ -230,5 +243,11 @@ public class ExcellentShowController extends BaseController {
 	@ResponseBody
 	public JSONObject frontSave(ExcellentShow excellentShow, Model model, RedirectAttributes redirectAttributes) {
 		return excellentShowService.frontSaveExcellentShow(excellentShow);
+	}
+	/*批量发布*/
+	@RequestMapping(value = "${adminPath}/excellent/resall")
+	@ResponseBody
+	public JSONObject resall(String fids, Model model, RedirectAttributes redirectAttributes) {
+		return excellentShowService.resall(fids);
 	}
 }

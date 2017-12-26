@@ -67,16 +67,17 @@ public class ActYwNodeController extends BaseController {
 	public String form(ActYwNode actYwNode, Model model) {
 		model.addAttribute("actYwStenStencils", ActYwSten.genActYwStenStencils());
 
-    ActYwForm pactYwForm = new ActYwForm();
-    if (actYwNode != null) {
-      pactYwForm.setType(actYwNode.getType());
+    if(StringUtil.isEmpty(actYwNode.getIsGroup())){
+      actYwNode.setIsGroup("1");
     }
-    List<ActYwForm> actYwForms = actYwFormService.findList(pactYwForm);
-		List<Role>  roleList = systemService.findAllRole();
-		        model.addAttribute("roleList",roleList);
 
+    ActYwForm pactYwForm = new ActYwForm();
+    List<ActYwForm> actYwForms = actYwFormService.findList(pactYwForm);
+    model.addAttribute("actYwForms", actYwForms);
+
+    List<Role>  roleList = systemService.findAllRole();
+    model.addAttribute("roleList",roleList);
 		model.addAttribute("actYwNode", actYwNode);
-		model.addAttribute("actYwForms", actYwForms);
 		return "modules/actyw/actYwNodeForm";
 	}
 

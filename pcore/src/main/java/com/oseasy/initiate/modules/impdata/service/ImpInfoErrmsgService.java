@@ -22,6 +22,9 @@ public class ImpInfoErrmsgService extends CrudService<ImpInfoErrmsgDao, ImpInfoE
 	public List<Map<String,String>> getListByImpId(String impid) {
 		return dao.getListByImpId(impid);
 	}
+	public List<Map<String,String>> getListByImpIdAndSheet(String impid,String sheet) {
+		return dao.getListByImpIdAndSheet(impid,sheet);
+	}
 	public ImpInfoErrmsg get(String id) {
 		return super.get(id);
 	}

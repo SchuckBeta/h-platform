@@ -1,31 +1,20 @@
 package com.oseasy.initiate.modules.state.web;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FileUpUtils;
-import com.oseasy.initiate.common.utils.FloatUtils;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.act.service.ProjectActTaskService;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.entity.*;
-import com.oseasy.initiate.modules.project.service.*;
-import com.oseasy.initiate.modules.state.service.StateService;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,11 +24,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.oseasy.initiate.common.persistence.Page;
+import com.oseasy.initiate.common.utils.DateUtil;
+import com.oseasy.initiate.common.utils.FloatUtils;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.common.web.BaseController;
+import com.oseasy.initiate.modules.act.entity.Act;
+import com.oseasy.initiate.modules.act.service.ActTaskService;
+import com.oseasy.initiate.modules.act.service.ProjectActTaskService;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
+import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
+import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
+import com.oseasy.initiate.modules.project.entity.ProMid;
+import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
+import com.oseasy.initiate.modules.project.entity.ProjectClose;
+import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.oseasy.initiate.modules.project.entity.ProjectPlan;
+import com.oseasy.initiate.modules.project.enums.ProjectStatusEnum;
+import com.oseasy.initiate.modules.project.service.ProMidService;
+import com.oseasy.initiate.modules.project.service.ProjectAuditInfoService;
+import com.oseasy.initiate.modules.project.service.ProjectCloseService;
+import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
+import com.oseasy.initiate.modules.project.service.ProjectPlanService;
+import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
+import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
+import com.oseasy.initiate.modules.state.service.StateService;
+import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
+import com.oseasy.initiate.modules.sys.entity.User;
+import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
+import com.oseasy.initiate.modules.sys.service.UserService;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.oseasy.initiate.modules.team.entity.Team;
+import com.oseasy.initiate.modules.team.service.TeamService;
+import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+
+import net.sf.json.JSONObject;
 
 /**
  * Created by zhangzheng on 2017/3/10.
@@ -48,7 +70,8 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "${adminPath}/state")
 public class StateController extends BaseController {
-
+	@Autowired
+    private AuthorizeService authorizeService;
     @Autowired
     ActTaskService actTaskService;
     @Autowired
@@ -80,7 +103,7 @@ public class StateController extends BaseController {
     UserService userService;
 
     @Autowired
-     RuntimeService runtimeService;
+    RuntimeService runtimeService;
 
     @Autowired
     HistoryService historyService;
@@ -90,6 +113,8 @@ public class StateController extends BaseController {
 
     @Autowired
     ProjectCloseService projectCloseService;
+    @Autowired
+    AuditStandardDetailService auditStandardDetailService;
 
 
     @ModelAttribute
@@ -105,22 +130,22 @@ public class StateController extends BaseController {
     }
 
 
-   //学院立项待审核列表页面跳转 查询待审核任务
-   @RequestMapping(value = "setAuditList")
+    //学院立项待审核列表页面跳转 查询待审核任务
+    @RequestMapping(value = "setAuditList")
     public String setAuditList(Act act, HttpServletRequest request,
                                HttpServletResponse response, Model model) {
-       //如果是学校管理员跳转到
-       User user = UserUtils.getUser();
-       if (StringUtils.equals(user.getUserType(),"6")) { //学校管理员
-           return "redirect:"+"/a/state/schoolSetList";
-       }
+        //如果是学校管理员跳转到
+        User user = UserUtils.getUser();
+        if (StringUtils.equals(user.getUserType(),"6")) { //学校管理员
+            return "redirect:"+"/a/state/schoolSetList";
+        }
 
-       act.setProcDefKey("state_project_audit");  //国创项目流程名称
-       act.setTaskDefKey("set1");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
-       Page<Act> pageForSearch =new Page<Act>(request, response);
-       Page<Act> page=projectActTaskService.allListForPage(pageForSearch,act);
-       model.addAttribute("page",page);
-       return "modules/state/setAuditList";
+        act.setProcDefKey("state_project_audit");  //国创项目流程名称
+        act.setTaskDefKey("set1");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
+        Page<Act> pageForSearch =new Page<Act>(request, response);
+        Page<Act> page=projectActTaskService.allListForPage(pageForSearch,act);
+        model.addAttribute("page",page);
+        return "modules/state/setAuditList";
     }
 
 
@@ -129,7 +154,7 @@ public class StateController extends BaseController {
     //学院立项已审核列表页面跳转 查询已审核任务
     @RequestMapping(value = "setAuditedList")
     public String setAuditedList(Act act, HttpServletRequest request,
-                               HttpServletResponse response, Model model) {
+                                 HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("set1");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -141,7 +166,7 @@ public class StateController extends BaseController {
     //学校立项待审核列表页面跳转 查询待审核任务
     @RequestMapping(value = "schoolSetList")
     public String schoolSetList(Act act, HttpServletRequest request,
-                               HttpServletResponse response, Model model) {
+                                HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("set2");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -154,7 +179,7 @@ public class StateController extends BaseController {
     //学校立项已审核列表页面跳转 查询已审核任务
     @RequestMapping(value = "schoolSetedList")
     public String schoolSetedList(Act act, HttpServletRequest request,
-                                 HttpServletResponse response, Model model) {
+                                  HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("set2");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -169,6 +194,10 @@ public class StateController extends BaseController {
     public String collegeSet(ProjectDeclare projectDeclare, Model model) {
         //根据id查询业务表，获得entity  在ModelAttribute中实现了
         model.addAttribute("projectDeclare",projectDeclare);
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_START_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
+
         return "modules/state/collegeSet";
     }
 
@@ -180,6 +209,10 @@ public class StateController extends BaseController {
         //根据projectDeclare.id 查询立项评审意见
         List<ProjectAuditInfo> infos1= getInfo(projectDeclare.getId(),"1");
         model.addAttribute("infos1",infos1);
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_START_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
+
         return "modules/state/schoolSet";
     }
 
@@ -221,10 +254,13 @@ public class StateController extends BaseController {
 
 
 
-    //中期评分列表页面跳转 查询待审核、已审核任务
+    //学校学院专家中期评分列表页面跳转
+    //查询待审核、已审核任务
+    //另外学院专家，能看到本学院的B级、C级待提交中期报告的数据
+    //如果是学校专家，能看到A级、A+级待提交中期报告的数据
     @RequestMapping(value = "middleAuditList")
     public String middleAuditList(Act act, HttpServletRequest request,
-                               HttpServletResponse response, Model model) {
+                                  HttpServletResponse response, Model model) {
         //判断用户类型如果是学院秘书或者管理员进来，跳转到middleRatingList
         User user = UserUtils.getUser();
         if (StringUtils.equals(user.getUserType(),"3")||StringUtils.equals(user.getUserType(),"6")) { //学院秘书和学校管理员
@@ -234,7 +270,42 @@ public class StateController extends BaseController {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("middleScore");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
-        Page<Act> page=projectActTaskService.allListForPage(pageForSearch,act);
+        //查找待提交中期报告的数据
+        ProjectDeclare projectDeclareForSearch = new ProjectDeclare();
+        if(act.getMap() != null){
+          if(StringUtil.isNotEmpty(act.getMap().get("number"))){
+            projectDeclareForSearch.setNumber(act.getMap().get("number"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("name"))){
+            projectDeclareForSearch.setName(act.getMap().get("name"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("type"))){
+            projectDeclareForSearch.setType(act.getMap().get("type"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("level"))){
+            projectDeclareForSearch.setLevel(act.getMap().get("level"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("leader"))){
+            projectDeclareForSearch.setLeader(act.getMap().get("leader"));
+          }
+        }
+        projectDeclareForSearch.setStatus("3"); //3.待提交中期报告
+        String officeMap="";
+        String levelMap="";
+        if (StringUtils.equals(user.getUserType(),"4")) { //4.学院专家
+            officeMap="and syso.id = '"+user.getOffice().getId()+"'";
+            projectDeclareForSearch.getSqlMap().put("officeMap",officeMap);
+            levelMap = "and a.level in('3','4')";   //B级或者C级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        if (StringUtils.equals(user.getUserType(),"5")) { //4.学校专家
+            levelMap = "and a.level in('1','2')";  //A+级或者A级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        List<ProjectDeclare> projectList = projectDeclareService.findList(projectDeclareForSearch);
+
+
+        Page<Act> page=projectActTaskService.allListForPageAddProjectList(pageForSearch,act,projectList);
         model.addAttribute("page",page);
         return "modules/state/middleAuditList";
     }
@@ -243,7 +314,7 @@ public class StateController extends BaseController {
     //中期已评分列表页面跳转 查询已审核任务
     @RequestMapping(value = "middleAuditedList")
     public String middleAuditedList(Act act, HttpServletRequest request,
-                                 HttpServletResponse response, Model model) {
+                                    HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("middleScore");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -252,14 +323,61 @@ public class StateController extends BaseController {
         return "modules/state/middleAuditedList";
     }
 
-    //中期评级列表页面跳转 查询审核任务
+    //中期评级列表页面跳转
+    // 查询待审核、已审核任务
+    //todo 处在待学院专家中期评级的数据
+    //另外学院秘书，能看到本学院的B级、C级待提交中期报告的数据
+    //如果是学校管理员，能看到A级、A+级待提交中期报告的数据
     @RequestMapping(value = "middleRatingList")
     public String middleRatingList(Act act, HttpServletRequest request,
-                                  HttpServletResponse response, Model model) {
+                                   HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("middleRating");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
-        Page<Act> page=projectActTaskService.allListForPage(pageForSearch,act);
+        //查找待提交中期报告的数据
+        User user = UserUtils.getUser();
+        ProjectDeclare projectDeclareForSearch = new ProjectDeclare();
+        if(act.getMap() != null){
+          if(StringUtil.isNotEmpty(act.getMap().get("number"))){
+            projectDeclareForSearch.setNumber(act.getMap().get("number"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("name"))){
+              projectDeclareForSearch.setName(act.getMap().get("name"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("type"))){
+              projectDeclareForSearch.setType(act.getMap().get("type"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("level"))){
+              projectDeclareForSearch.setLevel(act.getMap().get("level"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("leader"))){
+              projectDeclareForSearch.setLeader(act.getMap().get("leader"));
+          }
+        }
+        projectDeclareForSearch.setStatus("3"); //3.待提交中期报告
+        String officeMap="";
+        String levelMap="";
+        if (StringUtils.equals(user.getUserType(),"3")) { //4.学院教学秘书
+            officeMap="and syso.id = '"+user.getOffice().getId()+"'";
+            projectDeclareForSearch.getSqlMap().put("officeMap",officeMap);
+            levelMap = "and a.level in('3','4')";   //B级或者C级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        if (StringUtils.equals(user.getUserType(),"6")) { //4.学校管理员
+            levelMap = "and a.level in('1','2')";  //A+级或者A级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        List<ProjectDeclare> projectList = projectDeclareService.findList(projectDeclareForSearch);
+
+        Act actForFinished = new Act();
+        actForFinished.setMap(act.getMap());
+        actForFinished.setProcDefKey("state_project_audit");  //国创项目流程名称
+        actForFinished.setTaskDefKey("set");   // 中期检查的任务
+        actForFinished.setStatus("middleScore");  //状态在结项评分中   closeScore2是学校专家结项评分  closeScore3 是学院专家评分 在流程图中主键ID可以看到
+        List<Act> finishedList = projectActTaskService.finishedList(actForFinished);
+
+//        Page<Act> page=projectActTaskService.allListForPageAddProjectList(pageForSearch,act,projectList);
+       Page<Act> page=projectActTaskService.middleRatingList(pageForSearch,act,finishedList,projectList);
         model.addAttribute("page",page);
         return "modules/state/middleRatingList";
     }
@@ -268,7 +386,7 @@ public class StateController extends BaseController {
     //中期已评级列表页面跳转 查询已审核任务
     @RequestMapping(value = "middleRatedList")
     public String middleRatedList(Act act, HttpServletRequest request,
-                                    HttpServletResponse response, Model model) {
+                                  HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("middle");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -290,7 +408,13 @@ public class StateController extends BaseController {
         List<ProjectAuditInfo> infos1= getInfo(projectDeclare.getId(),"1");
         model.addAttribute("infos1",infos1);
         ProMid proMid=proMidService.getByProjectId(projectDeclare.getId());
-        model.addAttribute("proMidId",proMid.getId());
+        if(proMid!=null){
+            model.addAttribute("proMidId",proMid.getId());
+        }
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_MIDDLE_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
+
         return "modules/state/expCheck";
     }
 
@@ -314,7 +438,14 @@ public class StateController extends BaseController {
         model.addAttribute("infos2",infos2);
 
         ProMid proMid=proMidService.getByProjectId(projectDeclare.getId());
-        model.addAttribute("proMidId",proMid.getId());
+        if(proMid!=null){
+            model.addAttribute("proMidId",proMid.getId());
+        }
+
+
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_MIDDLE_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
 
         return "modules/state/secCheck";
     }
@@ -325,7 +456,7 @@ public class StateController extends BaseController {
         if (StringUtils.equals(projectDeclare.getMidResult(),"4")) {
             projectDeclare.setPass("4");
         }
-         projectDeclareService.secCheckSave(projectDeclare);
+        projectDeclareService.secCheckSave(projectDeclare);
         return "redirect:"+"/a/state/middleRatingList";
     }
 
@@ -346,33 +477,110 @@ public class StateController extends BaseController {
     }
 
 
-    //结项评分待审核列表页面跳转 查询待审核任务   秘书、管理员进来能看到专家们在评分
+    //结项评分待审核列表页面跳转
+    //查询待审核、已审核任务
+    //另外学院专家，能看到本学院的B级、C级待提交结项报告的数据
+    //如果是学校专家，能看到A级、A+级待提交中期报告的数据
+    //  秘书、管理员进来能看到专家们在评分（跳转到secCloseSearch）
     @RequestMapping(value = "closeAuditList")
     public String closeAuditList(Act act, HttpServletRequest request,
-                                  HttpServletResponse response, Model model) {
+                                 HttpServletResponse response, Model model) {
         //判断用户类型如果是学院秘书或者管理员进来，跳转到secCloseSearch
         User user = UserUtils.getUser();
-        if (StringUtils.equals(user.getUserType(),"3")||StringUtils.equals(user.getUserType(),"6")) { //学院秘书和学校管理员
+        if ((user.getUserType()).equals("3") || (user.getUserType()).equals("6")) { //学院秘书和学校管理员
             return "redirect:"+"/a/state/secCloseSearch";
         }
         //如果是专家，则查看其待审核已审核数据
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("closeScore");   // 表示立项阶段 见流程图的userTask的id
+
+        //查找待提交结项报告的数据
+        ProjectDeclare projectDeclareForSearch = new ProjectDeclare();
+        if(act.getMap() != null){
+          if(StringUtil.isNotEmpty(act.getMap().get("number"))){
+              projectDeclareForSearch.setNumber(act.getMap().get("number"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("name"))){
+              projectDeclareForSearch.setName(act.getMap().get("name"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("type"))){
+              projectDeclareForSearch.setType(act.getMap().get("type"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("level"))){
+              projectDeclareForSearch.setLevel(act.getMap().get("level"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("leader"))){
+              projectDeclareForSearch.setLeader(act.getMap().get("leader"));
+          }
+        }
+        projectDeclareForSearch.setStatus("6"); //3.待提交结项报告
+        String officeMap="";
+        String levelMap="";
+        if ((user.getUserType()).equals("4")) { //4.学院专家
+            officeMap="and syso.id = '"+user.getOffice().getId()+"'";
+            projectDeclareForSearch.getSqlMap().put("officeMap",officeMap);
+            levelMap = "and a.level in('3','4')";   //B级或者C级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        if ((user.getUserType()).equals("5")) { //4.学校专家
+            levelMap = "and a.level in('1','2')";  //A+级或者A级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        List<ProjectDeclare> projectList = projectDeclareService.findList(projectDeclareForSearch);
+
         Page<Act> pageForSearch =new Page<Act>(request, response);
-        Page<Act> page=projectActTaskService.allListForPage(pageForSearch,act);
+        Page<Act> page=projectActTaskService.allListForPageAddProjectList(pageForSearch,act,projectList);
         model.addAttribute("page",page);
         return "modules/state/closeAuditList";
     }
 
-    //查看秘书、管理员中期检查的已审核任务，但审核状态在结项评分中
+    //查看秘书、管理员中期检查的已审核任务， 但审核状态在结项评分中
+    //另外学院秘书，能看到本学院的B级、C级待提交结项报告的数据
+    //如果是学校管理员，能看到A级、A+级待提交中期报告的数据
     @RequestMapping(value = "secCloseSearch")
     public String secCloseSearch(Act act, HttpServletRequest request,
                                  HttpServletResponse response, Model model ) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("middle");   // 中期检查的任务
         act.setStatus("closeScore");  //状态在结项评分中   closeScore2是学校专家结项评分  closeScore3 是学院专家评分 在流程图中主键ID可以看到
+
+        //查找待提交结项报告的数据
+        User user = UserUtils.getUser();
+        ProjectDeclare projectDeclareForSearch = new ProjectDeclare();
+        if(act.getMap() != null){
+          if(StringUtil.isNotEmpty(act.getMap().get("number"))){
+              projectDeclareForSearch.setNumber(act.getMap().get("number"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("name"))){
+              projectDeclareForSearch.setName(act.getMap().get("name"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("type"))){
+              projectDeclareForSearch.setType(act.getMap().get("type"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("level"))){
+              projectDeclareForSearch.setLevel(act.getMap().get("level"));
+          }
+          if(StringUtil.isNotEmpty(act.getMap().get("leader"))){
+              projectDeclareForSearch.setLeader(act.getMap().get("leader"));
+          }
+        }
+        projectDeclareForSearch.setStatus("6"); //3.待提交结项报告
+        String officeMap="";
+        String levelMap="";
+        if (StringUtils.equals(user.getUserType(),"3")) { //4.学院教学秘书
+            officeMap="and syso.id = '"+user.getOffice().getId()+"'";
+            projectDeclareForSearch.getSqlMap().put("officeMap",officeMap);
+            levelMap = "and a.level in('3','4')";   //B级或者C级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        if (StringUtils.equals(user.getUserType(),"6")) { //4.学校管理员
+            levelMap = "and a.level in('1','2')";  //A+级或者A级
+            projectDeclareForSearch.getSqlMap().put("levelMap",levelMap);
+        }
+        List<ProjectDeclare> projectList = projectDeclareService.findList(projectDeclareForSearch);
+
         Page<Act> pageForSearch =new Page<Act>(request, response);
-        Page<Act> page=projectActTaskService.finishedListForPage(pageForSearch,act);
+        Page<Act> page=projectActTaskService.finishedListForPage(pageForSearch,act,projectList);
         model.addAttribute("page",page);
         return "modules/state/secCloseSearch";
     }
@@ -381,7 +589,7 @@ public class StateController extends BaseController {
     //结项评已审核列表页面跳转 查询已审核任务
     @RequestMapping(value = "closeAuditedList")
     public String closeAuditedList(Act act, HttpServletRequest request,
-                                    HttpServletResponse response, Model model) {
+                                   HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("closeScore");   // 表示立项阶段 见流程图的userTask的id
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -393,7 +601,7 @@ public class StateController extends BaseController {
     //答辩评分待审核列表页面跳转 查询待审核任务
     @RequestMapping(value = "closeReplyingList")
     public String closeReplyingList(Act act, HttpServletRequest request,
-                                 HttpServletResponse response, Model model) {
+                                    HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("closeReply");   // 表示答辩评分阶段 见流程图的userTask的id
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -441,10 +649,18 @@ public class StateController extends BaseController {
         model.addAttribute("infos3",infos3);
         //查找中期报告id
         ProMid proMid=proMidService.getByProjectId(projectDeclare.getId());
-        model.addAttribute("proMidId",proMid.getId());
-         //查找结项报告id
+        if(proMid!=null){
+            model.addAttribute("proMidId",proMid.getId());
+        }
+        //查找结项报告id
         ProjectClose projectClose=projectCloseService.getByProjectId(projectDeclare.getId());
-        model.addAttribute("proCloseId",projectClose.getId());
+        if(projectClose!=null){
+            model.addAttribute("proCloseId",projectClose.getId());
+        }
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_CLOSE_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
+
         return "modules/state/expClose";
     }
 
@@ -474,6 +690,11 @@ public class StateController extends BaseController {
         //查找结项报告id
         ProjectClose projectClose=projectCloseService.getByProjectId(projectDeclare.getId());
         model.addAttribute("proCloseId",projectClose.getId());
+
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_REPLY_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
+
 
         return "modules/state/secClose";
     }
@@ -518,15 +739,28 @@ public class StateController extends BaseController {
         int show2=0,show3=0,show4=0,show5=0,show6=0;
         int showMiddleReport=0; //是否显示中期报告  0不显示 1显示
         int showCloseReport=0; //是否显示结项报告  0不显示 1显示
+
+//        ProjectAuditInfo myInfo = null;
+//        //立项审核步骤
+//        if("set1".equals(taskDefinitionKey)||"set2".equals(taskDefinitionKey)){
+//            ProjectAuditInfo paiSearch = new ProjectAuditInfo();
+//            User user =UserUtils.getUser();
+//            paiSearch.setCreateBy(user);
+//            paiSearch.setProjectId(projectDeclare.getId());
+//            paiSearch.setAuditStep("1");
+//            myInfo = projectAuditInfoService.findInfoByUserId(paiSearch);
+//        }
+
+
         //中期评分步骤，只能看到自己的评分
         if ("middleScore2".equals(taskDefinitionKey)
                 ||"middleScore3".equals(taskDefinitionKey)) {
             Iterator<ProjectAuditInfo> it=infos2.iterator();
             while (it.hasNext()) {
                 ProjectAuditInfo info=it.next();
-               if (!StringUtils.equals(info.getCreateBy().getId(),me.getId())) {
-                   it.remove();
-               }
+                if (!StringUtils.equals(info.getCreateBy().getId(),me.getId())) {
+                    it.remove();
+                }
 
             }
             show2=1;
@@ -631,6 +865,7 @@ public class StateController extends BaseController {
         model.addAttribute("show6",show6);
         model.addAttribute("showMiddleReport",showMiddleReport);
         model.addAttribute("showCloseReport",showCloseReport);
+//        model.addAttribute("myInfo",myInfo);
 
         return "modules/state/infoView";
     }
@@ -640,7 +875,7 @@ public class StateController extends BaseController {
     //结果评定待审核列表页面跳转 查询待审核任务
     @RequestMapping(value = "assessList")
     public String assessList(Act act, HttpServletRequest request,
-                                 HttpServletResponse response, Model model) {
+                             HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("assess");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -653,7 +888,7 @@ public class StateController extends BaseController {
     //结果评定已审核列表页面跳转 查询已审核任务
     @RequestMapping(value = "assessedList")
     public String assessedList(Act act, HttpServletRequest request,
-                                   HttpServletResponse response, Model model) {
+                               HttpServletResponse response, Model model) {
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         act.setTaskDefKey("assess");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
@@ -687,10 +922,21 @@ public class StateController extends BaseController {
         model.addAttribute("averageScore",averageScore);
         //查找中期报告id
         ProMid proMid=proMidService.getByProjectId(projectDeclare.getId());
-        model.addAttribute("proMidId",proMid.getId());
+        if(proMid!=null){
+            model.addAttribute("proMidId",proMid.getId());
+        }
+
         //查找结项报告id
         ProjectClose projectClose=projectCloseService.getByProjectId(projectDeclare.getId());
-        model.addAttribute("proCloseId",projectClose.getId());
+        if(projectClose!=null){
+            model.addAttribute("proCloseId",projectClose.getId());
+        }
+
+
+        //查找审核标准
+        List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(ProjectNodeVo.getGNodeIdByNodeId(ProjectNodeVo.PNODE_ASSESS_ID),ProjectNodeVo.YW_ID);
+        model.addAttribute("standardList",standardList);
+
         return "modules/state/secAssess";
     }
 
@@ -719,16 +965,16 @@ public class StateController extends BaseController {
         String officeMap="";
         String levelMap="";
         Page<ProjectDeclare> page=null;
-       if (StringUtils.equals(user.getUserType(),"3")||StringUtils.equals(user.getUserType(),"4")) {//3.学院教学秘书 4.学院专家
-           officeMap="and syso.id = '"+user.getOffice().getId()+"'";
-           projectDeclare.getSqlMap().put("officeMap",officeMap);
-       }
+        if (StringUtils.equals(user.getUserType(),"3")||StringUtils.equals(user.getUserType(),"4")) {//3.学院教学秘书 4.学院专家
+            officeMap="and syso.id = '"+user.getOffice().getId()+"'";
+            projectDeclare.getSqlMap().put("officeMap",officeMap);
+        }
         if (StringUtils.equals(user.getUserType(),"4")) { //4.学院专家
-            levelMap = "and a.level in('3','4')";
+            levelMap = "and a.level in('3','4')";   //B级或者C级
             projectDeclare.getSqlMap().put("levelMap",levelMap);
         }
         if (StringUtils.equals(user.getUserType(),"5")) { //4.学校专家
-            levelMap = "and a.level in('1','2')";
+            levelMap = "and a.level in('1','2')";  //A+级或者A级
             projectDeclare.getSqlMap().put("levelMap",levelMap);
         }
 
@@ -740,7 +986,7 @@ public class StateController extends BaseController {
             for(ProjectDeclare item:list) {
                 String procInsId=item.getProcInsId();
                 if (StringUtils.isNotBlank(procInsId)) {
-                    String taskName=actTaskService.getTaskNameByProcInsId(procInsId);
+                    String taskName=ProjectStatusEnum.getNameByValue(item.getStatus());
                     item.getAct().setTaskName(taskName);
                 }
             }
@@ -805,15 +1051,22 @@ public class StateController extends BaseController {
             model.addAttribute("proCloseId",projectClose.getId());
         }
 
+        //学院秘书或者学校管理员中期检查可以把待提交中期报告的数据变更为项目终止
+        //因此在这儿加上一个标志
+        String editFlag = request.getParameter("editFlag");
+        model.addAttribute("editFlag",editFlag);
+
         return "modules/state/projectDetail";
     }
 
     //项目变更
     @RequestMapping(value = "projectEdit")
+    @RequiresPermissions("project:dcproject:modify")
     public String projectEdit(ProjectDeclare projectDeclare,
                               HttpServletRequest request,
                               HttpServletResponse response,
                               Model model) {
+    	model.addAttribute("xfAuthorize",authorizeService.checkMenuByNum(5));
         model.addAttribute("projectDeclare",projectDeclare);
         //查询studentList
         List<SysStudentExpansion> studentList=sysStudentExpansionService.getStudentList();
@@ -824,26 +1077,35 @@ public class StateController extends BaseController {
         Team team=teamService.get(projectDeclare.getTeamId());
         model.addAttribute("team",team);
 
-        //查找学生
-        TeamUserRelation tur1=new TeamUserRelation();
-        tur1.setTeamId(projectDeclare.getTeamId());
-        List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+        List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
         model.addAttribute("turStudents",turStudents);
         //查找导师
-        List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+        //List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+        List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
         model.addAttribute("turTeachers",turTeachers);
+
 
         //查找项目分工
         List<ProjectPlan> plans=projectPlanService.findListByProjectId(projectDeclare.getId());
         model.addAttribute("plans",plans);
 
+//        //查找项目附件
+//        Map<String,String> map=new HashMap<String,String>();
+//        map.put("file_step", FileStepEnum.S100.getValue());
+//        map.put("uid", projectDeclare.getId());
+//        map.put("type", FileTypeEnum.S0.getValue());
+//        List<Map<String,String>> fileInfo = sysAttachmentService.getFileInfo(map);
+//        model.addAttribute("fileInfo",fileInfo);
+
         //查找项目附件
-        Map<String,String> map=new HashMap<String,String>();
-        map.put("file_step", FileTypeEnum.S100.getValue());
-        map.put("uid", projectDeclare.getId());
-        map.put("type", FileSourceEnum.S0.getValue());
-        List<Map<String,String>> fileInfo = sysAttachmentService.getFileInfo(map);
-        model.addAttribute("fileInfo",fileInfo);
+        SysAttachment sa=new SysAttachment();
+        sa.setUid(projectDeclare.getId());
+        sa.setFileStep(FileStepEnum.S100);
+        sa.setType(FileTypeEnum.S0);
+        List<SysAttachment> fileListMap =  sysAttachmentService.getFiles(sa);
+        model.addAttribute("fileListMap",fileListMap);
+
+
 
         //查找审核信息
         //根据leader找到学院秘书，找到学校管理员，找到学院专家，找到学校专家
@@ -867,9 +1129,12 @@ public class StateController extends BaseController {
         if (infos1 != null && infos1.size() > 0) {
             info01=infos1.get(0);
         } else {
-            info01.setCreateBy(collegeSec);
-            info01.setUserName(collegeSec.getName());
-            info01.setUserId(collegeSec.getId());
+            if(collegeSec!=null){
+                info01.setCreateBy(collegeSec);
+                info01.setUserName(collegeSec.getName());
+                info01.setUserId(collegeSec.getId());
+            }
+
         }
 
         ProjectAuditInfo info02;
@@ -925,9 +1190,11 @@ public class StateController extends BaseController {
                 info3.setUserName(schoolSec.getName());
                 info3.setUserId(schoolSec.getId());
             }else{
-                info3.setCreateBy(collegeSec);
-                info3.setUserName(collegeSec.getName());
-                info3.setUserId(collegeSec.getId());
+                if(collegeSec!=null){
+                    info01.setCreateBy(collegeSec);
+                    info01.setUserName(collegeSec.getName());
+                    info01.setUserId(collegeSec.getId());
+                }
             }
         }else{
             info3=infos3.get(0);
@@ -1017,23 +1284,48 @@ public class StateController extends BaseController {
 
     //保存项目变更
     @RequestMapping(value = "saveEdit")
-    public String saveEdit(ProjectDeclare projectDeclare,
+    @RequiresPermissions("project:dcproject:modify")
+    @ResponseBody
+    public JSONObject saveEdit(ProjectDeclare projectDeclare,String modifyPros,
                            HttpServletRequest request) {
-        String[] arrUrl= request.getParameterValues("arrUrl");
-        String[] arrNames= request.getParameterValues("arrName");
-        List<Map<String,String>> fileListMap = FileUpUtils.getFileListMap(arrUrl,arrNames);
-        stateService.saveEdit(projectDeclare,fileListMap);
+    	try {
+    		return stateService.saveModify(projectDeclare, modifyPros);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			JSONObject js=new JSONObject();
+			js.put("ret", "0");
+			js.put("msg", "保存失败,出现了未知的错误，请重试或者联系管理员");
+			return js;
+		}
+    }
 
-        //保存变更的审核信息
-        projectAuditInfoService.updateInfoList(projectDeclare.getAuditInfoList(),projectDeclare.getMidAuditList(),
-                                   projectDeclare.getCloseAuditList(),  projectDeclare.getId(),projectDeclare.getLevel(),
-                                  projectDeclare.getNumber(),projectDeclare.getMidScore(),projectDeclare.getFinalScore());
-        if (StringUtils.equals("1",projectDeclare.getStatus())||StringUtils.equals("2",projectDeclare.getStatus())||StringUtils.equals("3",projectDeclare.getStatus())||
-           StringUtils.equals("4",projectDeclare.getStatus())||StringUtils.equals("5",projectDeclare.getStatus())||StringUtils.equals("6",projectDeclare.getStatus())||
-           StringUtils.equals("7",projectDeclare.getStatus())    ) {
-            runtimeService.deleteProcessInstance(projectDeclare.getProcInsId(),"");
-        }
-        return "redirect:"+"/a/state/allList";
+    //项目终止 先更改主表状态，再删除流程
+    @RequestMapping(value = "closeProject")
+
+    public String  closeProject(ProjectDeclare projectDeclare,RedirectAttributes redirectAttributes){
+
+        projectDeclare.setFinalResult("4"); //中期不合格(项目终止）
+        projectDeclare.setStatus("8");   //项目终止
+        projectDeclare.setMidScore(0f);
+        projectDeclare.setFinalScore(0f);
+        projectDeclareService.updateFinalResult(projectDeclare);
+        projectDeclareService.saveScore(projectDeclare.getId());
+
+//        if (StringUtils.isNotBlank(projectDeclare.getProcInsId())) {
+//            try{
+//                runtimeService.deleteProcessInstance(projectDeclare.getProcInsId(),"");
+//            }catch (Exception e) {
+//                System.out.println("该项目的工作流已经走完");
+//            }
+//            try{
+//                historyService.deleteHistoricProcessInstance(projectDeclare.getProcInsId());
+//            }catch (Exception e) {
+//                System.out.println("该项目没有历史记录");
+//            }
+//        }
+
+        addMessage(redirectAttributes, "项目终止成功");
+        return "redirect:"+"/a/state/middleRatingList";
     }
 
     //删除项目

@@ -1,10 +1,12 @@
 package com.oseasy.initiate.modules.actyw.web;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.proproject.service.ProProjectService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +14,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.common.utils.file.impl.FormResourceMngImpl;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.actyw.entity.ActYwForm;
 import com.oseasy.initiate.modules.actyw.service.ActYwFormService;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowProjectType;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowPropertyType;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FormClientType;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.FormStyleType;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.FormType;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.oseasy.initiate.modules.proproject.entity.ProProject;
+import com.oseasy.initiate.modules.proproject.service.ProProjectService;
 
 /**
  * 项目流程表单Controller
@@ -56,12 +66,14 @@ public class ActYwFormController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(ActYwForm actYwForm, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ActYwForm> page = actYwFormService.findPage(new Page<ActYwForm>(request, response), actYwForm);
-		List<ProProject> proProjectList=new ArrayList<ProProject>();
-			proProjectList=proProjectService.findList(new ProProject());
+		List<ProProject> proProjectList=proProjectService.findList(new ProProject());
+		if(proProjectList!=null){
 			model.addAttribute("proProjects",proProjectList);
-
-			FormType[] formTypeEnums =FormType.values();
-			model.addAttribute("formTypeEnums",formTypeEnums);
+		}
+    model.addAttribute("flowTypeAll", FlowType.FWT_ALL);
+		model.addAttribute("formTypeEnums", FormType.values());
+		model.addAttribute("formStyleTypeEnums", FormStyleType.values());
+		model.addAttribute("formClientTypeEnums", FormClientType.values());
 		model.addAttribute("page", page);
 		return "modules/actyw/actYwFormList";
 	}
@@ -70,13 +82,22 @@ public class ActYwFormController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ActYwForm actYwForm, Model model) {
 		model.addAttribute("actYwForm", actYwForm);
-		//大赛类别
-		List<ProProject> proProjectList=new ArrayList<ProProject>();
-		proProjectList=proProjectService.findList(new ProProject());
-		model.addAttribute("proProjects",proProjectList);
+		if(StringUtil.isNotEmpty(actYwForm.getType())){
+	    model.addAttribute("formTypeName", FormType.getByKey(actYwForm.getType()).getName());
+		}
 
-		FormType[] formTypeEnums =FormType.values();
-		model.addAttribute("formTypeEnums",formTypeEnums);
+    FormType[] formTypeEnums =FormType.values();
+		ActYwForm pactYwForm = new ActYwForm();
+		pactYwForm.setStyleType(FormStyleType.FST_LIST.getKey());
+    List<ActYwForm> formLists= actYwFormService.findList(pactYwForm);
+
+    model.addAttribute("formLists", formLists);
+		model.addAttribute("flowTypeAll", FlowType.FWT_ALL);
+		model.addAttribute("formTypeEnums", formTypeEnums);
+    model.addAttribute("formRoot", ActYwFormService.TEMPLATE_FORM_ROOT);
+    model.addAttribute("projectMarkTypeEnums", FlowProjectType.values());
+
+    model.addAttribute("filelist", new FormResourceMngImpl().listFile(FormResourceMngImpl.FORM_ROOT, false));
 		return "modules/actyw/actYwFormForm";
 	}
 
@@ -85,9 +106,6 @@ public class ActYwFormController extends BaseController {
 	public String save(ActYwForm actYwForm, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, actYwForm)) {
 			return form(actYwForm, model);
-		}
-		if (actYwForm.getProType()!=null && actYwForm.getType()!=null) {
-			actYwForm.setPath("/template/form/"+actYwForm.getProType()+"/"+actYwForm.getType());
 		}
 
 		actYwFormService.save(actYwForm);
@@ -103,4 +121,26 @@ public class ActYwFormController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/actyw/actYwForm/?repage";
 	}
 
+  @RequiresPermissions("user")
+  @ResponseBody
+	@RequestMapping(value = "getFormTypes")
+	public List<Map<String, Object>> delete(@RequestParam(required=false) String type, HttpServletResponse response) {
+    List<Map<String, Object>> mapList = Lists.newArrayList();
+    List<FormType> formTypeEnums = null;
+    if(type == null){
+      formTypeEnums = Arrays.asList(FormType.values());
+    }else{
+      formTypeEnums = FormType.getByType(type);
+    }
+
+    for (FormType e : formTypeEnums) {
+      Map<String, Object> map = Maps.newHashMap();
+      map.put("key", e.getKey());
+      map.put("type", Arrays.asList(e.getType()));
+      map.put("name", e.getName());
+      map.put("value", e.getValue());
+      mapList.add(map);
+    }
+    return mapList;
+  }
 }

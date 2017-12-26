@@ -35,5 +35,7 @@ public interface GAuditInfoDao extends CrudDao<GAuditInfo> {
 
 	public void deleteByGid(@Param("gid")String gid);
 
+	GAuditInfo getInfoByLoginname(GAuditInfo gAuditInfo);
+
 	//public void changeScoreOrGrade(GAuditInfo gAuditInfo);
 }

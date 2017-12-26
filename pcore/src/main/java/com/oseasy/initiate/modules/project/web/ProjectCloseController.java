@@ -1,24 +1,15 @@
 package com.oseasy.initiate.modules.project.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.oseasy.initiate.common.utils.FileUpUtils;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.entity.*;
-import com.oseasy.initiate.modules.project.enums.ProjectStatusEnum;
-import com.oseasy.initiate.modules.project.service.*;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import javax.servlet.http.HttpServletRequest;
+
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,14 +19,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
+import com.oseasy.initiate.common.utils.FileUpUtils;
 import com.oseasy.initiate.common.utils.StringUtil;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.oseasy.initiate.common.web.BaseController;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
+import com.oseasy.initiate.modules.project.entity.ProProgress;
+import com.oseasy.initiate.modules.project.entity.ProSituation;
+import com.oseasy.initiate.modules.project.entity.ProjectClose;
+import com.oseasy.initiate.modules.project.entity.ProjectCloseFund;
+import com.oseasy.initiate.modules.project.entity.ProjectCloseResult;
+import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.oseasy.initiate.modules.project.entity.ProjectPlan;
+import com.oseasy.initiate.modules.project.service.ProProgressService;
+import com.oseasy.initiate.modules.project.service.ProSituationService;
+import com.oseasy.initiate.modules.project.service.ProjectCloseFundService;
+import com.oseasy.initiate.modules.project.service.ProjectCloseResultService;
+import com.oseasy.initiate.modules.project.service.ProjectCloseService;
+import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
+import com.oseasy.initiate.modules.project.service.ProjectPlanService;
+import com.oseasy.initiate.modules.sco.service.ScoAllotRatioService;
+import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
+import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
+import com.oseasy.initiate.modules.sys.entity.User;
+import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.oseasy.initiate.modules.team.entity.Team;
+import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.oseasy.initiate.modules.team.service.TeamService;
+import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
 
 /**
  * project_closeController
@@ -60,6 +73,8 @@ public class ProjectCloseController extends BaseController {
 
 	@Autowired
 	TeamUserRelationService teamUserRelationService;
+	@Autowired
+	TeamUserHistoryService teamUserHistoryService;
 
 	@Autowired
 	ProjectPlanService projectPlanService;
@@ -78,6 +93,8 @@ public class ProjectCloseController extends BaseController {
 
 	@Autowired
 	ProjectCloseResultService projectCloseResultService;
+	@Autowired
+	ScoAllotRatioService scoAllotRatioService;
 	
 	@ModelAttribute
 	public ProjectClose get(@RequestParam(required=false) String id) {
@@ -110,36 +127,49 @@ public class ProjectCloseController extends BaseController {
 			Team team=teamService.get(projectDeclare.getTeamId());
 			model.addAttribute("team",team);
 
-			//查找学生
+			/*//查找学生
 			TeamUserRelation tur1=new TeamUserRelation();
 			tur1.setTeamId(projectDeclare.getTeamId());
 			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
 			model.addAttribute("turStudents",turStudents);
-			//组成项目组成员
-			/*StringBuffer stuNames=new StringBuffer("");
-			for(TeamUserRelation turStudent:turStudents) {
-				String name=turStudent.getStudent().getName();
-				stuNames.append(name+"/");
-			}
-			String teamList=stuNames.toString().substring(0,stuNames.toString().length()-1);
-			model.addAttribute("teamList",teamList);*/
-
 
 			//查找导师
 			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			model.addAttribute("turTeachers",turTeachers);*/
+
+			//查找学生
+			List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
+			model.addAttribute("turStudents",turStudents);
+			//查找导师
+			List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turTeachers",turTeachers);
-			//组成项目导师
-			/*StringBuffer teaNames=new StringBuffer("");
-			for (TeamUserRelation turTeacher:turTeachers) {
-				String name=turTeacher.getTeacher().getName();
-				teaNames.append(name+"/");
-			}
-			String teacher=teaNames.toString().substring(0,teaNames.toString().length()-1);
-			model.addAttribute("teacher",teacher);*/
 
 			//查找项目分工
 			List<ProjectPlan> plans=projectPlanService.findListByProjectId(projectDeclare.getId());
 			model.addAttribute("plans",plans);
+
+			//查找学分匹配规则
+			ProjectDeclare pro =  projectDeclareService.getScoreConfigure(projectId);
+			//根据 type（学分类型)、item（学分项）、category（课程、项目、大赛、技能大类）、subdivision（课程、项目、大赛小类）、number(人数)查询后台配比
+			ScoRatioVo scoRatioVo = new ScoRatioVo();
+			if(StringUtil.equals(pro.getType(),"1")||StringUtil.equals(pro.getType(),"2")){ //创新训练、创业训练
+				scoRatioVo.setType("0000000123"); //设置查询的学分类型（创新学分）
+			}
+			if(StringUtil.equals(pro.getType(),"3")){ //创业实践
+				scoRatioVo.setType("0000000124"); //设置查询的学分类型（创业学分）
+			}
+			scoRatioVo.setItem("0000000128"); //双创项目
+			scoRatioVo.setCategory("1"); //大学生创新创业训练项目
+			scoRatioVo.setSubdivision(pro.getType());
+			scoRatioVo.setNumber(pro.getSnumber());
+			ScoRatioVo ratioResult = scoAllotRatioService.findRatio(scoRatioVo);
+			if(ratioResult!=null){
+				model.addAttribute("ratio", ratioResult.getRatio());
+			}else{
+				model.addAttribute("ratio","");
+			}
+
+
 		}
 
 		return "modules/project/projectCloseForm";
@@ -158,13 +188,11 @@ public class ProjectCloseController extends BaseController {
 			//查找项目团队相关信息 projectDeclare.id
 			Team team=teamService.get(projectDeclare.getTeamId());
 			model.addAttribute("team",team);
-			//查找学生
-			TeamUserRelation tur1=new TeamUserRelation();
-			tur1.setTeamId(projectDeclare.getTeamId());
-			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+			List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turStudents",turStudents);
 			//查找导师
-			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			//List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turTeachers",turTeachers);
 
 			//查找项目分工
@@ -187,13 +215,21 @@ public class ProjectCloseController extends BaseController {
 			List<ProjectCloseResult> projectCloseResultList=projectCloseResultService.getByCloseId(projectClose.getId());
 			model.addAttribute("projectCloseResultList",projectCloseResultList);
 
+//			Map<String,String> map=new HashMap<String,String>();
+//			map.put("uid",projectClose.getProjectId());
+//			map.put("file_step", FileStepEnum.S103.getValue());
+//			map.put("type",FileTypeEnum.S0.getValue());
+//			List<Map<String,String>> fileListMap=sysAttachmentService.getFileInfo(map);
+//			model.addAttribute("fileListMap",fileListMap);
+
 			//查找结项附件
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid",projectClose.getProjectId());
-			map.put("file_step", FileTypeEnum.S103.getValue());
-			map.put("type",FileSourceEnum.S0.getValue());
-			List<Map<String,String>> fileListMap=sysAttachmentService.getFileInfo(map);
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectClose.getProjectId());
+			sa.setFileStep(FileStepEnum.S103);
+			sa.setType(FileTypeEnum.S0);
+			List<SysAttachment> fileListMap =  sysAttachmentService.getFiles(sa);
 			model.addAttribute("fileListMap",fileListMap);
+
 		}
 
 		User user= UserUtils.getUser();
@@ -219,14 +255,34 @@ public class ProjectCloseController extends BaseController {
 			//查找项目团队相关信息 projectDeclare.id
 			Team team=teamService.get(projectDeclare.getTeamId());
 			model.addAttribute("team",team);
-			//查找学生
-			TeamUserRelation tur1=new TeamUserRelation();
-			tur1.setTeamId(projectDeclare.getTeamId());
-			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+
+			List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turStudents",turStudents);
+			if(turStudents!=null &&turStudents.size()>0) {
+				//组成项目组成员
+				StringBuffer stuNames = new StringBuffer("");
+				for (Map<String, String> turStudent : turStudents) {
+					String name = turStudent.get("name");
+					stuNames.append(name + "/");
+				}
+				String teamList = stuNames.toString().substring(0, stuNames.toString().length() - 1);
+				model.addAttribute("teamList", teamList);
+			}
 			//查找导师
-			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			//List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(projectDeclare.getTeamId(),projectDeclare.getId());
 			model.addAttribute("turTeachers",turTeachers);
+			//组成项目导师
+			if(turTeachers!=null &&turTeachers.size()>0) {
+				StringBuffer teaNames = new StringBuffer("");
+				for (Map<String, String> turTeacher : turTeachers) {
+					String name = turTeacher.get("name");
+					teaNames.append(name + "/");
+				}
+				String teacher = teaNames.toString().substring(0, teaNames.toString().length() - 1);
+				model.addAttribute("teacher", teacher);
+			}
+
 
 			//查找项目分工
 			List<ProjectPlan> plans=projectPlanService.findListByProjectId(projectDeclare.getId());
@@ -249,12 +305,33 @@ public class ProjectCloseController extends BaseController {
 			model.addAttribute("projectCloseResultList",projectCloseResultList);
 
 			//查找结项附件
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid",projectClose.getProjectId());
-			map.put("file_step", FileTypeEnum.S103.getValue());
-			map.put("type",FileSourceEnum.S0.getValue());
-			List<Map<String,String>> fileListMap=sysAttachmentService.getFileInfo(map);
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectClose.getProjectId());
+			sa.setFileStep(FileStepEnum.S103);
+			sa.setType(FileTypeEnum.S0);
+			List<SysAttachment> fileListMap =  sysAttachmentService.getFiles(sa);
 			model.addAttribute("fileListMap",fileListMap);
+
+			//查找学分匹配规则
+			ProjectDeclare pro =  projectDeclareService.getScoreConfigure(projectId);
+			//根据 type（学分类型)、item（学分项）、category（课程、项目、大赛、技能大类）、subdivision（课程、项目、大赛小类）、number(人数)查询后台配比
+			ScoRatioVo scoRatioVo = new ScoRatioVo();
+			if(StringUtil.equals(pro.getType(),"1")||StringUtil.equals(pro.getType(),"2")){ //创新训练、创业训练
+				scoRatioVo.setType("0000000123"); //设置查询的学分类型（创新学分）
+			}
+			if(StringUtil.equals(pro.getType(),"3")){ //创业实践
+				scoRatioVo.setType("0000000124"); //设置查询的学分类型（创业学分）
+			}
+			scoRatioVo.setItem("0000000128"); //双创项目
+			scoRatioVo.setCategory("1"); //大学生创新创业训练项目
+			scoRatioVo.setSubdivision(pro.getType());
+			scoRatioVo.setNumber(pro.getSnumber());
+			ScoRatioVo ratioResult = scoAllotRatioService.findRatio(scoRatioVo);
+			if(ratioResult!=null){
+				model.addAttribute("ratio", ratioResult.getRatio());
+			}else{
+				model.addAttribute("ratio","");
+			}
 
 
 		}
@@ -270,14 +347,22 @@ public class ProjectCloseController extends BaseController {
 					   HttpServletRequest request,
 					   	RedirectAttributes redirectAttributes) {
 		projectCloseService.save(projectClose);
+//		//附件处理
+//		String[] arrUrl= request.getParameterValues("arrUrl");
+//		String[] arrNames= request.getParameterValues("arrName");
+//		List<Map<String,String>> fileListMap = FileUpUtils.getFileListMap(arrUrl,arrNames);
+//		sysAttachmentService.saveList(fileListMap,
+//										FileTypeEnum.S0,
+//										FileStepEnum.S103,
+//										projectClose.getProjectId());
 		//附件处理
-		String[] arrUrl= request.getParameterValues("arrUrl");
-		String[] arrNames= request.getParameterValues("arrName");
-		List<Map<String,String>> fileListMap = FileUpUtils.getFileListMap(arrUrl,arrNames);
-		sysAttachmentService.saveList(fileListMap,
-										FileSourceEnum.S0.getValue(),
-										FileTypeEnum.S103.getValue(),
-										projectClose.getProjectId());
+		sysAttachmentService.saveByVo(projectClose.getAttachMentEntity(),projectClose.getProjectId(),FileTypeEnum.S0,FileStepEnum.S103);
+
+		//更新学分配比权重
+		for (TeamUserHistory tur:projectClose.getTeamUserHistoryList()){
+			teamUserHistoryService.updateWeight(tur);
+		}
+
 
 
 		if (StringUtil.isNotBlank(projectClose.getProjectId())) {

@@ -74,6 +74,7 @@ public class BackUserErrorService extends CrudService<BackUserErrorDao, BackUser
 			nuser.setUpdateBy(user);
 			nuser.setCreateBy(user);
 		}
+		nuser.setSource("1");
 		nuser.setUpdateDate(new Date());
 		nuser.setCreateDate(nuser.getUpdateDate());
 		userDao.insert(nuser);

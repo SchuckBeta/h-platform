@@ -6,6 +6,10 @@ package com.oseasy.initiate.modules.team.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
+import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import org.apache.ibatis.annotations.Param;
+
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.sys.entity.User;
@@ -20,6 +24,17 @@ import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
  */
 @MyBatisDao
 public interface TeamDao extends CrudDao<Team> {
+	public void updateAllInfo(Team team);
+	public List<Team> findTeamListByUserId(String  userid);
+	public Integer hiddenDeleteWithNotify(@Param("tid")String tid,@Param("uid")String uid);
+	public Integer checkTeamIsInProject(String tid);
+	public Integer checkTeamIsInCyjd(String tid);
+	public void auditOne(@Param("teamId")String teamId,@Param("res")String res,@Param("uid")String uid);
+	public void auditAllBiuldOver(String uid);
+	public void auditAllBiuldIng(String uid);
+	public Team findTeamJoinInNums(String teamId);
+	public List<Map<String,Object>> checkIsJoinInTUR(@Param("tds")List<Team> tds,@Param("uid")String uid);
+	public List<Map<String,Object>> checkIsJoinInTeams(@Param("tds")List<Team> tds,@Param("uid")String uid);
 	public TeamDetails findTeamDetails(String id);
 	public List<TeamDetails> findTeamInfo(String id,String usertype);
 	/**
@@ -60,10 +75,19 @@ public interface TeamDao extends CrudDao<Team> {
 	 * @return
 	 */
 	public Long countBuildByUserId(User curUser);
-	public int findStuNumByTeamId(TeamUserRelation teamUserRelation);
-	public int findTe1NumByTeamId(TeamUserRelation teamUserRelation);
-	public int findTe2NumByTeamId(TeamUserRelation teamUserRelation);
+	public int findStuNumByTeamId(String teamId);
+	public int findTe1NumByTeamId(String teamId);
+	public int findTe2NumByTeamId(String teamId);
 	public List<Team> selectTeamByName(String name);
 	public List<Team> findListByCreatorId(Team team);
-	
+	public List<Team> findListByCreatorIdAndState(Team team);	
+	int findTeamNumByUserId(TeamUserRelation teamUserRelation);
+     //根据两个人的userId，查找所在同一个团队数量
+	int findTeamByUserId(@Param("user1Id")String user1Id,@Param("user2Id") String user2Id);
+
+	List<Team> findInTeamList(Team team);
+
+	List<ProjectExpVo> findProjectByTeamId(@Param("teamId")String teamId);
+
+	List<GContestUndergo> findGContestByTeamId(@Param("teamId")String teamId);
 }

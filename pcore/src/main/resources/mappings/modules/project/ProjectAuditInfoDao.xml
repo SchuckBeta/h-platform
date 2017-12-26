@@ -53,6 +53,17 @@
 		ORDER BY  a.create_date ASC
 	</select>
 
+	<select id="findInfoByUserId" resultType="ProjectAuditInfo">
+		SELECT
+		<include refid="projectAuditInfoColumns"/>
+		FROM project_audit_info a
+		WHERE a.project_id = #{projectId}
+		AND  a.audit_step = #{auditStep}
+		AND   a.del_flag = #{DEL_FLAG_NORMAL}
+		AND a.create_by = #{createBy.id}
+		limit 1;
+	</select>
+
 	
 	<select id="findList" resultType="ProjectAuditInfo">
 		SELECT 

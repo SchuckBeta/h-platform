@@ -11,6 +11,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oseasy.initiate.common.config.Global;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.actyw.entity.ActYwForm;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
+import com.oseasy.initiate.modules.actyw.service.ActYwFormService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.impl.RepositoryServiceImpl;
@@ -52,10 +57,12 @@ public class ActTaskController extends BaseController {
 	RepositoryService repositoryService;
 	@Autowired
 	RuntimeService runtimeService;
+	@Autowired
+	private ActYwFormService actYwFormService;
 
 	/**
 	 * 获取待办列表
-	 * @param procDefKey 流程定义标识
+	 * @param //procDefKey 流程定义标识
 	 * @return
 	 */
 	@RequestMapping(value = {"todo", ""})
@@ -70,8 +77,8 @@ public class ActTaskController extends BaseController {
 
 	/**
 	 * 获取已办任务
-	 * @param page
-	 * @param procDefKey 流程定义标识
+	 * @param //page
+	 * @param //procDefKey 流程定义标识
 	 * @return
 	 */
 	@RequestMapping(value = "historic")
@@ -87,7 +94,7 @@ public class ActTaskController extends BaseController {
 
 	/**
 	 * 获取流转历史列表
-	 * @param procInsId 流程实例
+	 * @param //procInsId 流程实例
 	 * @param startAct 开始活动节点名称
 	 * @param endAct 结束活动节点名称
 	 */
@@ -115,11 +122,11 @@ public class ActTaskController extends BaseController {
 
 	/**
 	 * 获取流程表单
-	 * @param taskId	任务ID
-	 * @param taskName	任务名称
-	 * @param taskDefKey 任务环节标识
-	 * @param procInsId 流程实例ID
-	 * @param procDefId 流程定义ID
+	 * @param //taskId	任务ID
+	 * @param //taskName	任务名称
+	 * @param //taskDefKey 任务环节标识
+	 * @param //procInsId 流程实例ID
+	 * @param //procDefId 流程定义ID
 	 */
 	@RequestMapping(value = "form")
 	public String form(Act act, HttpServletRequest request, Model model) {
@@ -142,11 +149,42 @@ public class ActTaskController extends BaseController {
 //		return "modules/act/actTaskForm";
 	}
 
+	@RequestMapping(value = "auditform")
+	public String auditform(Act act, HttpServletRequest request, Model model) {
+		// 获取流程XML上的表单KEY
+		String formKey= "/promodel/proModel/auditForm";
+		String	urlPath=request.getParameter("path");
+		String	pathUrl=request.getParameter("pathUrl");
+		String	gnodeId=request.getParameter("gnodeId");
+		String	proModelId=request.getParameter("proModelId");
+		// 获取流程实例对象
+		if (act.getProcInsId() != null) {
+			act.setProcIns(actTaskService.getProcIns(act.getProcInsId()));
+		}
+		String url="";
+		if(proModelId!=null){
+			StringBuilder formUrl = new StringBuilder();
+
+			String formServerUrl = Global.getConfig("activiti.form.server.url");
+			if (StringUtil.isBlank(formServerUrl)) {
+				formUrl.append(Global.getAdminPath());
+			}else{
+				formUrl.append(formServerUrl);
+			}
+
+			url=formUrl.toString()+formKey+"?urlPath="+urlPath+"&actionPath="+pathUrl+"&gnodeId="+gnodeId+"&proModelId="+proModelId;
+		}else{
+			url=ActUtils.getFormUrl(formKey, act);
+			url=url+"&urlPath="+urlPath+"&actionPath="+pathUrl+"&gnodeId="+gnodeId;
+		}
+		return "redirect:" + url;
+	}
+
 	/**
 	 * 启动流程
-	 * @param procDefKey 流程定义KEY
-	 * @param businessTable 业务表表名
-	 * @param businessId	业务表编号
+	 * @param //procDefKey 流程定义KEY
+	 * @param //businessTable 业务表表名
+	 * @param //businessId	业务表编号
 	 */
 	@RequestMapping(value = "start")
 	@ResponseBody
@@ -157,7 +195,7 @@ public class ActTaskController extends BaseController {
 
 	/**
 	 * 签收任务
-	 * @param taskId 任务ID
+	 * @param //taskId 任务ID
 	 */
 	@RequestMapping(value = "claim")
 	@ResponseBody
@@ -169,10 +207,10 @@ public class ActTaskController extends BaseController {
 
 	/**
 	 * 完成任务
-	 * @param taskId 任务ID
-	 * @param procInsId 流程实例ID，如果为空，则不保存任务提交意见
-	 * @param comment 任务提交意见的内容
-	 * @param vars 任务流程变量，如下
+	 * @param //taskId 任务ID
+	 * @param //procInsId 流程实例ID，如果为空，则不保存任务提交意见
+	 * @param //comment 任务提交意见的内容
+	 * @param //vars 任务流程变量，如下
 	 * 		vars.keys=flag,pass
 	 * 		vars.values=1,true
 	 * 		vars.types=S,B  @see com.oseasy.initiate.modules.act.utils.PropertyType
@@ -236,6 +274,25 @@ public class ActTaskController extends BaseController {
     model.addAttribute(ProcessMapVo.PM_ACT_IMPLS, vo.getActImpls());
     return "modules/act/actTaskMap";
 	}
+
+	//获取跟踪信息
+	@RequestMapping(value = "processActMap")
+	public String processActMap(String proInstId, String type, String status, Model model) throws Exception {
+		ProcessMapVo vo = ProcessMapUtil.processMap(repositoryService, actTaskService, runtimeService, proInstId, type, status);
+		model.addAttribute(ProcessMapVo.PM_PROC_DEF_ID, vo.getProcDefId());
+		model.addAttribute(ProcessMapVo.PM_PRO_INST_ID, vo.getProInstId());
+		model.addAttribute(ProcessMapVo.PM_ACT_IMPLS, vo.getActImpls());
+		return "modules/act/actTaskMap";
+	}
+
+	//获取跟踪信息
+	@RequestMapping(value = "getNodeByProInsId")
+	public String getNodeByProInsId(String proInstId, Model model) throws Exception {
+		//String gnodeId=ProcessMapUtil.getNodeByProInsId(repositoryService, actTaskService, runtimeService, proInstId);
+		ActYwGnode actYwGnode=actTaskService.getNodeByProInsId(proInstId);
+		return "modules/act/actTaskMap";
+	}
+
   //获取跟踪信息
   @RequestMapping(value = "processMap")
   public String processMap(String procDefId, String proInstId, Model model) throws Exception {

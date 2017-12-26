@@ -23,6 +23,16 @@ public class OaNotifyRecord extends DataEntity<OaNotifyRecord> {
 	private String readFlag;		// 阅读标记（0：未读；1：已读）
 	private Date readDate;		// 阅读时间
 	private String operateFlag;  //操作标记（0：未操作；1：已操作）
+	private String outTeam;//是否从团队中删除，1-删除，0-未删除（用于未加入团队的删除）
+	
+	
+	public String getOutTeam() {
+		return outTeam;
+	}
+
+	public void setOutTeam(String outTeam) {
+		this.outTeam = outTeam;
+	}
 
 	public String getOperateFlag() {
 		return operateFlag;

@@ -11,21 +11,30 @@ import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.sys.dao.SysNoDao;
 import com.oseasy.initiate.modules.sys.entity.SysNo;
-import com.oseasy.initiate.modules.sys.enums.SysNoType;
+import com.oseasy.initiate.modules.sys.tool.SysNoType;
+import com.oseasy.initiate.modules.sys.tool.SysNodeTool;
 
 /**
- * 系统编号Service
- * @author chenh
- * @version 2017-05-05
+ * 系统全局编号Service.
+ * @author chenhao
+ * @version 2017-07-17
  */
 @Service
 @Transactional(readOnly = true)
 public class SysNoService extends CrudService<SysNoDao, SysNo> {
-	@Autowired
-	private SysNoDao sysNoDao;
+  @Autowired
+  private SysNoDao sysNoDao;
 
 	public SysNo get(String id) {
 		return super.get(id);
+	}
+
+	public SysNo getByKeyss(SysNoType key) {
+	  SysNo sysNo = sysNoDao.getByKeyss(key.getKey());
+    if(sysNo == null){
+      logger.warn("SysNoType 定义的编号类型在数据库不存在！");
+    }
+	  return sysNo;
 	}
 
 	public List<SysNo> findList(SysNo sysNo) {
@@ -38,6 +47,9 @@ public class SysNoService extends CrudService<SysNoDao, SysNo> {
 
 	@Transactional(readOnly = false)
 	public void save(SysNo sysNo) {
+	  if(sysNo.getIsNewRecord() && (sysNo.getSysmaxVal() == null)){
+	    sysNo.setSysmaxVal(new Long(0));
+	  }
 		super.save(sysNo);
 	}
 
@@ -45,92 +57,65 @@ public class SysNoService extends CrudService<SysNoDao, SysNo> {
 	public void delete(SysNo sysNo) {
 		super.delete(sysNo);
 	}
-	/******************************************************************************
-	 * 获取全局序号最大值
-	 * @param officeId
-	 * @return
-	 */
-	public synchronized SysNo getMaxNo() {
-		return getMaxNo(false, null);
-	}
 
-	/**
-	 * 获取机构序号最大值
-	 * @param officeId
-	 * @return
-	 */
-	public synchronized SysNo getMaxNo(String officeId) {
-		return getMaxNo(officeId, false, null);
-	}
+  /**
+   * 根据ID获取全局序号最大值(不加1)
+   * @param entity 全局编号
+   * @return
+   */
+  @Transactional(readOnly = false)
+  public synchronized SysNo getSysMaxNo(SysNo entity) {
+    return getSysMaxNo(false, entity);
+  }
 
+  /**
+   * 根据ID获取全局序号最大值(加1)
+   * @param entity 全局编号
+   * @return
+   */
+  @Transactional(readOnly = false)
+  public synchronized SysNo getSysMaxNoAddOne(SysNo entity) {
+    return getSysMaxNo(true, entity);
+  }
 
-	/**
-	 * 获取全局序号最大值
-	 * @param isAddOne 是否加1
-	 * @param snType 加1的编号类型
-	 * @return
-	 */
-	public synchronized SysNo getMaxNo(Boolean isAddOne, SysNoType snType) {
-		SysNo entity = null;
-		if ((isAddOne) && (snType != null)) {
-			entity = sysNoDao.getMaxNo();
+  /**
+   * 根据ID获取全局序号最大值
+   * @param isAddOne 是否加1
+   * @param entity 全局编号
+   * @return
+   */
+  @Transactional(readOnly = false)
+  public synchronized SysNo getSysMaxNo(Boolean isAddOne, SysNo entity) {
+    if ((entity == null) || (StringUtil.isEmpty(entity.getId()))) {
+      return null;
+    }
 
-			if (entity == null) {
-				try {
-					throw new Exception("系统编号表却是id为0的记录！");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+    entity = get(entity.getId());
+    if(entity == null){
+      return null;
+    }
 
-			if (SysNoType.NO_OFFICE.equals(snType)) {
-				entity.setOfficeNo(entity.getOfficeNo()+1);
-			}else if (SysNoType.NO_ORDER.equals(snType)) {
-				entity.setOrderNo(entity.getOrderNo()+1);
-			}else if (SysNoType.NO_SITE.equals(snType)) {
-				entity.setSiteNo(entity.getSiteNo()+1);
-			}
-			sysNoDao.update(entity);
-		}else{
-			entity = sysNoDao.getMaxNo();
+    if (isAddOne) {
+      entity.setSysmaxVal(entity.getSysmaxVal() + 1);
+      save(entity);
+    }
+    return entity;
+  }
 
-			if (entity == null) {
-				try {
-					throw new Exception("系统编号表却是id为0的记录！");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return entity;
-	}
-
-	/**
-	 * 获取机构序号最大值
-	 * @param officeId 机构ID
-	 * @param isAddOne 是否加1
-	 * @param snType 加1的编号类型
-	 * @return
-	 */
-	public synchronized SysNo getMaxNo(String officeId, Boolean isAddOne, SysNoType snType) {
-		SysNo entity = null;
-		if (StringUtil.isEmpty(officeId)) {
-			return entity;
-		}
-
-		if ((isAddOne) && (snType != null)) {
-			entity = sysNoDao.getMaxNoByOffice(officeId);
-			if (SysNoType.NO_OFFICE.equals(snType)) {
-				entity.setOfficeNo(entity.getOfficeNo()+1);
-			}else if (SysNoType.NO_ORDER.equals(snType)) {
-				entity.setOrderNo(entity.getOrderNo()+1);
-			}else if (SysNoType.NO_SITE.equals(snType)) {
-				entity.setSiteNo(entity.getSiteNo()+1);
-			}
-			sysNoDao.update(entity);
-		}else{
-			entity = sysNoDao.getMaxNoByOffice(officeId);
-		}
-		return entity;
-	}
+  /**
+   * 根据SysNoType生成编号.
+   * @param sysNoType 编号类型
+   * @return String
+   */
+  @Transactional(readOnly = false)
+  public SysNo genByKeyss(SysNoType sysNoType){
+    SysNo entity = sysNoDao.getByKeyss(sysNoType.getKey());
+    if(entity != null){
+      entity.setSysmaxVal(entity.getSysmaxVal() + 1);
+      sysNoDao.update(entity);
+      return entity;
+    }
+    logger.warn("SNOKeyss 流程标识数据不存在，请初始化到数据库："+sysNoType.getKey());
+    return null;
+  }
 }

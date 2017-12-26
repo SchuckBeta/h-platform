@@ -5,16 +5,20 @@ import org.apache.commons.lang3.StringUtils;
 import com.oseasy.initiate.modules.sys.utils.DictUtils;
 
 public class TeamDetails extends Team{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7381729122327433654L;
 	//private String uname; //姓名
 	private String degree;//学位
 	private String professional;//专业
 	private String domain;//技术领域
-	private String teacherType;//导师类型
+	private String teacherType;//导师来源
 	private String officeId;//机构(学院)
 	private String userType;//成员类型
 	private String no;		// 工号 学号
 	private String instudy;//在读学位
-	private String state;//加入状态
+	private String state;//团队状态
 	private String phone;//电话
 	private String userId;
 	private String teamId;
@@ -23,6 +27,8 @@ public class TeamDetails extends Team{
 	private String mobile;
 	private String oaNotifyId; //通知ID
 	private String turId;
+	private String curJoin;//当前在研
+	private String leaderid;//负责人id
 
 
 
@@ -30,6 +36,21 @@ public class TeamDetails extends Team{
 
 
 
+	public String getLeaderid() {
+		return leaderid;
+	}
+
+	public void setLeaderid(String leaderid) {
+		this.leaderid = leaderid;
+	}
+
+	public String getCurJoin() {
+		return curJoin;
+	}
+
+	public void setCurJoin(String curJoin) {
+		this.curJoin = curJoin;
+	}
 
 	public String getTurId() {
 		return turId;

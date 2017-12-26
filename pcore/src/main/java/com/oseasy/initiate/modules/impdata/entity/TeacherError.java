@@ -54,7 +54,7 @@ public class TeacherError extends DataEntity<TeacherError> {
 	private String firstBank;		// 开户银行
 	private String bankAccount;		// 银行账号
 	private String isOpen;		// 是否公开
-	private String teachertype;		// 导师类型 1：校园导师  2：企业导师
+	private String teachertype;		// 导师来源 1：校园导师  2：企业导师
 	private String educationType;		// 学历类别
 	private String mainexp;		// 主要经历
 	
@@ -440,7 +440,7 @@ public class TeacherError extends DataEntity<TeacherError> {
 		this.isOpen = isOpen;
 	}
 	
-	@Length(min=0, max=20, message="导师类型 1：校园导师  2：企业导师长度必须介于 0 和 20 之间")
+	@Length(min=0, max=20, message="导师来源 1：校园导师  2：企业导师长度必须介于 0 和 20 之间")
 	public String getTeachertype() {
 		return teachertype;
 	}

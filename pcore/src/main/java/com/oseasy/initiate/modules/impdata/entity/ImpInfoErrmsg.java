@@ -16,13 +16,21 @@ public class ImpInfoErrmsg extends DataEntity<ImpInfoErrmsg> {
 	private String dataId;		// 导入错误数据表主键
 	private String colname;		// 错误字段名称
 	private String errmsg;		// 错误信息
-	
+	private String sheetIndx;		// 错误字段所在sheet
 	public ImpInfoErrmsg() {
 		super();
 	}
 
 	public ImpInfoErrmsg(String id) {
 		super(id);
+	}
+
+	public String getSheetIndx() {
+		return sheetIndx;
+	}
+
+	public void setSheetIndx(String sheetIndx) {
+		this.sheetIndx = sheetIndx;
 	}
 
 	@Length(min=0, max=64, message="导入信息表主键长度必须介于 0 和 64 之间")

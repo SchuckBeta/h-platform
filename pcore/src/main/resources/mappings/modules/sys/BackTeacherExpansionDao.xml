@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao">
-    
+
 	<sql id="backTeacherExpansionColumns">
 		a.id AS "id",
 		a.user_id AS "user.id",
@@ -28,11 +28,14 @@
 		a.create_date AS "createDate",
 		a.create_by AS "createBy.id",
 		a.del_flag AS "delFlag",
-		a.teachertype AS "teachertype",
+		a.teacherType AS "teachertype",
 		a.education_type AS "educationType",
 		a.is_open AS "isOpen",
 		a.first_show AS "firstShow",
 		a.site_show AS "siteShow",
+		a.top_show AS "topShow",
+		a.category AS "category",
+		a.work_unit_type AS "workUnitType",
 		u.name AS "user.name",
 		u.company_id AS "user.company.id",
 		u.office_id AS "user.office.id",
@@ -65,6 +68,8 @@
 		u.education AS "user.education",
 		u.id_no AS "user.idNumber",
 		u.post_code AS "user.postCode",
+		u.likes AS "user.likes",
+		u.views AS "user.views",
 		so.name AS "user.office.name"<!-- ,
 		tur.team_id AS "team.id",
 	    tur.id AS "teamUserRelation.id",
@@ -76,9 +81,9 @@
 		tur.del_flag AS "teamUserRelation.delFlag",
 		tur.state AS "teamUserRelation.state",
 		tm.project_name AS "team.projectName" -->
-		
+
 	</sql>
-	
+
 	<sql id="backTeacherExpansionJoins">
 		LEFT JOIN sys_user u ON u.id = a.user_id
 	</sql>
@@ -116,12 +121,9 @@
 	</sql>
 
 
-	<sql id="technicalTitle">
-		(SELECT dict.label FROM sys_dict dict WHERE dict.type="postTitle_type"  AND dict.value=a.technical_title  )
-	</sql>
-    
+
 	<select id="get" resultType="BackTeacherExpansion">
-		SELECT 
+		SELECT
 			<include refid="backTeacherExpansionColumns"/>
 		FROM sys_teacher_expansion a
 		LEFT JOIN sys_user u ON u.id = a.user_id
@@ -130,21 +132,48 @@
 		LEFT JOIN team tm ON tm.id = tur.team_id -->
 		WHERE a.id = #{id}
 	</select>
-	
-	
+	<select id="getByUserId" resultType="BackTeacherExpansion">
+		SELECT
+			<include refid="backTeacherExpansionColumns"/>
+		FROM sys_teacher_expansion a
+		LEFT JOIN sys_user u ON u.id = a.user_id
+		LEFT JOIN sys_office so ON so.id = u.office_id
+		WHERE a.user_id = #{uid}
+	</select>
+
+	<select id="findTeacherByTopShow" resultType="BackTeacherExpansion">
+		SELECT
+			<include refid="backTeacherExpansionColumns"/>
+		FROM sys_teacher_expansion a
+		LEFT JOIN sys_user u ON u.id = a.user_id
+		LEFT JOIN sys_office so ON so.id = u.office_id
+		<!-- LEFT JOIN team_user_relation tur ON tur.user_id = u.id
+		LEFT JOIN team tm ON tm.id = tur.team_id -->
+		WHERE a.top_show = '1'
+		<if test="teachertype != null and teachertype != ''">
+			AND a.teachertype = #{teachertype}
+		</if>
+	</select>
+
+
 	<select id="findTeacherIdByUserId" resultType="java.lang.String">
-		SELECT 
+		SELECT
 			a.id
 		FROM sys_teacher_expansion a
 		WHERE a.user_id = #{userId}
 	</select>
 	<select id="findTeacherByUserId" resultType="BackTeacherExpansion">
-		SELECT 
+		SELECT
 			a.*
 		FROM sys_teacher_expansion a
 		WHERE a.user_id = #{userId}
 	</select>
-
+	<select id="findTeacherByUserIdAndType" resultType="BackTeacherExpansion">
+		SELECT
+			a.*
+		FROM sys_teacher_expansion a
+		WHERE a.user_id = #{userId} and a.teachertype=#{type} and a.del_flag='0'
+	</select>
 
 
 
@@ -152,7 +181,19 @@
 	<select id="findList" resultType="BackTeacherExpansion">
 		SELECT
 			<include refid="backTeacherExpansionColumns"/>,
+			(select GROUP_CONCAT(s8.label) from sys_dict s8 where s8.type='master_help' and s8.del_flag='0' and find_in_set(s8.value,a.service_intention)) serviceIntentionStr,
 		   <include refid="nowProjectColumn"/> AS "nowProject",
+		   (select GROUP_CONCAT(DISTINCT ifnull(s1.label,s2.label)) from team_user_history thu
+			left join sys_dict s1 on s1.value=thu.pro_sub_type and s1.type='project_style' and thu.pro_type='1,'
+			left join sys_dict s2 on s2.value=thu.pro_sub_type and s2.type='competition_type' and thu.pro_type='7,'
+			where thu.user_id=a.user_id and thu.del_flag='0' and  thu.finish='0') curJoin,
+			<if test="teamLeaderId != null and teamLeaderId != ''">
+			(select GROUP_CONCAT(tm.id)  from team tm where tm.del_flag='0' and tm.state='0' and tm.sponsor=#{teamLeaderId} 
+			and tm.id not in(
+			select DISTINCT tur.team_id from team_user_relation tur where tur.state in('0','2','4') 
+			and tur.user_id=a.user_id and tur.del_flag='0')
+			) canInviteTeamIds,
+			</if>
 		   <include refid="topPriseColumn"/>
 		FROM sys_teacher_expansion a
 		LEFT JOIN sys_user u ON u.id = a.user_id
@@ -175,11 +216,13 @@
 			<if test="user != null and user.professional != null and user.professional != ''">
 				AND u.professional = #{user.professional}
 			</if>
-			<!-- 导师类型 -->
+			<!-- 导师来源 -->
 			<if test="teachertype != null and teachertype != ''">
 				AND a.teachertype = #{teachertype}
 			</if>
-
+			<if test="workUnitType != null and workUnitType != ''">
+				AND a.work_unit_type = #{workUnitType}
+			</if>
 			<!--姓名 -->
 			<if test="user != null and user.name != null and user.name != ''">
 				AND u.name like
@@ -187,8 +230,12 @@
 			</if>
 
 			<!-- 后台 服务意向 -->
-			<if test="serviceIntention != null and serviceIntention != ''">
-				AND a.serviceIntention = #{serviceIntention}
+			<if test="serviceIntentionIds != null and serviceIntentionIds.size != 0">
+				AND (
+				<foreach collection="serviceIntentionIds" item="cj" index="index" separator=" or ">
+					find_in_set(#{cj},a.service_intention)
+				</foreach>
+				)
 			</if>
 
 
@@ -205,21 +252,21 @@
 
 			<!--前台关键字 查询范围 姓名 技术领域  职务 职称-->
 			<if test="myFind!=null and myFind!=''">
-				AND (u.name like '%${myFind}%'
-				or  a.post_title like '%${myFind}%'
-				or <include refid="technicalTitle"/> like '%${myFind}%'
+				AND (u.name like  concat('%',#{myFind},'%')
+				or  a.post_title like  concat('%',#{myFind},'%')
+				or a.technical_title like  concat('%',#{myFind},'%')
 				OR  (SELECT GROUP_CONCAT(v.label) FROM
 				(SELECT u2.id,d.label FROM sys_user u2 LEFT JOIN sys_dict d ON  FIND_IN_SET(d.value,u2.domain) AND d.TYPE = 'technology_field' ) v  where v.id=u.id GROUP BY v.id
-				)  like '%${myFind}%'
+				)  like  concat('%',#{myFind},'%')
 				)
 			</if>
 
 			<!--后台关键字 查询范围 职工号 姓名 职务  职称-->
 			<if test="keyWords!=null and keyWords!=''">
-				AND ( u.no like '%${keyWords}%'
-				  or  u.name like '%${keyWords}%'
-				  or  a.post_title like '%${keyWords}%'
-				  or <include refid="technicalTitle"/> like '%${keyWords}%'
+				AND ( u.no like concat('%',#{keyWords},'%')
+				  or  u.name like concat('%',#{keyWords},'%')
+				  or  a.post_title like concat('%',#{keyWords},'%')
+				  or a.technical_title like concat('%',#{keyWords},'%')
 				)
 			</if>
 
@@ -227,13 +274,12 @@
 				AND u.id  != #{currentId}
 			</if>
 
-
+			<if test="category != null and category != ''">
+				AND a.category = #{category}
+			</if>
 
 			<if test="educationType != null and educationType != ''">
 				AND a.education_type = #{educationType}
-			</if>
-			<if test="serviceIntention != null and serviceIntention != ''">
-				AND a.service_intention = #{serviceIntention}
 			</if>
 
 			<if test="isOpen != null and isOpen != ''">
@@ -247,13 +293,21 @@
 			<if test="siteShow != null and siteShow != ''">
 				AND a.site_show = #{siteShow}
 			</if>
+			<if test="curJoinParam!=null">
+		and a.user_id in( select xx.user_id from team_user_history xx where 
+			<foreach collection="curJoinParam" item="cj" index="index" open="(("
+					close="))" separator=") or (">
+					xx.pro_type=CONCAT(#{cj.pType}, ',') and xx.pro_sub_type=#{cj.psType} and xx.del_flag='0' and  xx.finish='0'
+			</foreach>
+			)
+		</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY ${page.orderBy} ${page.orderByType}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY u.no, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -267,32 +321,40 @@
 
 		<where>
 			a.del_flag = 0 AND a.site_show = 1
+			<if test="teachertype != null and teachertype != ''">
+				AND a.teacherType = #{teachertype}
+			</if>
 		</where>
-
-		ORDER BY a.update_date DESC
-
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} ${page.orderByType}
+			</when>
+			<otherwise>
+				ORDER BY u.no, a.update_date DESC
+			</otherwise>
+		</choose>
 	</select>
 
-	
+
 	<select id="findAllList" resultType="BackTeacherExpansion">
-		SELECT 
+		SELECT
 			<include refid="backTeacherExpansionColumns"/>
 		FROM sys_teacher_expansion a
 		<include refid="backTeacherExpansionJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY ${page.orderBy} ${page.orderByType}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY u.no, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
 	<select id="findTeamById" resultType="Team"  parameterType="java.lang.String">
-		SELECT 
+		SELECT
 			tm.id AS "id",
 			tm.name AS "name",
 			tm.sponsor AS "sponsor",
@@ -304,9 +366,9 @@
 		<where>
 			sur.del_flag = '0'
 				AND sur.user_id  = #{userId}
-		</where>		
+		</where>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO sys_teacher_expansion(
 			id,
@@ -334,11 +396,14 @@
 			create_date,
 			create_by,
 			del_flag,
-			teachertype,
+			teacherType,
 			education_type,
 			is_open,
 			first_show,
-			site_show
+			site_show,
+			top_show,
+			category,
+			work_unit_type
 		) VALUES (
 			#{id},
 			#{user.id},
@@ -369,12 +434,15 @@
 			#{educationType},
 			#{isOpen},
 			#{firstShow},
-			#{siteShow}
+			#{siteShow},
+			#{topShow},
+			#{category},
+			#{workUnitType}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE sys_teacher_expansion SET 	
+		UPDATE sys_teacher_expansion SET
 			arrangement = #{arrangement},
 			discipline = #{discipline},
 			industry = #{industry},
@@ -397,26 +465,142 @@
 			update_by = #{updateBy.id},
 			create_date = #{createDate},
 			create_by = #{createBy.id},
-			teachertype = #{teachertype},
+			teacherType = #{teachertype},
 			education_type = #{educationType},
 			is_open = #{isOpen},
 			first_show = #{firstShow},
-			site_show = #{siteShow}
+			site_show = #{siteShow},
+			top_show = #{topShow},
+			category=#{category},
+			work_unit_type=#{workUnitType}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE sys_teacher_expansion SET 
+		UPDATE sys_teacher_expansion SET
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
 	<!-- 查询获奖信息 -->
 	<select id="findTeacherAward" resultType="BackTeacherExpansion" parameterType="java.lang.String">
 	    SELECT a.award_level AS "awardLevel",
 	    a.create_date AS "awardTime",
 	    a.award AS "result"
 	    FROM g_contest_award a WHERE a.contest_id
-IN (SELECT g.id FROM g_contest g WHERE g.team_id IN (SELECT t.team_id FROM `team_user_relation` t WHERE user_id=#{userId}))
+		IN (SELECT g.id FROM g_contest g WHERE g.team_id IN (SELECT t.team_id FROM `team_user_relation` t WHERE user_id=#{userId}))
 	</select>
+
+	<select id="getQYTeacher" resultType="BackTeacherExpansion" parameterType="java.lang.String">
+		SELECT
+			<include refid="backTeacherExpansionColumns"/>
+		FROM
+		sys_teacher_expansion a
+		LEFT JOIN team_user_relation t ON t.user_id = a.user_id
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		LEFT JOIN sys_office so ON so.id = u.office_id
+		WHERE
+		t.team_id = #{id} and (t.state='0' or t.state='4')
+		AND u.user_type='2' and a.teacherType='2'
+	</select>
+
+	<select id="getXYTeacher" resultType="BackTeacherExpansion" parameterType="java.lang.String">
+		SELECT
+			<include refid="backTeacherExpansionColumns"/>
+		FROM
+		sys_teacher_expansion a
+		LEFT JOIN team_user_relation t ON t.user_id = a.user_id
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		LEFT JOIN sys_office so ON so.id = u.office_id
+		WHERE  t.team_id = #{id} and (t.state='0' or t.state='4')
+		AND u.user_type='2' and a.teacherType='1'
+	</select>
+
+	<select id="findProjectByTeacherId" resultType="com.oseasy.initiate.modules.project.vo.ProjectExpVo" parameterType="java.lang.String">
+				select temp.* from(
+				SELECT a.id AS id , pp.start_date startDate,
+						pp.end_date endDate,
+						a.name,
+						s3.label proName,
+						s1.label level,
+						s2.label result,
+						a.leader leaderId,
+						th.u_type userType,
+						th.finish,
+						a.apply_time orderDate
+						FROM project_declare a
+						LEFT JOIN act_yw ay ON ay.id=a.actyw_id
+						LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+						left join sys_dict s1 on s1.type="project_degree" AND s1.value=a.level
+						left join sys_dict s2 on s2.type="project_result" AND s2.value=a.final_result
+						left join sys_dict s3 on pp.type=s3.value and s3.type='project_style'
+				left JOIN team_user_history th on th.pro_id = a.id
+				where th.pro_type='1,' and th.finish in('0','1') and a.del_flag='0'
+				and th.user_id=#{userId}
+				UNION all
+				SELECT pm.id AS id , pp.start_date startDate ,
+						pp.end_date endDate,
+						pm.p_name name,
+						s3.label proName,
+						s1.label level,
+						s2.label result,
+						pm.declare_id leaderId,
+						th.u_type userType,
+						th.finish,
+						pm.sub_time orderDate
+						FROM pro_model pm
+						LEFT JOIN act_yw ay ON ay.id=pm.actyw_id
+						LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+						left join sys_dict s1 on s1.type="project_degree" AND s1.value=pm.final_status
+						left join sys_dict s2 on s2.type="project_result" AND s2.value=pm.grade
+						left join sys_dict s3 on pp.type=s3.value and s3.type='project_style'
+						left JOIN team_user_history th on th.pro_id = pm.id
+						WHERE  pm.del_flag='0' and th.finish in('0','1')
+						and th.pro_type='1,' and th.user_id=#{userId}
+						)temp order by temp.finish,temp.orderDate desc
+
+	</select>
+
+	<select id="findGContestByTeacherId" resultType="com.oseasy.initiate.modules.sys.entity.GContestUndergo"
+				parameterType="java.lang.String">
+				select temp.* from(
+				SELECT
+				g.id,
+				s3.label type,
+				g.sub_time createDate,
+				g.p_name pName,
+				s5.label award,
+				g.declare_id leaderId,
+				th.u_type userType,
+				th.finish
+				FROM g_contest g
+				LEFT JOIN g_contest_award gca ON gca.contest_id=g.id
+				LEFT JOIN act_yw ay ON ay.id=g.actyw_id
+				LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+				left join sys_dict s3 on pp.type=s3.value and s3.type='competition_type'
+				left join sys_dict s5 on gca.award=s5.value and s5.type='competition_college_prise'
+				left JOIN team_user_history th on th.pro_id = g.id
+				WHERE g.del_flag='0' and th.finish in('0','1')
+				and th.pro_type='7,' and th.user_id=#{userId}
+				UNION all
+				SELECT
+				p.id,
+				s3.label type,
+				p.sub_time createDate,
+				p.p_name  pName,
+				'' award,
+				p.declare_id leaderId,
+				th.u_type userType,
+				th.finish
+				FROM pro_model p
+				LEFT JOIN act_yw ay ON ay.id=p.actyw_id
+				LEFT JOIN pro_project pp ON ay.rel_id=pp.id
+				left join sys_dict s3 on pp.type=s3.value and s3.type='competition_type'
+				left JOIN team_user_history th on th.pro_id = p.id
+				WHERE p.del_flag='0'
+				and th.finish in('0','1')
+				and th.pro_type='7,' and th.user_id=#{userId}
+			)temp order by temp.finish,temp.createDate desc
+		</select>
+
 </mapper>

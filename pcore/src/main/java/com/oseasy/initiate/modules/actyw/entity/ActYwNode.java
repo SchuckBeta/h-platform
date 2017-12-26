@@ -4,14 +4,17 @@ import org.hibernate.validator.constraints.Length;
 
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.DataEntity;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.actyw.tool.process.gnodcmd.validate.IvalidateRtpl;
 import com.oseasy.initiate.modules.sys.entity.Office;
+import com.oseasy.initiate.modules.sys.entity.Role;
 
 /**
  * 项目流程节点Entity.
  * @author chenhao
  * @version 2017-05-23
  */
-public class ActYwNode extends DataEntity<ActYwNode> {
+public class ActYwNode extends DataEntity<ActYwNode> implements IvalidateRtpl{
 
   private static final long serialVersionUID = 1L;
   private String name; // 节点名称
@@ -32,6 +35,11 @@ public class ActYwNode extends DataEntity<ActYwNode> {
   private String flowId; // 流程标识
   private String flowName; // 流程标识
   private String flowGroup; // 流程执行用户或角色（默认用户）
+
+  private ActYwForm form; // 前一个流程节点
+  private Role role; // 角色
+
+  private String iconUrl;  //图标地址
 
   public ActYwNode() {
     super();
@@ -122,8 +130,10 @@ public class ActYwNode extends DataEntity<ActYwNode> {
     this.office = office;
   }
 
-  @Length(min = 0, max = 64, message = "表单标识长度必须介于 0 和 64 之间")
   public String getFormId() {
+    if(StringUtil.isEmpty(this.formId) && ((this.form != null) && StringUtil.isNotEmpty(this.form.getId()))){
+      return this.form.getId();
+    }
     return formId;
   }
 
@@ -161,6 +171,22 @@ public class ActYwNode extends DataEntity<ActYwNode> {
 
   }
 
+  public ActYwForm getForm() {
+    return form;
+  }
+
+  public void setForm(ActYwForm form) {
+    this.form = form;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
   public Boolean isGroup() {
     if((isGroup != null) && ((isGroup).equals(Global.YES))){
       return true;
@@ -194,5 +220,13 @@ public class ActYwNode extends DataEntity<ActYwNode> {
 
   public void setNodeNextkey(String nodeNextkey) {
     this.nodeNextkey = nodeNextkey;
+  }
+
+  public String getIconUrl() {
+    return iconUrl;
+  }
+
+  public void setIconUrl(String iconUrl) {
+    this.iconUrl = iconUrl;
   }
 }

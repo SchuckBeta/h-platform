@@ -27,8 +27,11 @@ import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.act.entity.Act;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
+import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailInsService;
+import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
 import com.oseasy.initiate.modules.ftp.service.FtpService;
 import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
 import com.oseasy.initiate.modules.gcontest.entity.GContest;
@@ -36,9 +39,11 @@ import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
 import com.oseasy.initiate.modules.gcontest.service.GAuditInfoService;
 import com.oseasy.initiate.modules.gcontest.service.GContestAwardService;
 import com.oseasy.initiate.modules.gcontest.service.GContestService;
+import com.oseasy.initiate.modules.gcontest.vo.GContestNodeVo;
 import com.oseasy.initiate.modules.gcontest.vo.GContestVo;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
+import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
 import com.oseasy.initiate.modules.sys.entity.Role;
 import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
 import com.oseasy.initiate.modules.sys.entity.User;
@@ -81,6 +86,10 @@ public class GContestController extends BaseController {
 	private GAuditInfoService gAuditInfoService;
 	@Autowired
 	private FtpService ftpService;
+	@Autowired
+	private AuditStandardDetailService auditStandardDetailService;
+	@Autowired
+	private AuditStandardDetailInsService auditStandardDetailInsService;
 	
 	@ModelAttribute
 	public GContest get(@RequestParam(required=false) String id) {
@@ -226,7 +235,7 @@ public class GContestController extends BaseController {
 					}
 					SysAttachment sysAttachment=new SysAttachment();
 					sysAttachment.setUid(gContest.getId());
-					sysAttachment.setType("2");
+					sysAttachment.setType(FileTypeEnum.S2);
 					sysAttachment.setName(arrNames[i]);
 					sysAttachment.setUrl(arrUrl[i]);
 					sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));
@@ -251,7 +260,7 @@ public class GContestController extends BaseController {
 					}
 					SysAttachment sysAttachment=new SysAttachment();
 					sysAttachment.setUid(gContest.getId());
-					sysAttachment.setType("2");
+					sysAttachment.setType(FileTypeEnum.S2);
 					sysAttachment.setName(arrNames[i]);
 					sysAttachment.setUrl(arrUrl[i]);
 					sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));
@@ -299,9 +308,15 @@ public class GContestController extends BaseController {
 		//sse.setGraduation(declareUser.get);
 //		sse.setZhuanyeAndendDate("电子信息2016");
 		//附件
-		SysAttachment sysAttachment=new SysAttachment();
-		sysAttachment.setUid(gContest.getId());
-		List<SysAttachment> sysAttachments=sysAttachmentService.findList(sysAttachment);
+//		SysAttachment sysAttachment=new SysAttachment();
+//		sysAttachment.setUid(gContest.getId());
+//		List<SysAttachment> sysAttachments=sysAttachmentService.findList(sysAttachment);
+//		model.addAttribute("sysAttachments", sysAttachments);
+
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("uid", gContest.getId());
+		map.put("type",FileTypeEnum.S2.getValue());
+		List<Map<String, String>>   sysAttachments=sysAttachmentService.getFileInfo(map);
 		model.addAttribute("sysAttachments", sysAttachments);
 
         //查找项目团队相关信息 projectDeclare.id
@@ -310,10 +325,12 @@ public class GContestController extends BaseController {
         //查找学生
         TeamUserRelation tur1=new TeamUserRelation();
         tur1.setTeamId(gContest.getTeamId());
-        List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+        //List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+		List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId());
         model.addAttribute("turStudents",turStudents);
         //查找导师
-        List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+        //List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+		List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(gContest.getTeamId(),gContest.getId());
         model.addAttribute("turTeachers",turTeachers);
         
         //审核意见
@@ -321,30 +338,118 @@ public class GContestController extends BaseController {
         	//学院老师评分
         	 List<GAuditInfo> collegeinfos= getInfo(gContest.getId(),"1");
      		model.addAttribute("infos", collegeinfos);
+			//查找审核标准
+			List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+			if(standardList!=null&&standardList.size()>0){
+				model.addAttribute("asList",standardList);
+				String isScore=standardList.get(0).getIsEescoreNodes();
+				String firstNode=GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_FIRST_ID);
+				if(isScore!=null){
+					if(isScore.contains(firstNode)){
+						model.addAttribute("isScore", firstNode);
+					}
+				}
+			}
+			/*AuditStandardFlow entity = auditStandardFlowService.getByDef("audit1");
+			if(entity!=null){
+				model.addAttribute("auditStandard", auditStandardService.get(entity.getAuditStandardId()));
+				List<AuditStandardDetail> asList=auditStandardDetailService.findByFid(entity.getAuditStandardId());
+				model.addAttribute("asList", asList);
+			}*/
+
         }else if (gContest.getAuditState().equals("2")) {
-        	 List<GAuditInfo> infos= getInfo(gContest.getId(),"1");
+        	List<GAuditInfo> infos= getInfo(gContest.getId(),"1");
      		model.addAttribute("infos", infos);
+			//查找审核标准
+			List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+			if(standardList!=null&&standardList.size()>0){
+				model.addAttribute("asList",standardList);
+				String isScore=standardList.get(0).getIsEescoreNodes();
+				String firstNode=GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_SECOND_ID);
+				if(isScore!=null){
+					if(isScore.contains(firstNode)){
+						model.addAttribute("isScore", firstNode);
+					}
+				}
+			}
         }else if (gContest.getAuditState().equals("3")) {
           	//List<GAuditInfo> infos= getInfo(gContest.getId(),"2");
           	List<GAuditInfo> infos= getSortInfo(gContest.getId(),"2");
      		model.addAttribute("infos", infos);
+			//查找审核标准
+			List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+			if(standardList!=null&&standardList.size()>0){
+				model.addAttribute("asList",standardList);
+				String isScore=standardList.get(0).getIsEescoreNodes();
+				String firstNode=GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_THREE_ID);
+				if(isScore!=null){
+					if(isScore.contains(firstNode)){
+						model.addAttribute("isScore", firstNode);
+					}
+				}
+			}
         }else if (gContest.getAuditState().equals("4")) {
         	List<GAuditInfo> collegeInfos= getSortInfo(gContest.getId(),"2");
         	model.addAttribute("collegeInfos", collegeInfos);
          	List<GAuditInfo> infos= getInfo(gContest.getId(),"3");
     		model.addAttribute("infos", infos);
-       }else if (gContest.getAuditState().equals("5")) {
+			//audit4
+			//查找审核标准
+			List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_WP_ID),GContestNodeVo.YW_ID);
+			if(standardList!=null&&standardList.size()>0){
+				model.addAttribute("asList",standardList);
+				String isScore=standardList.get(0).getIsEescoreNodes();
+				String firstNode=GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_FOUR_ID);
+				if(isScore!=null){
+					if(isScore.contains(firstNode)){
+						model.addAttribute("isScore", firstNode);
+					}
+				}
+			}
+       	}else if (gContest.getAuditState().equals("5")) {
        	 	List<GAuditInfo> collegeinfos= getSortInfo(gContest.getId(),"2");
        	 	List<GAuditInfo> schoolinfos= getSortInfo(gContest.getId(),"4");
        	 	collegeinfos.addAll(schoolinfos);
     		model.addAttribute("infos", collegeinfos);
-       }else if (gContest.getAuditState().equals("6")) {
+			//audit5
+			//查找审核标准
+			List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_LY_ID),GContestNodeVo.YW_ID);
+			if(standardList!=null&&standardList.size()>0){
+				model.addAttribute("asList",standardList);
+				String isScore=standardList.get(0).getIsEescoreNodes();
+				String firstNode=GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_FIVE_ID);
+				if(isScore!=null){
+					if(isScore.contains(firstNode)){
+						model.addAttribute("isScore", firstNode);
+					}
+				}
+			}
+		}else if (gContest.getAuditState().equals("6")) {
       	 	List<GAuditInfo> wpinfos= getSortInfo(gContest.getId(),"4");
       	 	List<GAuditInfo> lyinfos= getSortInfo(gContest.getId(),"5");
       	 	wpinfos.addAll(lyinfos);
       	 	model.addAttribute("infos", wpinfos);
+			//audit6
+			//查找审核标准
+			List<ProjectStandardDetailVo> standardList =auditStandardDetailService.findStandardDetailByNode(GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_PJ_ID),GContestNodeVo.YW_ID);
+			if(standardList!=null&&standardList.size()>0){
+				model.addAttribute("asList",standardList);
+				String isScore=standardList.get(0).getIsEescoreNodes();
+				String firstNode=GContestNodeVo.getGNodeIdByNodeId(GContestNodeVo.GNODE_SIX_ID);
+				if(isScore!=null){
+					if(isScore.contains(firstNode)){
+						model.addAttribute("isScore", firstNode);
+					}
+				}
+			}
        	}
 		model.addAttribute("gContest", gContest);
+		if (StringUtil.isNotEmpty(gContest.getpId())) {
+			ProjectDeclare pd=projectDeclareService.get(gContest.getpId());
+			if (pd!=null) {
+				model.addAttribute("relationProject", pd.getName());
+			}
+		}
 		model.addAttribute("sse", sse);
 		return "modules/gcontest/gContestAuditForm";
 	}
@@ -378,26 +483,61 @@ public class GContestController extends BaseController {
         Team team=teamService.get(gContest.getTeamId());
         model.addAttribute("team",team);
         //查找学生
-        TeamUserRelation tur1=new TeamUserRelation();
-        tur1.setTeamId(gContest.getTeamId());
-        List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+        //List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+		List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId());
         model.addAttribute("turStudents",turStudents);
         //查找导师
-        List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+        //List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+		List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(gContest.getTeamId(),gContest.getId());
         model.addAttribute("turTeachers",turTeachers);
-        
+
+
+		User loginUser = UserUtils.getUser();
         //审核意见根据状态得到不同的审核结果
         if (state.equals("1")) {
         	//学院老师评分
         	 List<GAuditInfo> collegeinfos= getInfo(gContest.getId(),"1");
      		model.addAttribute("infos", collegeinfos);
+			GAuditInfo userGai= getInfoByLoginname(loginUser.getLoginName(),gContest.getId(),"1");
+			if(userGai!=null){
+				//完成评分标准
+				model.addAttribute("userGai", userGai);
+				AuditStandardDetailIns auditStandardDetailIns=new AuditStandardDetailIns();
+				auditStandardDetailIns.setAuditInfoId(userGai.getId());
+				List<AuditStandardDetailIns> asdiList= auditStandardDetailInsService.findList(auditStandardDetailIns);
+				if(asdiList!=null){
+					model.addAttribute("asdiList", asdiList);
+				}
+			}
         }else if (state.equals("2")) {
         	List<GAuditInfo> infos= getInfo(gContest.getId(),"1");
      		model.addAttribute("infos", infos);
+			GAuditInfo userGai= getInfoByLoginname(loginUser.getLoginName(),gContest.getId(),"2");
+			if(userGai!=null){
+				//完成评分标准
+				model.addAttribute("userGai", userGai);
+				AuditStandardDetailIns auditStandardDetailIns=new AuditStandardDetailIns();
+				auditStandardDetailIns.setAuditInfoId(userGai.getId());
+				List<AuditStandardDetailIns> asdiList= auditStandardDetailInsService.findList(auditStandardDetailIns);
+				if(asdiList!=null){
+					model.addAttribute("asdiList", asdiList);
+				}
+			}
         }else if (state.equals("3")) {
           	//List<GAuditInfo> infos= getInfo(gContest.getId(),"2");
         /*	List<GAuditInfo> collegeExportinfos= getInfo(gContest.getId(),"1");
      		model.addAttribute("collegeExportinfos", collegeExportinfos);*/
+			GAuditInfo userGai= getInfoByLoginname(loginUser.getLoginName(),gContest.getId(),"3");
+			if(userGai!=null){
+				//完成评分标准
+				model.addAttribute("userGai", userGai);
+				AuditStandardDetailIns auditStandardDetailIns=new AuditStandardDetailIns();
+				auditStandardDetailIns.setAuditInfoId(userGai.getId());
+				List<AuditStandardDetailIns> asdiList= auditStandardDetailInsService.findList(auditStandardDetailIns);
+				if(asdiList!=null){
+					model.addAttribute("asdiList", asdiList);
+				}
+			}
           	List<GAuditInfo> infos= getSortInfo(gContest.getId(),"2");
      		model.addAttribute("infos", infos);
      		List<GAuditInfo> schoolExportinfos= getInfo(gContest.getId(),"3");
@@ -409,43 +549,83 @@ public class GContestController extends BaseController {
         	model.addAttribute("collegeInfo", collegeInfos.get(0));
          	List<GAuditInfo> infos= getInfo(gContest.getId(),"3");
     		model.addAttribute("infos", infos);
-       }else if (state.equals("5")) {
-    	   	List<GAuditInfo> collegeExportinfos= getInfo(gContest.getId(),"1");
-    		model.addAttribute("collegeExportinfos", collegeExportinfos);
-    	   	List<GAuditInfo> collegeInfos= getSortInfo(gContest.getId(),"2");
-       		model.addAttribute("collegeInfo", collegeInfos.get(0));
-       		List<GAuditInfo> schoolExportinfos= getInfo(gContest.getId(),"3");
-    		model.addAttribute("schoolExportinfos", schoolExportinfos);
-       	 	List<GAuditInfo> schoolinfos= getSortInfo(gContest.getId(),"4");
-    		model.addAttribute("schoolinfos", schoolinfos);
-       }else if (state.equals("6")) {
-    	   	List<GAuditInfo> collegeExportinfos= getInfo(gContest.getId(),"1");
-    		model.addAttribute("collegeExportinfos", collegeExportinfos);
-    		List<GAuditInfo> collegeInfos= getSortInfo(gContest.getId(),"2");
-       		model.addAttribute("collegeInfo", collegeInfos.get(0));
-       		List<GAuditInfo> schoolExportinfos= getInfo(gContest.getId(),"3");
-    		model.addAttribute("schoolExportinfos", schoolExportinfos);
-       	 	List<GAuditInfo> schoolinfos= getSortInfo(gContest.getId(),"4");
-    		model.addAttribute("schoolinfo", schoolinfos.get(0));
-      	 	List<GAuditInfo> lyinfos= getSortInfo(gContest.getId(),"5");
-      	 	model.addAttribute("lyinfo", lyinfos.get(0));
+			GAuditInfo userGai= getInfoByLoginname(loginUser.getLoginName(),gContest.getId(),"4");
+			if(userGai!=null){
+				//完成评分标准
+				model.addAttribute("userGai", userGai);
+				AuditStandardDetailIns auditStandardDetailIns=new AuditStandardDetailIns();
+				auditStandardDetailIns.setAuditInfoId(userGai.getId());
+				List<AuditStandardDetailIns> asdiList= auditStandardDetailInsService.findList(auditStandardDetailIns);
+				if(asdiList!=null){
+					model.addAttribute("asdiList", asdiList);
+				}
+			}
+	   	}else if (state.equals("5")) {
+			List<GAuditInfo> collegeExportinfos= getInfo(gContest.getId(),"1");
+			model.addAttribute("collegeExportinfos", collegeExportinfos);
+			List<GAuditInfo> collegeInfos= getSortInfo(gContest.getId(),"2");
+			model.addAttribute("collegeInfo", collegeInfos.get(0));
+			List<GAuditInfo> schoolExportinfos= getInfo(gContest.getId(),"3");
+			model.addAttribute("schoolExportinfos", schoolExportinfos);
+			List<GAuditInfo> schoolinfos= getSortInfo(gContest.getId(),"4");
+			model.addAttribute("schoolinfos", schoolinfos);
+			GAuditInfo userGai= getInfoByLoginname(loginUser.getLoginName(),gContest.getId(),"5");
+			if(userGai!=null){
+				//完成评分标准
+				model.addAttribute("userGai", userGai);
+				AuditStandardDetailIns auditStandardDetailIns=new AuditStandardDetailIns();
+				auditStandardDetailIns.setAuditInfoId(userGai.getId());
+				List<AuditStandardDetailIns> asdiList= auditStandardDetailInsService.findList(auditStandardDetailIns);
+				if(asdiList!=null){
+					model.addAttribute("asdiList", asdiList);
+				}
+			}
+	   	}else if (state.equals("6")) {
+			List<GAuditInfo> collegeExportinfos= getInfo(gContest.getId(),"1");
+			model.addAttribute("collegeExportinfos", collegeExportinfos);
+			List<GAuditInfo> collegeInfos= getSortInfo(gContest.getId(),"2");
+			model.addAttribute("collegeInfo", collegeInfos.get(0));
+			List<GAuditInfo> schoolExportinfos= getInfo(gContest.getId(),"3");
+			model.addAttribute("schoolExportinfos", schoolExportinfos);
+			List<GAuditInfo> schoolinfos= getSortInfo(gContest.getId(),"4");
+			model.addAttribute("schoolinfo", schoolinfos.get(0));
+			List<GAuditInfo> lyinfos= getSortInfo(gContest.getId(),"5");
+			model.addAttribute("lyinfo", lyinfos.get(0));
+			GAuditInfo userGai= getInfoByLoginname(loginUser.getLoginName(),gContest.getId(),"6");
+			if(userGai!=null){
+				//完成评分标准
+				model.addAttribute("userGai", userGai);
+				AuditStandardDetailIns auditStandardDetailIns=new AuditStandardDetailIns();
+				auditStandardDetailIns.setAuditInfoId(userGai.getId());
+				List<AuditStandardDetailIns> asdiList= auditStandardDetailInsService.findList(auditStandardDetailIns);
+				if(asdiList!=null){
+					model.addAttribute("asdiList", asdiList);
+				}
+			}
        	}else if (state.equals("7")) {
        		List<GAuditInfo> collegeExportinfos= getInfo(gContest.getId(),"1");
      		model.addAttribute("collegeExportinfos", collegeExportinfos);
        		List<GAuditInfo> collegeInfos= getSortInfo(gContest.getId(),"2");
-       		model.addAttribute("collegeInfo", collegeInfos.get(0));
+       		model.addAttribute("collegeInfo", collegeInfos==null||collegeInfos.size()==0?null:collegeInfos.get(0));
        		List<GAuditInfo> schoolExportinfos= getInfo(gContest.getId(),"3");
     		model.addAttribute("schoolExportinfos", schoolExportinfos);
        	 	List<GAuditInfo> schoolinfos= getSortInfo(gContest.getId(),"4");
-    		model.addAttribute("schoolinfo", schoolinfos.get(0));
+    		model.addAttribute("schoolinfo", schoolinfos==null||schoolinfos.size()==0?null:schoolinfos.get(0));
       	 	List<GAuditInfo> lyinfos= getSortInfo(gContest.getId(),"5");
-      	 	model.addAttribute("lyinfo", lyinfos.get(0));
+      	 	model.addAttribute("lyinfo", lyinfos==null||lyinfos.size()==0?null:lyinfos.get(0));
       	 	List<GAuditInfo> pjinfos= getSortInfo(gContest.getId(),"6");
-      	 	model.addAttribute("pjinfos", pjinfos.get(0));
+      	 	model.addAttribute("pjinfos", pjinfos==null||pjinfos.size()==0?null:pjinfos.get(0));
        	}
-        User loginUser = UserUtils.getUser();
+
         model.addAttribute("loginUser", loginUser);
 		model.addAttribute("gContest", gContest);
+		if (StringUtil.isNotEmpty(gContest.getpId())) {
+			ProjectDeclare pd=projectDeclareService.get(gContest.getpId());
+			if (pd!=null) {
+				model.addAttribute("relationProject", pd.getName());
+			}
+		}
+
 		model.addAttribute("sse", sse);
 		return "modules/gcontest/gContestAuditedForm";
 	}
@@ -465,8 +645,8 @@ public class GContestController extends BaseController {
     			if (roleName.equals("schoolSec")) {
     				param.put("auditState", "5");
     				model.addAttribute("state", "5");
-    				if (gContest.getPName()!=null) {
-    					param.put("name", gContest.getPName());
+    				if (gContest.getpName()!=null) {
+    					param.put("name", gContest.getpName());
     				}
     				if (gContest.getFinancingStat()!=null) {
     					param.put("financingStat", gContest.getFinancingStat());
@@ -476,12 +656,13 @@ public class GContestController extends BaseController {
     				}
     				Page<Map<String,String>> page = gContestService.getEndGcontestList(new Page<Map<String,String>>(request, response), param); 
 
-    				model.addAttribute("page", page);
+					model.addAttribute("page", page);
     				model.addAttribute("param", param);
     		        return "modules/gcontest/schoolAuditedList";
     			}
         	}
     	}
+		model.addAttribute("page", new Page());
 	    return "modules/gcontest/schoolAuditedList";
 	}
 		
@@ -498,8 +679,8 @@ public class GContestController extends BaseController {
 			param.put("collegeId", user.getOffice().getId());
 			model.addAttribute("college", "college");
 		}
-		if (gContest.getPName()!=null) {
-			param.put("name", gContest.getPName());
+		if (gContest.getpName()!=null) {
+			param.put("name", gContest.getpName());
 		}
 		if (gContest.getFinancingStat()!=null) {
 			param.put("financingStat", gContest.getFinancingStat());
@@ -538,24 +719,24 @@ public class GContestController extends BaseController {
 		model.addAttribute("sysAttachments", sysAttachments);*/
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("uid", gContest.getId());
-		map.put("type",FileSourceEnum.S2.getValue());
+		map.put("type",FileTypeEnum.S2.getValue());
 		List<Map<String, String>>   sysAttachments=sysAttachmentService.getFileInfo(map);
 		model.addAttribute("sysAttachments", sysAttachments);
         //查找项目团队相关信息 projectDeclare.id
         Team team=teamService.get(gContest.getTeamId());
         model.addAttribute("team",team);
-        //查找学生
-        TeamUserRelation tur1=new TeamUserRelation();
-        tur1.setTeamId(gContest.getTeamId());
-        List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
-        model.addAttribute("turStudents",turStudents);
-        //查找导师
-        List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
-        model.addAttribute("turTeachers",turTeachers);
+		//查找学生
+		//List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+		List<Map<String,String>> turStudents=projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId());
+		model.addAttribute("turStudents",turStudents);
+		//查找导师
+		//List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+		List<Map<String,String>> turTeachers=projectDeclareService.findTeamTeacherFromTUH(gContest.getTeamId(),gContest.getId());
+		model.addAttribute("turTeachers",turTeachers);
         
     	GContestVo vo=new GContestVo();
-		vo.setTeamStudent(projectDeclareService.findTeamStudent(gContest.getTeamId()));
-		vo.setTeamTeacher(projectDeclareService.findTeamTeacher(gContest.getTeamId()));
+		vo.setTeamStudent(projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId()));
+		vo.setTeamTeacher(projectDeclareService.findTeamTeacherFromTUH(gContest.getTeamId(),gContest.getId()));
 		//关联团队
 		model.addAttribute("teams", projectDeclareService.findTeams(declareUser.getId(),gContest.getTeamId()));
 		model.addAttribute("studentExpansion", sysStudentExpansionService.getByUserId(declareUser.getId()));
@@ -845,8 +1026,8 @@ public class GContestController extends BaseController {
     		 model.addAttribute("gContest",gContest);
     		 return "modules/gcontest/collegeExportScoreEndList";
     	}
-		if (gContest.getPName()!=null) {
-			param.put("name", gContest.getPName());
+		if (gContest.getpName()!=null) {
+			param.put("name", gContest.getpName());
 		}
 		if (gContest.getFinancingStat()!=null) {
 			param.put("financingStat", gContest.getFinancingStat());
@@ -890,11 +1071,15 @@ public class GContestController extends BaseController {
     		model.addAttribute("state", "4");
     		model.addAttribute("auditName","审核");
     	}else{
-    		 model.addAttribute("gContest",gContest);
-    		 return "modules/gcontest/gcontestAuditList";
+			model.addAttribute("gContest",gContest);
+			Page page=new Page();
+			page.setCount(0);
+			page.initialize();
+			model.addAttribute("page",page);
+			return "modules/gcontest/gcontestAuditList";
     	}
-		if (gContest.getPName()!=null) {
-			param.put("name", gContest.getPName());
+		if (gContest.getpName()!=null) {
+			param.put("name", gContest.getpName());
 		}
 		if (gContest.getFinancingStat()!=null) {
 			param.put("financingStat", gContest.getFinancingStat());
@@ -924,42 +1109,42 @@ public class GContestController extends BaseController {
 		    act.setTaskDefKey("audit1");   // 表示大赛流程阶段 见流程图的userTask的id
 			gContestService.saveAudit1(gContest,act);
 			addMessage(redirectAttributes, "学院专家评分成功");
-			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/?repage";
+			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/";
 		}else if (gContest.getAuditState().equals("2")) {
 			Act act=new Act();
 			act.setProcDefKey("gcontest");  //大赛流程名称
 		    act.setTaskDefKey("audit2");   // 表示大赛流程阶段 见流程图的userTask的id
 			gContestService.saveAudit2(gContest,act);
 			addMessage(redirectAttributes, "学院秘书审核成功");
-			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/?repage";
+			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/";
 		}else if (gContest.getAuditState().equals("3")) {
 			Act act=new Act();
 			act.setProcDefKey("gcontest");  //大赛流程名称
 		    act.setTaskDefKey("audit3");   // 表示大赛流程阶段 见流程图的userTask的id
 			gContestService.saveAudit3(gContest,act);
 			addMessage(redirectAttributes, "学校专家评分成功");
-			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/?repage";
+			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/";
 		}else if (gContest.getAuditState().equals("4")) {
 			Act act=new Act();
 			act.setProcDefKey("gcontest");  //大赛流程名称
 		    act.setTaskDefKey("audit4");   // 表示大赛流程阶段 见流程图的userTask的id
 			gContestService.saveAudit4(gContest,act);
 			addMessage(redirectAttributes, "学校秘书审核成功");
-			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/?repage";
+			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/";
 		}else if (gContest.getAuditState().equals("5")) {
 			Act act=new Act();
 			act.setProcDefKey("gcontest");  //大赛流程名称
 		    act.setTaskDefKey("audit5");   // 表示大赛流程阶段 见流程图的userTask的id
 			gContestService.saveAudit5(gContest,act);
 			addMessage(redirectAttributes, "学校路演审核成功");
-			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/schoolActAuditList/?repage";
+			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/schoolActAuditList/";
 		}else if (gContest.getAuditState().equals("6")) {
 			Act act=new Act();
 			act.setProcDefKey("gcontest");  //大赛流程名称
 		    act.setTaskDefKey("audit6");   // 表示大赛流程阶段 见流程图的userTask的id
 			gContestService.saveAudit6(gContest,act);
 			addMessage(redirectAttributes, "学校评级审核成功");
-			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/schoolEndAuditList/?repage";
+			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/schoolEndAuditList/";
 		}else{
 			return "redirect:"+Global.getAdminPath()+"/gcontest/gContest/collegeExportScore/?repage";
 		}
@@ -977,8 +1162,8 @@ public class GContestController extends BaseController {
 		if (userType.equals("6")) {
 		 	param.put("auditState", "5");
 			model.addAttribute("state", "5");
-			if (gContest.getPName()!=null) {
-				param.put("name", gContest.getPName());
+			if (gContest.getpName()!=null) {
+				param.put("name", gContest.getpName());
 			}
 			if (gContest.getFinancingStat()!=null) {
 				param.put("financingStat", gContest.getFinancingStat());
@@ -993,6 +1178,10 @@ public class GContestController extends BaseController {
 			model.addAttribute("todoCount",todoCount);
 	        return "modules/gcontest/schoolActAuditList";
 		}
+		Page page=new Page();
+		page.setCount(0);
+		page.initialize();
+		model.addAttribute("page",page);
 	 	return "modules/gcontest/schoolActAuditList";
 	}
 
@@ -1007,7 +1196,7 @@ public class GContestController extends BaseController {
 		return "modules/gcontest/gContestAuditForm5";
 	}
 	*/
-	//学校管理员路演审核完毕
+	/*//学校管理员路演审核完毕
 	@RequestMapping(value = "schoolActAuditedList")
 	public String schoolActAuditedList(GContest gContest, HttpServletRequest request,
 					   HttpServletResponse response, Model model) {
@@ -1019,8 +1208,8 @@ public class GContestController extends BaseController {
 		if (userType.equals("6")) {
 		 	param.put("auditState", "6");
 			model.addAttribute("state", "6");
-			if (gContest.getPName()!=null) {
-				param.put("name", gContest.getPName());
+			if (gContest.getpName()!=null) {
+				param.put("name", gContest.getpName());
 			}
 			if (gContest.getFinancingStat()!=null) {
 				param.put("financingStat", gContest.getFinancingStat());
@@ -1035,10 +1224,13 @@ public class GContestController extends BaseController {
 					model.addAttribute("todoCount",todoCount);
 			return "modules/gcontest/schoolActAuditedList";
 		}
-    
+		Page page=new Page();
+		page.setCount(0);
+		page.initialize();
+		model.addAttribute("page",page);
     	return "modules/gcontest/schoolActAuditedList";
 	}
-
+*/
 	//学院结果评定
 	@RequestMapping(value = "schoolEndAuditList")
 	public String schoolEndAuditList(GContest gContest, HttpServletRequest request,
@@ -1051,8 +1243,8 @@ public class GContestController extends BaseController {
 		if (userType.equals("6")) {
 		 	param.put("auditState", "6");
 			model.addAttribute("state", "6");
-			if (gContest.getPName()!=null) {
-				param.put("name", gContest.getPName());
+			if (gContest.getpName()!=null) {
+				param.put("name", gContest.getpName());
 			}
 			if (gContest.getFinancingStat()!=null) {
 				param.put("financingStat", gContest.getFinancingStat());
@@ -1067,11 +1259,14 @@ public class GContestController extends BaseController {
 			model.addAttribute("todoCount",todoCount);
 	        return "modules/gcontest/schoolEndAuditList";
 		}
-
+		Page page=new Page();
+		page.setCount(0);
+		page.initialize();
+		model.addAttribute("page",page);
     	return "modules/gcontest/schoolEndAuditList";
 	}
 	
-	@RequestMapping(value = "schoolEndAuditedList")
+/*	@RequestMapping(value = "schoolEndAuditedList")
 	public String schoolEndAuditedList(GContest gContest, HttpServletRequest request,
 					   HttpServletResponse response, Model model) {
 		Map<String,Object> param =new HashMap<String,Object>();
@@ -1083,8 +1278,8 @@ public class GContestController extends BaseController {
 		if (userType.equals("6")) {
 		 	param.put("auditState", "7");
 			model.addAttribute("state", "7");
-			if (gContest.getPName()!=null) {
-				param.put("name", gContest.getPName());
+			if (gContest.getpName()!=null) {
+				param.put("name", gContest.getpName());
 			}
 			if (gContest.getFinancingStat()!=null) {
 				param.put("financingStat", gContest.getFinancingStat());
@@ -1101,7 +1296,7 @@ public class GContestController extends BaseController {
     
     	return "modules/gcontest/schoolEndAuditedList";
 	}
-	
+	*/
 	@ResponseBody
 	@RequestMapping(value = "findTeamPerson")
 	public List<Map<String,String>> findTeamPerson(@RequestParam(required=true) String id) {
@@ -1131,6 +1326,22 @@ public class GContestController extends BaseController {
         List<GAuditInfo> infos= gAuditInfoService.getInfo(pai);
         return infos;
     }
+
+	/**
+	 * 获得评审意见、评分
+	 * @param gId 大赛id
+	 * @param auditStep 审核步骤 ('1','院级专家评审';'2','院级评分';'3','校级专家评审';'4','校级管理员评审';'5','路演评分';
+	 *                     '6','校级评级';)
+	 * @return
+	 */
+	private  GAuditInfo getInfoByLoginname(String loginName,String gId,String auditStep) {
+		GAuditInfo pai=new GAuditInfo();
+		pai.setGId(gId);
+		pai.setAuditLevel(auditStep);
+		pai.setAuditId(loginName);
+		GAuditInfo info= gAuditInfoService.getInfoByLoginname(pai);
+		return info;
+	}
     
     /**
      * 获得评审意见、评分,排名

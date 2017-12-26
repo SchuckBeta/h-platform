@@ -1,7 +1,7 @@
 package com.oseasy.initiate.modules.excellent.enums;
 
 public enum ExcTemplateEnum {
-	 R1("1","大创项目展示模板","project.xml")
+	 R1("1","双创项目展示模板","project.xml")
 	,R2("2","互联网+大赛展示模板","gcontest.xml")
 	;
 

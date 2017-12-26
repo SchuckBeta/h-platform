@@ -26,6 +26,7 @@ import com.oseasy.initiate.common.config.SysIdx;
 import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
+import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
 import com.oseasy.initiate.modules.ftp.service.FtpService;
 import com.oseasy.initiate.modules.sys.entity.Menu;
 import com.oseasy.initiate.modules.sys.service.SystemService;
@@ -40,6 +41,8 @@ import com.oseasy.initiate.modules.sys.utils.UserUtils;
 @RequestMapping(value = "${adminPath}/sys/menu")
 public class MenuController extends BaseController {
 
+	@Autowired
+	private AuthorizeService authorizeService;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -86,7 +89,7 @@ public class MenuController extends BaseController {
 	@RequiresPermissions("sys:menu:edit")
 	@RequestMapping(value = "save")
 	public String save(Menu menu, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-		if (!UserUtils.getUser().getAdmin()) {
+		if (!(UserUtils.getUser().getAdmin() || UserUtils.getUser().getSysAdmin())) {
 			addMessage(redirectAttributes, "越权操作，只有超级管理员才能添加或修改数据！");
 			return "redirect:" + adminPath + "/sys/role/?repage";
 		}
@@ -139,9 +142,10 @@ public class MenuController extends BaseController {
 
 	@RequiresPermissions("user")
 	@RequestMapping(value = "treePlus")
-	public String treePlus(String parentId,Model model) {
-//		return SysIdx.SYSIDX_BACK_V3.getIdxUrl();
-
+	public String treePlus(String parentId,Model model,String href) {
+		if(!authorizeService.checkMenu(parentId)){
+			return "redirect:/a/authorize";
+		}
 		List<Menu> list = Lists.newArrayList();
 		List<Menu> sourcelist = systemService.findAllMenu();
 		Menu.sortList(list, sourcelist, parentId, true);
@@ -150,8 +154,7 @@ public class MenuController extends BaseController {
 			model.addAttribute("msg","无权限访问该页面");
 			return "error/msg";
 		}
-		Menu firstMenu=systemService.getMenu(parentId);
-		model.addAttribute("firstMenu",firstMenu);
+		Menu firstMenu = systemService.getMenu(parentId);
 		List<Menu> secondMenus=Lists.newArrayList();
 		List<Menu> threeMenus=Lists.newArrayList();
 
@@ -177,8 +180,15 @@ public class MenuController extends BaseController {
 			menu2.setChildren(children);
 		}
 
+	    if(StringUtil.isNotEmpty(firstMenu.getHref()) && StringUtil.isNotEmpty((firstMenu.getHref()).replaceAll(" ", ""))){
+	      model.addAttribute("hasHome", true);
+	    }else{
+	      model.addAttribute("hasHome", false);
+	    }
+	    model.addAttribute("firstMenu", firstMenu);
 		model.addAttribute("secondMenus",secondMenus);
 
+		model.addAttribute("href",href); //addBy张正，根据href跳转。如果href不为空，跳转到指定href
 		return SysIdx.SYSIDX_BACK_V4.getIdxUrl();
 	}
 

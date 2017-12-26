@@ -3,12 +3,12 @@ package com.oseasy.initiate.modules.course.service;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.course.dao.CourseAttachmentDao;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.course.dao.CourseCategoryDao;
 import com.oseasy.initiate.modules.course.dao.CourseTeacherDao;
-import com.oseasy.initiate.modules.course.entity.CourseAttachment;
 import com.oseasy.initiate.modules.course.entity.CourseCategory;
 import com.oseasy.initiate.modules.course.entity.CourseTeacher;
 import com.oseasy.initiate.modules.sys.utils.DictUtils;
@@ -36,8 +36,9 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	@Autowired
 	CourseTeacherDao courseTeacherDao;
 
+
 	@Autowired
-	CourseAttachmentDao courseAttachmentDao;
+	SysAttachmentService sysAttachmentService;
 
 	public Course get(String id) {
 		return super.get(id);
@@ -85,17 +86,18 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				courseTeacherDao.insert(teacher);
 			}
 		}
-		//课件子表处理
-		courseAttachmentDao.deleteByCourseId(course.getId());
-		List<CourseAttachment> attachmentList=course.getAttachmentList();
-		if(attachmentList!=null){
-			for(CourseAttachment attachment:attachmentList){
-				attachment.setCourseId(course.getId());
-				attachment.preInsert();
-				courseAttachmentDao.insert(attachment);
-			}
-		}
 
+		//课件子表处理
+//		courseAttachmentDao.deleteByCourseId(course.getId());
+//		List<CourseAttachment> attachmentList=course.getAttachmentList();
+//		if(attachmentList!=null){
+//			for(CourseAttachment attachment:attachmentList){
+//				attachment.setCourseId(course.getId());
+//				attachment.preInsert();
+//				courseAttachmentDao.insert(attachment);
+//			}
+//		}
+		sysAttachmentService.saveByVo(course.getAttachMentEntity(),course.getId(), FileTypeEnum.S9, FileStepEnum.S900);
 
 
 

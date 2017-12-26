@@ -1,5 +1,7 @@
 package com.oseasy.initiate.modules.actyw.dao;
 
+import java.util.List;
+
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.actyw.entity.ActYwNode;
@@ -11,5 +13,7 @@ import com.oseasy.initiate.modules.actyw.entity.ActYwNode;
  */
 @MyBatisDao
 public interface ActYwNodeDao extends CrudDao<ActYwNode> {
-	
+
+  List<ActYwNode> findListByTypeNoZero(ActYwNode actYwNode);
+
 }

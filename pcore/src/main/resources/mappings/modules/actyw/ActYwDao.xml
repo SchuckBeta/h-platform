@@ -7,12 +7,18 @@
 		a.rel_id AS "relId",
 		a.group_id AS "groupId",
 		a.flow_id AS "flowId",
+		a.deployment_id AS "deploymentId",
 		a.is_deploy AS "isDeploy",
+		a.is_show_axis AS "isShowAxis",
+		a.status  AS  "status",
+		a.show_time AS "showTime",
+		a.key_Type AS "keyType",
 
 		b.id AS "group.id",
 		b.name AS "group.name",
 		b.status AS "group.status",
 		b.type AS "group.type",
+		b.flow_type AS "group.flowType",
 		b.keyss AS "group.keyss",
 		b.author AS "group.author",
 		b.version AS "group.version",
@@ -64,14 +70,24 @@
 		pp.menu_rid AS "proProject.menuRid",
 		pp.category_rid AS "proProject.categoryRid",
 		pp.content AS "proProject.content",
+		pp.project_name AS "proProject.projectName",
+		pp.project_mark AS "proProject.projectMark",
+		pp.state AS "proProject.state",
+		pp.pro_type AS "proProject.proType",
+		pp.type AS "proProject.type",
+		pp.pro_category AS "proProject.proCategory",
+		pp.level AS "proProject.level",
+		pp.final_status AS "proProject.finalStatus",
+		pp.start_date AS "proProject.startDate",
+		pp.end_date AS "proProject.endDate",
+		pp.node_state AS "proProject.nodeState",
+		pp.node_start_date AS "proProject.nodeStartDate",
+		pp.node_end_date AS "proProject.nodeEndDate",
 		pp.update_date AS "proProject.updateDate",
 		pp.update_by AS "proProject.updateBy.id",
 		pp.create_date AS "proProject.createDate",
 		pp.create_by AS "proProject.createBy.id",
 		pp.del_flag AS "proProject.delFlag",
-		pp.project_name AS "proProject.projectName",
-		pp.project_mark AS "proProject.projectMark",
-		pp.state AS "proProject.state",
 
 		m.id AS "proProject.menu.id",
 		m.parent_id AS "proProject.menu.parent.id",
@@ -96,6 +112,14 @@
 		WHERE a.id = #{id}
 	</select>
 
+	<select id="getByKeyss" resultType="ActYw">
+		SELECT
+			<include refid="actYwColumns"/>
+		FROM act_yw a
+		<include refid="actYwJoins"/>
+		WHERE b.keyss = #{keyss}
+	</select>
+
 	<select id="findList" resultType="ActYw">
 		SELECT
 			<include refid="actYwColumns"/>
@@ -111,8 +135,14 @@
 			<if test="flowId != null and flowId != ''">
 				AND a.flow_id = #{flowId}
 			</if>
+			<if test="deploymentId != null and deploymentId != ''">
+				AND a.deployment_id = #{deploymentId}
+			</if>
 			<if test="isDeploy != null ">
 				AND a.is_deploy = #{isDeploy}
+			</if>
+			<if test="isShowAxis != null ">
+				AND a.is_show_axis = #{isShowAxis}
 			</if>
 
 			<if test="group != null">
@@ -124,6 +154,114 @@
 					<if test="dbName == 'oracle'">'%'||#{group.name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{group.name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{group.name},'%')</if>
+				</if>
+				<if test="group.status != null and group.status != ''">
+					AND b.status = #{group.status}
+				</if>
+				<if test="group.type != null and group.type != ''">
+					AND b.type LIKE
+						<if test="dbName == 'oracle'">'%'||#{group.type}||',%'</if>
+						<if test="dbName == 'mssql'">'%'+#{group.type}+',%'</if>
+						<if test="dbName == 'mysql'">concat('%',#{group.type},',%')</if>
+				</if>
+				<if test="group.flowType != null and group.flowType != ''">
+					AND b.flow_type = #{group.flowType}
+				</if>
+			</if>
+
+			<if test="projectDeclare != null">
+				<if test="projectDeclare.id != null and projectDeclare.id != ''">
+					AND pd.id = #{projectDeclare.id}
+				</if>
+				<if test="projectDeclare.name != null and projectDeclare.name != ''">
+					AND pd.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{projectDeclare.name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{projectDeclare.name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{projectDeclare.name},'%')</if>
+				</if>
+			</if>
+			<if test="proProject!= null">
+				<if test="proProject.projectName != null and proProject.projectName != ''">
+					AND pp.project_Name LIKE
+					<if test="dbName == 'oracle'">'%'||#{proProject.projectName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{proProject.projectName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{proProject.projectName},'%')</if>
+				</if>
+				<if test="proProject.proType != null and proProject.proType != ''">
+					AND pp.pro_type LIKE
+					<if test="dbName == 'oracle'">'%'||#{proProject.proType}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{proProject.proType}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{proProject.proType},'%')</if>
+				</if>
+				<if test="proProject.type != null and proProject.type != ''">
+					AND pp.type LIKE
+					<if test="dbName == 'oracle'">'%'||#{proProject.type}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{proProject.type}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{proProject.type},'%')</if>
+				</if>
+				<if test="proProject.proCategory != null and proProject.proCategory != ''">
+					AND pp.pro_category LIKE
+					<if test="dbName == 'oracle'">'%'||#{proProject.proCategory}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{proProject.proCategory}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{proProject.proCategory},'%')</if>
+				</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByDeploy" resultType="ActYw">
+		SELECT
+			<include refid="actYwColumns"/>
+		FROM act_yw a
+		<include refid="actYwJoins"/>
+		<where>
+			<if test="relId != null and relId != ''">
+				AND a.rel_id = #{relId}
+			</if>
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id = #{groupId}
+			</if>
+			<if test="flowId != null and flowId != ''">
+				AND a.flow_id = #{flowId}
+			</if>
+			<if test="deploymentId != null and deploymentId != ''">
+				AND a.deployment_id = #{deploymentId}
+			</if>
+			<if test="isDeploy != null ">
+				AND a.is_deploy = #{isDeploy}
+			</if>
+			<if test="isShowAxis != null ">
+				AND a.is_show_axis = #{isShowAxis}
+			</if>
+
+			<if test="group != null">
+				<if test="group.id != null and group.id != ''">
+					AND b.id = #{group.id}
+				</if>
+				<if test="group.name != null and group.name != ''">
+					AND b.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{group.name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{group.name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{group.name},'%')</if>
+				</if>
+				<if test="group.status != null and group.status != ''">
+					AND b.status = #{group.status}
+				</if>
+				<if test="group.type != null and group.type != ''">
+					AND b.type LIKE
+						<if test="dbName == 'oracle'">'%'||#{group.type}||',%'</if>
+						<if test="dbName == 'mssql'">'%'+#{group.type}+',%'</if>
+						<if test="dbName == 'mysql'">concat('%',#{group.type},',%')</if>
+				</if>
+				<if test="group.flowType != null and group.flowType != ''">
+					AND b.flow_type = #{group.flowType}
 				</if>
 			</if>
 
@@ -180,13 +318,21 @@
 			rel_id,
 			group_id,
 			flow_id,
-			is_deploy
+			deployment_id,
+			is_deploy,
+			is_show_axis,
+			status,
+			show_time
 		) VALUES (
 			#{id},
 			#{relId},
 			#{groupId},
 			#{flowId},
-			#{isDeploy}
+			#{deploymentId},
+			#{isDeploy},
+			#{isShowAxis},
+			#{status},
+			#{showTime}
 		)
 	</insert>
 
@@ -195,7 +341,12 @@
 			rel_id = #{relId},
 			group_id = #{groupId},
 			flow_id = #{flowId},
-			is_deploy = #{isDeploy}
+			deployment_id = #{deploymentId},
+			is_deploy = #{isDeploy},
+			is_show_axis = #{isShowAxis},
+			status = #{status},
+			show_time = #{showTime},
+			key_type = #{keyType}
 		WHERE id = #{id}
 	</update>
 
@@ -204,4 +355,12 @@
 		WHERE id = #{id}
 	</update>
 
+	<update id="updateIsShowAxisPL">
+		UPDATE sys_certificate SET
+			is_show_axis = #{isShowAxis}
+        where id in
+        <foreach item="item" collection="entitys" index="index" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+	</update>
 </mapper>

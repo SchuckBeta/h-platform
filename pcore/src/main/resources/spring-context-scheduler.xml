@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-		http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.1.xsd"
-	>
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+>
 
     <!-- JobDetail -->
-    <!-- 备件库Worker配置 --> 
-			
+    <!-- 备件库Worker配置  -->
+
+    <!-- quartz 支持集群配置 -->
+   <!-- <bean id="jobDetail1" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+   		<property name="jobClass">
+   			<value>com.oseasy.initiate.jobs.excellent.ExcellentCommentJob</value>
+   		</property>
+   		<property name="durability" value="true" />
+   		<property name="requestsRecovery" value="true" />
+   	</bean>-->
+
 	<bean id="excellentCommentJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="excellentCommentJob"/>
         <property name="targetMethod" value="execute"/>
@@ -28,7 +35,7 @@
         <property name="targetObject" ref="courseViewsJob"/>
         <property name="targetMethod" value="execute"/>
         <property name="concurrent" value="false"/>
-    </bean>	
+    </bean>
    	<bean id="commentLikesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="commentLikesJob"/>
         <property name="targetMethod" value="execute"/>
@@ -54,7 +61,22 @@
         <property name="targetMethod" value="execute"/>
         <property name="concurrent" value="false"/>
     </bean>
-    				
+    <bean id="userInfoViewsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="userInfoViewsJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="userInfoLikesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="userInfoLikesJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="pwEnterExpireJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="pwEnterExpireJob"/>
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
     <!--  Trigger -->
 	<bean id="excellentViewsJobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="excellentViewsJobDetail">
@@ -76,14 +98,14 @@
         <property name="cronExpression">
             <value>0/10 * * * * ?</value>
         </property>
-    </bean>	 
+    </bean>
 	<bean id="courseViewsJobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="courseViewsJobDetail">
         </property>
         <property name="cronExpression">
             <value>0/10 * * * * ?</value>
         </property>
-    </bean>			
+    </bean>
 	<bean id="commentLikesJobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="commentLikesJobDetail">
         </property>
@@ -119,8 +141,41 @@
             <value>0/10 * * * * ?</value>
         </property>
     </bean>
-    
-    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean id="userInfoViewsJobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="userInfoViewsJobDetail">
+        </property>
+        <property name="cronExpression">
+            <value>0/10 * * * * ?</value>
+        </property>
+    </bean>
+    <!--  调度触发器 -->
+    <bean id="userInfoLikesJobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="userInfoLikesJobDetail">
+        </property>
+        <property name="cronExpression">
+            <value>0/10 * * * * ?</value>
+        </property>
+    </bean>
+    <bean id="pwEnterExpireTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="pwEnterExpireJobDetail"></property>
+        <property name="cronExpression">
+	        <value>0 */5 * * * ?</value>
+            <!-- <value>0 0 2 * * ?</value> -->
+        </property>
+    </bean>
+
+    <!-- 调度工厂 -->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+       <!-- <property name="dataSource">
+        			<ref bean="dataSource" />
+        </property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="configLocation" value="classpath:quartz.properties" />-->
+        <property name="jobDetails">
+	        <list>
+	            <ref bean="pwEnterExpireJobDetail" />
+	        </list>
+	    </property>
         <property name="triggers">
             <list>
                 <ref bean="excellentCommentJobDetailTrigger"/>
@@ -132,7 +187,9 @@
                 <ref bean="excellentLikesJobDetailTrigger"/>
                 <ref bean="gcontestHotsViewsJobDetailTrigger"/>
                 <ref bean="dynamicViewsJobDetailTrigger"/>
-                
+                <ref bean="userInfoViewsJobDetailTrigger"/>
+                <ref bean="userInfoLikesJobDetailTrigger"/>
+                <ref bean="pwEnterExpireTrigger"/>
             </list>
         </property>
     </bean>

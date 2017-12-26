@@ -9,10 +9,6 @@
 
 package com.oseasy.initiate.modules.actyw.tool.process.cmd;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.oseasy.initiate.modules.actyw.tool.process.ActYwEngine;
-
 /**
  * 引擎初始化抽象类.
  * @author chenhao

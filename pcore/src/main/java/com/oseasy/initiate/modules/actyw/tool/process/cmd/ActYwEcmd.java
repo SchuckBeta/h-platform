@@ -19,7 +19,9 @@ public enum ActYwEcmd {
   ECMD_ROOT_ADD("rootAdd", "新增根节点"),
   ECMD_ROOT_ADD_NODE("rootAddNode", "添加节点"),
   ECMD_ROOT_ADD_NODEGATE("rootAddNodeGate", "添加网关节点"),
-  ECMD_ROOT_ADD_NODEJG("rootAddNodeJG", "添加结构节点(子流程)");
+  ECMD_ROOT_DELETE("rootDelete", "删除根节点(删除所有流程节点)"),
+  ECMD_ROOT_DELETE_NODE("rootDeleteNode", "删除节点"),
+  ECMD_ROOT_DELETE_NODEGATE("rootDeleteNodeGate", "删除网关节点");
 
   private String key;
   private String remark;

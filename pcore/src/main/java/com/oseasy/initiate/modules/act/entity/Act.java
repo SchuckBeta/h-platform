@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.oseasy.initiate.modules.act.entity;
 
@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -26,7 +27,7 @@ import com.oseasy.initiate.modules.act.utils.Variable;
 
  */
 public class Act extends BaseEntity<Act> {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private String taskId; 		// 任务编号
@@ -39,15 +40,15 @@ public class Act extends BaseEntity<Act> {
 
 	private String businessTable;	// 业务绑定Table
 	private String businessId;		// 业务绑定ID
-	
+
 	private String title; 		// 任务标题
 
 	private String status; 		// 任务状态（todo/claim/finish）
 
-//	private String procExecUrl; 	// 流程执行（办理）RUL
+	//	private String procExecUrl; 	// 流程执行（办理）RUL
 	private String comment; 	// 任务意见
 	private String flag; 		// 意见状态
-	
+
 	private Task task; 			// 任务对象
 	private ProcessDefinition procDef; 	// 流程定义对象
 	private ProcessInstance procIns;	// 流程实例对象
@@ -59,13 +60,15 @@ public class Act extends BaseEntity<Act> {
 
 	private Variable vars; 		// 流程变量
 //	private Variable taskVars; 	// 流程任务变量
-	
+
 	private Date beginDate;	// 开始查询日期
 	private Date endDate;	// 结束查询日期
 
 	private List<Act> list; // 任务列表
 
 	private Map<String,String> map;  //add By zhangzheng 查询map  key是查询的字段，value是查询的值
+
+	private ProjectDeclare projectDeclare;
 
 	public Act() {
 		super();
@@ -103,7 +106,7 @@ public class Act extends BaseEntity<Act> {
 	public void setTaskDefKey(String taskDefKey) {
 		this.taskDefKey = taskDefKey;
 	}
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getTaskCreateDate() {
 		if (task != null) {
@@ -111,7 +114,7 @@ public class Act extends BaseEntity<Act> {
 		}
 		return null;
 	}
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getTaskEndDate() {
 		if (histTask != null) {
@@ -119,7 +122,7 @@ public class Act extends BaseEntity<Act> {
 		}
 		return null;
 	}
-	
+
 	@JsonIgnore
 	public Task getTask() {
 		return task;
@@ -137,7 +140,7 @@ public class Act extends BaseEntity<Act> {
 	public void setProcDef(ProcessDefinition procDef) {
 		this.procDef = procDef;
 	}
-	
+
 	public String getProcDefName() {
 		return procDef.getName();
 	}
@@ -171,7 +174,7 @@ public class Act extends BaseEntity<Act> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
@@ -304,7 +307,7 @@ public class Act extends BaseEntity<Act> {
 	public void setVars(Variable vars) {
 		this.vars = vars;
 	}
-	
+
 	/**
 	 * 通过Map设置流程变量值
 	 * @param map
@@ -343,7 +346,7 @@ public class Act extends BaseEntity<Act> {
 	public void setProcDefKey(String procDefKey) {
 		this.procDefKey = procDefKey;
 	}
-	
+
 	/**
 	 * 获取过去的任务历时
 	 * @return
@@ -354,7 +357,7 @@ public class Act extends BaseEntity<Act> {
 		}
 		return "";
 	}
-	
+
 	/**
 	 * 是否是一个待办任务
 	 * @return
@@ -362,7 +365,7 @@ public class Act extends BaseEntity<Act> {
 	public boolean isTodoTask() {
 		return "todo".equals(status) || "claim".equals(status);
 	}
-	
+
 	/**
 	 * 是否是已完成任务
 	 * @return
@@ -373,12 +376,12 @@ public class Act extends BaseEntity<Act> {
 
 	@Override
 	public void preInsert() {
-		
+
 	}
 
 	@Override
 	public void preUpdate() {
-		
+
 	}
 
 	public Map<String, String> getMap() {
@@ -387,6 +390,14 @@ public class Act extends BaseEntity<Act> {
 
 	public void setMap(Map<String, String> map) {
 		this.map = map;
+	}
+
+	public ProjectDeclare getProjectDeclare() {
+		return projectDeclare;
+	}
+
+	public void setProjectDeclare(ProjectDeclare projectDeclare) {
+		this.projectDeclare = projectDeclare;
 	}
 }
 

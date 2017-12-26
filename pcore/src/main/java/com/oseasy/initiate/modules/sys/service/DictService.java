@@ -3,8 +3,6 @@
  */
 package com.oseasy.initiate.modules.sys.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,14 +48,14 @@ public class DictService extends CrudService<DictDao, Dict> {
 			js.put("msg", "请填写字典名称");
 			return js;
 		}
-		try {
+		/*try {
 			name=URLDecoder.decode(name, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage());
 			js.put("ret", "0");
 			js.put("msg", "编码错误");
 			return js;
-		}
+		}*/
 		if (!StringUtil.isEmpty(sort)) {
 			try {
 				sortint=Integer.parseInt(sort);
@@ -122,14 +120,14 @@ public class DictService extends CrudService<DictDao, Dict> {
 			js.put("msg", "请填写字典名称");
 			return js;
 		}
-		try {
+		/*try {
 			name=URLDecoder.decode(name, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage());
 			js.put("ret", "0");
 			js.put("msg", "编码错误");
 			return js;
-		}
+		}*/
 		if (!StringUtil.isEmpty(sort)) {
 			try {
 				sortint=Integer.parseInt(sort);
@@ -173,6 +171,7 @@ public class DictService extends CrudService<DictDao, Dict> {
 		d.setParentId(dicttype.getId());
 		try {
 			this.save(d);
+			js.put("val", d.getValue());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			js.put("ret", "0");
@@ -229,13 +228,13 @@ public class DictService extends CrudService<DictDao, Dict> {
 			js.put("msg", "请填写类型名称");
 			return js;
 		}
-		try {
+		/*try {
 			name=URLDecoder.decode(name, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			js.put("ret", "0");
 			js.put("msg", "编码错误");
 			return js;
-		}
+		}*/
 		if (name.length()>100) {
 			js.put("ret", "0");
 			js.put("msg", "名称不能超过100个字符");
@@ -278,13 +277,13 @@ public class DictService extends CrudService<DictDao, Dict> {
 			js.put("msg", "请填写类型名称");
 			return js;
 		}
-		try {
+		/*try {
 			name=URLDecoder.decode(name, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			js.put("ret", "0");
 			js.put("msg", "编码错误");
 			return js;
-		}
+		}*/
 		if (name.length()>100) {
 			js.put("ret", "0");
 			js.put("msg", "名称不能超过100个字符");

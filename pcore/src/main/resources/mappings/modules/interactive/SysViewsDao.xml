@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oseasy.initiate.modules.interactive.dao.SysViewsDao">
-    
+
 	<sql id="sysViewsColumns">
 		a.id AS "id",
 		a.foreign_id AS "foreignId",
-		a.user_id AS "userId",
+		a.user_id AS
+		"userId",
 		a.ip AS "ip",
 		a.token AS "token",
-		a.create_date AS "createDate",
+		a.create_date AS
+		"createDate",
 		a.del_flag AS "delFlag",
 		u3.name AS "user.name"
 	</sql>
-	
+
 	<sql id="sysViewsJoins">
 		LEFT JOIN sys_user u3 ON u3.id = a.user_id
 	</sql>
-    
+
 	<select id="get" resultType="SysViews">
-		SELECT 
-			<include refid="sysViewsColumns"/>
+		SELECT
+		<include refid="sysViewsColumns" />
 		FROM sys_views a
-		<include refid="sysViewsJoins"/>
+		<include refid="sysViewsJoins" />
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="SysViews">
-		SELECT 
-			<include refid="sysViewsColumns"/>
+		SELECT
+		<include refid="sysViewsColumns" />
 		FROM sys_views a
-		<include refid="sysViewsJoins"/>
+		<include refid="sysViewsJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
@@ -41,15 +43,15 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="findAllList" resultType="SysViews">
-		SELECT 
-			<include refid="sysViewsColumns"/>
+		SELECT
+		<include refid="sysViewsColumns" />
 		FROM sys_views a
-		<include refid="sysViewsJoins"/>
+		<include refid="sysViewsJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -58,40 +60,84 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO sys_views(
-			id,
-			foreign_id,
-			user_id,
-			ip,
-			token,
-			create_date,
-			del_flag
+		id,
+		foreign_id,
+		user_id,
+		ip,
+		token,
+		create_date,
+		del_flag
 		) VALUES (
-			#{id},
-			#{foreignId},
-			#{userId},
-			#{ip},
-			#{token},
-			#{createDate},
-			#{delFlag}
+		#{id},
+		#{foreignId},
+		#{userId},
+		#{ip},
+		#{token},
+		#{createDate},
+		#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE sys_views SET 	
-			foreign_id = #{foreignId},
-			user_id = #{userId},
-			ip = #{ip},
-			token = #{token}
+		UPDATE sys_views SET
+		foreign_id = #{foreignId},
+		user_id = #{userId},
+		ip = #{ip},
+		token = #{token}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE sys_views SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		UPDATE sys_views SET
+		del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO sys_views(
+		id,
+		foreign_id,
+		user_id,
+		ip,
+		token,
+		create_date,
+		del_flag
+		) VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.id},
+			#{item.foreignId},
+			#{item.userId},
+			#{item.ip},
+			#{item.token},
+			#{item.createDate},
+			#{item.delFlag})
+		</foreach>
+	</insert>
+	<select id="getVisitors" resultType="java.util.Map">
+		select
+		tem.*,u.user_type,st.id st_id,te.id te_id,u.photo,u.name from (select
+		t.foreign_id,t.user_id,max(t.create_date) create_date
+		from sys_views t where t.foreign_id=#{uid}
+		group by t.foreign_id,t.user_id) tem
+		left join sys_user u on tem.user_id=u.id
+		left join sys_student_expansion st on u.user_type='1' and u.id=st.user_id
+		left join sys_teacher_expansion te on u.user_type='2' and
+		u.id=te.user_id
+		order by tem.create_date desc limit 10
+	</select>
+	<select id="getBrowse" resultType="java.util.Map">
+		select
+		tem.*,u.user_type,st.id st_id,te.id te_id,u.photo,u.name from (select
+		t.foreign_id,t.user_id,max(t.create_date) create_date
+		from sys_views t where t.user_id=#{uid}
+		group by t.foreign_id,t.user_id) tem
+		left join sys_user u on tem.foreign_id=u.id
+		left join sys_student_expansion st on u.user_type='1' and u.id=st.user_id
+		left join sys_teacher_expansion te on u.user_type='2' and
+		u.id=te.user_id
+		order by tem.create_date desc limit 10
+	</select>
 </mapper>

@@ -6,6 +6,7 @@ package com.oseasy.initiate.modules.team.dao;
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.sys.entity.User;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
 import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
 
 import java.util.List;
@@ -17,14 +18,19 @@ import java.util.List;
  */
 @MyBatisDao
 public interface TeamUserRelationDao extends CrudDao<TeamUserRelation> {
-
-    public void updateState(TeamUserRelation teamUserRelation);
+	public void deleteByTeamId(String tid);
+	public void insertAll(List<TeamUserHistory> tuhs);
+	public List<TeamUserRelation> getByTeamId (String teamId);
+    public TeamUserRelation findUserWillJoinTeam(TeamUserRelation teamUserRelation);
+    public TeamUserRelation findUserHasJoinTeam(TeamUserRelation teamUserRelation);
+	public void hiddenDelete(TeamUserRelation teamUserRelation);
+    public void updateStateInTeam(TeamUserRelation teamUserRelation);
 
     public  TeamUserRelation getByTeamAndUser(TeamUserRelation teamUserRelation);
     public List<TeamUserRelation> getStudents (TeamUserRelation teamUserRelation);
     public List<TeamUserRelation> getTeachers (TeamUserRelation teamUserRelation);
 
-    public List<TeamUserRelation> findUserInfo(TeamUserRelation teamUserRelation); 
+    public TeamUserRelation findUserInfo(TeamUserRelation teamUserRelation); 
     public void updateByUserId(TeamUserRelation teamUserRelation);
 
     public TeamUserRelation getByUser(User user);
@@ -32,12 +38,18 @@ public interface TeamUserRelationDao extends CrudDao<TeamUserRelation> {
     public TeamUserRelation getByTeamUserRelation(TeamUserRelation teamUserRelation);
 
     public TeamUserRelation findUserById(TeamUserRelation teamUserRelation);
-    //不根据team表state=0去查
-    public TeamUserRelation findUserById1(TeamUserRelation teamUserRelation);
+
     
     public void deleteTeamUserInfo(String userId,String teamId);//根据用户id和团队id删除用户信息
     
 	public Integer findIsApplyTeam(String teamId,String userId);
 
-    public void updateStateByInfo(TeamUserRelation teamUserRelation);
+
+    public  void updateWeight(TeamUserRelation teamUserRelation);
+
+    public int getWeightTotalByTeamId(String teamId);
+
+    String getTeamStudentName(String teamId);
+
+    String getTeamTeacherName(String teamId);
 }

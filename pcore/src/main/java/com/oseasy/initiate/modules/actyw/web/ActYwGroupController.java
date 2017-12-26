@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oseasy.initiate.modules.sys.entity.Role;
 import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.oseasy.initiate.modules.sys.tool.SysNoType;
+import com.oseasy.initiate.modules.sys.tool.SysNodeTool;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +15,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.config.SysJkey;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
 import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
 import com.oseasy.initiate.modules.actyw.service.ActYwGroupService;
@@ -28,9 +35,10 @@ import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRunner;
 import com.oseasy.initiate.modules.actyw.tool.process.impl.ActYwEngineImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * 项目流程组Controller
+ * 自定义流程Controller
  * @author chenhao
  * @version 2017-05-23
  */
@@ -77,6 +85,17 @@ public class ActYwGroupController extends BaseController {
 		return "modules/actyw/actYwGroupForm";
 	}
 
+	@RequestMapping(value = "ajaxDeploy")
+	public String ajaxDeploy(ActYwGroup actYwGroup, Model model, RedirectAttributes redirectAttributes) {
+    if(StringUtil.isNotEmpty(actYwGroup.getId()) && StringUtil.isNotEmpty(actYwGroup.getStatus())){
+      ActYwGroup newActYwGroup = actYwGroupService.get(actYwGroup.getId());
+      newActYwGroup.setStatus(actYwGroup.getStatus());
+      return save(newActYwGroup, model, redirectAttributes);
+    }
+
+    return "redirect:"+Global.getAdminPath()+"/actyw/actYwGroup/?repage";
+	}
+
 	@RequiresPermissions("actyw:actYwGroup:edit")
 	@RequestMapping(value = "save")
 	public String save(ActYwGroup actYwGroup, Model model, RedirectAttributes redirectAttributes) {
@@ -84,17 +103,33 @@ public class ActYwGroupController extends BaseController {
 			return form(actYwGroup, model);
 		}
 
-		Boolean isNew = actYwGroup.getIsNewRecord();
+		if(StringUtil.isEmpty(actYwGroup.getKeyss())){
+		  actYwGroup.setKeyss(SysNodeTool.genByKeyss(SysNoType.NO_FLOW));
+		}
+
+	  Boolean isTrue = actYwGroupService.validKeyss(actYwGroup.getKeyss(), actYwGroup.getIsNewRecord());
+    if(!isTrue){
+      addMessage(redirectAttributes, "自定义流程惟一标识 ["+actYwGroup.getKeyss()+"] 已经存在!");
+      return form(actYwGroup, model);
+    }
+
+    if(StringUtil.isNotEmpty(actYwGroup.getStatus()) && (actYwGroup.getStatus()).equals(ActYwGroup.GROUP_DEPLOY_1)){
+      isTrue = actYwGnodeService.validateProcess(actYwGroup.getId());
+    }
+
+    if(!isTrue){
+      addMessage(redirectAttributes, "流程不合法,没有流程节点!");
+      return "redirect:"+Global.getAdminPath()+"/actyw/actYwGroup/?repage";
+    }
+
 		actYwGroupService.save(actYwGroup);
 
-		ActYwRstatus result = actYwGnodeService.saveAuto(runner.setEngine(new ActYwEngineImpl(actYwGnodeService, actYwNodeService)), actYwGroup, null);
+	  ActYwRstatus<ActYwGnode> result = actYwGnodeService.saveAuto(ActYwRunner.IS_ROOT, runner.setEngine(new ActYwEngineImpl(actYwGnodeService, actYwNodeService)), actYwGroup, null);
     if (result.getStatus()) {
-      addMessage(redirectAttributes, "流程组["+actYwGroup.getName()+"] "+result.getMsg());
+      addMessage(redirectAttributes, "自定义流程["+actYwGroup.getName()+"] "+result.getMsg());
     }else{
-      if (isNew) {
-        actYwGroupService.delete(actYwGroup);
-      }
-      addMessage(redirectAttributes, "流程组["+actYwGroup.getName()+"] 保存失败");
+      actYwGroupService.delete(actYwGroup);
+      addMessage(redirectAttributes, "自定义流程["+actYwGroup.getName()+"] 保存失败");
     }
 
 		return "redirect:"+Global.getAdminPath()+"/actyw/actYwGroup/?repage";
@@ -104,8 +139,7 @@ public class ActYwGroupController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(ActYwGroup actYwGroup, RedirectAttributes redirectAttributes) {
 		actYwGroupService.delete(actYwGroup);
-		addMessage(redirectAttributes, "删除项目流程组成功");
+		addMessage(redirectAttributes, "删除自定义流程成功");
 		return "redirect:"+Global.getAdminPath()+"/actyw/actYwGroup/?repage";
 	}
-
 }

@@ -17,13 +17,39 @@ public class ImpInfo extends DataEntity<ImpInfo> {
 	private String success;		// 成功数
 	private String fail;		// 失败数
 	private String isComplete;		// 是否结束：0-未结束，1-结束
-	
+	private String msg;//存储文件名称等信息
+	private String filename;//文件名称
+	private String errmsg;//文件级别错误信息
 	public ImpInfo() {
 		super();
 	}
 
 	public ImpInfo(String id) {
 		super(id);
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getErrmsg() {
+		return errmsg;
+	}
+
+	public void setErrmsg(String errmsg) {
+		this.errmsg = errmsg;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
 	@Length(min=0, max=64, message="导入数据的类型长度必须介于 0 和 64 之间")

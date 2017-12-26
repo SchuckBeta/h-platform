@@ -22,7 +22,7 @@ import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRtpl;
  * @date 2017年6月18日 下午4:36:32
  *
  */
-public class ActYwRgroot extends ActYwRstatus implements ActYwRtpl {
+public class ActYwRgroot extends ActYwRstatus<ActYwGnode> implements ActYwRtpl {
   private ActYwGnode startGnode;
   private ActYwGnode endGnode;
   private ActYwGnode sflowGnode;

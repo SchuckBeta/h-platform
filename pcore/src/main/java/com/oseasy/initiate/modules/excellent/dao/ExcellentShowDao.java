@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
+import com.oseasy.initiate.modules.cms.vo.ExcellentGcontestVo;
+import com.oseasy.initiate.modules.cms.vo.ExcellentProjectVo;
 import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
 
 /**
@@ -16,10 +18,19 @@ import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
  */
 @MyBatisDao
 public interface ExcellentShowDao extends CrudDao<ExcellentShow> {
+	public List<ExcellentGcontestVo> findGcontestList(ExcellentGcontestVo vo);
+	public List<ExcellentProjectVo> findProjectList(ExcellentProjectVo vo);
+	public void deleteAll(@Param("ids")String[] ids,@Param("uid")String uid);
+	public void unrelease(@Param("ids")String[] ids,@Param("uid")String uid);
+	public void resall(@Param("fids")String[] fids,@Param("uid")String uid);
 	public List<Map<String,String>> findProjectForIndex();
 	public List<Map<String,String>> findGcontestForIndex();
+	public Map<String,String> getProjectInfoFromProModel(String projectId);
+	public List<Map<String,String>> getProjectTeacherInfoFromProModel(String projectId);
 	public Map<String,String> getProjectInfo(String projectId);
 	public List<Map<String,String>> getProjectTeacherInfo(String projectId);
+	public Map<String,String> getGcontestInfoFromProModel(String gcontestId);
+	public List<Map<String,String>> getGcontestTeacherInfoFromProModel(String gcontestId);
 	public Map<String,String> getGcontestInfo(String gcontestId);
 	public List<Map<String,String>> getGcontestTeacherInfo(String gcontestId);
 	public ExcellentShow getByForid(String id);

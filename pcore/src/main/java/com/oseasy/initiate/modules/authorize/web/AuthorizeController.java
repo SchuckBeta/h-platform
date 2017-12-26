@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.utils.DateUtil;
 import com.oseasy.initiate.common.utils.license.License;
 import com.oseasy.initiate.common.utils.license.MachineCacheUtils;
@@ -32,14 +33,26 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping(value = "${adminPath}/authorize")
 public class AuthorizeController extends BaseController {
+	public static final String GET_LICENSE_URL = Global.getConfig("getLicenseUrl");
 	private static Logger logger = LoggerFactory.getLogger(AuthorizeController.class);
 	@Autowired
 	private AuthorizeService authorizeService;
-	
-	@RequestMapping(value = "")
-    public String accredit(Model model) {
+	/**根据编号判断授权信息
+	 * @param num MenuPlusEnum 枚举值序号从0开始
+	 * @return
+	 */
+	@RequestMapping(value = {"${adminPath}/authorize/checkMenuByNum"})
+	@ResponseBody
+	public boolean adminCheckMenuByNum(Integer num){
+		return authorizeService.checkMenuByNum(num);
+	}
+	@RequestMapping(value = {"${frontPath}/authorize/checkMenuByNum"})
+	@ResponseBody
+	public boolean frontCheckMenuByNum(Integer num){
+		return authorizeService.checkMenuByNum(num);
+	}
+	private void cmodel(Model model){
 		authorizeService.putMachineInfo();
 		License license=authorizeService.getLicenseInfo();
 		model.addAttribute("valid","0");
@@ -47,10 +60,15 @@ public class AuthorizeController extends BaseController {
 			try {
 				Date expiredDate=DateUtil.parseDate(license.getExpiredDate(),"yyyy-MM-dd HH:mm:ss");
 				Date exp=DateUtil.addMonth(expiredDate, Integer.parseInt(license.getMonth()));
-				if (exp.before(new Date())) {
-					model.addAttribute("exp", DateUtil.formatDate(exp , "yyyy-MM-dd HH:mm:ss")+"[已过期]");
+				
+				if("0".equals(license.getMonth())&&"1".equals(license.getValid())){
+					model.addAttribute("exp", "无期限");
 				}else{
-					model.addAttribute("exp", DateUtil.formatDate(exp , "yyyy-MM-dd HH:mm:ss"));
+					if("0".equals(license.getValid())){
+						model.addAttribute("exp", "");
+					}else{
+						model.addAttribute("exp", DateUtil.formatDate(exp , "yyyy-MM-dd HH:mm:ss"));
+					}
 				}
 				model.addAttribute("valid",license.getValid());
 			} catch (Exception e) {
@@ -61,40 +79,30 @@ public class AuthorizeController extends BaseController {
 		if (cs!=null&&cs.values()!=null) {
 			model.addAttribute("count", cs.values().size());
 		}
+		model.addAttribute("getLicenseUrl",GET_LICENSE_URL);
+	}
+	@RequestMapping(value = {"${adminPath}/authorize/aboat"})
+    public String aboat(Model model) {
+		cmodel(model);
+		return "modules/authorize/aboat";
+	}
+	@RequestMapping(value = "${adminPath}/authorize")
+    public String accredit(Model model) {
+		cmodel(model);
         return "modules/authorize/accredit";
     }
-	@RequestMapping(value = "inner")
+	@RequestMapping(value = "${adminPath}/authorize/inner")
     public String accreditInner(Model model) {
-		authorizeService.putMachineInfo();
-		License license=authorizeService.getLicenseInfo();
-		model.addAttribute("valid","0");
-		if (license!=null) {
-			try {
-				Date expiredDate=DateUtil.parseDate(license.getExpiredDate(),"yyyy-MM-dd HH:mm:ss");
-				Date exp=DateUtil.addMonth(expiredDate, Integer.parseInt(license.getMonth()));
-				if (exp.before(new Date())) {
-					model.addAttribute("exp", DateUtil.formatDate(exp , "yyyy-MM-dd HH:mm:ss")+"[已过期]");
-				}else{
-					model.addAttribute("exp", DateUtil.formatDate(exp , "yyyy-MM-dd HH:mm:ss"));
-				}
-				model.addAttribute("valid",license.getValid());
-			} catch (Exception e) {
-				logger.error("错误:",e.getMessage());
-			}
-		}
-		Cache<String, Object> cs=MachineCacheUtils.getCache();
-		if (cs!=null&&cs.values()!=null) {
-			model.addAttribute("count", cs.values().size());
-		}
+		cmodel(model);
         return "modules/authorize/accreditInner";
     }
-	@RequestMapping(value = "/uploadLicense")
+	@RequestMapping(value = "${adminPath}/authorize/uploadLicense")
 	@ResponseBody
 	public JSONObject uploadLicense(HttpServletRequest request, HttpServletResponse response) {
 		JSONObject js=authorizeService.uploadFile(request);
 		return js;
 	}
-	@RequestMapping(value = "/donwLoadMachineInfo")
+	@RequestMapping(value = "${adminPath}/authorize/donwLoadMachineInfo")
 	public void donwLoadMachineInfo(HttpServletRequest request, HttpServletResponse response) {
 		File file=null;
 		BufferedWriter bw = null;

@@ -21,7 +21,7 @@ import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRtpl;
  * @date 2017年6月18日 下午2:10:19
  *
  */
-public class ActYwRgnode extends ActYwRstatus implements ActYwRtpl{
+public class ActYwRgnode extends ActYwRstatus<ActYwGnode> implements ActYwRtpl{
   private List<ActYwGnode> gnodes;
 
   public ActYwRgnode() {

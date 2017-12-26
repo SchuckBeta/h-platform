@@ -31,7 +31,7 @@ import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
  */
 @Controller
 public class GcontestHotsController extends BaseController {
-	public static final String FRONT_URL = Global.getConfig("frontUrl");
+	public static final String FRONT_URL = Global.getConfig("sysFrontIp")+Global.getConfig("frontPath");
 	@Autowired
 	private GcontestHotsKeywordService gcontestHotsKeywordService;
 	@Autowired

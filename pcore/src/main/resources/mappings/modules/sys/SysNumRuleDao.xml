@@ -133,15 +133,15 @@
 		WHERE id = #{id}
 	</update>
 	<update id="onEventScheduler" parameterType="java.util.Map">
-		set global event_scheduler=1;
+		set global event_scheduler=1
 	</update>
 	<update id="dropNumResetEvent" parameterType="java.util.Map">
-		DROP EVENT IF EXISTS ${event};
+		DROP EVENT IF EXISTS ${event}
 	</update>
 	<update id="createNumResetEvent" parameterType="java.util.Map">
 		CREATE EVENT ${event}
 		on schedule EVERY 1 DAY STARTS date_add(date(curdate() + 1),interval 0 minute)
 		ON COMPLETION PRESERVE
-		do update ${seq} set sequence_id=${num};
+		do update ${seq} set sequence_id=${num}
 	</update>
 </mapper>

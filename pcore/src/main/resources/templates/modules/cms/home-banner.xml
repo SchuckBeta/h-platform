@@ -29,9 +29,9 @@
 			<ul>
 				<#list banners as banner>
 					<li>
-					<p>${banner.title}</p> <img src="${freemarkerGetFtpUrl(banner.img)}"> <a
-					class="btn1" href="${banner.left_btn_url}">${banner.left_btn_name}</a> <a class="btn2"
-					href="${banner.right_btn_url }">${banner.right_btn_name}</a>
+					<p>${banner.title}</p> <img src="${freemarkerGetFtpUrl(banner.img)}">
+					 <!--<a class="btn1" href="${banner.left_btn_url}">${banner.left_btn_name}</a> -->
+					 <!--<a style="margin-left: 0" class="btn2"href="${banner.right_btn_url }">${banner.right_btn_name}</a>-->
 					</li>
 				</#list>
 			</ul>

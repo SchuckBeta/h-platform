@@ -3,6 +3,8 @@ package com.oseasy.initiate.modules.impdata.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.impdata.entity.ImpInfoErrmsg;
@@ -14,6 +16,7 @@ import com.oseasy.initiate.modules.impdata.entity.ImpInfoErrmsg;
  */
 @MyBatisDao
 public interface ImpInfoErrmsgDao extends CrudDao<ImpInfoErrmsg> {
+	public List<Map<String,String>> getListByImpIdAndSheet(@Param("impid")String impid,@Param("sheet")String sheet);
 	public List<Map<String,String>> getListByImpId(String impid);
 	public void deleteByImpId(String impid);
 }

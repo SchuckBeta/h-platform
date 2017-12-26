@@ -1,13 +1,12 @@
 package com.oseasy.initiate.modules.actyw.entity;
 
-import java.sql.Timestamp;
-
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
+import com.oseasy.initiate.common.config.Global;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.oseasy.initiate.common.persistence.DataEntity;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.oseasy.initiate.modules.proproject.entity.ProProject;
 
 
 /**
@@ -17,16 +16,29 @@ import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
  */
 public class ActYw extends DataEntity<ActYw> {
 
+  private static final String KEY_SEPTOR_PREFIX = "F_";
+  public static final String KEY_SEPTOR = "_";
   private static final long serialVersionUID = 1L;
   private String relId; // 项目ID
-  private String groupId; // 流程组ID
-  private String flowId; // 流程部署ID
+  private String groupId; // 自定义流程ID
+  private String flowId; // 流程部署ProcessDefinition ID
+  private String deploymentId; // 流程部署 Deployment ID
   private Boolean isDeploy; // 是否发布
-  private ActYwGroup group; // 流程组
+  private Boolean isShowAxis; // 是否显示到时间轴
+  private ActYwGroup group; // 自定义流程
   private ProjectDeclare projectDeclare; // 项目
   private ProProject proProject;
-/*  private Timestamp beginDate;   // 申报开始时间
-  private Timestamp endDate;   // 申报结束时间*/
+  private String status; //消息是否发布(0未发布、1发布)
+  private String showTime; //是否显示时间（0否、1是）
+  private String keyType; //类别 民大
+
+  public String getKeyType() {
+    return keyType;
+  }
+
+  public void setKeyType(String keyType) {
+    this.keyType = keyType;
+  }
 
   public ActYw() {
     super();
@@ -45,9 +57,28 @@ public class ActYw extends DataEntity<ActYw> {
     this.relId = relId;
   }
 
-  @Length(min = 1, max = 64, message = "流程组长度必须介于 1 和 64 之间")
+  @Length(min = 1, max = 64, message = "自定义流程长度必须介于 1 和 64 之间")
   public String getGroupId() {
+    if(StringUtil.isEmpty(this.groupId) && (this.group != null) && StringUtil.isNotEmpty(this.group.getId())){
+      this.groupId = this.group.getId();
+    }
     return groupId;
+  }
+
+  public Boolean getIsShowAxis() {
+    return isShowAxis;
+  }
+
+  public void setIsShowAxis(Boolean showAxis) {
+    isShowAxis = showAxis;
+  }
+
+  public String getDeploymentId() {
+    return deploymentId;
+  }
+
+  public void setDeploymentId(String deploymentId) {
+    this.deploymentId = deploymentId;
   }
 
   public void setGroupId(String groupId) {
@@ -104,51 +135,78 @@ public class ActYw extends DataEntity<ActYw> {
     this.proProject = proProject;
   }
 
-  /**
-   * @return 获取beginDate属性值.
-   */
- /* @Transactional
-  public Timestamp getBeginDate() {
-    if (projectDeclare != null && this.beginDate == null) {
-      if (projectDeclare.getPlanStartDate() != null) {
-        this.beginDate = new Timestamp(projectDeclare.getPlanStartDate().getTime());
-      }
-    }
-    return beginDate;
-  }*/
-
-  /**
-   * 设置beginDate属性值.
-   */
-  /*public void setBeginDate(Timestamp beginDate) {
-    this.beginDate = beginDate;
-  }*/
-
-  /**
-   * @return 获取endDate属性值.
-   */
-/*  @Transactional
-  public Timestamp getEndDate() {
-    if (projectDeclare != null && this.endDate == null) {
-      if (projectDeclare.getPlanEndDate() != null) {
-        this.endDate = new Timestamp(projectDeclare.getPlanEndDate().getTime());
-      }
-    }
-    return endDate;
-  }*/
-
-  /**
-   * 设置endDate属性值.
-   */
-  /*public void setEndDate(Timestamp endDate) {
-    this.endDate = endDate;
-  }*/
-
   public String getFlowId() {
     return flowId;
   }
 
   public void setFlowId(String flowId) {
     this.flowId = flowId;
+  }
+
+  public static String getPkey(ActYw actYw) {
+    if(actYw == null){
+      return null;
+    }
+    return getPkey(actYw.getGroup(), actYw.getProProject());
+  }
+
+  /**
+   * 流程模型唯一标识=流程标识+项目标识
+   * @param actYwGroup 自定义流程
+   * @param proProject 项目
+   * @return String
+   */
+  public static String getPkey(ActYwGroup actYwGroup, ProProject proProject) {
+    if((actYwGroup == null) || (StringUtil.isEmpty(actYwGroup.getKeyss()))){
+      return null;
+    }
+
+    if((proProject == null) || (StringUtil.isEmpty(proProject.getProjectMark()))){
+      return null;
+    }
+    return KEY_SEPTOR_PREFIX + proProject.getProjectMark() + KEY_SEPTOR + actYwGroup.getKeyss();
+  }
+
+  /**
+   * 获取pkey中的keyss.
+   * @param pkey 流程模型唯一标识=流程标识+项目标识
+   * @return String
+   */
+  public static String pkeySplitKeyss(String pkey) {
+    if((pkey == null) || (StringUtil.isEmpty(pkey))){
+      return null;
+    }
+    return pkey.substring(pkey.lastIndexOf(KEY_SEPTOR) + KEY_SEPTOR.length());
+  }
+
+  /**
+   * 获取pkey中的keyss.
+   * @param pkey 流程模型唯一标识=流程标识+项目标识
+   * @return String
+   */
+  public static String pkeySplitProjectMark(String pkey) {
+    if((pkey == null) || (StringUtil.isEmpty(pkey))){
+      return null;
+    }
+    return pkey.substring(pkey.indexOf(KEY_SEPTOR_PREFIX) + KEY_SEPTOR_PREFIX.length(), pkey.lastIndexOf(KEY_SEPTOR));
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String getShowTime() {
+    if(showTime==null){
+      return Global.HIDE;
+    }
+    return showTime;
+  }
+
+  public void setShowTime(String showTime) {
+    this.showTime = showTime;
   }
 }

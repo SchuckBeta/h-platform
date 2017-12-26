@@ -30,6 +30,8 @@ public class GContestAnnounce extends DataEntity<GContestAnnounce> {
 	private Date countryStart;		// 国赛的开始结束时间
 	private Date countryEnd;		// country_end
 	private String status;             // 发布状态
+
+	private String contestLevel; //竞赛级别
 	
 	public GContestAnnounce() {
 		super();
@@ -85,7 +87,7 @@ public class GContestAnnounce extends DataEntity<GContestAnnounce> {
 		this.gName = gName;
 	}*/
 	
-	@Length(min=0, max=1, message="大赛类型（1 互联+大赛）长度必须介于 0 和 1 之间")
+	@Length(min=0, max=20, message="大赛类型（1 互联+大赛）长度必须介于 0 和 1 之间")
 	public String getType() {
 		return type;
 	}
@@ -182,7 +184,11 @@ public class GContestAnnounce extends DataEntity<GContestAnnounce> {
 		this.status = status;
 	}
 
-	
-	
-	
+	public String getContestLevel() {
+		return contestLevel;
+	}
+
+	public void setContestLevel(String contestLevel) {
+		this.contestLevel = contestLevel;
+	}
 }

@@ -13,6 +13,7 @@
 		a.create_by AS "createBy.id",
 		a.del_flag AS "delFlag",
 		a.state AS "state",
+		a.weight_val AS "weightVal",
 		u3.name AS "user.name"
 	</sql>
 
@@ -72,7 +73,13 @@
 		<include refid="teamUserRelationJoins"/>
 		WHERE a.team_id = #{teamId} and a.user_id=#{user.id}
 	</select>
-
+	<select id="getByTeamId" resultType="TeamUserRelation">
+		SELECT
+		<include refid="teamUserRelationColumns"/>
+		FROM team_user_relation a
+		<include refid="teamUserRelationJoins"/>
+		WHERE a.team_id = #{teamId} and a.state in('0','4') and a.del_flag='0'
+	</select>
 	<select id="getStudents" resultType="TeamUserRelation">
 		SELECT
 		<include refid="teamUserRelationColumns"/>,
@@ -81,7 +88,7 @@
 		<include refid="teamUserRelationJoins"/>
 		<include refid="officeJoins"/>
 		<include refid="studentJoins"/>
-		WHERE a.del_flag='0' and  a.user_type='1' and a.team_id = #{teamId}
+		WHERE a.del_flag='0' and  a.user_type='1' and a.team_id = #{teamId} and a.state in('0','4')
 		order by u3.name asc
 	</select>
 
@@ -94,7 +101,7 @@
 		<include refid="teamUserRelationJoins"/>
 		<include refid="officeJoins"/>
 		<include refid="teachearJoins"/>
-		WHERE a.del_flag='0' and  a.user_type='2' and a.team_id = #{teamId}
+		WHERE a.del_flag='0' and  a.user_type='2' and a.team_id = #{teamId} and a.state in('0','4')
 		order by u3.name asc
 	</select>
 
@@ -173,18 +180,16 @@
 		WHERE id = #{id}
 	</update>
 
-	<update id="updateState">
+	<update id="updateStateInTeam">
 		UPDATE team_user_relation SET
 		state = #{state}
-		WHERE team_id = #{teamId} and user_id = #{user.id}
+		WHERE team_id = #{teamId} and user_id = #{user.id} and state in('1','2')
 	</update>
-
-	<update id="updateStateByInfo">
+	<update id="hiddenDelete">
 		UPDATE team_user_relation SET
-		state = #{state}
-		WHERE team_id = #{teamId} and user_id = #{user.id} and state !='3'
+		state = '4'
+		WHERE team_id = #{teamId} and user_id = #{user.id} and state='0'
 	</update>
-
 	
 	<update id="delete">
 		UPDATE team_user_relation SET 
@@ -205,13 +210,14 @@
 		a.create_by AS "createBy.id",
 		a.del_flag AS "delFlag",
 		a.state AS "state"
-	 FROM team_user_relation a WHERE a.user_id=#{user.id}
+	 FROM team_user_relation a 
+	 left join team b on a.team_id=b.id
+	 WHERE a.user_id=#{user.id}
+		and a.del_flag='0' and b.del_flag='0'
 	 		  		<if test="teamId !=null and teamId !='' ">
 						AND a.team_id = #{teamId}
 					</if>
-					<if test="state!=null and state!=''">
-						AND a.state = #{state}
-					</if>
+					AND a.state in ('0','1','2','4') limit 1
 	</select>
 	
 		<update id="updateByUserId">
@@ -251,7 +257,7 @@
 		limit 1
 	</select>
 	
-	<select id="findUserById" resultType="TeamUserRelation">
+	<select id="findUserById" parameterType="TeamUserRelation"  resultType="TeamUserRelation">
 	 SELECT 
 	     a.id AS "id",
 		a.user_type AS "userType",
@@ -266,11 +272,9 @@
 	 FROM team_user_relation a 
 	 LEFT JOIN team t
 	 ON a.team_id=t.id
-	 WHERE a.user_id=#{user.id} AND t.state in (0,1) and a.state ='0' AND a.del_flag='0' AND t.del_flag='0'  limit 1
+	 WHERE a.user_id=#{user.id} AND t.state in('0','1','2','4') and a.state ='0' AND a.del_flag='0' AND t.del_flag='0'  limit 1
 	</select>
-	
-	
-	<select id="findUserById1" resultType="TeamUserRelation">
+	<select id="findUserWillJoinTeam" parameterType="TeamUserRelation"  resultType="TeamUserRelation">
 	 SELECT 
 	     a.id AS "id",
 		a.user_type AS "userType",
@@ -283,9 +287,22 @@
 		a.del_flag AS "delFlag",
 		a.state AS "state"
 	 FROM team_user_relation a 
-	 LEFT JOIN team t
-	 ON a.team_id=t.id
-	 WHERE a.user_id=#{user.id} AND t.state in (0,1,2)  AND a.del_flag='0' limit 1
+	 WHERE a.user_id=#{user.id} AND a.team_id=#{teamId} and a.state in('1','2') AND a.del_flag='0'  limit 1
+	</select>
+	<select id="findUserHasJoinTeam" parameterType="TeamUserRelation"  resultType="TeamUserRelation">
+	 SELECT 
+	     a.id AS "id",
+		a.user_type AS "userType",
+		a.user_id AS "user.id",
+		a.team_id AS "teamId",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.del_flag AS "delFlag",
+		a.state AS "state"
+	 FROM team_user_relation a 
+	 WHERE a.user_id=#{user.id} AND a.team_id=#{teamId} and a.state in('0','4') AND a.del_flag='0'  limit 1
 	</select>
 	
 	<delete id="deleteTeamUserInfo" parameterType="java.lang.String">
@@ -294,9 +311,78 @@
 	</delete>
 	
 	
-		<select id="findIsApplyTeam" resultType="java.lang.Integer">
-
-   select count(*) from  team_user_relation as s
-    where  s.team_id=#{0} and s.user_id=#{1} and s.state!=3 
+	<select id="findIsApplyTeam" resultType="java.lang.Integer">
+	   	select count(*) from  team_user_relation as s
+    	where  s.team_id=#{0} and s.user_id=#{1} and s.state!=3 and s.del_flag='0'
 	</select>
+
+	<!--更新学分配比权重-->
+	<update id="updateWeight">
+		UPDATE team_user_relation SET
+		weight_val = #{weightVal}
+		WHERE  id = #{id}
+	</update>
+
+	<select id="getWeightTotalByTeamId" resultType="java.lang.Integer" parameterType="java.lang.String">
+		SELECT COALESCE(sum(tur.weight_val),0) AS "weightTotal"
+		FROM team_user_relation  tur
+		WHERE tur.team_id = #{teamId}
+		GROUP BY tur.team_id;
+	</select>
+
+	<select id="getTeamStudentName" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT GROUP_CONCAT(u.name SEPARATOR '/')
+		FROM
+		team_user_relation t
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		AND u.user_type='1'
+		WHERE t.team_id = #{id} and (t.state='0' or t.state='4')
+		GROUP BY t.team_id
+	</select>
+
+	<select id="getTeamTeacherName" resultType="java.lang.String" parameterType="java.lang.String">
+	SELECT GROUP_CONCAT(u.name SEPARATOR '/')
+		FROM
+		team_user_relation t
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		AND u.user_type='2'
+		WHERE  t.team_id = #{id} and (t.state='0' or t.state='4')
+		GROUP BY t.`team_id`
+	</select>
+	<update id="deleteByTeamId">
+		DELETE FROM team_user_relation
+		WHERE team_id = #{tid}
+	</update>
+	<insert id="insertAll">
+		INSERT INTO team_user_relation(
+		id,
+		user_type,
+		team_id,
+		user_id,
+		update_date,
+		update_by,
+		create_date,
+		create_by,
+		del_flag,
+		state,
+		weight_val
+		) VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+		(
+			#{item.id},
+			#{item.utype},
+			#{item.teamId},
+			#{item.user.id},
+			#{item.updateDate},
+			#{item.updateBy.id},
+			#{item.createDate},
+			#{item.createBy.id},
+			#{item.delFlag},
+			'0',
+			#{item.weightVal}
+		)
+
+		</foreach>
+	</insert>
 </mapper>

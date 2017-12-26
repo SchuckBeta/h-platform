@@ -152,7 +152,7 @@
 		</if>
 		<if test="keys !=null and keys.size>0">
 			and 
-			<foreach collection="keys" item="key" open="(" separator="," close=")">
+			<foreach collection="keys" item="key" open="(" separator=" or " close=")">
 				b.keyword like concat('%',#{key},'%')
 			</foreach>
 		</if>) temp

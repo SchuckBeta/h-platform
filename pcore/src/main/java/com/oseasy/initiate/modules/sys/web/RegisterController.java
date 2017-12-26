@@ -1,15 +1,13 @@
 package com.oseasy.initiate.modules.sys.web;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
-
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,14 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.sms.SMSUtil;
+import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
 import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
+import com.oseasy.initiate.modules.sys.entity.Role;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.security.MyUsernamePasswordToken;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
 import com.oseasy.initiate.modules.sys.service.SystemService;
 import com.oseasy.initiate.modules.sys.service.UserService;
 
@@ -43,8 +40,6 @@ public class RegisterController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
-	@Autowired
-	private StudentExpansionService studentExpansionService;
 
 	/**
 	 * 通过手机验证用户是否已存在
@@ -106,13 +101,12 @@ public class RegisterController extends BaseController {
 		String pw = user.getPassword();
 		String mobile = user.getMobile();
 		String password = user.getPassword();
-		password = systemService.entryptPassword(password);
+		password = SystemService.entryptPassword(password);
 		user = new User();
-		user.setId(IdGen.uuid());
 		user.setMobile(mobile);
 		user.setPassword(password);
 		user.setLoginName(mobile);
-		user.setName(mobile);
+		//user.setName(mobile);
 		user.setCreateBy(user);
 		Date date = new Date();
 		user.setCreateDate(date);
@@ -120,13 +114,11 @@ public class RegisterController extends BaseController {
 		user.setUpdateDate(date);
 		user.setDelFlag("0");
 		user.setUserType("1");
-		userService.saveUser(user);
+		List<Role> roleList=new ArrayList<Role>();
+		roleList.add(new Role(SysIds.SYS_ROLE_USER.getId()));
+		user.setRoleList(roleList);
+		systemService.saveUser(user);
 		model.addAttribute("name",mobile);
-
-		StudentExpansion studentExpansion = new StudentExpansion();
-		studentExpansion.setUser(user);
-		studentExpansion.setIsOpen("1");
-		studentExpansionService.save(studentExpansion);
 		try {
 			Subject subject = SecurityUtils.getSubject();
 			MyUsernamePasswordToken token=new MyUsernamePasswordToken();
@@ -135,7 +127,7 @@ public class RegisterController extends BaseController {
 			token.setLoginType("2");
 			subject.login(token);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return "modules/website/studentregistersuccessful";
 

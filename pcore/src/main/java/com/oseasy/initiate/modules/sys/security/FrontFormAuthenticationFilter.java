@@ -12,11 +12,14 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.sys.entity.User;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
 
 /**
  * 表单验证（包含验证码）过滤类
@@ -131,6 +134,7 @@ public class FrontFormAuthenticationFilter extends FormAuthenticationFilter {
 	@Override
 	protected void issueSuccessRedirect(ServletRequest request,
 			ServletResponse response) throws Exception {
+		
 		String url=getSuccessUrl();
 		SavedRequest r=WebUtils.getAndClearSavedRequest(request);
 		if (r!=null) {
@@ -139,9 +143,17 @@ public class FrontFormAuthenticationFilter extends FormAuthenticationFilter {
 				url=rurl;
 			}
 		}
+		User user=UserUtils.getUser();
+		if("1".equals(user.getPassc())){//需要修改密码
+			url="/f/sys/frontStudentExpansion/frontUserPassword";
+		}else if(UserUtils.checkInfoPerfect(user)){
+			url="/f/infoPerfect?userType="+user.getUserType();
+		}
 		WebUtils.issueRedirect(request, response, url, null, true);
+		ShiroHttpServletRequest sreq=(ShiroHttpServletRequest)request;
+		sreq.getSession().setAttribute("notifyShow", "null");//登录后重置消息是否弹出
 	}
-
+	
 	/**
 	 * 登录失败调用事件
 	 */
@@ -149,9 +161,10 @@ public class FrontFormAuthenticationFilter extends FormAuthenticationFilter {
 	protected boolean onLoginFailure(AuthenticationToken token,
 			AuthenticationException e, ServletRequest request, ServletResponse response) {
 		String className = e.getClass().getName(), message = "", loginName = "";
-		if (IncorrectCredentialsException.class.getName().equals(className)
-				|| UnknownAccountException.class.getName().equals(className)) {
-			message = "账号学号或密码错误, 请重试.";
+		if (IncorrectCredentialsException.class.getName().equals(className)) {
+			message = "密码错误, 请重试.";
+		}else if (UnknownAccountException.class.getName().equals(className)) {
+			message = "该账号不存在，请注册.";
 		}else if (e.getMessage() != null && StringUtil.startsWith(e.getMessage(), "msg:")) {
 			message = StringUtil.replace(e.getMessage(), "msg:", "");
 		}else{

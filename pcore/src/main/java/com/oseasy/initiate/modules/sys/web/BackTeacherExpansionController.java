@@ -1,15 +1,10 @@
 package com.oseasy.initiate.modules.sys.web;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.modules.sys.entity.*;
-import com.oseasy.initiate.modules.sys.service.TeacherKeywordService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,11 +19,21 @@ import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
+import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
+import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
+import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import com.oseasy.initiate.modules.sys.entity.Office;
+import com.oseasy.initiate.modules.sys.entity.TeacherKeyword;
+import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.BackTeacherExpansionService;
 import com.oseasy.initiate.modules.sys.service.OfficeService;
+import com.oseasy.initiate.modules.sys.service.TeacherKeywordService;
 import com.oseasy.initiate.modules.sys.service.UserService;
 import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
 import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
 import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
 
 /**
@@ -48,6 +53,9 @@ public class BackTeacherExpansionController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private TeamUserRelationService teamUserRelationService;
+	@Autowired
+	private TeamUserHistoryService teamUserHistoryService;
+	
 	@Autowired
 	private TeacherKeywordService teacherKeywordService;
 	@ModelAttribute
@@ -91,14 +99,17 @@ public class BackTeacherExpansionController extends BaseController {
 		if(backTeacherExpansion.getId()!=null){
 			List <TeacherKeyword> tes=teacherKeywordService.getKeywordByTeacherid(backTeacherExpansion.getId());
 			if(tes.size()>0){
-				//backTeacherExpansion.setKeywords(tes);
 				model.addAttribute("tes", tes);
 			}
 		}
 		List<Dict> dictList = DictUtils.getDictList("technology_field");
-		logger.info("============================"+dictList.size());
 		model.addAttribute("allDomains", dictList);
-		//return "modules/sys/backTeacherExpansionForm";
+		//导师参评信息
+		List<ProjectExpVo> projectExpVo=backTeacherExpansionService.findProjectByTeacherId(backTeacherExpansion.getUser().getId());//查询项目经历
+		List<GContestUndergo> gContest=backTeacherExpansionService.findGContestByTeacherId(backTeacherExpansion.getUser().getId()); //查询大赛经历
+		model.addAttribute("projectExpVo", projectExpVo);
+		model.addAttribute("gContestExpVo", gContest);
+		model.addAttribute("cuser", backTeacherExpansion.getUser().getId());
 		return "modules/sys/backTeacherForm";
 
 	}
@@ -111,7 +122,29 @@ public class BackTeacherExpansionController extends BaseController {
 		}
 
 		if (StringUtil.isNotBlank(backTeacherExpansion.getId())) {
-
+			User user=backTeacherExpansion.getUser();
+			if(StringUtil.isNotEmpty(user.getId())&&teamUserHistoryService.getBuildingCountByUserId(user.getId())>0){//修改时有正在进行的项目大赛
+				User old=UserUtils.get(user.getId());
+				if(old!=null&&StringUtil.isNotEmpty(old.getId())){
+					if(old.getUserType()!=null&&!old.getUserType().equals(user.getUserType())){//用户类型变化了
+						addMessage(model, "保存失败，该用户有正在进行的项目或大赛，不能修改用户类型");
+						return form(backTeacherExpansion, model,request);
+					}else if(old.getUserType()!=null&&old.getUserType().equals(user.getUserType())&&"2".equals(old.getUserType())){//导师类型
+						BackTeacherExpansion bte=backTeacherExpansionService.getByUserId(old.getId());
+						if(bte!=null&&bte.getTeachertype()!=null&&!bte.getTeachertype().equals(backTeacherExpansion.getTeachertype())){//导师类型的用户导师来源发生变化
+							addMessage(model, "保存失败，该用户有正在进行的项目或大赛，不能修改导师来源");
+							return form(backTeacherExpansion, model,request);
+						}
+					}
+				}
+			}
+			if(backTeacherExpansion.getTopShow().equals("1")){
+				BackTeacherExpansion backTeacherExpansionNew =backTeacherExpansionService.findTeacherByTopShow(backTeacherExpansion.getTeachertype());
+				if(backTeacherExpansionNew!=null){
+					backTeacherExpansionNew.setTopShow("0");
+					backTeacherExpansionService.updateAll(backTeacherExpansionNew);
+				}
+			}
 			backTeacherExpansionService.updateAll(backTeacherExpansion);
 		}else {
 			User exitUser = userService.getByMobile(backTeacherExpansion.getUser());
@@ -122,6 +155,13 @@ public class BackTeacherExpansionController extends BaseController {
 		    	model.addAttribute("operateType", "1");
 		    	return "modules/sys/backTeacherForm";
 		    }
+			if(backTeacherExpansion.getTopShow().equals("1")){
+				BackTeacherExpansion backTeacherExpansionNew =backTeacherExpansionService.findTeacherByTopShow(backTeacherExpansion.getTeachertype());
+				if(backTeacherExpansionNew!=null){
+					backTeacherExpansionNew.setTopShow("0");
+					backTeacherExpansionService.updateAll(backTeacherExpansionNew);
+				}
+			}
 		    String companyId = officeService.selelctParentId(backTeacherExpansion.getUser().getOffice().getId());
 		    backTeacherExpansion.getUser().setCompany(new Office());
 		    backTeacherExpansion.getUser().getCompany().setId(companyId);//设置学校id

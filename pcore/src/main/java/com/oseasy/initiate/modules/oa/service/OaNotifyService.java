@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,12 @@ import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.CacheUtils;
+import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.IdGen;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.interactive.entity.SysViews;
 import com.oseasy.initiate.modules.oa.dao.OaNotifyDao;
 import com.oseasy.initiate.modules.oa.dao.OaNotifyKeywordDao;
@@ -34,6 +39,9 @@ import com.oseasy.initiate.modules.sys.utils.UserUtils;
 import com.oseasy.initiate.modules.team.dao.TeamDao;
 import com.oseasy.initiate.modules.team.entity.Team;
 import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.oseasy.initiate.modules.websocket.WebSockectUtil;
+import com.oseasy.initiate.modules.websocket.WsMsg;
+import com.oseasy.initiate.modules.websocket.WsMsgBtn;
 
 /**
  * 通知通告Service
@@ -47,10 +55,6 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	private OaNotifyKeywordDao oaNotifyKeywordDao;
 	@Autowired
 	private OaNotifyRecordDao oaNotifyRecordDao;
-
-	@Autowired
-	private OaNotifyDao oaNotifyDao;
-
 	@Autowired
 	private UserService userService;
 
@@ -59,10 +63,15 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 
 	@Autowired
 	private TeamDao teamDao;
-
+	@Autowired
+	private SysAttachmentService sysAttachmentService;
+	
 	public OaNotify get(String id) {
 		OaNotify entity = dao.get(id);
 		return entity;
+	}
+	public Integer getUnreadCount(String uid){
+		return dao.getUnreadCount(uid);
 	}
 	/**
 	 *双创动态浏览量队列的处理
@@ -88,12 +97,12 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 			}
 		}
 		if(count>0){//有数据需要处理
-			oaNotifyDao.updateViews(map);
+			dao.updateViews(map);
 		}
 		return count;
 	}
 	public List<Map<String,Object>> getMore(String type,String id,List<String> keys) {
-		return oaNotifyDao.getMore(type,id,keys);
+		return dao.getMore(type,id,keys);
 	}
 	@Transactional(readOnly = false)
 	/**
@@ -102,7 +111,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	 * @param rec_User 接受人
 	 * @param title 标题
 	 * @param content 内容
-	 * @param type 类型
+	 * @param type 类型 OaNotify.Type_Enum
 	 * @param sid 关联大赛或者项目的id
 	 * @return
 	 */
@@ -132,7 +141,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 			oaNotify.setOaNotifyRecordList(recList);
 			this.save(oaNotify);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 
 		}
@@ -148,7 +157,9 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 		oaNotify.setOaNotifyRecordList(oaNotifyRecordDao.findList(new OaNotifyRecord(oaNotify)));
 		return oaNotify;
 	}
-
+	public String getReadFlag(String oid,String uid){
+		return oaNotifyRecordDao.getReadFlag(oid, uid);
+	}
 	public Page<OaNotify> find(Page<OaNotify> page, OaNotify oaNotify) {
 		oaNotify.setPage(page);
 		page.setList(dao.findList(oaNotify));
@@ -178,6 +189,47 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 		if (oaNotify.getOaNotifyRecordList().size() > 0) {
 			oaNotifyRecordDao.insertAll(oaNotify.getOaNotifyRecordList());
 		}
+		/*向浏览器发送消息******************/
+		WsMsg wsMsg=new WsMsg();
+		wsMsg.setContent(oaNotify.getContent());
+		wsMsg.setNotifyId(oaNotify.getId());
+		wsMsg.setTeamId(oaNotify.getsId());
+		if(OaNotify.Type_Enum.TYPE13.getValue().equals(oaNotify.getType())
+				||OaNotify.Type_Enum.TYPE10.getValue().equals(oaNotify.getType())
+				||OaNotify.Type_Enum.TYPE11.getValue().equals(oaNotify.getType())
+				||OaNotify.Type_Enum.TYPE14.getValue().equals(oaNotify.getType())){
+		}else if(OaNotify.Type_Enum.TYPE6.getValue().equals(oaNotify.getType())){
+			WsMsgBtn b1=new WsMsgBtn();
+			b1.setName("接受");
+			b1.setClick("notifyModule.acceptP(this,'"+oaNotify.getId()+"')");
+			wsMsg.addBtn(b1);
+			WsMsgBtn b2=new WsMsgBtn();
+			b2.setName("拒绝");
+			b2.setClick("notifyModule.refuseP(this,'"+oaNotify.getId()+"')");
+			wsMsg.addBtn(b2);
+			WsMsgBtn b3=new WsMsgBtn();
+			b3.setName("查看详情");
+			b3.setClick("notifyModule.openViewP(this,'"+oaNotify.getsId()+"','"+oaNotify.getId()+"')");
+			wsMsg.addBtn(b3);
+		}else if(OaNotify.Type_Enum.TYPE7.getValue().equals(oaNotify.getType())){
+			WsMsgBtn b1=new WsMsgBtn();
+			b1.setName("查看详情");
+			b1.setClick("notifyModule.openViewP(this,'"+oaNotify.getsId()+"','"+oaNotify.getId()+"')");
+			wsMsg.addBtn(b1);
+		}else if(OaNotify.Type_Enum.TYPE5.getValue().equals(oaNotify.getType())){
+			WsMsgBtn b1=new WsMsgBtn();
+			b1.setName("接受");
+			b1.setClick("notifyModule.acceptP(this,'"+oaNotify.getId()+"')");
+			wsMsg.addBtn(b1);
+			WsMsgBtn b2=new WsMsgBtn();
+			b2.setName("拒绝");
+			b2.setClick("notifyModule.refuseP(this,'"+oaNotify.getId()+"')");
+			wsMsg.addBtn(b2);
+		}
+		for(OaNotifyRecord onr:oaNotify.getOaNotifyRecordList()){
+			WebSockectUtil.pushToRedis(onr.getUser().getId(), wsMsg);
+		}
+		/*向浏览器发送消息******************/
 	}
 
 	@Transactional(readOnly = false)
@@ -215,7 +267,29 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 		oaNotifyRecord.setUser(oaNotifyRecord.getCurrentUser());
 		oaNotifyRecord.setReadDate(new Date());
 		oaNotifyRecord.setReadFlag("1");
-		oaNotifyRecordDao.update(oaNotifyRecord);
+		oaNotifyRecordDao.updateReadFlag(oaNotifyRecord);
+	}
+	/**
+	 * 更新操作状态
+	 */
+	@Transactional(readOnly = false)
+	public void updateOperateFlag(OaNotify oaNotify) {
+		OaNotifyRecord oaNotifyRecord = new OaNotifyRecord(oaNotify);
+		oaNotifyRecord.setUser(oaNotifyRecord.getCurrentUser());
+		oaNotifyRecord.setOperateFlag("1");
+		oaNotifyRecordDao.updateOperateFlag(oaNotifyRecord);
+	}
+	/**
+	 * 更新阅读、操作状态
+	 */
+	@Transactional(readOnly = false)
+	public void updateReadOperateFlag(OaNotify oaNotify) {
+		OaNotifyRecord oaNotifyRecord = new OaNotifyRecord(oaNotify);
+		oaNotifyRecord.setUser(oaNotifyRecord.getCurrentUser());
+		oaNotifyRecord.setReadDate(new Date());
+		oaNotifyRecord.setReadFlag("1");
+		oaNotifyRecord.setOperateFlag("1");
+		oaNotifyRecordDao.updateReadOperateFlag(oaNotifyRecord);
 	}
 
 	/**
@@ -232,16 +306,38 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 			}
 		}
 	}
-
+	private boolean saveoaNotifyContent(OaNotify es){
+		Map<String,String> map=sysAttachmentService.moveAndSaveTempFile(es.getContent(), es.getId(), FileTypeEnum.S8, FileStepEnum.S801);
+		if("1".equals(map.get("ret"))){
+			es.setContent(map.get("content"));
+			return true;
+		}
+		return false;
+	}
 	@Transactional(readOnly = false)
 	public void saveCollegeBroadcast(OaNotify oaNotify) {
+		if(oaNotify.getViews()==null){
+			oaNotify.setViews("0");
+		}
+		if (StringUtil.isNotEmpty(oaNotify.getContent())) {
+			oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_HTTPURL, FtpUtil.FTP_MARKER));
+		}
 		super.save(oaNotify);
+		//处理内容里的临时url---start(需要在entity保存之后，需要id)
+		//反转义
+		oaNotify.setContent(StringEscapeUtils.unescapeHtml4(oaNotify.getContent()));
+		//处理之前替换回占位字符串
+		oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_MARKER,FtpUtil.FTP_HTTPURL));
+		boolean ret=saveoaNotifyContent(oaNotify);
+		if(ret){
+			oaNotify.setContent(oaNotify.getContent().replaceAll(FtpUtil.FTP_HTTPURL, FtpUtil.FTP_MARKER));
+			//转义
+			oaNotify.setContent(StringEscapeUtils.escapeHtml4(oaNotify.getContent()));
+			super.save(oaNotify);//更新
+		}
+		//处理内容里的临时url---end
 		//处理关键字
 		if("4".equals(oaNotify.getType())||"8".equals(oaNotify.getType())||"9".equals(oaNotify.getType())){
-			if(oaNotify.getViews()==null){
-				oaNotify.setViews("0");
-			}
-			super.save(oaNotify);
 			if (StringUtil.isNotEmpty(oaNotify.getId())) {
 				oaNotifyKeywordDao.delByEsid(oaNotify.getId());
 			}
@@ -286,7 +382,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 
 	@Transactional(readOnly = true)
 	public List<OaNotify> loginList(Integer number) {
-		return oaNotifyDao.loginList(number);
+		return dao.loginList(number);
 	}
 
 	public OaNotifyRecord getMine(OaNotifyRecord oaNotifyRecord) {
@@ -295,7 +391,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	}
 
 	public List<OaNotify> unReadOaNotifyList(OaNotify oaNotify) {
-		return oaNotifyDao.unReadOaNotifyList(oaNotify);
+		return dao.unReadOaNotifyList(oaNotify);
 
 	}
 	@Transactional(readOnly = false)
@@ -316,28 +412,22 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 			TeamUserRelation teamUserRelation = new TeamUserRelation();
 			teamUserRelation.setCreateBy(sentUser);
 			teamUserRelation.setUser(acceptUser);
-		/*	ProjectDeclare projectDeclare = projectDeclareService.getProjectByTimeId(oaNotify2.getsId());
-			if (projectDeclare != null) {
-				oaNotifySent.setProjectName(projectDeclare.getName());
-			}*/
-			/*Team team = teamService.get(oaNotify2.getsId());*/
-			//oaNotifySent.setTeamName(team.getName());
 			Team team = teamDao.get(oaNotify2.getsId());
 			if (team != null) {
 				oaNotifySent.setTeamName(team.getName());
-				oaNotifySent.setType(oaNotify2.getType());
-				oaNotifySent.setNotifyId(oaNotify2.getId());
-
-				if ((sentUser != null) && StringUtil.isNotEmpty(sentUser.getName())) {
-					oaNotifySent.setSentName(sentUser.getName());
-				}
-				oaNotifySent.setTeamId(oaNotify2.getsId());
-				oaNotifySent.setContent(oaNotify2.getContent());
-				list1.add(oaNotifySent);
 			}
+			oaNotifySent.setType(oaNotify2.getType());
+			oaNotifySent.setNotifyId(oaNotify2.getId());
+			
+			if ((sentUser != null) && StringUtil.isNotEmpty(sentUser.getName())) {
+				oaNotifySent.setSentName(sentUser.getName());
+			}
+			oaNotifySent.setTeamId(oaNotify2.getsId());
+			oaNotifySent.setContent(oaNotify2.getContent());
+			list1.add(oaNotifySent);
 		}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 		return list1;
 	}
@@ -349,11 +439,11 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	 * @return
 	 */
 	public Integer findNotifyCount(String userId,String teamId) {
-		return oaNotifyDao.findNotifyCount( userId,teamId);
+		return dao.findNotifyCount( userId,teamId);
 	}
 
 	public OaNotify findOaNotifyByTeamID(String userId,String sId) {
-		return oaNotifyDao.findOaNotifyByTeamID(userId, sId);
+		return dao.findOaNotifyByTeamID(userId, sId);
 
 	}
 

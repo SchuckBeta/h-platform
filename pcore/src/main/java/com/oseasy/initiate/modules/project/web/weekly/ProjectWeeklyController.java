@@ -1,6 +1,5 @@
 package com.oseasy.initiate.modules.project.web.weekly;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,16 +21,17 @@ import com.oseasy.initiate.common.utils.DateUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
 import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
 import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
 import com.oseasy.initiate.modules.project.service.ProjectPlanService;
 import com.oseasy.initiate.modules.project.service.weekly.ProjectWeeklyService;
 import com.oseasy.initiate.modules.project.vo.ProjectWeeklyVo;
+import com.oseasy.initiate.modules.promodel.entity.ProModel;
+import com.oseasy.initiate.modules.promodel.service.ProModelService;
 import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
@@ -71,7 +71,7 @@ public class ProjectWeeklyController extends BaseController {
 	@Autowired
 	SysAttachmentService sysAttachmentService;
 	@Autowired
-	private FtpService ftpService;
+	ProModelService proModelService;
 	@ModelAttribute
 	public ProjectWeekly get(@RequestParam(value="id",required=false) String id,@RequestParam(value="projectId",required=false) String projectId) {
 		ProjectWeekly entity = null;
@@ -165,11 +165,11 @@ public class ProjectWeeklyController extends BaseController {
 			model.addAttribute("currentDate",currentDate);
 			vo.setProjectWeekly(projectWeekly);
 			vo.setLastpw(lastpw);
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid", projectWeekly.getId());
-			map.put("file_step", FileTypeEnum.S101.getValue());
-			map.put("type",FileSourceEnum.S0.getValue());
-			vo.setFileInfo(sysAttachmentService.getFileInfo(map));
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectWeekly.getId());
+			sa.setFileStep(FileStepEnum.S101);
+			sa.setType(FileTypeEnum.S0);
+			vo.setFileInfo(sysAttachmentService.getFiles(sa));
 			model.addAttribute("vo",vo);
 			if (lastpw!=null&&lastpw.getEndDate()!=null) {
 				model.addAttribute("minDate",DateUtil.formatDate(DateUtil.addDay(lastpw.getEndDate(), 1), "yyyy-MM-dd"));
@@ -178,42 +178,106 @@ public class ProjectWeeklyController extends BaseController {
 
 		return "modules/project/weekly/projectWeeklyForm";
 	}
-	@RequestMapping(value = "delFile")
-	@ResponseBody
-	public JSONObject delFile( HttpServletRequest request) {
-		JSONObject js=new JSONObject();
-		js.put("ret", 1);
-		js.put("msg", "删除成功");
-		String arrUrl= request.getParameter("arrUrl");
-		String id= request.getParameter("id");
-		try {
-			if (id!=null&&!"null".equals(id))sysAttachmentService.delete(new SysAttachment(id));
-			ftpService.del(arrUrl);
-		} catch (Exception e) {
-			js.put("ret", 0);
-			js.put("msg", "删除失败");
-		}
-		return js;
-	}
+	@RequestMapping(value = "createWeeklyPlus")
+	public String createWeeklyPlus(ProjectWeekly projectWeekly, Model model) {
+		if (StringUtil.isNotBlank(projectWeekly.getProjectId())) {
+			String projectId=projectWeekly.getProjectId();
+			ProjectWeeklyVo vo=new ProjectWeeklyVo();
+			ProjectDeclare projectDeclare = new ProjectDeclare();
+			ProModel pm=proModelService.get(projectId);
+			projectDeclare.setCreateBy(pm.getCreateBy());
+			projectDeclare.setTeamId(pm.getTeamId());
+			projectDeclare.setId(pm.getId());
+			projectDeclare.setName(pm.getpName());
+			projectDeclare.setNumber(pm.getCompetitionNumber());
+			projectDeclare.setCreateDate(pm.getCreateDate());
+			model.addAttribute("projectDeclare",projectDeclare);
+			User user= UserUtils.getUser();
+			model.addAttribute("user",user);
+			User cuser=null;
+			if (StringUtil.isEmpty(projectWeekly.getId())) {
+				cuser=user;
+			}else{
+				cuser= UserUtils.get(projectWeekly.getCreateBy().getId());
+			}
+			model.addAttribute("cuser",cuser);
+			String duty="项目负责人";
+			if (!StringUtil.equals(cuser.getId(),projectDeclare.getCreateBy().getId())) {
+				duty="组成员";
+			}
+			model.addAttribute("duty",duty);
 
+			//查找学生拓展信息
+			SysStudentExpansion student=  sysStudentExpansionService.getByUserId(projectDeclare.getCreateBy().getId());
+			model.addAttribute("student",student);
+
+			//查找项目团队相关信息 projectDeclare.id
+			Team team=teamService.get(projectDeclare.getTeamId());
+			model.addAttribute("team",team);
+
+			//查找学生
+			TeamUserRelation tur1=new TeamUserRelation();
+			tur1.setTeamId(projectDeclare.getTeamId());
+			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+			model.addAttribute("turStudents",turStudents);
+			if (turStudents!=null&&turStudents.size()>0) {
+				//组成项目组成员
+				StringBuffer stuNames=new StringBuffer("");
+				for(TeamUserRelation turStudent:turStudents) {
+					String name=turStudent.getStudent().getName();
+					stuNames.append(name+"/");
+				}
+				String teamList=stuNames.toString().substring(0,stuNames.toString().length()-1);
+				model.addAttribute("teamList",teamList);
+			}
+
+			//查找导师
+			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			model.addAttribute("turTeachers",turTeachers);
+			if (turTeachers!=null&&turTeachers.size()>0) {
+			//组成项目导师
+				StringBuffer teaNames=new StringBuffer("");
+				for (TeamUserRelation turTeacher:turTeachers) {
+					String name=turTeacher.getTeacher().getName();
+					teaNames.append(name+"/");
+				}
+				String teacher=teaNames.toString().substring(0,teaNames.toString().length()-1);
+				model.addAttribute("teacher",teacher);
+			}
+
+			ProjectWeekly lastpw=null;
+			if (projectWeekly.getId()==null) {
+				Map<String,String> map=new HashMap<String,String>();
+				map.put("uid", user.getId());
+				map.put("pid", projectId);
+				lastpw=projectWeeklyService.getLast(map);
+				if (lastpw!=null)projectWeekly.setLastId(lastpw.getId());
+			}else{
+				lastpw=projectWeeklyService.get(projectWeekly.getLastId());
+			}
+			Date currentDate=new Date();
+			model.addAttribute("currentDate",currentDate);
+			vo.setProjectWeekly(projectWeekly);
+			vo.setLastpw(lastpw);
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectWeekly.getId());
+			sa.setFileStep(FileStepEnum.S101);
+			sa.setType(FileTypeEnum.S0);
+			vo.setFileInfo(sysAttachmentService.getFiles(sa));
+			model.addAttribute("vo",vo);
+			if (lastpw!=null&&lastpw.getEndDate()!=null) {
+				model.addAttribute("minDate",DateUtil.formatDate(DateUtil.addDay(lastpw.getEndDate(), 1), "yyyy-MM-dd"));
+			}
+		}
+
+		return "modules/project/weekly/projectWeeklyForm";
+	}
 	@RequestMapping(value = "submit")
 	@ResponseBody
 	public JSONObject submit(ProjectWeeklyVo vo, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		JSONObject js=new JSONObject();
 		js.put("ret", 1);
 		js.put("msg", "提交成功");
-		String[] arrUrl= request.getParameterValues("arrUrl");
-		String[] arrNames= request.getParameterValues("arrName");
-		if (arrUrl!=null) {
-		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-			for(int i=0;i<arrUrl.length;i++) {
-				Map<String,String> map=new HashMap<String,String>();
-				map.put("arrUrl", arrUrl[i]);
-				map.put("arrName", arrNames[i]);
-				list.add(map);
-			}
-			vo.setFileInfo(list);
-		}
 		try {
 			projectWeeklyService.submitVo(vo);
 		} catch (Exception e) {
@@ -228,18 +292,6 @@ public class ProjectWeeklyController extends BaseController {
 		JSONObject js=new JSONObject();
 		js.put("ret", 1);
 		js.put("msg", "保存成功");
-		String[] arrUrl= request.getParameterValues("arrUrl");
-		String[] arrNames= request.getParameterValues("arrName");
-		if (arrUrl!=null) {
-		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-			for(int i=0;i<arrUrl.length;i++) {
-				Map<String,String> map=new HashMap<String,String>();
-				map.put("arrUrl", arrUrl[i]);
-				map.put("arrName", arrNames[i]);
-				list.add(map);
-			}
-			vo.setFileInfo(list);
-		}
 		try {
 			projectWeeklyService.saveVo(vo);
 		} catch (Exception e) {
@@ -315,18 +367,102 @@ public class ProjectWeeklyController extends BaseController {
 			model.addAttribute("currentDate",currentDate);
 			vo.setProjectWeekly(projectWeekly);
 			vo.setLastpw(lastpw);
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid", projectWeekly.getId());
-			map.put("file_step", FileTypeEnum.S101.getValue());
-			map.put("type",FileSourceEnum.S0.getValue());
-			vo.setFileInfo(sysAttachmentService.getFileInfo(map));
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectWeekly.getId());
+			sa.setFileStep(FileStepEnum.S101);
+			sa.setType(FileTypeEnum.S0);
+			vo.setFileInfo(sysAttachmentService.getFiles(sa));
 			model.addAttribute("vo",vo);
 			if (lastpw!=null&&lastpw.getEndDate()!=null) {
 				model.addAttribute("minDate",DateUtil.formatDate(DateUtil.addDay(lastpw.getEndDate(), 1), "yyyy-MM-dd"));
 			}
 		return "modules/project/weekly/projectWeeklyView";
 	}
+	@RequestMapping(value = "viewPlus")
+	public String viewPlus(ProjectWeekly projectWeekly, Model model) {
+		String projectId=projectWeekly.getProjectId();
+			ProjectWeeklyVo vo=new ProjectWeeklyVo();
+			ProjectDeclare projectDeclare = new ProjectDeclare();
+			ProModel pm=proModelService.get(projectId);
+			projectDeclare.setCreateBy(pm.getCreateBy());
+			projectDeclare.setTeamId(pm.getTeamId());
+			projectDeclare.setId(pm.getId());
+			projectDeclare.setName(pm.getpName());
+			projectDeclare.setNumber(pm.getCompetitionNumber());
+			projectDeclare.setCreateDate(pm.getCreateDate());
+			model.addAttribute("projectDeclare",projectDeclare);
+			User user= UserUtils.getUser();
+			model.addAttribute("user",user);
+			User cuser= UserUtils.get(projectWeekly.getCreateBy().getId());
+			model.addAttribute("cuser",cuser);
+			String duty="项目负责人";
+			if (!StringUtil.equals(cuser.getId(),projectDeclare.getCreateBy().getId())) {
+				duty="组成员";
+			}
+			model.addAttribute("duty",duty);
 
+			//查找学生拓展信息
+			SysStudentExpansion student=  sysStudentExpansionService.getByUserId(projectDeclare.getCreateBy().getId());
+			model.addAttribute("student",student);
+
+			//查找项目团队相关信息 projectDeclare.id
+			Team team=teamService.get(projectDeclare.getTeamId());
+			model.addAttribute("team",team);
+
+			//查找学生
+			TeamUserRelation tur1=new TeamUserRelation();
+			tur1.setTeamId(projectDeclare.getTeamId());
+			List<TeamUserRelation> turStudents=teamUserRelationService.getStudents(tur1);
+			model.addAttribute("turStudents",turStudents);
+			if (turStudents!=null&&turStudents.size()>0) {
+				//组成项目组成员
+				StringBuffer stuNames=new StringBuffer("");
+				for(TeamUserRelation turStudent:turStudents) {
+					String name=turStudent.getStudent().getName();
+					stuNames.append(name+"/");
+				}
+				String teamList=stuNames.toString().substring(0,stuNames.toString().length()-1);
+				model.addAttribute("teamList",teamList);
+			}
+
+			//查找导师
+			List<TeamUserRelation>  turTeachers=teamUserRelationService.getTeachers(tur1);
+			model.addAttribute("turTeachers",turTeachers);
+			if (turTeachers!=null&&turTeachers.size()>0) {
+			//组成项目导师
+				StringBuffer teaNames=new StringBuffer("");
+				for (TeamUserRelation turTeacher:turTeachers) {
+					String name=turTeacher.getTeacher().getName();
+					teaNames.append(name+"/");
+				}
+				String teacher=teaNames.toString().substring(0,teaNames.toString().length()-1);
+				model.addAttribute("teacher",teacher);
+			}
+
+			ProjectWeekly lastpw=null;
+			if (projectWeekly.getId()==null) {
+				Map<String,String> map=new HashMap<String,String>();
+				map.put("uid", user.getId());
+				map.put("pid", projectId);
+				lastpw=projectWeeklyService.getLast(map);
+			}else{
+				lastpw=projectWeeklyService.get(projectWeekly.getLastId());
+			}
+			Date currentDate=new Date();
+			model.addAttribute("currentDate",currentDate);
+			vo.setProjectWeekly(projectWeekly);
+			vo.setLastpw(lastpw);
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(projectWeekly.getId());
+			sa.setFileStep(FileStepEnum.S101);
+			sa.setType(FileTypeEnum.S0);
+			vo.setFileInfo(sysAttachmentService.getFiles(sa));
+			model.addAttribute("vo",vo);
+			if (lastpw!=null&&lastpw.getEndDate()!=null) {
+				model.addAttribute("minDate",DateUtil.formatDate(DateUtil.addDay(lastpw.getEndDate(), 1), "yyyy-MM-dd"));
+			}
+		return "modules/project/weekly/projectWeeklyView";
+	}
 	
 
 	@RequestMapping(value = "delete")

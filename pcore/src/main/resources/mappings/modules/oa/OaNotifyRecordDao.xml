@@ -11,7 +11,8 @@
 		a.operate_flag AS "operateFlag",
 		u.name AS "user.name",
 		o.name AS "user.office.name",
-		o.id AS "user.office.id"
+		o.id AS "user.office.id",
+		a.out_team AS "outTeam"
 	</sql>
 	
 	<sql id="oaNotifyRecordJoins">
@@ -19,6 +20,12 @@
 		JOIN sys_office o ON o.id = u.office_id
 	</sql>
     
+    <select id="getReadFlag" resultType="java.lang.String">
+		SELECT 
+		a.READ_FLAG	
+		FROM oa_notify_record a
+		WHERE a.OA_NOTIFY_ID = #{oid} and a.USER_ID=#{uid} limit 1
+	</select>
 	<select id="get" resultType="OaNotifyRecord">
 		SELECT 
 			<include refid="oaNotifyRecordColumns"/>
@@ -83,13 +90,15 @@
 			OA_NOTIFY_ID,
 			USER_ID,
 			READ_FLAG,
-			READ_DATE
+			READ_DATE,
+			out_team
 		) VALUES (
 			#{id},
 			#{oaNotify.id},
 			#{user.id},
 			#{readFlag},
-			#{readDate}
+			#{readDate},
+			#{outTeam}
 		)
 	</insert>
 	
@@ -99,7 +108,8 @@
 			OA_NOTIFY_ID,
 			USER_ID,
 			READ_FLAG,
-			READ_DATE
+			READ_DATE,
+			out_team
 		)
 		<if test="list.get(0).dbName == 'oracle'">
 			<foreach collection="list" item="e" separator=" union all ">
@@ -107,7 +117,7 @@
 				#{e.oaNotify.id},
 				#{e.user.id},
 				#{e.readFlag},
-				#{e.readDate} FROM dual
+				#{e.readDate},'0' FROM dual
 			</foreach>
 		</if>
 		<if test="list.get(0).dbName == 'mssql' or list.get(0).dbName == 'mysql'"> VALUES  
@@ -116,24 +126,30 @@
 				#{e.oaNotify.id},
 				#{e.user.id},
 				#{e.readFlag},
-				#{e.readDate})
+				#{e.readDate},'0')
 			</foreach>
 	    </if>
 	</insert>
 	
-	<update id="update">
+	<update id="updateReadFlag">
 		UPDATE oa_notify_record SET 	
 			READ_FLAG = #{readFlag},
 			READ_DATE = #{readDate}
 		WHERE OA_NOTIFY_ID = #{oaNotify.id}
 			AND USER_ID = #{user.id}
-			AND READ_FLAG != '1'
 	</update>
-
 	<update id="updateOperateFlag">
 		UPDATE oa_notify_record SET
 		   operate_flag = #{operateFlag}
 		where  OA_NOTIFY_ID = #{oaNotify.id}
+			AND USER_ID = #{user.id}
+	</update>
+	<update id="updateReadOperateFlag">
+		UPDATE oa_notify_record SET 	
+			READ_FLAG = #{readFlag},
+			READ_DATE = #{readDate},
+			operate_flag = #{operateFlag}
+		WHERE OA_NOTIFY_ID = #{oaNotify.id}
 			AND USER_ID = #{user.id}
 	</update>
 	

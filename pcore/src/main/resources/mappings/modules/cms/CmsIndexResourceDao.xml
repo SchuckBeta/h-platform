@@ -74,6 +74,12 @@
 		c.remarks AS "cmsIndexRegion.category.remarks",
 		c.del_flag AS "cmsIndexRegion.category.delFlag",
 
+		bp.name AS "cmsIndexRegion.category.parent.name",
+		bpp.id AS "cmsIndexRegion.category.parent.parent.id",
+		bpp.name AS "cmsIndexRegion.category.parent.parent.name",
+		bppp.id AS "cmsIndexRegion.category.parent.parent.parent.id",
+		bppp.name AS "cmsIndexRegion.category.parent.parent.parent.name",
+
 		d.id AS "cmsIndexRegion.category.site.id",
 		d.name AS "cmsIndexRegion.category.site.name",
 		d.title AS "cmsIndexRegion.category.site.title",
@@ -95,6 +101,9 @@
 	<sql id="cmsIndexResourceJoins">
 		LEFT JOIN cms_index_region b ON b.id = a.region_id
 		LEFT JOIN cms_category c ON c.id = b.category_id
+	    LEFT JOIN cms_category bp ON bp.id = c.parent_id
+	    LEFT JOIN cms_category bpp ON bpp.id = bp.parent_id
+	    LEFT JOIN cms_category bppp ON bppp.id = bpp.parent_id
 		LEFT JOIN cms_site d ON d.id = c.site_id
 	</sql>
 
@@ -166,10 +175,10 @@
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,c.parent_id, c.sort, b.region_sort, a.res_sort, a.update_date DESC, ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY c.sort, b.region_sort, a.res_sort, a.update_date DESC
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,c.parent_id, c.sort, b.region_sort, a.res_sort, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -184,10 +193,10 @@
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,c.parent_id, c.sort, b.region_sort, a.res_sort, a.update_date DESC, ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY c.sort, b.region_sort, a.res_sort, a.update_date DESC
+				ORDER BY bppp.parent_id,bpp.parent_id,bp.parent_id,c.parent_id, c.sort, b.region_sort, a.res_sort, a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>

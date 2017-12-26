@@ -2,7 +2,8 @@ package com.oseasy.initiate.modules.sys.enums;
 
 public enum NumRuleEnum {
 	 PROJECT("1","event_projectnum_reset","seq_project_declare_num")
-	,GCONTEST("2","event_gcontestnum_reset","seq_g_contest_num");
+	,GCONTEST("2","event_gcontestnum_reset","seq_g_contest_num")
+	,TEAM("4","event_teamnum_reset","seq_team_num");
 
 	private String value;
 	private String event;

@@ -1,6 +1,5 @@
 package com.oseasy.initiate.modules.gcontest.web;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oseasy.initiate.common.service.CommonService;
+import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,31 +23,34 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileSourceEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.ftp.service.FtpService;
 import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
 import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
 import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
 import com.oseasy.initiate.modules.gcontest.service.GAuditInfoService;
-import com.oseasy.initiate.modules.gcontest.service.GContestAnnounceService;
 import com.oseasy.initiate.modules.gcontest.service.GContestAwardService;
 import com.oseasy.initiate.modules.gcontest.service.GContestService;
+import com.oseasy.initiate.modules.gcontest.vo.GContestListVo;
 import com.oseasy.initiate.modules.gcontest.vo.GContestVo;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
+import com.oseasy.initiate.modules.sco.service.ScoAllotRatioService;
+import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
 import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
 import com.oseasy.initiate.modules.sys.service.UserService;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
 import com.oseasy.initiate.modules.team.entity.Team;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
 import com.oseasy.initiate.modules.team.service.TeamService;
+import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
 
 import net.sf.json.JSONObject;
 
@@ -69,22 +73,24 @@ public class FrontGContestController extends BaseController {
 	private FtpService ftpService;
 	@Autowired
 	private SysAttachmentService sysAttachmentService;
-
 	@Autowired
 	private GContestService gContestService;
-
+	@Autowired
+	private CommonService commonService;
 	@Autowired
 	private GAuditInfoService gAuditInfoService;
-
-	@Autowired
-	private GContestAnnounceService gContestAnnounceService;
 
 	@Autowired
 	private SysStudentExpansionService sysStudentExpansionService;
 
 	@Autowired
 	GContestAwardService gContestAwardService;
-
+	@Autowired
+	ScoAllotRatioService scoAllotRatioService;
+	@Autowired
+	TeamUserHistoryService teamUserHistoryService;
+	@Autowired
+	AuthorizeService authorizeService;
 
 	@ModelAttribute
 	public GContest get(@RequestParam(required=false) String id) {
@@ -106,14 +112,17 @@ public class FrontGContestController extends BaseController {
 		Map<String,Object> param =new HashMap<String,Object>();
 		User user = UserUtils.getUser();
 		param.put("userid", user.getId());
-		Page<Map<String,String>> page = gContestService.getMyGcontestList(new Page<Map<String,String>>(request, response), param);
+		GContestListVo vo=new GContestListVo();
+		vo.setUserid(user.getId());
+		Page<GContestListVo> page=gContestService.getMyProjectListPlus(new Page<GContestListVo>(request, response), vo);
 		model.addAttribute("page", page);
+		model.addAttribute("user", user);
 		return "modules/gcontest/gContestList";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "findTeamPerson")
-	public List<Map<String,String>> findTeamPerson(@RequestParam(required=true) String id) {
+	public List<Map<String,String>> findTeamPerson(@RequestParam(required=true) String id,@RequestParam(required=false)String actywId  ) {
 		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
 		List<Map<String,String>> list1=projectDeclareService.findTeamStudent(id);
 		List<Map<String,String>> list2=projectDeclareService.findTeamTeacher(id);
@@ -128,17 +137,14 @@ public class FrontGContestController extends BaseController {
 
 
 	@RequestMapping(value = "form")
-	public String form(GContest gContest, Model model) {
+	public String form(GContest gContest, Model model,HttpServletRequest request) {
 		User user = UserUtils.getUser();
-		GContestAnnounce gContestAnnounce=new GContestAnnounce();
-        gContestAnnounce.setType("1");
-        gContestAnnounce.setStatus("1");
-        gContestAnnounce=gContestAnnounceService.getGContestAnnounce(gContestAnnounce);
-        if (gContestAnnounce!=null) {
-        	model.addAttribute("gContestAnnounce", gContestAnnounce);
-        }
         model.addAttribute("user", user);
 		model.addAttribute("studentExpansion", sysStudentExpansionService.getByUserId(user.getId()));
+
+		if(StringUtil.isEmpty(gContest.getActywId())){
+			gContest.setActywId(request.getParameter("actywId"));
+		}
 		if (StringUtil.isNotBlank(gContest.getId())) {
 			gContest = gContestService.get(gContest.getId());
 			user=userService.findUserById(gContest.getDeclareId());
@@ -158,15 +164,20 @@ public class FrontGContestController extends BaseController {
 			//关联附件
 			SysAttachment sysAttachment=new SysAttachment();
 			sysAttachment.setUid(gContest.getId());
-			Map<String,String> map=new HashMap<String,String>();
-			map.put("uid", gContest.getId());
-			map.put("type",FileSourceEnum.S2.getValue());
-			List<Map<String, String>>   sysAttachments=sysAttachmentService.getFileInfo(map);
+//			Map<String,String> map=new HashMap<String,String>();
+//			map.put("uid", gContest.getId());
+//			map.put("type",FileTypeEnum.S2.getValue());
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(gContest.getId());
+			sa.setFileStep(FileStepEnum.S300);
+			sa.setType(FileTypeEnum.S2);
+			List<SysAttachment> sysAttachments= sysAttachmentService.getFiles(sa);
+			//List<Map<String, String>>   sysAttachments=sysAttachmentService.getFileInfo(map);
 			model.addAttribute("sysAttachments", sysAttachments);
 			//model.addAttribute("studentExpansion", sysStudentExpansionService.getByUserId(user.getId()));
 			GContestVo vo=new GContestVo();
-			vo.setTeamStudent(projectDeclareService.findTeamStudent(gContest.getTeamId()));
-			vo.setTeamTeacher(projectDeclareService.findTeamTeacher(gContest.getTeamId()));
+			vo.setTeamStudent(projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId()));
+			vo.setTeamTeacher(projectDeclareService.findTeamTeacherFromTUH(gContest.getTeamId(),gContest.getId()));
 			model.addAttribute("gContestVo", vo);
 			//model.addAttribute("gContest", gContest);
 			//关联团队
@@ -198,6 +209,7 @@ public class FrontGContestController extends BaseController {
 		projectDeclare.setLeader(user.getId());
 		List<ProjectDeclare> projects=	projectDeclareService.getCurProjectInfoByLeader(user.getId());
 		model.addAttribute("projects", projects);
+
 		return "modules/gcontest/gContestForm";
 	}
 	@RequestMapping(value = "viewForm")
@@ -228,8 +240,8 @@ public class FrontGContestController extends BaseController {
 		model.addAttribute("sysAttachments", sysAttachments);
 		GContestVo vo=new GContestVo();
 		model.addAttribute("studentExpansion", sysStudentExpansionService.getByUserId(user.getId()));
-		vo.setTeamStudent(projectDeclareService.findTeamStudent(gContest.getTeamId()));
-		vo.setTeamTeacher(projectDeclareService.findTeamTeacher(gContest.getTeamId()));
+		vo.setTeamStudent(projectDeclareService.findTeamStudentFromTUH(gContest.getTeamId(),gContest.getId()));
+		vo.setTeamTeacher(projectDeclareService.findTeamTeacherFromTUH(gContest.getTeamId(),gContest.getId()));
 		model.addAttribute("gContestVo", vo);
 		//关联团队
 		if (gContest.getTeamId()!=null) {
@@ -263,31 +275,53 @@ public class FrontGContestController extends BaseController {
         List<GAuditInfo> infos= gAuditInfoService.getSortInfo(pai);
         return infos;
     }
-	@RequestMapping(value = "save")
+	/*@RequestMapping(value = "save")
 	public String save(GContest gContest, Model model, HttpServletRequest request,  RedirectAttributes redirectAttributes) {
-		String[] arrUrl= request.getParameterValues("arrUrl");
-		String[] arrNames= request.getParameterValues("arrName");
 		gContestService.save(gContest);
-		if (arrUrl!=null&&arrUrl.length>0) {
-			for(int i=0;i<arrUrl.length;i++) {
-				try {
-					String moveEnd = FtpUtil.moveFile(FtpUtil.getftpClient(), arrUrl[i]);
-					arrUrl[i]=moveEnd;
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				SysAttachment sysAttachment=new SysAttachment();
-				sysAttachment.setUid(gContest.getId());
-				sysAttachment.setType("2");
-				sysAttachment.setName(arrNames[i]);
-				sysAttachment.setUrl(arrUrl[i]);
-				sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));
-				sysAttachmentService.save(sysAttachment);
-			}
-		}
 		addMessage(redirectAttributes, "保存大赛信息成功");
 		return "redirect:"+Global.getFrontPath()+"/gcontest/gContest/?repage";
+	}*/
+
+	@RequestMapping(value = "save")
+	@ResponseBody
+	public JSONObject save(GContest gContest, Model model, HttpServletRequest request,  RedirectAttributes redirectAttributes) {
+		JSONObject js=new JSONObject();
+		js=commonService.checkGcontestApplyOnSave(gContest.getId(), gContest.getActywId(), gContest.getTeamId());
+		if("0".equals(js.getString("ret"))){
+			return js;
+		}
+
+		User user = UserUtils.getUser();
+		gContest.setCreateBy(user);
+		gContestService.save(gContest);
+		js.put("id", gContest.getId());
+		js.put("ret", 1);
+		js.put("msg", "保存成功");
+		return js;
+	}
+
+	//ajax 请求，页面传入snumber（团队学生人数），返回后台的学分配比比例
+	@RequestMapping("findRatio")
+	@ResponseBody
+	public String findRatio(int snumber ){
+		Boolean bl=authorizeService.checkMenuByNum(5);
+		//是否授权
+		if(bl){
+			ScoRatioVo scoRatioVo = new ScoRatioVo();
+			scoRatioVo.setType("0000000125"); //设置查询的学分类型（素质学分）
+			scoRatioVo.setItem("0000000129"); //双创大赛
+			scoRatioVo.setCategory("1"); //互联网+大赛
+	//		scoRatioVo.setSubdivision("");
+			scoRatioVo.setNumber(snumber);
+			ScoRatioVo ratioResult = scoAllotRatioService.findRatio(scoRatioVo);
+			if(ratioResult!=null){
+				return ratioResult.getRatio();
+			}else{
+				return "";
+			}
+		}else{
+			return "";
+		}
 	}
 
 	@RequestMapping(value = "delFile")
@@ -310,7 +344,15 @@ public class FrontGContestController extends BaseController {
 
 	@RequestMapping(value = {"viewList"})
 	public String viewList(GContest gContest, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		//得到有项目的大赛类型
+		List<Map<String,String>> gcNameList=gContestService.getInGcontestNameList(user.getId());
+		model.addAttribute("gcNameList", gcNameList);
+		//得到当前大赛有多少正在进行
+
+
 		return "modules/gcontest/front/calender";
+		//return "modules/gcontest/front/gcontestCalendar";
 	}
 
 	@RequestMapping(value = "getGcontestTimeIndexData")
@@ -340,27 +382,20 @@ public class FrontGContestController extends BaseController {
 	@ResponseBody
 	public JSONObject submit(GContest gContest, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		JSONObject js=new JSONObject();
-		js.put("ret", 1);
-		js.put("msg", "恭喜您，大赛申报成功!");
-		if (gContest.getId()==null||"".equals(gContest.getId())) {
-			User user = UserUtils.getUser();
-			List<GContest> glist=gContestService.getGcontestInfo(user.getId());
-			if (glist!=null&&glist.size()>0) {
-				js.put("ret", 0);
-				js.put("msg", "提交失败，当前已存在未完成的大赛");
-				return js;
-			}
+		js=commonService.checkGcontestApplyOnSubmit(gContest.getId(), gContest.getActywId(), gContest.getTeamId());
+		if("0".equals(js.getString("ret"))){
+			return js;
 		}
-		if (gContest.getPName()!=null) {
+		if (gContest.getpName()!=null) {
 			if (gContest.getId()!=null) {
-				List<GContest> gname=gContestService.getGcontestByNameNoId(gContest.getId(),gContest.getPName());
+				List<GContest> gname=gContestService.getGcontestByNameNoId(gContest.getId(),gContest.getpName());
 				if (gname!=null&&gname.size()!=0) {
 					js.put("ret", 0);
 					js.put("msg", "提交失败，存在名字相同项目");
 					return js;
 				}
 			}else{
-				List<GContest> gname=gContestService.getGcontestByName(gContest.getPName());
+				List<GContest> gname=gContestService.getGcontestByName(gContest.getpName());
 				if (gname!=null&&gname.size()!=0) {
 					js.put("ret", 0);
 					js.put("msg", "提交失败，存在名字相同项目");
@@ -368,7 +403,6 @@ public class FrontGContestController extends BaseController {
 				}
 			}
 		}
-
 		int collExportNum=1;
 		collExportNum=gContestService.submit(gContest);
 		if (collExportNum==0) {
@@ -376,28 +410,11 @@ public class FrontGContestController extends BaseController {
 			js.put("msg", "提交失败，该学院无学院专家");
 			return js;
 		}
-		String[] arrUrl= request.getParameterValues("arrUrl");
-		String[] arrNames= request.getParameterValues("arrName");
-		if (arrUrl!=null&&arrUrl.length>0) {
-			for(int i=0;i<arrUrl.length;i++) {
-				 try {
-					String moveEnd=FtpUtil.moveFile(FtpUtil.getftpClient(), arrUrl[i]);
-					arrUrl[i]=moveEnd;
-				} catch (IOException e) {
-					logger.info("大赛更新文件目录地址出错");
-					e.printStackTrace();
-				}
-				SysAttachment sysAttachment=new SysAttachment();
-				sysAttachment.setUid(gContest.getId());
-				sysAttachment.setType("2");
-				sysAttachment.setName(arrNames[i]);
-				sysAttachment.setUrl(arrUrl[i]);
-				sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));
-				sysAttachmentService.save(sysAttachment);
-			}
-		}
-		addMessage(redirectAttributes, "提交大赛信息成功");
-		//return "redirect:"+Global.getFrontPath()+"/gcontest/gContest/?repage";
+
+		sysAttachmentService.saveByVo(gContest.getAttachMentEntity(),gContest.getId(),FileTypeEnum.S2, FileStepEnum.S300);
+		js.put("ret", 1);
+		js.put("msg", "恭喜您，大赛申报成功!");
+
 		return js;
 	}
 
@@ -407,6 +424,18 @@ public class FrontGContestController extends BaseController {
 		gContestService.delete(gContest);
 		addMessage(redirectAttributes, "删除大赛信息成功");
 		return "redirect:"+Global.getFrontPath()+"/gcontest/gContest/?repage";
+	}
+
+	@RequestMapping("onGcontestApply")
+	@ResponseBody
+	public JSONObject onGcontestApply(String actywId){
+		return commonService.onGcontestApply(actywId);
+	}
+
+	@RequestMapping("checkGcontestTeam")
+	@ResponseBody
+	public JSONObject checkGcontestTeam(String proid,String actywId,String teamid){
+		return commonService.checkGcontestTeam(proid, actywId, teamid);
 	}
 
 }

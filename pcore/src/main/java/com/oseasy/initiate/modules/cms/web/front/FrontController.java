@@ -12,8 +12,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,6 @@ import com.oseasy.initiate.modules.course.entity.Course;
 import com.oseasy.initiate.modules.course.service.CourseService;
 import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
 import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyDao;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
 import com.oseasy.initiate.modules.oa.entity.OaNotifySent;
 import com.oseasy.initiate.modules.oa.service.OaNotifyService;
@@ -64,10 +61,6 @@ import com.oseasy.initiate.modules.sys.security.SystemAuthorizingRealm.Principal
 import com.oseasy.initiate.modules.sys.service.BackTeacherExpansionService;
 import com.oseasy.initiate.modules.sys.service.TeacherKeywordService;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
 
 /**
  * 网站Controller
@@ -96,12 +89,7 @@ public class FrontController extends BaseController{
 	private SessionDAO sessionDAO;
 	@Autowired
 	private OaNotifyService oaNotifyService;
-	@Autowired
-	private TeamService teamService;
-	@Autowired
-	private TeamUserRelationService teamUserRelationService;
-	@Autowired
-	private OaNotifyDao oaNotifyDao;
+
 	@Autowired
 	private CmsIndexResourceService cmsIndexResourceService;
 	@Autowired
@@ -110,6 +98,25 @@ public class FrontController extends BaseController{
 	private TeacherKeywordService teacherKeywordService;
 	@Autowired
 	ExcellentShowService excellentShowService;
+	@RequestMapping(value = "/loginUserId", method = RequestMethod.GET)
+	@ResponseBody
+	public String loginUserId() {
+		return UserUtils.getUser().getId();
+	}
+
+  /*静态页面*/
+  @RequestMapping(value = "page-{pageName}")
+  public String viewPages(@PathVariable String pageName, Model model) {
+
+    return "modules/website/pages/"+pageName;
+  }
+
+  /*静态页面2*/
+  @RequestMapping(value = "html-{pageName}")
+  public String htmlviewPages(@PathVariable String pageName, Model model) {
+    return "modules/website/html/"+pageName;
+  }
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
@@ -153,7 +160,7 @@ public class FrontController extends BaseController{
 		String message = (String)request.getAttribute(AdminFormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
 
 		if (StringUtil.isBlank(message) || StringUtil.equals(message, "null")) {
-			message = "账号学号或密码错误, 请重试.";
+			message = "账号或密码错误, 请重试.";
 		}
 
 		model.addAttribute(AdminFormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
@@ -183,6 +190,12 @@ public class FrontController extends BaseController{
 		request.setAttribute("loginPage", "1");
 		return "modules/website/frontLogin";
 	}
+
+  @RequestMapping(value = "help", method = RequestMethod.GET)
+  public String help(HttpServletRequest request, HttpServletResponse response, Model model) {
+    return "modules/website/frontHelp";
+  }
+
 	@RequestMapping(value="toLogin")
 	public String toLogin(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("loginType", request.getParameter("loginType"));
@@ -193,6 +206,14 @@ public class FrontController extends BaseController{
 	public String toRegister(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("loginPage", "1");
 		return "modules/website/studentregister";
+	}
+	@RequestMapping(value="resetNotifyShow")
+	@ResponseBody
+	public String resetNotifyShow(HttpServletRequest request, HttpServletResponse response) {
+		if(request.getSession().getAttribute("notifyShow")!=null){//登录成功后重置是否弹出消息
+			request.getSession().removeAttribute("notifyShow");
+		}
+		return "1";
 	}
 	/**
 	 * 登录成功，进入管理首页
@@ -219,7 +240,7 @@ public class FrontController extends BaseController{
 		model.addAttribute("excellentShowList", map);
 		//查找栏目导师
 		BackTeacherExpansion btef =new BackTeacherExpansion();
-		btef.setFirstBank("1");
+		btef.setFirstShow("1");
 		List<BackTeacherExpansion> firstTeacherList=backTeacherExpansionService.findList(btef);
 		List<BackTeacherExpansion> firstTeacherListnew =new ArrayList<BackTeacherExpansion> ();
 		//首页只展示3个
@@ -274,9 +295,19 @@ public class FrontController extends BaseController{
 	/*导师风采页面*/
 	@RequestMapping(value = "pageTeacher")
 	public String pageTeacher( BackTeacherExpansion backTeacherExpansion,HttpServletRequest request,HttpServletResponse response, Model model) {
+		String teacherType=request.getParameter("teacherType");
+		if(StringUtil.isEmpty(teacherType)){
+			teacherType="1";
+		}
+		backTeacherExpansion.setTeachertype(teacherType);
 		Page<BackTeacherExpansion> page = backTeacherExpansionService.findTeacherPage(new Page<BackTeacherExpansion>(request, response),backTeacherExpansion);
 		//model.addAttribute("siteTeacherList", siteTeacherListnew);
+		BackTeacherExpansion backTeacherExpansionNew =backTeacherExpansionService.findTeacherByTopShow(teacherType);
+		if(backTeacherExpansionNew!=null){
+			model.addAttribute("backTeacherExpansionNew", backTeacherExpansionNew);
+		}
 		model.addAttribute("page", page);
+		model.addAttribute("teacherType", teacherType);
 		return "modules/website/pages/pageTeacher";
 	}
 
@@ -360,53 +391,12 @@ public class FrontController extends BaseController{
 		model.addAttribute("resource", cmsIndexResourceService.get(resid));
 		return "modules/website/staticPage";
 	}
-
-	/*流程模板静态文件*/
-	@RequestMapping(value = "form/{template}/{pageName}")
-	public String modelForm(@PathVariable String pageName, @PathVariable String template,Model model) {
-		//根据匹配传页面需要参数，数据
-		if(template.equals("gcontest")){
-			if(pageName.equals("applyForm")){
-				User user = UserUtils.getUser();
-				SysStudentExpansion sse = new SysStudentExpansion();
-				ProModel pm=new ProModel();
-				sse.setName(user.getName());
-				sse.setEmail(user.getEmail());
-				sse.setMobile(user.getMobile());
-				sse.setCompany(user.getCompany());
-				if (user.getOffice()!=null) {
-					sse.setOffice(user.getOffice());
-				}
-				sse.setProfessional(user.getProfessional());
-				sse.setNo(user.getNo());
-				pm.setDeclareId(user.getId());
-				model.addAttribute("sse", sse);
-				pm.setProMark("gcontest");
-				model.addAttribute(pm);
-			}
-		}
-		return "template/form/"+template+"/"+pageName;
-	}
-
 	/*内容模板静态文件*/
 	@RequestMapping(value = "cms/{template}/{pageName}")
 	public String modelCms(@PathVariable String pageName, @PathVariable String template,Model model) {
 		return "template/cms/"+template+"/"+pageName;
 	}
 
-
-	/*静态页面*/
-	@RequestMapping(value = "page-{pageName}")
-	public String viewPages(@PathVariable String pageName, Model model) {
-
-		return "modules/website/pages/"+pageName;
-	}
-
-	/*静态页面2*/
-	@RequestMapping(value = "html-{pageName}")
-	public String htmlviewPages(@PathVariable String pageName, Model model) {
-		return "modules/website/html/"+pageName;
-	}
 	/**
 	 * 网站首页
 	 */
@@ -678,102 +668,7 @@ public class FrontController extends BaseController{
 	}
 
 
-	//接受邀请
-	@RequestMapping(value="acceptInviation")
-	@ResponseBody
-	public String acceptInviation(HttpServletRequest request) {
-		String oaNotifyId = request.getParameter("send_id");
-		User acceptUser = UserUtils.getUser();
-		User sentuser = null;
-		String type = null;
-		if (oaNotifyService.get(oaNotifyId)!=null) {
-			OaNotify oaNotify = oaNotifyService.get(oaNotifyId);
-			oaNotifyService.updateReadFlag(oaNotify);
-			sentuser = oaNotify.getCreateBy();
-			type = oaNotify.getType();
-			TeamUserRelation teamUserRelation = new TeamUserRelation();
-			if ("5".equals(type)) {
-				teamUserRelation.setUser(sentuser);
-			}else {
-				teamUserRelation.setUser(acceptUser);
-			}
-			Team team = teamService.get(oaNotify.getsId());
-			if (team.getState().equals("2")) {
-				//该团队已经解散
-				return "4";
-			}
-			//根据teamID和userID判断用户是否加入别的团队
-			teamUserRelation = teamUserRelationService.findUserById(teamUserRelation);
-			if (teamUserRelation!=null) {
-				//如果用户在别的团队点击接受，提示用户及给邀请人发提示信息
-				int t = teamUserRelationService.inseRefuseOaNo(team, type, acceptUser, sentuser,teamUserRelation);
-		//		return "-1";
-					if (t>0) {
-						//如果已加入团队修改为拒绝
-						teamUserRelation.setState("3");
-						teamUserRelationService.updateState(teamUserRelation);
-						oaNotify.setType("11");
-						oaNotifyDao.update(oaNotify);
-						return "-1";
-					}
-			}else{
-				teamUserRelation = new TeamUserRelation();
-				if ("5".equals(type)) {
-					teamUserRelation.setUser(sentuser);
-				}else {
-					teamUserRelation.setUser(acceptUser);
-				}
-				teamUserRelation.setTeamId(oaNotify.getsId());
-				int i = teamService.checkInfo(teamUserRelation);
-				if (i>0) {
-					teamUserRelationService.inseAgreeOaNo(team, type, acceptUser, sentuser);
-					//在我的消息里点击接受时该条通知记录改变通知状态为同意加入
-					oaNotify.setType("10");
-					oaNotifyDao.update(oaNotify);
-					return "1";
-				}
-			}
-		}
-		return "0";
-	}
-	//拒绝邀请
-	@RequestMapping(value="refuseInviation")
-	@ResponseBody
-	public String refuseInviation(HttpServletRequest request) {
-		String oaNotifyId = request.getParameter("send_id");
-		OaNotify oaNotify = oaNotifyService.get(oaNotifyId);
-		oaNotifyService.updateReadFlag(oaNotify);
-		String type = oaNotify.getType();
-		User sentUser = oaNotify.getCreateBy();
-		TeamUserRelation teamUserRelation = new TeamUserRelation();
-		User user = UserUtils.getUser();
-		Team team = teamService.get(oaNotify.getsId());
-		int t = teamUserRelationService.inseRefuseOaNo(team, type, user, sentUser,teamUserRelation);
-		teamUserRelation.setTeamId(oaNotify.getsId());
-		if (t>0) {
-			if (teamUserRelation!=null) {
-				if ("5".equals(type)) {
-					//当审批申请的时候查出当前用户所在的团队
-					teamUserRelation.setUser(sentUser);
-				}else{
-					//当别人邀请时候，查出发出邀请的人所在的团队
-					teamUserRelation.setUser(user);
-				}
-				//根据团队ID用户ID获取团队信息中间表
-				teamUserRelation = teamUserRelationService.getByTeamUserRelation(teamUserRelation);
-				if (teamUserRelation!=null) {
-					//在我的消息里点击拒绝时该条通知记录改变通知状态为拒绝
-					oaNotify.setType("11");
-					oaNotifyDao.update(oaNotify);
-					teamUserRelation.setState("3");
-					teamUserRelationService.save(teamUserRelation);
-					return "1";
-				}
-			}
-		}
-		return "0";
-
-	}
+	
 
 	//页面未读通知消息
 	@RequestMapping(value="unReadOaNotify")
@@ -791,5 +686,14 @@ public class FrontController extends BaseController{
 		oaNotifyService.updateReadFlag(oaNotify);
 		return "1";
 	}
-
+	//完善信息
+	@RequestMapping(value="infoPerfect")
+	public String infoPerfect(HttpServletRequest request,Model model) {
+		String userType=request.getParameter("userType");
+		model.addAttribute("userType", userType);
+		if("2".equals(userType)){
+			model.addAttribute("teaEid", backTeacherExpansionService.getByUserId(UserUtils.getUser().getId()).getId());
+		}
+		return "modules/website/infoPerfect";
+	}
 }

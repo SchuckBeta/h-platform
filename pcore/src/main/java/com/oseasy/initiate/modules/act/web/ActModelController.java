@@ -1,7 +1,9 @@
 /**
- * 
+ *
  */
 package com.oseasy.initiate.modules.act.web;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oseasy.initiate.common.persistence.Page;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.act.service.ActModelService;
+import com.oseasy.initiate.modules.act.vo.ActRstatus;
+import com.oseasy.initiate.modules.actyw.entity.ActYw;
+import com.oseasy.initiate.modules.actyw.service.ActYwService;
 
 /**
  * 流程模型相关Controller
@@ -27,8 +33,10 @@ import com.oseasy.initiate.modules.act.service.ActModelService;
 @RequestMapping(value = "${adminPath}/act/model")
 public class ActModelController extends BaseController {
 
-	@Autowired
-	private ActModelService actModelService;
+  @Autowired
+  private ActModelService actModelService;
+  @Autowired
+  private ActYwService actYwService;
 
 	/**
 	 * 流程模型列表
@@ -36,10 +44,7 @@ public class ActModelController extends BaseController {
 	@RequiresPermissions("act:model:edit")
 	@RequestMapping(value = { "list", "" })
 	public String modelList(String category, HttpServletRequest request, HttpServletResponse response, Model model) {
-
-		Page<org.activiti.engine.repository.Model> page = actModelService.modelList(
-				new Page<org.activiti.engine.repository.Model>(request, response), category);
-
+		Page<org.activiti.engine.repository.Model> page = actModelService.modelList(new Page<org.activiti.engine.repository.Model>(request, response), category);
 		model.addAttribute("page", page);
 		model.addAttribute("category", category);
 
@@ -54,7 +59,7 @@ public class ActModelController extends BaseController {
 	public String create(Model model) {
 		return "modules/act/actModelCreate";
 	}
-	
+
 	/**
 	 * 创建模型
 	 */
@@ -76,12 +81,33 @@ public class ActModelController extends BaseController {
 	 */
 	@RequiresPermissions("act:model:edit")
 	@RequestMapping(value = "deploy")
-	public String deploy(String id, RedirectAttributes redirectAttributes) {
-		String message = actModelService.deploy(id);
-		redirectAttributes.addFlashAttribute("message", message);
+	public String deploy(String id, Boolean isUpdateYw, RedirectAttributes redirectAttributes) {
+	  ActRstatus result = actModelService.deploy(id);
+    /**
+     * 流程发布，流程ID回填到业务表.
+     */
+    if((isUpdateYw == null)){
+      isUpdateYw = false;
+    }
+
+    if(isUpdateYw && (StringUtil.isNotEmpty(result.getKey()))){
+      List<ActYw> actYws = actYwService.getByKeyss(ActYw.pkeySplitKeyss(result.getKey()));
+      if((actYws != null) && (actYws.size() == 1)){
+        ActYw actYw = actYws.get(0);
+        actYw.setFlowId(result.getId());
+        actYw.setDeploymentId(result.getDeploymentId());
+        actYwService.save(actYw);
+      }else{
+        result.setStatus(false);
+        result.setMsg("业务不存在，流程部署执行回滚！");
+      }
+    }
+
+		redirectAttributes.addFlashAttribute("actRstatus", result);
+		redirectAttributes.addFlashAttribute("message", result.getMsg());
 		return "redirect:" + adminPath + "/act/process";
 	}
-	
+
 	/**
 	 * 导出model的xml文件
 	 */
@@ -101,7 +127,7 @@ public class ActModelController extends BaseController {
 		redirectAttributes.addFlashAttribute("message", "设置成功，模块ID=" + id);
 		return "redirect:" + adminPath + "/act/model";
 	}
-	
+
 	/**
 	 * 删除Model
 	 * @param id

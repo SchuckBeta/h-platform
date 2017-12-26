@@ -83,7 +83,7 @@ public class FrontAuthorizingRealm extends SystemAuthorizingRealm {
 			return new SimpleAuthenticationInfo(new Principal(user, token.isMobileLogin(),token.getLoginType()), 
 					user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
 		} else {
-			throw new AuthenticationException("msg:该手机号未绑定.");
+			throw new AuthenticationException("msg:该手机号不存在，请注册.");
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class FrontAuthorizingRealm extends SystemAuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginName(principal.getLoginName());
+		User user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();

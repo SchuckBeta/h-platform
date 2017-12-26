@@ -1,109 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <template>
 	<content>
-		<![CDATA[&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;style&gt;
-		.classBox {
-			position: relative;
-		}
+		<![CDATA[&lt;style type=&quot;text/css&quot;&gt;
+        .project-template-container ul,.project-template-container li{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .project-template-container{
+            font-family: &quot;Microsoft YaHei&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial,
+            sans-serif;
+            font-size: 14px;
+            line-height: 20px;
+            max-width: 1270px;
+        }
+        .project-template-container{
+            margin: 30px auto;
+        }
+        .bg-gray{
+            background-color: #f5f5f5;
+        }
+        .pro-tmp-detail,.pro-product-show,.pro-team-show{
+            width: 1270px;
+            padding: 30px 15px;
+            margin: 0 auto;
+        }
+        .pro-template-title{
+            margin-bottom: 15px;
+            background: url(&#x27;/img/footerline.png&#x27;) no-repeat 80px 10px;
+        }
+        .pro-template-title&gt;p{
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+        .project-template-container .pro-tmp-intro{
+            margin-right: -75px;
+            overflow: hidden;
+        }
+        .pro-tmp-intro .pro-temp-intro-item{
+            float: left;
+            width: 360px;
+            margin-right: 75px;
+        }
+        .pro-tmp-intro .pro-temp-intro-item img{
+            display: block;
+            max-width: 100%;
+            width: auto;
+        }
 
-		.classBoxone {
-			position: relative;
-			text-align: center;
-			width: 636px;
-			height: 693px;
-			margin: auto;
-		}
+        .pro-tmp-intro .pro-temp-intro-item .pro-intro-pic{
+            height: 250px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .pro-tmp-intro .pro-temp-intro-item .pti-title{
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .pro-tmp-intro .pro-temp-intro-item .pti-text{
+            height: 60px;
+            margin-bottom: 0;
+            overflow: hidden;
+        }
 
-		.classBoxone img:nth-child(1) {
-			width: 100%;
-			height: 100%;
-		}
-
-		.classBoxone img:nth-child(2) {
-			position: absolute;
-			left: -86px;
-			top: 0;
-		}
-
-		.classBoxone img:nth-child(3) {
-			position: absolute;
-			right: -41px;
-			top: 0;
-		}
-
-		.classBoxone img:nth-child(4) {
-			position: absolute;
-			bottom: 182px;
-			left: -30px;
-		}
-
-		.classBoxone img:nth-child(5) {
-			position: absolute;
-			bottom: 85px;
-			right: 10px;
-		}
-
-		.classBoxone img:nth-child(6) {
-			position: absolute;
-			top: 217px;
-			left: 138px;
-		}
-
-		.classBox .content {
-			width: 302px;
-		}
-
-		.classBox .content_one {
-			position: absolute;
-			top: 100px;
-			left: -51px;
-			overflow: hidden; /*自动隐藏文字*/
-			display: none;
-		}
-
-		.classBox .content_one, .content_second, .content_three, .content_four,
-		.content_five h4, p {
-			overflow: hidden; /*自动隐藏文字*/
-			text-overflow: ellipsis; /*文字隐藏后添加省略号*/
-			white-space: nowrap; /*强制不换行*/
-		}
-
-		.classBox .content_second {
-			position: absolute;
-			top: 159px;
-			right: -25px;
-			display: none;
-		}
-
-		.classBox .content_three {
-			position: absolute;
-			left: 23px;
-			bottom: 0;
-			display: none;
-		}
-
-		.classBox .content_four {
-			position: absolute;
-			right: -54px;
-			bottom: 0;
-			display: none;
-		}
-
-		.classBox  .content_five {
-			position: absolute;
-			top: -49px;
-			left: 50%;
-			margin-left: -151px;
-			display: none;
-		}&lt;/style&gt;&lt;div class=&quot;introduction&quot;&gt;&lt;div class=&quot;introduction_info container&quot;&gt;&lt;h4&gt;
-
-			项目介绍&lt;img src=&quot;/img/footerline.png&quot;/&gt;&lt;/h4&gt;&lt;div class=&quot;xmone&quot; style=&quot;width: 100%&quot;&gt;&lt;ul&gt;&lt;li&gt;项目简介&lt;/li&gt;&lt;li&gt;&lt;img src=&quot;/img/pro-detail27.jpg&quot;/&gt;&lt;/li&gt;&lt;li style=&quot;width: auto;height: auto&quot;&gt;在已有的Mini数据库系统的基础上，结合最新的数据库安全领域的已有研究成果，运用最前沿的安全技术，设计并实现一个支持隐私保护的安全数据库系统Crypt DB，可支持密文状态下数据库中存储和检索等各项操作，保护了数据的隐私和安全。同时本数据库中的技术方案还可支持用户的访问权限控制和查询结果的完整性认证，可以防止其他用户对数据的非法访问，并且保证了查询结果的完整性。&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div class=&quot;xmtwo&quot; style=&quot;display: none&quot;&gt;&lt;ul&gt;&lt;li&gt;我们的客户&lt;/li&gt;&lt;li&gt;&lt;img src=&quot;/img/yxxmteach.jpg&quot;/&gt;&lt;/li&gt;&lt;li&gt;本产品是一款利用红外装置识别手指运动的智能硬件，在手势控制领域有着诸多应用。
-					项目应用IPV6作为手势数据传输协议，将研发的手&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div class=&quot;xmthree&quot; style=&quot;display: none&quot;&gt;&lt;ul&gt;&lt;li&gt;我们的发展方向&lt;/li&gt;&lt;li&gt;&lt;img src=&quot;/img/yxxmteach.jpg&quot;/&gt;&lt;/li&gt;&lt;li&gt;本产品是一款利用红外装置识别手指运动的智能硬件，在手势控制领域有着诸多应用。
-					项目应用IPV6作为手势数据传输协议，将研发的手&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;product container&quot;&gt;&lt;h4&gt;
-
-		产品展示&lt;img src=&quot;/img/footerline.png&quot;/&gt;&lt;/h4&gt;&lt;div class=&quot;productdisplay&quot; style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/img/pro-detail-big2701.jpg&quot; style=&quot;width: 75%;height: auto;margin: 15px auto&quot;/&gt;&lt;img src=&quot;/img/pro-detail-big2702.jpg&quot; style=&quot;width: 75%;height: auto;margin: 15px auto&quot;/&gt;&lt;img src=&quot;/img/pro-detail-big2703.jpg&quot; style=&quot;width: 75%;height: auto;margin: 15px auto&quot;/&gt;&lt;/div&gt;&lt;div style=&quot;clear: both;&quot;&gt;&lt;/div&gt;&lt;div class=&quot;productdisplayone&quot; style=&quot;display: none&quot;&gt;&lt;div id=&quot;one&quot;&gt;&lt;img src=&quot;/img/yxsj03.jpg&quot; style=&quot;width: 100%; height: inherit;&quot;/&gt;&lt;/div&gt;&lt;div id=&quot;two&quot;&gt;&lt;img src=&quot;/img/yxsj01.jpg&quot; style=&quot;width: 100%; height: inherit;&quot;/&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;team container&quot;&gt;&lt;h4&gt;
-
-		团队风采&lt;img src=&quot;/img/footerline.png&quot;/&gt;&lt;/h4&gt;&lt;!--团队风采--&gt;&lt;div class=&quot;classBox&quot; style=&quot;text-align: center&quot;&gt;&lt;img style=&quot;width: 75%;height: auto&quot; src=&quot;/img/teampic1.jpg&quot;/&gt;&lt;/div&gt;&lt;/div&gt;&lt;p&gt;&lt;/p&gt;
-				]]>
+        .pro-product-show .product-list{
+            margin-right: -15px;
+            overflow: hidden;
+        }
+        .pro-product-show .product-item{
+            float: left;
+            height: 250px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+        }
+        .pro-product-show .product-item img{
+            display: block;
+            width: auto;
+            max-width: 100%;
+        }
+        .pro-product-show .product-item-w4{
+            width: 650px;
+        }
+        .pro-product-show .product-item-w1{
+            width: 280px;
+        }
+        .pro-product-show .product-item-w2{
+            width: 575px;
+        }
+        .pro-team-show .pro-member-list{
+            margin: 0 -15px;
+            overflow: hidden;
+        }
+        .pro-team-show .pro-member-list .pro-member-item{
+            float: left;
+            width: 20%;
+            margin-bottom: 15px;
+            padding: 0 15px;
+        }
+        .pro-team-show .pro-member-list .pro-member-item .member-pic{
+            height: 224px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .pro-team-show .pro-member-list .member-pic img{
+            display: block;
+            width: auto;
+            max-width: 100%;
+        }
+        .pro-team-show .pro-member-list .member-intro{
+            height: 60px;
+        }
+        .pro-team-show .pro-member-list .member-intro p{
+            margin-bottom: 0;
+        }
+    &lt;/style&gt;
+&lt;div class=&quot;project-template-container&quot;&gt;
+    &lt;div class=&quot;bg-gray&quot;&gt;
+        &lt;div class=&quot;pro-tmp-detail&quot;&gt;
+            &lt;div class=&quot;pro-template-title&quot;&gt;
+                &lt;p&gt;项目介绍&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;ul class=&quot;pro-tmp-intro&quot;&gt;
+                &lt;li class=&quot;pro-temp-intro-item&quot;&gt;
+                    &lt;p class=&quot;pti-title&quot;&gt;项目简介&lt;/p&gt;
+                    &lt;div class=&quot;pro-intro-pic&quot;&gt;
+                        &lt;img src=&quot;/img/video-default.jpg&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;p class=&quot;pti-text&quot;&gt;本产品是一款利用红外装置识别手指运动的智能硬件，在手势控制领域有着诸多应用。 项目应用IPV6作为手势数据传输协议，将研发的手&lt;/p&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;pro-temp-intro-item&quot;&gt;
+                    &lt;p class=&quot;pti-title&quot;&gt;我们的用户&lt;/p&gt;
+                    &lt;div class=&quot;pro-intro-pic&quot;&gt;
+                        &lt;img src=&quot;/img/video-default.jpg&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;p class=&quot;pti-text&quot;&gt;本产品是一款利用红外装置识别手指运动的智能硬件，在手势控制领域有着诸多应用。 项目应用IPV6作为手势数据传输协议，将研发的手&lt;/p&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;pro-temp-intro-item&quot;&gt;
+                    &lt;p class=&quot;pti-title&quot;&gt;我的发展方向&lt;/p&gt;
+                    &lt;div class=&quot;pro-intro-pic&quot;&gt;
+                        &lt;img src=&quot;/img/video-default.jpg&quot;&gt;
+                    &lt;/div&gt;
+                    &lt;p class=&quot;pti-text&quot;&gt;本产品是一款利用红外装置识别手指运动的智能硬件，在手势控制领域有着诸多应用。 项目应用IPV6作为手势数据传输协议，将研发的手&lt;/p&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;pro-product-show&quot;&gt;
+        &lt;div class=&quot;pro-template-title&quot;&gt;
+            &lt;p&gt;产品展示&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;ul class=&quot;product-list&quot;&gt;
+            &lt;li class=&quot;product-item product-item-w4&quot;&gt;
+                &lt;img src=&quot;/images/video-default650250.jpg&quot;&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;product-item product-item-w1&quot;&gt;
+                &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;product-item product-item-w1&quot;&gt;
+                &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;product-item product-item-w4&quot;&gt;
+                &lt;img src=&quot;/images/video-default650250.jpg&quot;&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;product-item product-item-w2&quot;&gt;
+                &lt;img src=&quot;/images/video-defaultw575250.jpg&quot;&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;pro-team-show&quot;&gt;
+        &lt;div class=&quot;pro-template-title&quot;&gt;
+            &lt;p&gt;团队风采&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;ul class=&quot;pro-member-list&quot;&gt;
+            &lt;li class=&quot;pro-member-item&quot;&gt;
+                &lt;div class=&quot;member-pic&quot;&gt;
+                    &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;member-intro&quot;&gt;
+                    &lt;p&gt;导师：KKK&lt;/p&gt;
+                    &lt;p&gt;年龄：21&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;pro-member-item&quot;&gt;
+                &lt;div class=&quot;member-pic&quot;&gt;
+                    &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;member-intro&quot;&gt;
+                    &lt;p&gt;组成员：KKK&lt;/p&gt;
+                    &lt;p&gt;年龄：21&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;pro-member-item&quot;&gt;
+                &lt;div class=&quot;member-pic&quot;&gt;
+                    &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;member-intro&quot;&gt;
+                    &lt;p&gt;组成员：KKK&lt;/p&gt;
+                    &lt;p&gt;年龄：21&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;pro-member-item&quot;&gt;
+                &lt;div class=&quot;member-pic&quot;&gt;
+                    &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;member-intro&quot;&gt;
+                    &lt;p&gt;组成员：KKK&lt;/p&gt;
+                    &lt;p&gt;年龄：21&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;pro-member-item&quot;&gt;
+                &lt;div class=&quot;member-pic&quot;&gt;
+                    &lt;img src=&quot;/images/video-defaultw425425.jpg&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;member-intro&quot;&gt;
+                    &lt;p&gt;组成员：KKK&lt;/p&gt;
+                    &lt;p&gt;年龄：21&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;]]>
 	</content>
 </template>

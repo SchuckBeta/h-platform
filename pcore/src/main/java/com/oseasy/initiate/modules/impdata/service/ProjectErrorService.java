@@ -12,13 +12,19 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oseasy.initiate.common.persistence.Page;
+import com.oseasy.initiate.common.service.CommonService;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.DateUtil;
 import com.oseasy.initiate.common.utils.IdGen;
+import com.oseasy.initiate.common.utils.IdUtils;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
+import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
 import com.oseasy.initiate.modules.impdata.dao.ProjectErrorDao;
 import com.oseasy.initiate.modules.impdata.entity.ProjectError;
 import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
 import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
 import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
 import com.oseasy.initiate.modules.sys.entity.Dict;
@@ -46,6 +52,10 @@ public class ProjectErrorService extends CrudService<ProjectErrorDao, ProjectErr
 	private TeamUserRelationDao teamUserRelationDao;
 	@Autowired
 	private BackTeacherExpansionDao backTeacherExpansionDao;
+	@Autowired
+	private ExcellentShowService excellentShowService;
+	@Autowired
+	private CommonService commonService;
 	public ProjectError get(String id) {
 		return super.get(id);
 	}
@@ -90,7 +100,15 @@ public class ProjectErrorService extends CrudService<ProjectErrorDao, ProjectErr
 		team.setName("项目"+pe.getNumber()+"的团队");
 		team.setSponsor(pe.getLeaderNo());
 		team.setState("2");
-		team.setLocalCollege(leader.getOffice().getId());
+		team.setNumber(IdUtils.getTeamNumberByDb());
+		String localCollege="";
+		if(leader.getOffice()!=null){
+			localCollege=leader.getOffice().getId();
+		}
+		if(StringUtil.isNotEmpty(leader.getProfessional())){
+			localCollege=leader.getProfessional();
+		}
+		team.setLocalCollege(localCollege);
 		team.setProjectName(pe.getName());
 		team.setProjectIntroduction(pe.getIntroduction());
 		int member_num=1;//成员人数
@@ -183,7 +201,10 @@ public class ProjectErrorService extends CrudService<ProjectErrorDao, ProjectErr
 		pd.setProvince(pe.getProvince());
 		pd.setUniversityCode(pe.getUniversityCode());
 		pd.setUniversityName(pe.getUniversityName());
+		pd.setActywId(ProjectNodeVo.YW_ID);
 		projectDeclareDao.insert(pd);
+		commonService.copyTeamUserHistoryFromTUR(pd.getActywId(), pd.getTeamId(), pd.getId(), "1");
+		excellentShowService.saveExcellentShow(pd.getIntroduction(), pd.getTeamId(),ExcellentShow.Type_Project,pd.getId(),pd.getActywId());//保存优秀展示
 	}
 	private String getProjectLevelByGrant(String grant) {
 		List<Dict> list=DictUtils.getDictList("project_degree_fund");

@@ -10,6 +10,7 @@
 package com.oseasy.initiate.modules.act.utils;
 
 import com.google.common.collect.Lists;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.act.service.ActTaskService;
 import com.oseasy.initiate.modules.act.vo.ProcessMapVo;
 import com.oseasy.initiate.modules.act.vo.ProjectEnd;
@@ -57,15 +58,76 @@ public class ProcessMapUtil {
     ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
         .processDefinitionId(procDefId).singleResult();
     ProcessDefinitionImpl pdImpl = (ProcessDefinitionImpl) processDefinition;
-    String processDefinitionId = pdImpl.getId();// 流程标识
-    ProcessDefinitionEntity def = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
-        .getDeployedProcessDefinition(processDefinitionId);
-    List<ActivityImpl> activitiList = def.getActivities();// 获得当前任务的所有节点
+    if(pdImpl!=null){
+      String processDefinitionId = pdImpl.getId();// 流程标识
+         ProcessDefinitionEntity def = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
+             .getDeployedProcessDefinition(processDefinitionId);
+         List<ActivityImpl> activitiList = def.getActivities();// 获得当前任务的所有节点
 
-    actImpls = dealActiveNode(runtimeService, proInsId, actImpls, activitiList, type, status);
+         actImpls = dealActiveNode(runtimeService, proInsId, actImpls, activitiList, type, status);
 
-    return new ProcessMapVo(procDefId, proInsId, actImpls);
+         return new ProcessMapVo(procDefId, proInsId, actImpls);
+    }else{
+      return null;
+    }
+
   }
+
+
+    /**
+     * 根据nodeId得到节点
+     *
+     * @author chenhao
+     * @param proInsId
+     *          流程实例ID
+     */
+    public static String getNodeByProInsId(RepositoryService repositoryService,ActTaskService actTaskService,
+      RuntimeService runtimeService, String proInsId) {
+      String procDefId = actTaskService.getProcessDefinitionIdByProInstId(proInsId);
+      List<ActivityImpl> actImpls = new ArrayList<ActivityImpl>();
+
+      ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+          .processDefinitionId(procDefId).singleResult();
+      ProcessDefinitionImpl pdImpl = (ProcessDefinitionImpl) processDefinition;
+      String processDefinitionId = pdImpl.getId();// 流程标识
+      ProcessDefinitionEntity def = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
+          .getDeployedProcessDefinition(processDefinitionId);
+      List<ActivityImpl> activitiList = def.getActivities();// 获得当前任务的所有节点
+      activitiList.get(0).getId();
+      List<String> activeActivityIds = runtimeService.getActiveActivityIds(proInsId);
+      String gnodeId="";
+        for (String activeId : activeActivityIds) {
+            for (ActivityImpl activityImpl : activitiList) {
+                String id = activityImpl.getId();
+                if (activityImpl.isScope()) {
+                    if (activityImpl.getActivities().size() > 1) {
+                        List<ActivityImpl> subAcList = activityImpl.getActivities();
+                        for (ActivityImpl subActImpl : subAcList) {
+                            String subid = subActImpl.getId();
+                            System.out.println("subImpl:" + subid);
+                            if (activeId.equals(subid)) {// 获得执行到那个节点
+                                gnodeId=subid;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (activeId.equals(id)) {
+                  // 获得执行到那个节点
+                    actImpls.add(activityImpl);
+                    gnodeId=id;
+                    break;
+                    //System.out.println(id);
+                }
+            }
+            if(StringUtil.isNotEmpty(gnodeId)){
+              break;
+            }
+        }
+      return gnodeId;
+    }
+
+
 
   /**
    * 处理获取ActiveNode异常问题 .

@@ -1,14 +1,19 @@
 package com.oseasy.initiate.modules.analysis.service;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.analysis.dao.GcontestAnalysisDao;
+import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.oseasy.initiate.modules.sys.utils.DictUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -18,6 +23,210 @@ import net.sf.json.JSONObject;
 public class GcontestAnalysisService {
 	@Autowired
 	private GcontestAnalysisDao gcontestAnalysisDao;
+	public JSONArray getGcontestMemNum(String year){
+		if(StringUtil.isNotEmpty(year)){
+			year=year+"-01-01 00:00:00";
+		}
+		JSONArray ja=new JSONArray();
+		Set<String> names=new HashSet<String>();
+		Map<String,String> data=new HashMap<String,String>();
+		List<Map<String, Object>> olist=gcontestAnalysisDao.getGcontestMemNum(year);
+		if (olist!=null&&olist.size()>0) {
+			for(Map<String, Object> map:olist){
+				if(map.get("label")!=null&&map.get("year")!=null){
+					names.add(map.get("year").toString());
+					data.put(map.get("label").toString()+map.get("year").toString(), map.get("cc").toString());
+				}
+			}
+		}
+		List<Map<String, Object>> nlist=gcontestAnalysisDao.getGcontestMemNumFromModel(year);
+		if (nlist!=null&&nlist.size()>0) {
+			for(Map<String, Object> map:nlist){
+				if(map.get("label")!=null&&map.get("year")!=null){
+					names.add(map.get("year").toString());
+					data.put(map.get("label").toString()+map.get("year").toString(), map.get("cc").toString());
+				}
+			}
+		}
+		if(names.size()>0){
+			JSONArray years=getGcontestTypeList(names);
+			JSONArray curstateList=getCurstateList();
+			if(years!=null&&curstateList!=null){
+				for(int m=0;m<curstateList.size();m++){
+					String name=curstateList.getString(m);
+					JSONObject js=new JSONObject();
+					JSONArray yeardata=new JSONArray();
+					for(String s:names){
+						String num=data.get(name+s);
+						if(num==null){
+							yeardata.add(0);
+						}else{
+							yeardata.add(Integer.parseInt(num));
+						}
+					}
+					js.put("name", name+"参赛人数");
+					js.put("categories", years);
+					js.put("data", yeardata);
+					ja.add(js);
+				}
+			}
+		}
+		return ja;
+	}
+	private JSONArray getCurstateList(){
+		List<Dict> list=DictUtils.getDictList("current_sate");
+		if(list==null||list.size()==0){
+			return null;
+		}else{
+			JSONArray ja=new JSONArray();
+			for(Dict s:list){
+				ja.add(s.getLabel());
+			}
+			return ja;
+		}
+	}
+	private JSONArray getGcontestTypeList(Set<String> names){
+		if(names==null||names.size()==0){
+			return null;
+		}else{
+			JSONArray ja=new JSONArray();
+			for(String s:names){
+				ja.add(s);
+			}
+			return ja;
+		}
+	}
+	public JSONArray getGcontestOfficeNum(String type,String year){
+		if(StringUtil.isNotEmpty(year)){
+			year=year+"-01-01 00:00:00";
+		}
+		JSONArray ja=new JSONArray();
+		JSONObject js=new JSONObject();
+		JSONArray data=new JSONArray();
+		JSONArray categories=new JSONArray();
+		List<Map<String, Object>> olist=null;
+		List<Map<String, Object>> nlist=null;
+		Map<String,Integer> mdata=new HashMap<String,Integer>();
+		if(StringUtil.isEmpty(type)){
+			olist=gcontestAnalysisDao.getGcontestOfficeNum(type, year);
+			nlist=gcontestAnalysisDao.getGcontestOfficeNumFromModel(type, year);
+		}else{
+			if("1".equals(type)){
+				olist=gcontestAnalysisDao.getGcontestOfficeNum(type, year);
+			}else{
+				nlist=gcontestAnalysisDao.getGcontestOfficeNumFromModel(type, year);
+			}
+		}
+		if(olist!=null&&olist.size()>0){
+			for(Map<String, Object> map:olist){
+				Integer tem=mdata.get(map.get("name").toString());
+				if(tem==null){
+					mdata.put(map.get("name").toString(),Integer.parseInt(map.get("cc").toString()));
+				}else{
+					mdata.put(map.get("name").toString(),Integer.parseInt(map.get("cc").toString())+tem);
+				}
+			}
+		}
+		if(nlist!=null&&nlist.size()>0){
+			for(Map<String, Object> map:nlist){
+				Integer tem=mdata.get(map.get("name").toString());
+				if(tem==null){
+					mdata.put(map.get("name").toString(),Integer.parseInt(map.get("cc").toString()));
+				}else{
+					mdata.put(map.get("name").toString(),Integer.parseInt(map.get("cc").toString())+tem);
+				}
+			}
+		}
+		js.put("name", "校级初赛");
+		for(String k:mdata.keySet()){
+			categories.add(k);
+			data.add(mdata.get(k));
+		}
+		js.put("data", data);
+		js.put("categories", categories);
+		ja.add(js);
+		return ja;
+	}
+	public JSONArray getGcontestNum(){
+		JSONArray ja=new JSONArray();
+		int maxYear=0;
+		int minYear=0;
+		Set<String> names=new HashSet<String>();
+		Map<String,String> data=new HashMap<String,String>();
+		List<Map<String, Object>> olist=gcontestAnalysisDao.getGcontestNum();
+		if (olist!=null&&olist.size()>0) {
+			for(Map<String, Object> map:olist){
+				names.add(map.get("label").toString());
+				if(map.get("year")!=null){
+					int cy=Integer.valueOf(map.get("year").toString());
+					if(minYear==0||cy<minYear){
+						minYear=cy;
+					}
+					if(maxYear==0||cy>maxYear){
+						maxYear=cy;
+					}
+					data.put(map.get("label").toString()+cy+"年", map.get("cc").toString());
+				}
+			}
+		}
+		List<Map<String, Object>> nlist=gcontestAnalysisDao.getGcontestNumFromModel();
+		if (nlist!=null&&nlist.size()>0) {
+			for(Map<String, Object> map:nlist){
+				names.add(map.get("label").toString());
+				if(map.get("year")!=null){
+					int cy=Integer.valueOf(map.get("year").toString());
+					if(minYear==0||cy<minYear){
+						minYear=cy;
+					}
+					if(maxYear==0||cy>maxYear){
+						maxYear=cy;
+					}
+					data.put(map.get("label").toString()+cy+"年", map.get("cc").toString());
+				}
+			}
+		}
+		if(names.size()>0){
+			JSONArray years=getYearList(minYear, maxYear);
+			if(years!=null){
+				for(String name:names){
+					JSONObject js=new JSONObject();
+					JSONArray yeardata=new JSONArray();
+					for(int i=0;i<years.size();i++){
+						String num=data.get(name+years.getString(i));
+						if(num==null){
+							yeardata.add(0);
+						}else{
+							yeardata.add(Integer.parseInt(num));
+						}
+					}
+					js.put("name", name);
+					js.put("data", yeardata);
+					js.put("categories", years);
+					ja.add(js);
+				}
+			}else{
+				for(String name:names){
+					JSONObject js=new JSONObject();
+					js.put("name", name);
+					js.put("data", new JSONArray());
+					js.put("categories", new JSONArray());
+					ja.add(js);
+				}
+			}
+		}
+		return ja;
+	}
+	private JSONArray getYearList(int minYear,int maxYear){
+		if(maxYear==0||minYear==0){
+			return null;
+		}else{
+			JSONArray list=new JSONArray();
+			for(int i=minYear;i<=maxYear;i++){
+				list.add(i+"年");
+			}
+			return list;
+		}
+	}
 	public JSONObject getData() {
 		JSONObject data=new JSONObject();
 		data.put("data1", getData1());

@@ -261,7 +261,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		private String name; // 姓名
 		private boolean mobileLogin; // 是否手机登录
 		private String loginType; // 1-短信登录,2-微信扫码
-		
+		private String no;//工号
 //		private Map<String, Object> cacheMap;
 
 		public Principal(User user, boolean mobileLogin) {
@@ -269,6 +269,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			this.loginName = user.getLoginName();
 			this.name = user.getName();
 			this.mobileLogin = mobileLogin;
+			this.no = user.getNo();
 		}
 		public Principal(User user, boolean mobileLogin,String loginType) {
 			this.id = user.getId();
@@ -276,6 +277,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			this.name = user.getName();
 			this.mobileLogin = mobileLogin;
 			this.loginType = loginType;
+			this.no = user.getNo();
 		}
 		public String getId() {
 			return id;
@@ -301,6 +303,12 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 //			return cacheMap;
 //		}
 
+		public String getNo() {
+			return no;
+		}
+		public void setNo(String no) {
+			this.no = no;
+		}
 		/**
 		 * 获取SESSIONID
 		 */

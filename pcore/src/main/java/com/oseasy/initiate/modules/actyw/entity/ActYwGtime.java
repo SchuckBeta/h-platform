@@ -17,9 +17,13 @@ public class ActYwGtime extends DataEntity<ActYwGtime> {
 	private String grounpId;		// 节点组id
 	private String gnodeId;		// 节点id
 	private String projectId;		// 项目id
+	//private String gnodeName;		// 节点名称
+	private ActYwGnode gnode ;     //
 	private Date beginDate;		// 节点开始时间
-	private Date endDate;		// 节点结束时间
-	private String status;		// 状态：1：生效 0：失效
+    private Date endDate;   // 节点结束时间
+    private String status;    // 状态：1：生效 0：失效
+    private Float rate;   // 通过率
+    private String rateStatus;    //  通过率开关状态：1：生效 0：失效
 
 	public ActYwGtime() {
 		super();
@@ -35,6 +39,14 @@ public class ActYwGtime extends DataEntity<ActYwGtime> {
 
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
+	}
+
+	public ActYwGnode getGnode() {
+		return gnode;
+	}
+
+	public void setGnode(ActYwGnode gnode) {
+		this.gnode = gnode;
 	}
 
 	@Length(min=1, max=64, message="节点组id长度必须介于 1 和 64 之间")
@@ -64,7 +76,23 @@ public class ActYwGtime extends DataEntity<ActYwGtime> {
 		this.beginDate = beginDate;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Float getRate() {
+    return rate;
+  }
+
+  public void setRate(Float rate) {
+    this.rate = rate;
+  }
+
+  public String getRateStatus() {
+    return rateStatus;
+  }
+
+  public void setRateStatus(String rateStatus) {
+    this.rateStatus = rateStatus;
+  }
+
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getEndDate() {
 		return endDate;
 	}

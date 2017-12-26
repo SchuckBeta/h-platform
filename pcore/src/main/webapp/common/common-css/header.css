@@ -1,0 +1,388 @@
+.header{
+	width: 100%;
+	height:100px;
+	background: #f3f3f3;
+	z-index:1;
+}
+
+.mid{
+	max-width: 1240px;
+	margin: 0 auto;
+}
+
+.header .mid{
+	height: 100%;
+	/*position: relative;*/
+}
+
+.logo-box{
+	float: left;
+	width: 237px;
+	height: 76px;
+	margin-top: 10px;
+	margin-right: 45px;
+	margin-left: 20px;
+	overflow: hidden;
+	font-size: 0;
+}
+.logo-box>img{
+
+}
+
+.header .mid{
+	z-index: 100;
+}
+.header .mid ul{
+	margin-bottom:0;
+	height: 100%;
+	list-style: none;
+	padding: 0;
+	float: left;
+}
+
+.header .mid ul li{
+	float: left;
+	width: 105px;
+	height: 100%;
+}
+
+.header .mid ul li a{
+	text-decoration: none;
+}
+
+.header .mid ul li span{
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	line-height: 100px;
+	color: #222;
+	overflow: hidden;
+	text-decoration: none;
+	font-size:15px;
+}
+
+.header .mid ul li .secondlever{
+	position: absolute;
+	top: 100px;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	display: none;
+	background-color: rgba(232, 54, 44,.7);
+	z-index: 1;
+}
+
+.header .mid ul li .secondlever p{
+	width: 100%;
+	height:50px;
+	line-height: 50px;
+	overflow: hidden;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.header .mid ul li .secondlever p a{
+	color: #fff;
+	padding: 0 15px;
+}
+
+.header .mid ul li .secondlever p a:hover{
+	font-weight: bold;
+}
+
+.header .mid ul li:hover span{
+	background:#e9442d;
+	color: white;
+}
+
+.header .mid ul li:hover .secondlever{
+	display: block;
+}
+
+.header .mid .user{
+	font-size: 14px;
+	color: #656565;
+	overflow: hidden;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}
+
+.header .mid .user span{
+	float: right;
+	margin-left: 15px;
+	height: 31px;
+	background-position:0px -155px;
+	cursor: pointer;
+}
+
+.header .mid .user a{
+	float: right;
+	margin-left: 10px;
+	cursor: pointer;
+	color:#656565;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+	text-decoration: none;
+
+}
+.header .mid .user a:hover{
+	color:#df4526;
+}
+.header .mid .user a i{
+	margin-right: 3px;
+}
+
+.header .mid .user small{
+	float: right;
+}
+
+.affix-sidebar{
+	position: fixed;
+	right: 0;
+	top: 40%;
+	width: 32px;
+	height: 32px;
+	z-index: 1000;
+}
+.affix-sidebar .icon-help{
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	margin-left: 2px;
+	vertical-align: middle;
+	background: url('/images/icon-help.png') no-repeat center/cover;
+	transition: all .15s linear;
+}
+
+.affix-item-help{
+	display: block;
+	position: relative;
+	overflow: hidden;
+}
+
+.affix-item-help .text{
+	display: block;
+	position: absolute;
+	right: 150%;
+	top: 0;
+	width: 80px;
+	line-height: 28px;
+	color: #fff;
+	text-align: center;
+	background-color: #e9432d;
+	transition: all .15s linear;
+}
+.affix-item-help:hover .text{
+	right: 100%;
+	background-color: #e9432d;
+}
+.affix-item-help:hover {
+	background-color: #e9432d;
+	overflow: visible;
+}
+.affix-item-help:hover .icon-help{
+	background-image: url('/images/icon-help-white.png');
+
+}
+.header .user-wrap{
+	position: relative;
+	width: 1240px;
+	margin: 0 auto;
+}
+.header .user{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.header .user a,.header .user span{
+	margin-left: 10px;
+	cursor: pointer;
+	color: #656565;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
+	text-decoration: none;
+	line-height: 30px;
+	font-style: normal;
+}
+.header .user a i,.header .user span i{
+	font-style: normal;
+}
+.header .user a:hover,.header .user span:hover{
+	color: #df4526;
+}
+.scroll-top{
+	display: none;
+	position: fixed;
+	right: 10px;
+	bottom: 30px;
+	width: 44px;
+	height: 42px;
+	font-size: 12px;
+	padding: 4px 10px;
+	border-radius: 5px;
+	background-color: rgba(233,68,45,.9);
+	overflow: hidden;
+	z-index: 1000;
+}
+.scroll-top>a{
+	display: block;
+	color: #fff;
+	text-decoration: none;
+}
+
+.user-profiles{
+	width: 60px;
+	height: 32px;
+	position: relative;
+	z-index: 1000;
+}
+
+.user-profiles .user-pic-box{
+	cursor: pointer;
+}
+
+.user-profiles .user-pic{
+	width: 30px;
+	border-radius: 50%;
+}
+
+.user-profiles .arrow-right{
+	width: 11px;
+	position: relative;
+	top: -11px;
+	left: 1px;
+	cursor: pointer;
+}
+
+.user-profiles .arrow-down{
+	width: 11px;
+	position: relative;
+	top: -24px;
+	left: 44px;
+	cursor: pointer;
+	display: none;
+}
+
+.user-profiles:hover .arrow-right{
+	display: none;
+}
+
+.user-profiles:hover .arrow-down{
+	display: block;
+}
+
+.drop-user-back{
+	width: 220px;
+	height: 178px;
+	position: absolute;
+	top: 100%;
+	padding-top: 14px;
+	right: -24px;
+	display: none;
+	z-index: 1000;
+}
+.drop-user-back ul{
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+.drop-user-info{
+	position: relative;
+	background: #F1F1F1;
+	border-radius:5px;
+	box-shadow: 4px 4px 2px #828282;
+}
+/*.drop-user-info:after{*/
+	/*content: '';*/
+	/*display: none;*/
+	/*position: absolute;*/
+	/*right: 23px;*/
+	/*bottom: 0;*/
+	/*border-right: 6px solid transparent;*/
+	/*border-left: 6px solid transparent;*/
+	/*border-top: 6px solid #F1F1F1;*/
+/*}*/
+/*.user-profiles:hover .drop-user-info:after{*/
+	/*display: block;*/
+/*}*/
+
+.drop-user-info .arrow-up{
+	width: 12px;
+	position: absolute;
+	right: 23px;
+	top: -10px;
+	display: none;
+}
+
+.user-profiles:hover .drop-user-back{
+	display: block;
+}
+
+
+
+.user-profiles:hover .arrow-up{
+	display: block;
+}
+
+.drop-user-info .user-pic-big{
+	width: 65px;
+	border-radius: 50%;
+	/*margin: 15px 0 0 12px;*/
+	position: absolute;
+	top:15px;
+	left:12px;
+}
+
+.drop-user-info span{
+	font-size: 12px;
+}
+
+.drop-user-info .name{
+	position: absolute;
+	top: 18px;
+	left: 80px;
+}
+.drop-user-info a .name{
+	color: #e9432d;
+}
+.drop-user-info a:hover .name{
+	text-decoration: underline;
+}
+
+.drop-user-info .detail{
+	position: absolute;
+	top: 46px;
+	left: 80px;
+}
+
+.drop-user-info ul{
+	margin-top:65px;
+}
+
+.drop-user-info ul li{
+	width: 100%;
+	height: 45px;
+	line-height:45px;
+	list-style: none;
+	font-size: 14px;
+	float: left;
+	text-align: left;
+	padding-left:20px;
+}
+
+.drop-user-info ul li:last-child{
+	border-top: 1px solid #CCCCCC;
+}
+
+.drop-user-info ul li a{
+	text-decoration: none;
+	color: #333333;
+	position: relative;
+	top:7px;
+}

@@ -19,14 +19,13 @@ import com.oseasy.initiate.modules.oa.entity.OaNotify;
  */
 @MyBatisDao
 public interface OaNotifyDao extends CrudDao<OaNotify> {
-	
+	public Integer getUnreadCount(String uid);
 	/**
 	 * 获取通知数目
 	 * @param oaNotify
 	 * @return
 	 */
 	public Long findCount(OaNotify oaNotify);
-	
 	public List<OaNotify> loginList(Integer number);
 	public List<OaNotify> findLoginList(OaNotify oaNotify);
 	public List<OaNotify> unReadOaNotifyList(OaNotify oaNotify);

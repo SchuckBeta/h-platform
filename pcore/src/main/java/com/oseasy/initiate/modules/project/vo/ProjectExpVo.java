@@ -1,12 +1,18 @@
 package com.oseasy.initiate.modules.project.vo;
 
+import com.google.common.collect.Lists;
+import com.oseasy.initiate.modules.sys.entity.User;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhangzheng on 2017/4/13.
  * 项目经历
  */
 public class ProjectExpVo {
+	private static final long serialVersionUID = 1L;
     private String id; //项目id
     private String name; //项目名称
     private Date startDate; //项目开始时间
@@ -14,6 +20,46 @@ public class ProjectExpVo {
     private String roleName; //担任角色
     private String level;  //项目评级
     private String result; //项目结果
+    private String proName; //项目类别
+    private String finish;//0-进行中，1已结束
+    private String leaderId;
+    private String userType;
+
+	private List<User> userList = Lists.newArrayList();;
+
+	public List<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
+	}
+
+	public String getLeaderId() {
+		return leaderId;
+	}
+	public void setLeaderId(String leaderId) {
+		this.leaderId = leaderId;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	public String getFinish() {
+		return finish;
+	}
+	public void setFinish(String finish) {
+		this.finish = finish;
+	}
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
 
     public String getId() {
         return id;

@@ -2,7 +2,6 @@
 <template>
 	<jsonparam>
 	<![CDATA[{
-			'url':'模块跳转链接,如：f/gcontesthots/view',
 		    'videoImg': '视频图片链接',
 		    'videoUrl': '视频链接',
 		    'videoTitle': '视频标题',
@@ -12,9 +11,10 @@
 	<content>
 		<![CDATA[<div class="hotspotBox">
 				<!--标题-->
-				<a href="${url}" style="width:300px;display:block;margin:auto;"><img class="title" src="/img/index2.png" /></a>
+				<div class="text-center" style="margin-bottom:-1px;"><a href="/f/gcontesthots/view"><img src="/img/index2.png" /></a></div>
 				<!--大赛热点内容部分-->
-				<div class="content">
+				<div class="hots-container">
+					<div class="content">
 					<!--视频播放-->
 					<div class="leftVideoBox">
 						<video id="media" height="413" preload="metadata" controls="controls" poster="${freemarkerGetFtpUrl(videoImg)}">
@@ -37,9 +37,10 @@
 									</#list>
 								</ul>
 							</div>
-							<a class="prev" href="javascript:void(0)"></a> <a class="next" href="javascript:void(0)"></a>
+							<!--<a class="prev" href="javascript:void(0)"></a> <a class="next" href="javascript:void(0)"></a>-->
 						</div>
 					</div>
+				</div>
 				</div>
 			</div>]]>
 	</content>

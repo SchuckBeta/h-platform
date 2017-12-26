@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oseasy.initiate.modules.proprojectmd.dao.ProModelMdDao">
+
+	<sql id="proModelMdColumns">
+		a.id AS "id",
+		a.model_id AS "modelId",
+		a.app_amount AS "appAmount",
+		a.subject AS "subject",
+		a.app_level AS "appLevel",
+		a.pro_source AS "proSource",
+		a.source_project_name AS "sourceProjectName",
+		a.source_project_type AS "sourceProjectType",
+		a.iis_incubation AS "iisIncubation",
+		a.stage_result AS "stageResult",
+		a.result AS "result",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.app_begin_date AS "appBeginDate",
+		a.app_end_date AS "appEndDate",
+		a.reimbursement_amount AS "reimbursementAmount",
+		a.set_state AS "setState",
+		a.mid_state AS "midState",
+		a.close_state AS "closeState",
+
+		pm.id AS "proModel.id",
+		pm.actyw_id AS "proModel.actYwId",
+		pm.p_name AS "proModel.pName",
+		pm.declare_id AS "proModel.declareId",
+		pm.type AS "proModel.type",
+		pm.pro_category AS "proModel.proCategory",
+		pm.level AS "proModel.level",
+		pm.introduction AS "proModel.introduction",
+		pm.financing_stat AS "proModel.financingStat",
+		pm.team_id AS "proModel.teamId",
+		pm.update_date AS "proModel.updateDate",
+		pm.update_by AS "proModel.updateBy.id",
+		pm.create_date AS "proModel.createDate",
+		pm.create_by AS "proModel.createBy.id",
+		pm.del_flag AS "proModel.delFlag",
+		pm.proc_ins_id AS "proModel.procInsId",
+		pm.pro_mark AS "proModel.proMark",
+		pm.source AS "proModel.source",
+		pm.competition_number AS "proModel.competitionNumber",
+		pm.project_source AS "proModel.projectSource",
+		pm.sub_time AS "proModel.subTime",
+		pm.grade AS "proModel.grade",
+		pm.g_score AS "proModel.gScore",
+
+		st.label AS "subjectName",
+		sd.label AS "appLevelName"
+	</sql>
+
+	<sql id="proModelMdJoins">
+		inner JOIN pro_model pm ON pm.id = a.model_id and pm.del_flag = '0'
+		LEFT JOIN sys_dict sd ON sd.value = a.app_level and sd.type = '0000000196'
+		LEFT JOIN sys_dict st ON st.value = a.subject and st.type= '0000000111'
+	</sql>
+
+	<select id="get" resultType="ProModelMd">
+		SELECT
+			<include refid="proModelMdColumns"/>
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByDeclareId" resultType="ProModelMd">
+		SELECT
+			<include refid="proModelMdColumns"/>
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		WHERE pm.declare_id = #{declareId}
+		and pm.actyw_id = #{actywId}
+		and a.del_flag = '0'
+	</select>
+
+	<select id="getByProModelId" resultType="ProModelMd">
+		SELECT
+			<include refid="proModelMdColumns"/>
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		WHERE a.model_id = #{proModelId} and a.del_flag = '0'
+	</select>
+
+
+	<select id="findList" resultType="ProModelMd">
+		SELECT
+			<include refid="proModelMdColumns"/>
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="ProModelMd">
+		SELECT
+			<include refid="proModelMdColumns"/>
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<select id="getListByModel" resultType="ProModelMd"  parameterType="java.util.Map">
+		SELECT
+			<include refid="proModelMdColumns"/>
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag ='0' and pm.proc_ins_id is not null
+			<if test="actywId != null and actywId != ''">
+			AND  pm.actyw_id= #{actywId}
+			</if>
+		</where>
+		ORDER BY  a.update_date DESC
+		limit #{offset},#{pageSize}
+	</select>
+
+	<select id="getListByModelCount" resultType="java.lang.Integer" >
+		SELECT	count(*)
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag ='0' and pm.proc_ins_id is not null
+			<if test="actywId != null and actywId != ''">
+			AND  pm.actyw_id= #{actywId}
+			</if>
+		</where>
+		ORDER BY  a.update_date DESC
+	</select>
+
+	<insert id="insert">
+		INSERT INTO pro_model_md(
+			id,
+			model_id,
+			app_amount,
+			subject,
+			app_level,
+			pro_source,
+			source_project_name,
+			source_project_type,
+			iis_incubation,
+			stage_result,
+			result,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			app_begin_date,
+			app_end_date,
+			set_state,
+			mid_state,
+			close_state,
+			reimbursement_amount
+		) VALUES (
+			#{id},
+			#{modelId},
+			#{appAmount},
+			#{subject},
+			#{appLevel},
+			#{proSource},
+			#{sourceProjectName},
+			#{sourceProjectType},
+			#{iisIncubation},
+			#{stageResult},
+			#{result},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{appBeginDate},
+			#{appEndDate},
+			#{setState},
+			#{midState},
+			#{closeState},
+			#{reimbursementAmount}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE pro_model_md SET
+			model_id = #{modelId},
+			app_amount = #{appAmount},
+			subject = #{subject},
+			app_level = #{appLevel},
+			pro_source = #{proSource},
+			source_project_name = #{sourceProjectName},
+			source_project_type = #{sourceProjectType},
+			iis_incubation = #{iisIncubation},
+			stage_result = #{stageResult},
+			result = #{result},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			app_begin_date = #{appBeginDate},
+			app_end_date = #{appEndDate},
+			set_state = #{setState},
+			mid_state = #{midState},
+			close_state = #{closeState},
+			reimbursement_amount = #{reimbursementAmount}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE pro_model_md SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="updatePnum">
+		UPDATE pro_model SET
+			competition_number = #{pnum}
+		WHERE id = #{id}
+	</update>
+	<update id="updateApprovalResult">
+		UPDATE pro_model_md SET
+			set_state = #{result}
+		WHERE model_id = #{pid}
+	</update>
+	<update id="updateMidResult">
+		UPDATE pro_model_md SET
+			mid_state = #{result}
+		WHERE model_id = #{pid}
+	</update>
+	<update id="updateCloseResult">
+		UPDATE pro_model_md SET
+			close_state = #{result}
+		WHERE model_id = #{pid}
+	</update>
+	<select id="checkMdProNumber" resultType="java.lang.Integer">
+		select count(1) from pro_model t where t.del_flag='0' and pro_type='1,' and t.type=#{type} and t.competition_number=#{pnum} and t.id !=#{pid}
+	</select>
+	<!--查询所有民大promdelId-->
+	<select id="getAllPromodelMd" resultType="java.lang.String">
+		SELECT
+			a.model_id
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = '0'
+		</where>
+
+	</select>
+
+
+	<select id="getBySetNoPassList" resultType="java.lang.String">
+		SELECT
+			a.model_id
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = '0' and a.set_state='0'
+		</where>
+
+	</select>
+
+	<select id="getByMidNoPassList" resultType="java.lang.String">
+		SELECT
+			a.model_id
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = '0' and a.mid_state='0'
+		</where>
+
+	</select>
+
+	<select id="getByCloseNoPassList" resultType="java.lang.String">
+		SELECT
+			a.model_id
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = '0' and a.close_state='0'
+		</where>
+
+	</select>
+
+	<select id="getListByModelIds" resultType="ProModelMd" parameterType="java.util.List">
+		SELECT
+		<include refid="proModelMdColumns"/>
+		,IFNULL(a.set_state, '2') AS orderNum
+		FROM pro_model_md a
+		<include refid="proModelMdJoins"/>
+		<where>
+			a.del_flag = '0'
+			<if test="ids != null and ids.size >0">
+				AND a.model_id in
+				<foreach item="id" collection="ids" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+		</where>
+		order by orderNum desc
+	</select>
+
+
+
+
+	<select id="checkMdProName" resultType="java.lang.Integer">
+		select count(1) from pro_model t where t.del_flag='0' and pro_type='1,'
+		and t.p_name=#{pname}
+		<if test=" pid !=null and pid !='' ">
+		and t.id !=#{pid}
+		</if>
+		and t.type=#{type}
+	</select>
+
+</mapper>

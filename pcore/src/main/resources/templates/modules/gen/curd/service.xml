@@ -47,6 +47,10 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 		super.delete(${className});
 	}
 
+  	@Transactional(readOnly = false)
+  	public void deleteWL(${ClassName} ${className}) {
+  	  dao.deleteWL(${className});
+  	}
 }]]>
 	</content>
 </template>

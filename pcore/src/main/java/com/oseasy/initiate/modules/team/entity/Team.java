@@ -18,7 +18,7 @@ public class Team extends DataEntity<Team> {
 	private static final long serialVersionUID = 1L;
 	private String name;		// 团队名称
 	private String sponsor;		// 团队负责人
-	private String state;		// 团队状态(0.建设中,1建设完毕，2解散）
+	private String state;		// 团队状态(0.建设中,1建设完毕，2解散，3.待审核，4不通过）
 	private String summary;		// 团队信息简介
 	private String projectName;		// 项目名称
 	private String projectIntroduction;		// 项目简介
@@ -40,7 +40,7 @@ public class Team extends DataEntity<Team> {
 	private Integer schoolNum;
 	private String uName;//用户姓名
 	private String teamUserType;//团队用户类型
-	private String teacherType;//导师类型
+	private String teacherType;//导师来源
     private String userName;
     private String entName;
     private String schName;
@@ -54,7 +54,52 @@ public class Team extends DataEntity<Team> {
     
     private String inResearch; //是否在研
     
-    private  String creator;//创建人，只用于查询
+    private String creator;//创建人，只用于查询
+    private String nameSch;//团队名称，只用于查询
+    private String stateSch;//团队状态，只用于查询
+    private String number;//团队编号
+    private boolean checkJoin;//是否已加入，控制申请加入按钮
+    private boolean checkJoinTUR;//是否已在团队关系表包括申请和邀请，控制申请加入按钮
+    
+	public boolean isCheckJoinTUR() {
+		return checkJoinTUR;
+	}
+
+	public void setCheckJoinTUR(boolean checkJoinTUR) {
+		this.checkJoinTUR = checkJoinTUR;
+	}
+
+	public String getNameSch() {
+		return nameSch;
+	}
+
+	public void setNameSch(String nameSch) {
+		this.nameSch = nameSch;
+	}
+
+	public String getStateSch() {
+		return stateSch;
+	}
+
+	public void setStateSch(String stateSch) {
+		this.stateSch = stateSch;
+	}
+
+	public boolean isCheckJoin() {
+		return checkJoin;
+	}
+
+	public void setCheckJoin(boolean checkJoin) {
+		this.checkJoin = checkJoin;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
 
 	public String getCreator() {
 		return creator;
@@ -161,7 +206,7 @@ public class Team extends DataEntity<Team> {
 	}
 
 	public Integer getEnterpriseNum() {
-		return enterpriseNum;
+		return enterpriseNum==null?0:enterpriseNum;
 	}
 
 	public void setEnterpriseNum(Integer enterpriseNum) {
@@ -169,7 +214,7 @@ public class Team extends DataEntity<Team> {
 	}
 
 	public Integer getSchoolNum() {
-		return schoolNum;
+		return schoolNum==null?0:schoolNum;
 	}
 
 	public void setSchoolNum(Integer schoolNum) {
@@ -177,7 +222,7 @@ public class Team extends DataEntity<Team> {
 	}
 
 	public Integer getUserCount() {
-		return userCount;
+		return userCount==null?0:userCount;
 	}
 
 	public void setUserCount(Integer userCount) {
@@ -247,7 +292,7 @@ public class Team extends DataEntity<Team> {
 	}
 	
 	public Integer getEnterpriseTeacherNum() {
-		return enterpriseTeacherNum;
+		return enterpriseTeacherNum==null?0:enterpriseTeacherNum;
 	}
 
 	public void setEnterpriseTeacherNum(Integer enterpriseTeacherNum) {
@@ -255,7 +300,7 @@ public class Team extends DataEntity<Team> {
 	}
 	
 	public Integer getSchoolTeacherNum() {
-		return schoolTeacherNum;
+		return schoolTeacherNum==null?0:schoolTeacherNum;
 	}
 
 	public void setSchoolTeacherNum(Integer schoolTeacherNum) {
@@ -263,7 +308,7 @@ public class Team extends DataEntity<Team> {
 	}
 	
 	public Integer getMemberNum() {
-		return memberNum;
+		return memberNum==null?0:memberNum;
 	}
 
 	public void setMemberNum(Integer memberNum) {

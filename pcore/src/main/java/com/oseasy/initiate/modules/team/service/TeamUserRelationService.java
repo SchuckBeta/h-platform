@@ -3,32 +3,41 @@
  */
 package com.oseasy.initiate.modules.team.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.IdGen;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
+import com.oseasy.initiate.common.utils.sms.impl.SendParam;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
 import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
 import com.oseasy.initiate.modules.oa.service.OaNotifyService;
+import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
 import com.oseasy.initiate.modules.sys.dao.UserDao;
+import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
 import com.oseasy.initiate.modules.sys.entity.Office;
 import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.service.SystemService;
 import com.oseasy.initiate.modules.sys.service.UserService;
+import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
+import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
 import com.oseasy.initiate.modules.team.dao.TeamDao;
 import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
 import com.oseasy.initiate.modules.team.entity.Team;
 import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
 
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
+import net.sf.json.JSONObject;
 
 /**
  * 团队人员关系表Service
@@ -51,12 +60,175 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	@Autowired
 	private SystemService systemService;
 	@Autowired
-	private ProjectDeclareService projectDeclareService;
-
+	private TeamService teamService;
+	@Autowired
+	private BackTeacherExpansionDao backTeacherExpansionDao;
 	public TeamUserRelation get(String id) {
 		return super.get(id);
 	}
+	private void batchSendSms(List<SendParam> sps,String temp){
+		if(sps!=null&&temp!=null){
+			for(SendParam parm:sps){
+				try {
+					SMSUtilAlidayu.sendSmsTemplate(parm.getToMobile(),SMSUtilAlidayu.AILIDAYU_SMS_TemplateInvite,parm);
+				} catch (Exception e) {
+					logger.error("团队邀请短信发送失败："+parm.getToMobile()+e.getMessage());
+				}
+			}
+		}
+	}
+	@Transactional(readOnly = false)
+	public JSONObject pullIn(String offices,String userIds,String userType,String teamId) {
+		JSONObject json=new JSONObject();
+		try {
+			//查询所有用户
+			List<String> userList=findAllUserId(userType,offices,userIds);
+			int ress=0;
+			if (userList.size()>0) {
+				for (String user1 : userList) {
+					User user=userDao.get(user1);
+					//插入申请记录
+					JSONObject res= pullIn(user,teamId);
+					if("1".equals(res.getString("ret"))){
+						ress++;
+					}
+				}
+			}
+			Team team= teamService.get(teamId);
+			if (team!=null) {
+				TeamUserRelation teamUserRelation=new TeamUserRelation();
+				teamUserRelation.setTeamId(teamId);
+				repTeamstate(team);
+			}
 
+			json.put("success", true);
+			json.put("res", ress);
+		} catch (Exception e) {
+			json.put("success", false);
+			logger.error("负责人直接拉入失败："+e.getMessage());
+		}
+		return json;
+	}
+	//前台方法（不确定和后台的是否完全一致的逻辑，所以分开重构）
+	@Transactional(readOnly = false)
+	public JSONObject frontToInvite(String offices,String userIds,String userType,String teamId){
+		JSONObject json=new JSONObject();
+		try {
+			//查询所有用户 
+			List<String> userList=findAllUserId(userType,offices,userIds);
+			int ress=0;
+			if (userList.size()>0) {
+				Team team=null;
+				if (teamId!=null) {
+					team= teamService.get(teamId);
+				}
+				if(team==null){
+					json.put("success", false);
+					json.put("msg", "邀请失败，未找到团队!");
+					return json;
+				}
+				if(!"0".equals(team.getState())){
+					json.put("success", false);
+					json.put("msg", "邀请失败，只能为建设中的团队进行邀请!");
+					return json;
+				}
+				List<SendParam> sps=new ArrayList<SendParam>();
+				for (String user1 : userList) {
+					if (StringUtil.isNotBlank(user1)) {
+						User user=userDao.get(user1);
+						if (user!=null) {
+							//不需要回复 直接拉入团队
+							//是否直接加入团队 1是有限制 0是无限制
+							SysConfigVo scv=SysConfigUtil.getSysConfigVo();
+							if(scv!=null && "0".equals(scv.getTeamConf().getJoinOnOff())) {
+								//0成功   1已加入其他团队 2从已申请变更加入3新增插入
+								JSONObject res=pullIn(user,teamId);
+								if("1".equals(res.getString("ret"))){
+									repTeamstate(team);
+									ress++;
+								}
+							}else{
+								int res= inseTeamUser(user,teamId,"2");
+								if (res==3) {
+									repTeamstate(team);
+									User teamUser=userDao.get(team.getCreateBy().getId());
+									SendParam parm = new SendParam(teamUser.getName(),team.getName(),user.getMobile());
+									sps.add(parm);
+									ress++;
+									inseOaNotify(UserUtils.getUser(), user1,teamId);
+								}
+
+							}
+						}
+						
+						
+					}
+				}
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						batchSendSms(sps,SMSUtilAlidayu.AILIDAYU_SMS_TemplateInvite);
+					}
+				}).start();
+			}
+			json.put("success", true);
+			json.put("res", ress);
+		} catch (Exception e) {
+			json.put("msg", "邀请失败，未知的系统错误!");
+			json.put("success", false);
+			logger.error("团队邀请出错："+e.getMessage());
+		}
+		return json;
+	}
+	//后台方法（不确定和前台的是否完全一致的逻辑，所以分开重构）
+	@Transactional(readOnly = false)
+	public JSONObject toInvite(String offices,String userIds,String userType,String teamId){
+		JSONObject json=new JSONObject();
+		try {
+			//查询所有用户 
+			List<String> userList=findAllUserId(userType,offices,userIds);
+			Team team=null;
+			if (teamId!=null) {
+				team= teamService.get(teamId);
+			}
+			if(team==null){
+				json.put("success", false);
+				return json;
+			}
+			int ress=0;
+			if (userList.size()>0) {
+				List<SendParam> sps=new ArrayList<SendParam>();
+				for (String user1 : userList) {
+					if (StringUtil.isNotBlank(user1)) {
+	        			User user=userDao.get(user1);
+						User teamUser=team.getCreateBy();
+	        			if (user!=null) {
+	        				int res= inseTeamUser(user,teamId,"2");
+	        				if (res==3) {
+	        					ress++;
+								SendParam parm = new SendParam(teamUser.getName(),team.getName(),user.getMobile());
+								sps.add(parm);
+							}
+        					inseOaNotify(UserUtils.getUser(), user1,teamId);
+        				}
+        			}
+				}
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						batchSendSms(sps,SMSUtilAlidayu.AILIDAYU_SMS_TemplateInvite);
+					}
+				}).start();
+			}
+			json.put("success", true);
+			json.put("res", ress);
+		} catch (Exception e) {
+			json.put("success", false);
+			logger.error("团队邀请出错："+e.getMessage());
+		}
+		
+		return json;
+	}
 
 	/**
 	 * 判断是否以有申请记录   状态  !=3
@@ -76,10 +248,9 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 		return super.findPage(page, teamUserRelation);
 	}
 
-	//改变teamUserRelation 的state状态 改变team 的state状态
 	@Transactional(readOnly = false)
-	public void updateState(TeamUserRelation teamUserRelation) {
-		dao.updateState(teamUserRelation);
+	public void updateStateInTeam(TeamUserRelation teamUserRelation) {
+		dao.updateStateInTeam(teamUserRelation);
 
 	}
 
@@ -105,7 +276,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 		super.delete(teamUserRelation);
 	}
 
-	 public List<TeamUserRelation> findUserInfo(TeamUserRelation teamUserRelation) {
+	 public TeamUserRelation findUserInfo(TeamUserRelation teamUserRelation) {
 		 return dao.findUserInfo(teamUserRelation);
 	 }
 
@@ -121,11 +292,18 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 public TeamUserRelation findUserById(TeamUserRelation teamUserRelation) {
 		 return teamUserRelationDao.findUserById(teamUserRelation);
 	 }
-	//不根据team表state=0去查
-	 public TeamUserRelation findUserById1(TeamUserRelation teamUserRelation) {
-		 return teamUserRelationDao.findUserById1(teamUserRelation);
+	 public TeamUserRelation findUserWillJoinTeam(TeamUserRelation teamUserRelation) {
+		 return teamUserRelationDao.findUserWillJoinTeam(teamUserRelation);
 	 }
-
+	 public TeamUserRelation findUserHasJoinTeam(String userid, String teamid) {
+		 TeamUserRelation teamUserRelation=new TeamUserRelation();
+		 teamUserRelation.setUser(new User(userid));
+		 teamUserRelation.setTeamId(teamid);
+		 return teamUserRelationDao.findUserHasJoinTeam(teamUserRelation);
+	 }
+	 public TeamUserRelation findUserHasJoinTeam(TeamUserRelation teamUserRelation) {
+		 return teamUserRelationDao.findUserHasJoinTeam(teamUserRelation);
+	 }
 	/**插入团队申请记录
 	 *
 	 * @param teamId 申请的teamId
@@ -140,29 +318,30 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			user.setId(applyUser.getId());
 			teamUserRelation.setUser(user);
 			teamUserRelation.setTeamId(teamId);
-			TeamUserRelation teamUserRelationTmp =  this.findUserById(teamUserRelation);
-			if (teamUserRelationTmp!=null) {
-				logger.info("该用户已经加入到团队，不能直接拉入");
-				return 0;
-			}
 
-			List<TeamUserRelation> teamUserInfo=this.findUserInfo(teamUserRelation);//根据用户id查询用户是否存在
-			if (teamUserInfo.size()>0) {//如果用户存在并且状态是加入状态
-				for (TeamUserRelation teamUserRelation2 : teamUserInfo) {
-					//判断是否已加入团队
-					if ("0".equals(teamUserRelation2.getState())) {
-						return 1;
-					}
-					//判断是否已经申请过该团队
-					if (teamUserRelation2.getTeamId()!=null&&teamId.equals(teamUserRelation2.getTeamId())
-							&&(teamUserRelation2.getState().equals("1")||teamUserRelation2.getState().equals("2"))) {
-						teamUserRelation.setUpdateDate(new Date());
-						teamUserRelation.setState(appType);
-						teamUserRelation.setIsNewRecord(false);
-						this.updateByUserId(teamUserRelation);//根据用户id修改
+			TeamUserRelation teamUserRelation2=this.findUserInfo(teamUserRelation);//根据用户id查询用户是否存在
+			if (teamUserRelation2!=null) {//如果用户存在并且状态是加入状态
+				//判断是否已加入团队
+				if ("0".equals(teamUserRelation2.getState())||"4".equals(teamUserRelation2.getState())) {
+					return 1;
+				}
+				//判断是否已经申请过或被邀请过该团队
+				if (teamUserRelation2.getTeamId()!=null&&teamId.equals(teamUserRelation2.getTeamId())
+						&&(teamUserRelation2.getState().equals("1")||teamUserRelation2.getState().equals("2"))) {
+					teamUserRelation2.setUpdateDate(new Date());
+					if(!appType.equals(teamUserRelation2.getState())){
+						teamUserRelation2.setState("0");
+						save(teamUserRelation2);
+						return 3;
+					}else{
+						teamUserRelation2.setState(appType);
+						save(teamUserRelation2);
 						return 2;
 					}
 				}
+			}
+			if(!checkTeamNum(teamId, applyUser)){
+				return 0;
 			}
 			teamUserRelation.setId(IdGen.uuid());//添加id
 			Date now = new Date();
@@ -179,11 +358,29 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			this.save(teamUserRelation);
 			return 3;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 		}
 	}
-
+	private boolean checkTeamNum(String tid,User user){
+		Team teamNums=teamDao.findTeamJoinInNums(tid);
+		if("1".equals(user.getUserType())&&teamNums.getUserCount()>=teamNums.getMemberNum()){
+			return false;
+		}
+		if("2".equals(user.getUserType())){
+			BackTeacherExpansion teab=backTeacherExpansionDao.getByUserId(user.getId());
+			if(teab==null){
+				return false;
+			}
+			if("2".equals(teab.getTeachertype())&&teamNums.getEnterpriseNum()>=teamNums.getEnterpriseTeacherNum()){//企业导师
+				return false;
+			}
+			if(!"2".equals(teab.getTeachertype())&&teamNums.getSchoolNum()>=teamNums.getSchoolTeacherNum()){//校内导师
+				return false;
+			}
+		}
+		return true;
+	}
 
 
 	/**直接插入团队人员
@@ -193,39 +390,40 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
  	 * @return >0成功   1已加入其他团队 2从已申请变更加入3新增插入
 	 */
 	@Transactional(readOnly = false)
-	public int pullIn(User applyUser,String teamId) {
+	public JSONObject pullIn(User applyUser,String teamId) {
+		JSONObject js=new JSONObject();
+		js.put("ret", "0");
 		try {
 			TeamUserRelation teamUserRelation=new TeamUserRelation();
 			User user=new User();
 			user.setId(applyUser.getId());
 			teamUserRelation.setUser(user);
-			//teamUserRelation.setTeamId(teamId);
+			teamUserRelation.setTeamId(teamId);
 
-			TeamUserRelation   teamUserRelationTmp =  this.findUserById(teamUserRelation);
-			if (teamUserRelationTmp!=null) {
-				logger.info("该用户已经加入团队中，不能再次加入！");
-				return 1;
-			}
-
-			List<TeamUserRelation> teamUserInfo=this.findUserInfo(teamUserRelation);//根据用户id查询用户是否存在
-			if (teamUserInfo.size()>0) {//如果用户存在并且状态是加入状态
-				for (TeamUserRelation teamUserRelation2 : teamUserInfo) {
-					//判断是否已加入本团队
-					if ("0".equals(teamUserRelation2.getState())) {
-						return 1;
-					}
-					//判断是否已经申请过该团队
-					if (teamUserRelation2.getTeamId()!=null&&teamId.equals(teamUserRelation2.getTeamId())) {
-						teamUserRelation.setUpdateDate(new Date());
-						teamUserRelation.setState("0");
-						this.updateByUserId(teamUserRelation);//根据用户id修改
-						//int  res= this.pullIncheck(teamUserRelation);
-						//if (res>0) {
-						//}
-
-						return 2;
+			TeamUserRelation teamUserRelation2=this.findUserInfo(teamUserRelation);//根据用户id查询用户是否存在
+			if (teamUserRelation2!=null) {//如果用户存在并且状态是加入状态
+				//判断是否已加入本团队
+				if ("0".equals(teamUserRelation2.getState())||"4".equals(teamUserRelation2.getState())) {
+					js.put("ret", "0");
+					js.put("msg", "已经在团队中");
+					return js;
+				}
+				//判断是否已经申请过该团队
+				if (teamUserRelation2.getTeamId()!=null&&teamId.equals(teamUserRelation2.getTeamId())
+						&&(teamUserRelation2.getState().equals("1")||teamUserRelation2.getState().equals("2"))) {
+					teamUserRelation2.setUpdateDate(new Date());
+					if("1".equals(teamUserRelation2.getState())){
+						teamUserRelation2.setState("0");
+						save(teamUserRelation2);
+						js.put("ret", "1");
+						return js;
 					}
 				}
+			}
+			if(!checkTeamNum(teamId, applyUser)){
+				js.put("ret", "0");
+				js.put("msg", "人数已满");
+				return js;
 			}
 			teamUserRelation.setId(IdGen.uuid());//添加id
 			Date now = new Date();
@@ -241,14 +439,13 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			teamUserRelation.setIsNewRecord(true);
 
 			this.save(teamUserRelation);
-		//	Team team= teamDao.get(teamId);
-//			int  res= this.pullIncheck(teamUserRelation);
-//			if (res>0) {
-//			}
-			return 3;
+			js.put("ret", "1");
+			return js;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
+			logger.error(e.getMessage(),e);
+			js.put("ret", "0");
+			js.put("msg", "发生了未知的错误");
+			return js;
 		}
 	}
 
@@ -259,97 +456,26 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 * @return
 	 */
 	@Transactional(readOnly = false)
-	public void repTeamstate(TeamUserRelation teamUserRelation,Team team) {
-		//List<Team> teamList= teamDao.findNumByTeamId(teamUserRelation);
-		int  stuCount=0;
-		int  te1Count=0;
-		int  te2Count=0;
-		/*if (teamList!=null&&teamList.size()>0) {
-			for (int i = 0; i < teamList.size(); i++) {
-				if (i==0) {
-					stuCount=teamList.get(i).getUserCount();
-				}else if (i==1) {
-					te1Count=teamList.get(i).getUserCount();
-				}else{
-					te2Count=teamList.get(i).getUserCount();
-				}
-			}
-		}*/
-
-		stuCount= teamDao.findStuNumByTeamId(teamUserRelation);
-		te1Count= teamDao.findTe1NumByTeamId(teamUserRelation);
-		te2Count= teamDao.findTe2NumByTeamId(teamUserRelation);
-
-		if (stuCount>=team.getMemberNum() && te1Count>=team.getSchoolTeacherNum() && te2Count>=team.getEnterpriseTeacherNum()) {
+	public void repTeamstate(Team team) {
+		if("0".equals(team.getState())||"1".equals(team.getState())){//根据人数处理团队状态只针对建设中、和建设完成的团队
+			int  stuCount=0;
+			int  te1Count=0;
+			int  te2Count=0;
+	
+			stuCount= teamDao.findStuNumByTeamId(team.getId());
+			te1Count= teamDao.findTe1NumByTeamId(team.getId());
+			te2Count= teamDao.findTe2NumByTeamId(team.getId());
+	
+			if (stuCount==team.getMemberNum() && te1Count==team.getSchoolTeacherNum() && te2Count==team.getEnterpriseTeacherNum()) {
 				team.setState("1");//将团队状态改为建设完毕
 				teamDao.updateTeamState(team);
-		}else{
-			if (team.getState().equals("1")) {
-
 			}else{
 				team.setState("0");//将团队状态改为建设中
 				teamDao.updateTeamState(team);
 			}
-
 		}
 
-
-/*		for (Team team1 : teamList) {
-			if (team1.getUserCount()>=team.getMemberNum() && team1.getUserCount()>=team.getEnterpriseTeacherNum()
-					   && team1.getUserCount()>=team.getSchoolTeacherNum()) {
-						team.setState("1");//将团队状态改为建设完毕
-						teamDao.updateTeamState(team);
-			}else{
-						team.setState("0");//将团队状态改为建设中
-						teamDao.updateTeamState(team);
-			}
-		}*/
 	}
-
-	/**
-	 * 检测是否可拉入.
-	 * @param teamUserRelation 申请人id  申请团队id
-	 * @return int >0成功
-	 */
-	@Transactional(readOnly = false)
-	public int pullIncheck(TeamUserRelation teamUserRelation) {
-		try {
-			if (teamUserRelation.getTeamId()!=null && !teamUserRelation.getTeamId().equals("")
-			   && teamUserRelation.getUser().getId()!=null && !teamUserRelation.getUser().getId().equals("")) {
-				//查询团队里面已经存在的组员人数和申请人的类型
-				List<Team> teamNum=teamDao.findNumByTeamId(teamUserRelation);
-				if (teamNum.size()>0) {
-					Team teamUserNum=teamDao.findRealityNum(teamUserRelation.getTeamId());//查询出原始人数
-					if (teamUserNum != null) {
-						for (Team teamTmp : teamNum) {
-							if ("1".equals(teamTmp.getTeamUserType())) {//类型为学生
-								if (teamTmp.getUserCount()>=teamUserNum.getMemberNum()) {
-									logger.info("学生类型人数已满");
-									return -1;
-								}
-							}
-							if ("1".equals(teamTmp.getTeacherType())) {//判断是否是企业导师
-								if (teamTmp.getUserCount()>=teamUserNum.getEnterpriseTeacherNum()) {
-									logger.info("企业导师人数已满");
-									return -1;
-								}
-							}else if ("2".equals(teamTmp.getTeacherType())) {//判断是否是校园导师
-								if (teamTmp.getUserCount()>=teamUserNum.getSchoolTeacherNum()) {
-									logger.info("校园导师人数已满");
-									return -1;
-								}
-							}
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-		return 1;
-	}
-
 
 
 	/**
@@ -367,7 +493,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			Team teamTmp = teamDao.get(teamId);
 			return this.inseOaNo(teamTmp,TeamSponsor,inseTeamUser) ;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 		}
 	}
@@ -407,7 +533,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			oaNotify.setOaNotifyRecordList(recList);
 			oaNotifyService.save(oaNotify);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 
 		}
@@ -425,9 +551,9 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	public int inseRelOaNo(Team team,User TeamSponsor,List<String> inseTeamUser) {
 		try {
 			OaNotify oaNotify=new OaNotify();
-			oaNotify.setTitle(team.getName()+"团队创建成功");
+			oaNotify.setTitle(team.getName()+(team.getName()!=null&&team.getName().endsWith("团队")?"":"团队")+"创建成功");
 			User  userTmp = systemService.getUser(team.getSponsor());
-			oaNotify.setContent("创建人:"+userTmp.getName()+"的团队的已发布。");
+			oaNotify.setContent(userTmp.getName()+"的团队已发布。");
 			oaNotify.setType("7");
 			oaNotify.setsId(team.getId());
 			oaNotify.setCreateBy(TeamSponsor);
@@ -456,7 +582,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			oaNotify.setOaNotifyRecordList(recList);
 			oaNotifyService.save(oaNotify);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 
 		}
@@ -476,7 +602,6 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 
 		List<String> userListAll = new ArrayList<String>();
 
-		//officeList.add("03f2ded17518420694d402ff64fae0eb");
 
 		try {
 
@@ -539,9 +664,9 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	public void deleteTeamUserInfo(String userId,String teamId) {
 		dao.deleteTeamUserInfo(userId, teamId);
 	}
-
+	
 	@Transactional(readOnly = false)
-	public int deleteTeamUserInfo(Team team,User TeamSponsor,User DelTeamUser) {
+	public int insertDeleteOaNo(Team team,User TeamSponsor,User delTeamUser) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();
@@ -560,18 +685,17 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			List<OaNotifyRecord>  recList=new ArrayList<OaNotifyRecord>();
 			oaNotifyRecord.setId(IdGen.uuid());
 			oaNotifyRecord.setOaNotify(oaNotify);
-			oaNotifyRecord.setUser(DelTeamUser);
+			oaNotifyRecord.setUser(delTeamUser);
 			oaNotifyRecord.setReadFlag("0");
 			oaNotifyRecord.setOperateFlag("0");
 			recList.add(oaNotifyRecord);
 			oaNotify.setOaNotifyRecordList(recList);
 			oaNotifyService.save(oaNotify);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 
 		}
-		dao.deleteTeamUserInfo(DelTeamUser.getId(), team.getId());
 		return 1;
 	}
 
@@ -618,7 +742,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			oaNotify.setOaNotifyRecordList(recList);
 			oaNotifyService.save(oaNotify);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 
 		}
@@ -632,7 +756,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 */
 
 	@Transactional(readOnly = false)
-	public int inseRefuseOaNo(Team team,String type,User user,User sentuser,TeamUserRelation teamUserRelation) {
+	public int inseRefuseOaNo(Team team,String type,User user,User sentuser) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();
@@ -644,12 +768,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			}else {
 				//某某拒绝团队的邀请插入的通知
 				oaNotify.setTitle(user.getName()+"回复团队邀请记录");
-
-		    if (StringUtils.isNotEmpty(teamUserRelation.getTeamId())) {
-					oaNotify.setContent(user.getName()+"已加入别的团队");
-				}else {
-					oaNotify.setContent(user.getName()+"拒绝加入"+team.getName()+"项目团队");
-				}
+				oaNotify.setContent(user.getName()+"拒绝加入"+team.getName()+"项目团队");
 				oaNotifyRecord.setUser(team.getCreateBy());
 			}
 			oaNotify.setType("11");
@@ -672,18 +791,30 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			oaNotify.setOaNotifyRecordList(recList);
 			oaNotifyService.save(oaNotify);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return 0;
 
 		}
 		return 1;
 	}
 	@Transactional(readOnly = false)
-	public void updateTeamUserRelation(TeamUserRelation teamUserRelation) {
-		teamUserRelationDao.updateState(teamUserRelation);
+	public void hiddenDelete(TeamUserRelation teamUserRelation) {
+		teamUserRelationDao.hiddenDelete(teamUserRelation);
 	}
 
-	public void updateStateByInfo(TeamUserRelation teamUserRelation) {
-		teamUserRelationDao.updateStateByInfo(teamUserRelation);
+	@Transactional(readOnly = false)
+	public void updateWeight(TeamUserRelation teamUserRelation)	{
+		teamUserRelationDao.updateWeight(teamUserRelation);
+	}
+
+	public int getWeightTotalByTeamId(String teamId){
+		return teamUserRelationDao.getWeightTotalByTeamId(teamId);
+	}
+
+	public String getTeamStudentName(String teamId) {
+		return teamUserRelationDao.getTeamStudentName(teamId);
+	}
+	public String getTeamTeacherName(String teamId) {
+		return teamUserRelationDao.getTeamTeacherName(teamId);
 	}
 }

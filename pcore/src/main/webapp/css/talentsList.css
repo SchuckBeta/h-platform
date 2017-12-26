@@ -1,0 +1,214 @@
+@charset "utf-8";
+
+
+
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.row {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+}
+
+.edit-bar {
+    margin-bottom: 15px;
+}
+
+.edit-bar-left {
+    position: relative;
+}
+
+.edit-bar-left > span {
+    position: relative;
+    padding: 0 15px 0 0;
+    color: #e9432d;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 2.5;
+    background: #fff;
+    z-index: 1;
+}
+
+.edit-bar-left .line {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-top: 1px solid rgb(243, 213, 175);
+}
+
+.table-page {
+    padding: 0;
+    margin: 30px 0;
+}
+
+#searchForm {
+    padding: 0;
+    height: auto;
+    border: 0;
+}
+
+.form-search .control-label {
+    float: left;
+    padding-left: 15px;
+    padding-right: 8px;
+    width: 82px;
+    font-weight: normal;
+}
+
+.form-search .input-box {
+    margin-left: 82px;
+    padding: 0 15px 0 0;
+}
+
+.form-search input, select {
+    height: 34px;
+    max-width: 100%;
+}
+
+.form-search .form-inline {
+    margin-bottom: 15px;
+}
+
+.form-inline .form-group {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.search-form-wrap, .condition-main {
+    padding: 0 15px;
+    min-height: 34px;
+}
+
+.search-form-wrap .form-inline {
+    font-size: 0;
+}
+
+.search-form-wrap .form-group + input {
+    margin-left: 5px;
+}
+
+.search-form-wrap .form-inline>input + input {
+    margin-left: 5px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+table td .btn {
+    padding: 3px 11px;
+    background: #e5e5e5;
+    color: #666;
+}
+
+table td .btn:hover {
+    background: #e9432d;
+    color: #fff;
+}
+
+table td, table th {
+    text-align: center !important;
+    color: #656565 !important;
+    vertical-align: middle !important;
+}
+
+table td, table th {
+    color: #656565;
+}
+
+th {
+    background: #f4e6d4 !important;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.table-condensed th, .table-condensed td {
+    padding: 4px 5px;
+}
+
+.btn-search, .btn-add, .btn-search:hover, .btn-add:hover, .btn-add:focus, .btn-search:focus {
+    color: #fff;
+    background-color: #dd4814;
+}
+
+.pagination_list {
+    padding-left: 15px;
+}
+
+.num_page {
+    padding-right: 15px;
+}
+.teacher-title,.student-title {
+    height: 40px;
+    line-height: 40px;
+    font-size: 19px;
+    color: #e9442d;
+    padding-left: 10px;
+    background: #e7e7e7;
+    border-right: 1px solid #cecece;
+    border-left: 1px solid #cecece;
+    font-weight: bold;
+}
+
+.guide-teacher-wrap {
+    border: 1px solid #cecece;
+    padding: 20px 24px;
+    height: auto !important;
+    background: #fff;
+}
+.pagination_list li a {
+    text-decoration: none;
+    color: #656565;
+}
+
+.current {
+    background: #e9432d;
+}
+
+.current a {
+    color: #fff !important;
+}
+@media (min-width: 768px) {
+    .search-form-wrap {
+        float: right;
+        width: 275px;
+    }
+
+    .condition-main {
+        margin-right: 275px;
+    }
+
+    .form-search .search-input {
+        width: 120px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-2 {
+        width: auto;
+    }
+
+    .form-search .control-label {
+        width: auto;
+    }
+
+    .form-search .form-control {
+        max-width: 180px;
+        min-width: 120px;
+    }
+
+    .form-search .input-box {
+        float: left;
+        margin-left: auto;
+    }
+}

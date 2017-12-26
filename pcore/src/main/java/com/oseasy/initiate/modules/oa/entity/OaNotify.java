@@ -1,14 +1,14 @@
 /**
- * 
+ *
  */
 package com.oseasy.initiate.modules.oa.entity;
 
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.persistence.DataEntity;
 import com.oseasy.initiate.common.utils.Collections3;
@@ -22,7 +22,57 @@ import com.oseasy.initiate.modules.sys.entity.User;
  * @version 2014-05-16
  */
 public class OaNotify extends DataEntity<OaNotify> {
-	
+	public enum Type_Enum {
+		TYPE3("3", "通知公告"),
+		TYPE4("4", "双创动态"),
+		TYPE8("8", "双创通知"),
+		TYPE9("9", "省市动态"),
+		TYPE5("5", "申请加入"),
+		TYPE6("6", "邀请加入"),
+		TYPE7("7", "团队发布"),
+		TYPE13("13", "删除成员"),
+		TYPE11("11", "拒绝加入"),
+		TYPE10("10", "同意加入"),
+		TYPE14("14", "评审消息"),
+    TYPE15("15", "预约消息"),
+    TYPE61("61", "入驻申请资料消息"),
+    TYPE62("62", "入驻申请警告消息")
+		;
+		private String value;
+		private String name;
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		private Type_Enum(String value, String name) {
+			this.value=value;
+			this.name=name;
+		}
+
+	  public static Type_Enum getByValue(String value) {
+	    Type_Enum[] entitys = Type_Enum.values();
+	    for (Type_Enum entity : entitys) {
+	      if ((value).equals(entity.getValue())) {
+	        return entity;
+	      }
+	    }
+	    return null;
+	  }
+	}
+
 	private static final long serialVersionUID = 1L;
 	private String type;		// 类型
 	private String title;		// 标题
@@ -32,38 +82,39 @@ public class OaNotify extends DataEntity<OaNotify> {
 
 	private String readNum;		// 已读
 	private String unReadNum;	// 未读
-	
+
 	private boolean isSelf;		// 是否只查询自己的通知
-	
+
 	private String readFlag;	// 本人阅读状态
-	
+	private String operateFlag;	// 本人操作状态
+
 	private Date effectiveDate;//生效日期
 	private Date endDate;//结束日期
-	
+
 	private String sendType;//发送类型 1：广播  2：定向
-	
+
 	private List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();//定向发送时保存接收人集合
 
 
-	
+
 	private List<OaNotifyRecord> oaNotifyRecordListBroadcast = Lists.newArrayList();//广播发送时保存接收人集合
-	
+
 	private String oaNotifyRecordIdsBroadCast;//广播时的所以接收人ids
-	
+
 	private String sId;//大赛id或项目id
-	
+
 	private String protype;
-	
+
 	private String userId;
-	
+
 	private String publishDate;
-	
+
 	private String source;//来源
-	
+
 	private String views;//浏览量
 	private List<String> keywords;
-	
-	
+
+
 	public List<String> getKeywords() {
 		return keywords;
 	}
@@ -140,7 +191,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	@Length(min=0, max=2, message="类型长度必须介于 0 和 1 之间")
 	public String getType() {
 		return type;
@@ -149,7 +200,15 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
+	public String getOperateFlag() {
+		return operateFlag;
+	}
+
+	public void setOperateFlag(String operateFlag) {
+		this.operateFlag = operateFlag;
+	}
+
 	@Length(min=0, max=1, message="状态长度必须介于 0 和 1 之间")
 	public String getStatus() {
 		return status;
@@ -158,7 +217,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	@Length(min=0, max=2000, message="附件长度必须介于 0 和 2000 之间")
 	public String getFiles() {
 		return files;
@@ -191,7 +250,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public void setUnReadNum(String unReadNum) {
 		this.unReadNum = unReadNum;
 	}
-	
+
 	public List<OaNotifyRecord> getOaNotifyRecordList() {
 		return oaNotifyRecordList;
 	}
@@ -199,7 +258,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public void setOaNotifyRecordList(List<OaNotifyRecord> oaNotifyRecordList) {
 		this.oaNotifyRecordList = oaNotifyRecordList;
 	}
-	
+
 	/**
 	 * 获取通知发送记录用户ID
 	 * @return
@@ -207,7 +266,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public String getOaNotifyRecordIds() {
 		return Collections3.extractToString(oaNotifyRecordList, "user.id", ",") ;
 	}
-	
+
 	/**
 	 * 设置通知发送记录用户ID
 	 * @return
@@ -224,9 +283,9 @@ public class OaNotify extends DataEntity<OaNotify> {
 		}
 	}
 
-	
-	
-	
+
+
+
 	public String getOaNotifyRecordIdsBroadCast() {
 		return Collections3.extractToString(oaNotifyRecordListBroadcast, "user.id", ",");
 	}
@@ -318,5 +377,5 @@ public class OaNotify extends DataEntity<OaNotify> {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-	
+
 }

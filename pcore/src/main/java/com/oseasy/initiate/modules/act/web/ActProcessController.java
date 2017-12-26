@@ -58,7 +58,7 @@ public class ActProcessController extends BaseController {
 		/*
 		 * 保存两个对象，一个是ProcessDefinition（流程定义），一个是Deployment（流程部署）
 		 */
-	    Page<Object[]> page = actProcessService.processList(new Page<Object[]>(request, response), category);
+	  Page<Object[]> page = actProcessService.processList(new Page<Object[]>(request, response), category);
 		model.addAttribute("page", page);
 		model.addAttribute("category", category);
 		return "modules/act/actProcessList";
@@ -70,7 +70,7 @@ public class ActProcessController extends BaseController {
 	@RequiresPermissions("act:process:edit")
 	@RequestMapping(value = "running")
 	public String runningList(String procInsId, String procDefKey, HttpServletRequest request, HttpServletResponse response, Model model) {
-	    Page<ProcessInstance> page = actProcessService.runningList(new Page<ProcessInstance>(request, response), procInsId, procDefKey);
+    Page<ProcessInstance> page = actProcessService.runningList(new Page<ProcessInstance>(request, response), procInsId, procDefKey);
 		model.addAttribute("page", page);
 		model.addAttribute("procInsId", procInsId);
 		model.addAttribute("procDefKey", procDefKey);
@@ -112,11 +112,9 @@ public class ActProcessController extends BaseController {
 	 */
 	@RequiresPermissions("act:process:edit")
 	@RequestMapping(value = "/deploy", method=RequestMethod.POST)
-	public String deploy(@Value("#{APP_PROP['activiti.export.diagram.path']}") String exportDir,
-			String category, MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String deploy(@Value("#{APP_PROP['activiti.export.diagram.path']}") String exportDir, String category, MultipartFile file, RedirectAttributes redirectAttributes) {
 
 		String fileName = file.getOriginalFilename();
-
 		if (StringUtil.isBlank(fileName)) {
 			redirectAttributes.addFlashAttribute("message", "请选择要部署的流程文件");
 		}else{

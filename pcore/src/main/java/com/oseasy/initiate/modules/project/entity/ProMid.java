@@ -1,5 +1,9 @@
 package com.oseasy.initiate.modules.project.entity;
 
+import com.google.common.collect.Lists;
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +31,10 @@ public class ProMid extends DataEntity<ProMid> {
 	private List<ProSituation> proSituationList;  // 子表  组成员完成情况
 	private List<ProProgress> proProgresseList;    // 子表 计划工作任务
 
+	private AttachMentEntity attachMentEntity;
+
+	private List<TeamUserRelation>  teamUserRelationList = Lists.newArrayList(); //团队信息
+	private List<TeamUserHistory>  teamUserHistoryList = Lists.newArrayList(); //团队信息
 
 	public ProMid() {
 		super();
@@ -36,6 +44,13 @@ public class ProMid extends DataEntity<ProMid> {
 		super(id);
 	}
 
+	public List<TeamUserHistory> getTeamUserHistoryList() {
+		return teamUserHistoryList;
+	}
+
+	public void setTeamUserHistoryList(List<TeamUserHistory> teamUserHistoryList) {
+		this.teamUserHistoryList = teamUserHistoryList;
+	}
 
 	public String getProjectId() {
 		return projectId;
@@ -110,5 +125,21 @@ public class ProMid extends DataEntity<ProMid> {
 
 	public void setProProgresseList(List<ProProgress> proProgresseList) {
 		this.proProgresseList = proProgresseList;
+	}
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
+	}
+
+	public List<TeamUserRelation> getTeamUserRelationList() {
+		return teamUserRelationList;
+	}
+
+	public void setTeamUserRelationList(List<TeamUserRelation> teamUserRelationList) {
+		this.teamUserRelationList = teamUserRelationList;
 	}
 }

@@ -15,33 +15,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.bpmn.model.SubProcess;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.ActivitiIllegalArgumentException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.RuntimeServiceImpl;
 import org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.interceptor.CommandExecutor;
+import org.activiti.engine.impl.javax.el.ExpressionFactory;
+import org.activiti.engine.impl.javax.el.ValueExpression;
+import org.activiti.engine.impl.juel.ExpressionFactoryImpl;
+import org.activiti.engine.impl.juel.SimpleContext;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.impl.pvm.PvmActivity;
+import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
@@ -56,16 +59,17 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.BaseService;
 import com.oseasy.initiate.common.utils.StringUtil;
@@ -80,28 +84,32 @@ import com.oseasy.initiate.modules.act.service.creator.SimpleRuntimeActivityDefi
 import com.oseasy.initiate.modules.act.utils.ActUtils;
 import com.oseasy.initiate.modules.act.utils.ProcessDefCache;
 import com.oseasy.initiate.modules.act.utils.ProcessDefUtils;
-import com.oseasy.initiate.modules.act.vo.ProcessMapVo;
-import com.oseasy.initiate.modules.act.vo.ProjectEnd;
-import com.oseasy.initiate.modules.actyw.tool.process.rest.ActYwModelRestResource;
+import com.oseasy.initiate.modules.actyw.entity.ActYw;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
+import com.oseasy.initiate.modules.actyw.entity.ActYwNode;
+import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
+import com.oseasy.initiate.modules.actyw.service.ActYwService;
+import com.oseasy.initiate.modules.actyw.tool.process.ActYwTool;
+import com.oseasy.initiate.modules.promodel.entity.ProModel;
+import com.oseasy.initiate.modules.sys.entity.Role;
 import com.oseasy.initiate.modules.sys.entity.User;
+import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.oseasy.initiate.modules.sys.service.UserService;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
 
 /**
  * 流程定义相关Service
-
-
  */
 @Service
 @Transactional(readOnly = true)
 public class ActTaskService extends BaseService {
-  protected static final Logger LOGGER = Logger.getLogger(ActTaskService.class);
+	protected static final Logger LOGGER = Logger.getLogger(ActTaskService.class);
 
 	@Autowired
 	private ActDao actDao;
 
 	@Autowired
 	private ProcessEngineFactoryBean processEngineFactory;
-
 	@Autowired
 	private ProcessEngine processEngine;
 	@Autowired
@@ -116,15 +124,23 @@ public class ActTaskService extends BaseService {
 	private RepositoryService repositoryService;
 	@Autowired
 	private IdentityService identityService;
-
-
-
+	@Autowired
+	private ActYwGnodeService actYwGnodeService;
+	@Autowired
+	private ActYwService actYwService;
+	@Autowired
+	private SystemService systemService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private TeamUserHistoryService teamUserHistoryService;
 
 	/**
 	 * 2017-2-27  addBy zhangzheng
 	 * 获取待审核任务 带分页的
+	 *
 	 * @param page
-	 * @param act 查询条件封装
+	 * @param act  查询条件封装
 	 * @return
 	 */
 	public Page<Act> todoListForPage(Page<Act> page, Act act) {
@@ -138,14 +154,14 @@ public class ActTaskService extends BaseService {
 			todoTaskQuery.processDefinitionKey(act.getProcDefKey());
 		}
 		//遍历act.getVars().getMap() 设置processVariableValueLike
-		if (act.getMap()!=null) {
+		if (act.getMap() != null) {
 			for (Map.Entry<String, String> entry : act.getMap().entrySet()) {
-				todoTaskQuery.processVariableValueLike(entry.getKey(),"%"+entry.getValue() +"%");
+				todoTaskQuery.processVariableValueLike(entry.getKey(), "%" + entry.getValue() + "%");
 			}
 		}
 
 		if (StringUtil.isNotBlank(act.getTaskDefKey())) {  //addBy zhangzheng 查询阶段
-			todoTaskQuery.taskDefinitionKeyLike("%"+act.getTaskDefKey()+"%");
+			todoTaskQuery.taskDefinitionKeyLike("%" + act.getTaskDefKey() + "%");
 		}
 
 		if (act.getBeginDate() != null) {
@@ -155,7 +171,7 @@ public class ActTaskService extends BaseService {
 			Date endDate = act.getEndDate();
 			Calendar rightNow = Calendar.getInstance();
 			rightNow.setTime(endDate);
-			rightNow.add(Calendar.DAY_OF_YEAR,1);//日期加1天
+			rightNow.add(Calendar.DAY_OF_YEAR, 1);//日期加1天
 			todoTaskQuery.taskCreatedBefore(rightNow.getTime());
 		}
 		// =============== 等待签收的任务  ===============
@@ -167,14 +183,14 @@ public class ActTaskService extends BaseService {
 			toClaimQuery.processDefinitionKey(act.getProcDefKey());
 		}
 		//遍历act.getVars().getMap() 设置processVariableValueLike
-		if (act.getMap()!=null) {
+		if (act.getMap() != null) {
 			for (Map.Entry<String, String> entry : act.getMap().entrySet()) {
-				toClaimQuery.processVariableValueLike(entry.getKey(),"%"+entry.getValue() +"%");
+				toClaimQuery.processVariableValueLike(entry.getKey(), "%" + entry.getValue() + "%");
 			}
 		}
 
 		if (StringUtil.isNotBlank(act.getTaskDefKey())) {  //addBy zhangzheng 查询阶段
-			toClaimQuery.taskDefinitionKeyLike("%"+act.getTaskDefKey()+"%");
+			toClaimQuery.taskDefinitionKeyLike("%" + act.getTaskDefKey() + "%");
 		}
 
 		if (act.getBeginDate() != null) {
@@ -184,12 +200,12 @@ public class ActTaskService extends BaseService {
 			Date endDate = act.getEndDate();
 			Calendar rightNow = Calendar.getInstance();
 			rightNow.setTime(endDate);
-			rightNow.add(Calendar.DAY_OF_YEAR,1);//日期加1天
+			rightNow.add(Calendar.DAY_OF_YEAR, 1);//日期加1天
 			toClaimQuery.taskCreatedBefore(rightNow.getTime());
 		}
 
 		// 查询总数
-		page.setCount(todoTaskQuery.count()+toClaimQuery.count());
+		page.setCount(todoTaskQuery.count() + toClaimQuery.count());
 		List<Act> actList = Lists.newArrayList();
 		// 查询列表
 		List<Task> todoList = todoTaskQuery.list();
@@ -217,13 +233,12 @@ public class ActTaskService extends BaseService {
 				return act2.getTask().getCreateTime().compareTo(act1.getTask().getCreateTime());
 			}
 		});
-
-		int pageStart=(page.getPageNo()-1)*page.getPageSize();
-		int pageEnd=actList.size();
-		if (actList.size()>page.getPageNo()*page.getPageSize()) {
-			pageEnd=page.getPageNo()*page.getPageSize();
+		int pageStart = (page.getPageNo() - 1) * page.getPageSize();
+		int pageEnd = actList.size();
+		if (actList.size() > page.getPageNo() * page.getPageSize()) {
+			pageEnd = page.getPageNo() * page.getPageSize();
 		}
-		List<Act> subList=actList.subList(pageStart,pageEnd);
+		List<Act> subList = actList.subList(pageStart, pageEnd);
 		page.setList(subList);
 
 		return page;
@@ -232,8 +247,9 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 获取已审核任务
+	 *
 	 * @param page
-	 * @param act 查询条件封装
+	 * @param act  查询条件封装
 	 * @return
 	 */
 	public Page<Act> historicList(Page<Act> page, Act act) {
@@ -246,14 +262,14 @@ public class ActTaskService extends BaseService {
 		}
 
 		//遍历act.getVars().getMap() 设置processVariableValueLike
-		if (act.getMap()!=null) {
+		if (act.getMap() != null) {
 			for (Map.Entry<String, String> entry : act.getMap().entrySet()) {
-				histTaskQuery.processVariableValueLike(entry.getKey(),"%"+entry.getValue() +"%");
+				histTaskQuery.processVariableValueLike(entry.getKey(), "%" + entry.getValue() + "%");
 			}
 		}
 
 		if (StringUtil.isNotBlank(act.getTaskDefKey())) {  //addBy zhangzheng 查询阶段
-			histTaskQuery.taskDefinitionKeyLike("%"+act.getTaskDefKey()+"%");
+			histTaskQuery.taskDefinitionKeyLike("%" + act.getTaskDefKey() + "%");
 		}
 
 		if (act.getBeginDate() != null) {
@@ -267,7 +283,7 @@ public class ActTaskService extends BaseService {
 		// 查询列表
 		List<HistoricTaskInstance> histList = histTaskQuery.listPage(page.getFirstResult(), page.getMaxResults());
 		//处理分页问题
-		List<Act> actList=Lists.newArrayList();
+		List<Act> actList = Lists.newArrayList();
 		for (HistoricTaskInstance histTask : histList) {
 			Act e = new Act();
 			e.setHistTask(histTask);
@@ -287,14 +303,14 @@ public class ActTaskService extends BaseService {
 
 
 	/**
-	 * @author zhangzheng 多任务实例查询当前任务环节没完成的数量
 	 * @param processDefinitionKey 流程编号
-	 * @param taskDefinitionKey 当前用户任务编号
-	 * @param proInsId   流程实例id,对应业务表的pro_ins_id字段
+	 * @param taskDefinitionKey    当前用户任务编号
+	 * @param proInsId             流程实例id,对应业务表的pro_ins_id字段
 	 * @return
+	 * @author zhangzheng 多任务实例查询当前任务环节没完成的数量
 	 */
-	public Integer taskCount(String processDefinitionKey,String taskDefinitionKey,String proInsId) {
-		int count=0;
+	public Integer taskCount(String processDefinitionKey, String taskDefinitionKey, String proInsId) {
+		int count = 0;
 		// =============== 已经签收的任务  ===============
 		TaskQuery todoTaskQuery = taskService.createTaskQuery().active()
 				.includeProcessVariables().orderByTaskCreateTime().desc();
@@ -302,133 +318,254 @@ public class ActTaskService extends BaseService {
 		todoTaskQuery.taskDefinitionKey(taskDefinitionKey);
 		todoTaskQuery.processInstanceId(proInsId);
 
-		count+=todoTaskQuery.count();
+		count += todoTaskQuery.count();
 		return count;
 	}
 
 	/**
+	 * @param processDefinitionKey 流程编号
+	 * @param taskDefinitionKey    当前用户任务编号
+	 * @param proInsId             流程实例id,对应业务表的pro_ins_id字段
+	 * @return
 	 * @author zhangzheng 多任务实例查询当前任务环节是否完成
-	 * @param processDefinitionKey 流程编号
-	 * @param taskDefinitionKey 当前用户任务编号
-	 * @param proInsId   流程实例id,对应业务表的pro_ins_id字段
-	 * @return
 	 */
-	public boolean isMultiFinished(String processDefinitionKey,String taskDefinitionKey,String proInsId) {
-		int count=taskCount(processDefinitionKey,taskDefinitionKey,proInsId);
-		if (count==0) {
+	public boolean isMultiFinished(String processDefinitionKey, String taskDefinitionKey, String proInsId) {
+		int count = taskCount(processDefinitionKey, taskDefinitionKey, proInsId);
+		if (count == 0) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
 	/**
+	 * @param processDefinitionKey 流程编号
+	 * @param taskDefinitionKey    当前用户任务编号
+	 * @param proInsId             流程实例id,对应业务表的pro_ins_id字段
+	 * @return
 	 * @author zhangzheng 多任务实例查询当前任务环节是否是最后一个
-	 * @param processDefinitionKey 流程编号
-	 * @param taskDefinitionKey 当前用户任务编号
-	 * @param proInsId   流程实例id,对应业务表的pro_ins_id字段
-	 * @return
 	 */
-	public boolean isMultiLast(String processDefinitionKey,String taskDefinitionKey,String proInsId) {
-		int count=taskCount(processDefinitionKey,taskDefinitionKey,proInsId);
-		if (count==1) {
+	public boolean isMultiLast(String processDefinitionKey, String taskDefinitionKey, String proInsId) {
+		int count = taskCount(processDefinitionKey, taskDefinitionKey, proInsId);
+		if (count == 1) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * @author zhangzheng 并行多任务实例获取开始后的一个节点的角色名
-	 * @param processDefinitionKey  流程编号
+	 * @param processDefinitionKey 流程编号
 	 * @return
+	 * @author zhangzheng 并行多任务实例获取开始后的一个节点的角色名
 	 */
 	public String getStartNextRoleName(String processDefinitionKey) {
-		String roleName="";
+		String roleName = "";
 		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
 				.latestVersion().active();
 		processDefinitionQuery.processDefinitionKey(processDefinitionKey);
-		List<ProcessDefinition> listProcess= processDefinitionQuery.list();
-		String processDefinitionId="";
-		for (ProcessDefinition processDefinition:listProcess) {
+		List<ProcessDefinition> listProcess = processDefinitionQuery.list();
+		String processDefinitionId = "";
+		for (ProcessDefinition processDefinition : listProcess) {
 			if (processDefinitionKey.equals(processDefinition.getKey())) {
-				processDefinitionId=processDefinition.getId();
+				processDefinitionId = processDefinition.getId();
 			}
-
 		}
-
-		BpmnModel bpmnModel =repositoryService.getBpmnModel(processDefinitionId);
-		List<Process> processes=bpmnModel.getProcesses();
-		Process process=processes.get(0);
+		BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
+		List<Process> processes = bpmnModel.getProcesses();
+		Process process = processes.get(0);
 		//获取所有的FlowElement信息
 		Collection<FlowElement> flowElements = process.getFlowElements();
-
 		for (FlowElement flowElement : flowElements) {
 			//如果是任务节点
 			if (flowElement instanceof UserTask) {
-				UserTask userTask=(UserTask) flowElement;
-
+				UserTask userTask = (UserTask) flowElement;
 				//获取入线信息
 				List<SequenceFlow> incomingFlows = userTask.getIncomingFlows();
-				SequenceFlow incomingFlow=incomingFlows.get(0);
+				SequenceFlow incomingFlow = incomingFlows.get(0);
 				if (incomingFlow.getSourceRef().contains("start")) {
-					roleName=userTask.getAssignee();
+					roleName = userTask.getAssignee();
 				}
 			}
 		}
-
-		String[] roleNames =roleName.split("\\}");
-		String roleName0=roleNames[0];
-		String[] realName= roleName0.split("\\{");
-
+		String[] roleNames = roleName.split("\\}");
+		String roleName0 = roleNames[0];
+		String[] realName = roleName0.split("\\{");
 		return realName[1];
 	}
 
-
 	/**
-	 * @author zhangzheng 并行多任务实例获取下一个节点的角色名
-	 * @param taskDefKey 当前节点编号
 	 * @param processDefinitionKey 流程编号
 	 * @return
+	 * @author zhangzheng 流程含子流程，并行多任务实例获取开始后的一个节点的角色名
 	 */
-	public String getNextRoleName(String taskDefKey,String processDefinitionKey) {
-		String assignee=""; //${teacher}
-		String nextTaskDefKey="";
+	public String getProcessStartRoleName(String processDefinitionKey) {
+		String roleName = "";
 		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
 				.latestVersion().active();
 		processDefinitionQuery.processDefinitionKey(processDefinitionKey);
-		List<ProcessDefinition> listProcess= processDefinitionQuery.list();
-		String processDefinitionId=listProcess.get(0).getId();
+		List<ProcessDefinition> listProcess = processDefinitionQuery.list();
+		String processDefinitionId = "";
+		for (ProcessDefinition processDefinition : listProcess) {
+			if (processDefinitionKey.equals(processDefinition.getKey())) {
+				processDefinitionId = processDefinition.getId();
+			}
+		}
+		BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
+		List<Process> processes = bpmnModel.getProcesses();
+		Process process = processes.get(0);
+		//获取所有的FlowElement信息
+		Collection<FlowElement> flowElements = process.getFlowElements();
+		for (FlowElement flowElement : flowElements) {
+			//查询第一个子流程
+			if (flowElement instanceof SubProcess) {
+				SubProcess subProcess = (SubProcess) flowElement;
+				Collection<FlowElement> incomingFlows = subProcess.getFlowElements();
+				for (FlowElement flowElementsub : incomingFlows) {
 
-		BpmnModel bpmnModel =repositoryService.getBpmnModel(processDefinitionId);
-		List<Process> processes=bpmnModel.getProcesses();
-		Process process=processes.get(0);
+					if (flowElementsub instanceof UserTask) {
+						UserTask userTask = (UserTask) flowElementsub;
+						roleName = userTask.getAssignee();
+						break;
+					}
+				}
+				if (roleName.length() > 0) {
+					break;
+				}
+			}
+		}
+		String[] roleNames = roleName.split("\\}");
+		String roleName0 = roleNames[0];
+		String[] realName = roleName0.split("\\{");
+		return realName[1];
+	}
+
+	/**
+	 * @param taskDefKey           当前节点编号
+	 * @param processDefinitionKey 流程编号
+	 * @return
+	 * @author zhangzheng 含有子流程并行多任务实例获取下一个节点的角色名
+	 */
+	public String getProcessNextRoleName(String taskDefKey, String processDefinitionKey) {
+		String roleName = ""; //${teacher}
+		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
+				.latestVersion().active();
+		processDefinitionQuery.processDefinitionKey(processDefinitionKey);
+		List<ProcessDefinition> listProcess = processDefinitionQuery.list();
+		String processDefinitionId = listProcess.get(0).getId();
+
+		List<UserTask> userTaskList = getSubProcess(processDefinitionId);
+		for (int i = 0; i < userTaskList.size(); i++) {
+			if (userTaskList.get(i).getId().equals(taskDefKey)) {
+				if ((i + 1) == userTaskList.size()) {
+					break;
+				}
+				roleName = userTaskList.get(i + 1).getAssignee();
+				break;
+			}
+		}
+		if (StringUtil.isNotBlank(roleName)) {
+			String[] roleNames = roleName.split("\\}");
+			String roleName0 = roleNames[0];
+			String[] realName = roleName0.split("\\{");
+			return realName[1];
+		} else {
+			return "";
+		}
+
+	}
+
+	/**
+	 * @param taskDefKey           当前节点编号
+	 * @param processDefinitionKey 流程编号
+	 * @return
+	 * @author zhangzheng 含有子流程并行多任务实例获取下一个节点的角色名
+	 */
+	public String getProcessPreNode(String taskDefKey, String processDefinitionKey) {
+		String PreNode = ""; //${teacher}
+		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
+				.latestVersion().active();
+		processDefinitionQuery.processDefinitionKey(processDefinitionKey);
+		List<ProcessDefinition> listProcess = processDefinitionQuery.list();
+		String processDefinitionId = listProcess.get(0).getId();
+
+		List<UserTask> userTaskList = getSubProcess(processDefinitionId);
+		for (int i = 0; i < userTaskList.size(); i++) {
+			if (userTaskList.get(i).getId().equals(taskDefKey)) {
+				if (i == 0) {
+					break;
+				}
+				PreNode = userTaskList.get(i - 1).getId();
+				break;
+			}
+		}
+		return PreNode;
+	}
+
+
+	public List<UserTask> getSubProcess(String processDefinitionId) {
+		List<UserTask> userTaskList = new ArrayList<UserTask>();
+		BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
+		List<Process> processes = bpmnModel.getProcesses();
+		Process process = processes.get(0);
+		//获取所有的FlowElement信息
+		Collection<FlowElement> flowElements = process.getFlowElements();
+		//获取所有任务节点
+		for (FlowElement flowElement : flowElements) {
+			if (flowElement instanceof SubProcess) {
+				SubProcess subProcess = (SubProcess) flowElement;
+				Collection<FlowElement> incomingFlows = subProcess.getFlowElements();
+				for (FlowElement flowElementsub : incomingFlows) {
+					if (flowElementsub instanceof UserTask) {
+						UserTask userTask = (UserTask) flowElementsub;
+						userTaskList.add(userTask);
+					}
+				}
+			}
+		}
+		return userTaskList;
+	}
+
+	/**
+	 * @param taskDefKey           当前节点编号
+	 * @param processDefinitionKey 流程编号
+	 * @return
+	 * @author zhangzheng 并行多任务实例获取下一个节点的角色名
+	 */
+	public String getNextRoleName(String taskDefKey, String processDefinitionKey) {
+		String assignee = ""; //${teacher}
+		String nextTaskDefKey = "";
+		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
+				.latestVersion().active();
+		processDefinitionQuery.processDefinitionKey(processDefinitionKey);
+		List<ProcessDefinition> listProcess = processDefinitionQuery.list();
+		String processDefinitionId = listProcess.get(0).getId();
+
+		BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinitionId);
+		List<Process> processes = bpmnModel.getProcesses();
+		Process process = processes.get(0);
 		//获取所有的FlowElement信息
 		Collection<FlowElement> flowElements = process.getFlowElements();
 		for (FlowElement flowElement : flowElements) {
 			//如果是任务节点
 			if (flowElement instanceof UserTask) {
-
-				UserTask userTask=(UserTask) flowElement;
-
+				UserTask userTask = (UserTask) flowElement;
 				if (taskDefKey.equals(userTask.getId())) { //如果是当前节点，获取下个节点的名称
-					List<SequenceFlow> outGoingFlows=  userTask.getOutgoingFlows();
-					SequenceFlow  outGoingFlow=outGoingFlows.get(0);
-					if ( outGoingFlow.getTargetRef().contains("audit")) {
-						nextTaskDefKey=outGoingFlow.getTargetRef();
+					List<SequenceFlow> outGoingFlows = userTask.getOutgoingFlows();
+					SequenceFlow outGoingFlow = outGoingFlows.get(0);
+					if (outGoingFlow.getTargetRef().contains("audit")) {
+						nextTaskDefKey = outGoingFlow.getTargetRef();
 						break;
 					}
 				}
-
 			}
 		}
-
 		if (StringUtil.isNotBlank(nextTaskDefKey)) {
 			for (FlowElement flowElement : flowElements) {
 				if (flowElement instanceof UserTask) {
-					UserTask userTask=(UserTask) flowElement;
+					UserTask userTask = (UserTask) flowElement;
 					if (nextTaskDefKey.equals(userTask.getId())) {
-						assignee=userTask.getAssignee();
+						assignee = userTask.getAssignee();
 					}
 				}
 			}
@@ -436,12 +573,11 @@ public class ActTaskService extends BaseService {
 		}
 
 		if (StringUtil.isNotBlank(assignee)) {
-			String[] roleNames =assignee.split("\\}");
-			String roleName0=roleNames[0];
-			String[] realName= roleName0.split("\\{");
-
+			String[] roleNames = assignee.split("\\}");
+			String roleName0 = roleNames[0];
+			String[] realName = roleName0.split("\\{");
 			return realName[1];
-		}else{
+		} else {
 			return "";
 		}
 
@@ -449,24 +585,193 @@ public class ActTaskService extends BaseService {
 
 
 	/**
-	 * @author zhangzheng 根据流程实例id得到流程定义id
-	 * @param proInstId  流程实例Id
+	 * @param proInstId 流程实例Id
 	 * @return
-     */
+	 * @author zhangzheng 根据流程实例id得到流程定义id
+	 */
 	public String getProcessDefinitionIdByProInstId(String proInstId) {
-		List<HistoricTaskInstance> hisList=historyService.createHistoricTaskInstanceQuery()
+		List<HistoricTaskInstance> hisList = historyService.createHistoricTaskInstanceQuery()
 				.processInstanceId(proInstId).list();
-		if (hisList.size()>0) {
-			HistoricTaskInstance hisTaskIns=hisList.get(0);
+		if (hisList.size() > 0) {
+			HistoricTaskInstance hisTaskIns = hisList.get(0);
 			return hisTaskIns.getProcessDefinitionId();
-		}else{
+		} else {
 			return "";
 		}
+	}
+
+	/**
+	 * 获取民大待审核列表
+	 *
+	 * @return
+	 */
+	public List<String> modelMdtodoList(Act act, String keyName) {
+		String userName = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId());
+		List<String> result = new ArrayList<String>();
+		// =============== 已经签收的任务  ===============
+		TaskQuery todoTaskQuery = taskService.createTaskQuery().taskAssignee(userName).active()
+				.includeProcessVariables().orderByTaskCreateTime().desc();
+		//对应模块
+		todoTaskQuery.taskDefinitionKey(keyName);
+		if (StringUtil.isNotBlank(act.getProcDefKey())) {
+			todoTaskQuery.processDefinitionKey(act.getProcDefKey());
+		}
+		// 查询列表
+		List<Task> todoList = todoTaskQuery.list();
+		for (Task task : todoList) {
+			Act e = new Act();
+			e.setVars(task.getProcessVariables());
+			result.add((String) e.getVars().getMap().get("id"));
+		}
+		// =============== 已经审核的任务  ===============
+		HistoricTaskInstanceQuery histTaskQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(userName).finished()
+				.includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
+		// 设置查询条件
+		histTaskQuery.taskDefinitionKey(keyName);
+		if (StringUtil.isNotBlank(act.getProcDefKey())) {
+			histTaskQuery.processDefinitionKey(act.getProcDefKey());
+		}
+		List<HistoricTaskInstance> histList = histTaskQuery.list();
+		for (HistoricTaskInstance histTask : histList) {
+			Act e = new Act();
+			e.setVars(histTask.getProcessVariables());
+			result.add((String) e.getVars().getMap().get("id"));
+		}
+		//得到民大立项未通过数据的id
+
+		//处理分页问题
+		// 查询总数
+			/*page.setCount(todoTaskQuery.count()+histTaskQuery.count());
+			int pageStart=(page.getPageNo()-1)*page.getPageSize();
+			int pageEnd=result.size();
+			if (result.size()>page.getPageNo()*page.getPageSize()) {
+				pageEnd=page.getPageNo()*page.getPageSize();
+			}*/
+		/*	List<String> subList=result.subList(pageStart,pageEnd);*/
+
+			/*page.setList(null);*/
+		return result;
 	}
 
 
 	/**
 	 * 获取待审核列表
+	 *
+	 * @return
+	 */
+	public Page<Act> modeltodoList(Page<Act> page, Act act, String keyName) {
+		String userName = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId());
+		List<Act> result = new ArrayList<Act>();
+		// =============== 已经签收的任务  ===============
+		TaskQuery todoTaskQuery = taskService.createTaskQuery().taskAssignee(userName).active()
+				.includeProcessVariables().orderByTaskCreateTime().desc();
+		//对应模块
+		todoTaskQuery.taskDefinitionKeyLike("%" + keyName + "%");
+		if (StringUtil.isNotBlank(act.getProcDefKey())) {
+			todoTaskQuery.processDefinitionKey(act.getProcDefKey());
+		}
+		// 查询列表
+		List<Task> todoList = todoTaskQuery.list();
+		for (Task task : todoList) {
+			Act e = new Act();
+			e.setTask(task);
+			e.setVars(task.getProcessVariables());
+			e.setProcDef(ProcessDefCache.get(task.getProcessDefinitionId()));
+			e.setStatus("todo");
+			result.add(e);
+		}
+		// =============== 已经审核的任务  ===============
+		HistoricTaskInstanceQuery histTaskQuery = historyService.createHistoricTaskInstanceQuery().taskAssignee(userName).finished()
+				.includeProcessVariables().orderByHistoricTaskInstanceEndTime().desc();
+		// 设置查询条件
+		histTaskQuery.taskDefinitionKeyLike("%" + keyName + "%");
+		List<HistoricTaskInstance> histList = histTaskQuery.list();
+		for (HistoricTaskInstance histTask : histList) {
+			Act e = new Act();
+			e.setHistTask(histTask);
+			e.setTaskName(histTask.getName());
+			e.setVars(histTask.getProcessVariables());
+			e.setProcDef(ProcessDefCache.get(histTask.getProcessDefinitionId()));
+			e.setStatus("finish");
+			result.add(e);
+		}
+		//处理分页问题
+		// 查询总数
+		page.setCount(todoTaskQuery.count() + histTaskQuery.count());
+		int pageStart = (page.getPageNo() - 1) * page.getPageSize();
+		int pageEnd = result.size();
+		if (result.size() > page.getPageNo() * page.getPageSize()) {
+			pageEnd = page.getPageNo() * page.getPageSize();
+		}
+		List<Act> subList = result.subList(pageStart, pageEnd);
+
+		page.setList(subList);
+		return page;
+	}
+
+	public String getGnodeName(String gnodeId, String actYwId) {
+		String auditGonde = null;
+		ActYwGnode actYwGnode = new ActYwGnode();
+		actYwGnode.setParent(new ActYwGnode(gnodeId));
+		actYwGnode.setGroupId(actYwService.get(actYwId).getGroupId());
+		ActYwNode actYwNode = new ActYwNode();
+		actYwNode.setLevel("2");
+		actYwGnode.setNode(actYwNode);
+		//查询当前节点下面任务节点id
+		List<ActYwGnode> actYwGnodes = actYwGnodeService.findListByYwGroupAndParent(actYwGnode);
+		//查询当前角色 角色id
+		List<String> roleIds = UserUtils.getUser().getRoleIdList();
+
+		for (int i = 0; i < actYwGnodes.size(); i++) {
+			for (int j = 0; j < roleIds.size(); j++) {
+				if (actYwGnodes.get(i).getFlowGroup().equals(roleIds.get(j))) {
+					auditGonde = actYwGnodes.get(i).getId();
+					break;
+				}
+
+			}
+			if (StringUtil.isNotEmpty(auditGonde)) {
+				break;
+			}
+		}
+		return auditGonde;
+	}
+
+	/**
+	 * 获取待审核列表
+	 *
+	 * @return
+	 */
+	public List<String> getAllTodoId(String actYwId, String gnodeId) {
+		String userName = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId());
+		List<String> result = new ArrayList<String>();
+		gnodeId = getGnodeName(gnodeId, actYwId);
+
+		// =============== 已经签收的任务  ===============
+		TaskQuery todoTaskQuery = taskService.createTaskQuery().taskAssignee(userName).active()
+				.includeProcessVariables().orderByTaskCreateTime().desc();
+		ActYw actYw = actYwService.get(actYwId);
+		String key = actYw.getPkey(actYw.getGroup(), actYw.getProProject());
+		todoTaskQuery.processDefinitionKey(key);
+		//对应模块
+		todoTaskQuery.taskDefinitionKeyLike("%" + ActYwTool.FLOW_ID_PREFIX + gnodeId + "%");
+		// 查询列表
+		List<Task> todoList = todoTaskQuery.list();
+		for (Task task : todoList) {
+			Act e = new Act();
+			e.setTask(task);
+			e.setVars(task.getProcessVariables());
+			e.setProcDef(ProcessDefCache.get(task.getProcessDefinitionId()));
+			e.setStatus("todo");
+			result.add((String) e.getVars().getMap().get("id"));
+		}
+
+		return result;
+	}
+
+	/**
+	 * 获取待审核列表
+	 *
 	 * @param act 查询条件封装
 	 * @return
 	 */
@@ -536,13 +841,12 @@ public class ActTaskService extends BaseService {
 		return result;
 	}
 
-
-
 	/**
 	 * 获取流转历史列表
+	 *
 	 * @param procInsId 流程实例
-	 * @param startAct 开始活动节点名称
-	 * @param endAct 结束活动节点名称
+	 * @param startAct  开始活动节点名称
+	 * @param endAct    结束活动节点名称
 	 */
 	public List<Act> histoicFlowList(String procInsId, String startAct, String endAct) {
 		List<Act> actList = Lists.newArrayList();
@@ -552,7 +856,7 @@ public class ActTaskService extends BaseService {
 		boolean start = false;
 		Map<String, Integer> actMap = Maps.newHashMap();
 
-		for (int i=0; i<list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 
 			HistoricActivityInstance histIns = list.get(i);
 
@@ -602,7 +906,7 @@ public class ActTaskService extends BaseService {
 				// 获取意见评论内容
 				if (StringUtil.isNotBlank(histIns.getTaskId())) {
 					List<Comment> commentList = taskService.getTaskComments(histIns.getTaskId());
-					if (commentList.size()>0) {
+					if (commentList.size() > 0) {
 						e.setComment(commentList.get(0).getFullMessage());
 					}
 				}
@@ -614,7 +918,7 @@ public class ActTaskService extends BaseService {
 				boolean bl = false;
 				Integer actNum = actMap.get(histIns.getActivityId());
 				// 该活动节点，后续节点是否在结束节点之前，在后续节点中是否存在
-				for (int j=i+1; j<list.size(); j++) {
+				for (int j = i + 1; j < list.size(); j++) {
 					HistoricActivityInstance hi = list.get(j);
 					Integer actNumA = actMap.get(hi.getActivityId());
 					if ((actNumA != null && actNumA < actNum) || StringUtil.equals(hi.getActivityId(), histIns.getActivityId())) {
@@ -631,6 +935,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 获取流程列表
+	 *
 	 * @param category 流程分类
 	 */
 	public Page<Object[]> processList(Page<Object[]> page, String category) {
@@ -657,15 +962,16 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 获取流程表单（首先获取任务节点表单KEY，如果没有则取流程开始节点表单KEY）
+	 *
 	 * @return
 	 */
 	public String getFormKey(String procDefId, String taskDefKey) {
 		String formKey = "";
 		if (StringUtil.isNotBlank(procDefId)) {
 			if (StringUtil.isNotBlank(taskDefKey)) {
-				try{
+				try {
 					formKey = formService.getTaskFormKey(procDefId, taskDefKey);
-				}catch (Exception e) {
+				} catch (Exception e) {
 					formKey = "";
 				}
 			}
@@ -682,6 +988,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 获取流程实例对象
+	 *
 	 * @param procInsId
 	 * @return
 	 */
@@ -692,9 +999,10 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 启动流程
-	 * @param procDefKey 流程定义KEY
+	 *
+	 * @param procDefKey    流程定义KEY
 	 * @param businessTable 业务表表名
-	 * @param businessId	业务表编号
+	 * @param businessId    业务表编号
 	 * @return 流程实例ID
 	 */
 	@Transactional(readOnly = false)
@@ -702,12 +1010,98 @@ public class ActTaskService extends BaseService {
 		return startProcess(procDefKey, businessTable, businessId, "");
 	}
 
+
+	/**
+	 * 挂起流程
+	 *
+	 * @param processInstanceId 流程实例id
+	 */
+	@Transactional(readOnly = false)
+	public void suspendProcess(String processInstanceId) {
+
+		runtimeService.suspendProcessInstanceById(processInstanceId);
+		ProcessInstance pro = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+	}
+
+
+	/**
+	 * 走到流程下一步
+	 *
+	 * @param proModel
+	 */
+	@Transactional(readOnly = false)
+	public void runNextProcess(ProModel proModel) {
+		ActYw actYw = actYwService.get(proModel.getActYwId());
+
+		Map<String, Object> vars = new HashMap<String, Object>();
+		String key = actYw.getPkey(actYw.getGroup(), actYw.getProProject());
+
+		String taskId = getTaskidByProcInsId(proModel.getProcInsId());
+		String taskDefinitionKeyaskDefKey = getTask(taskId).getTaskDefinitionKey();
+		//String nodeRoleId=getProcessStartRoleName(actYw.getPkey(actYw.getGroup(),actYw.getProProject()));  //从工作流中查询 下一步的角色集合
+		/*
+		List<String> roles=new ArrayList<String>();
+		String nextRoleId=getProcessNextRoleName(taskDefinitionKeyaskDefKey,key);
+		String roleId=nextRoleId.substring(ActYwTool.FLOW_ROLE_ID_PREFIX.length());
+		Role role= systemService.getNamebyId(roleId);
+		if(role!=null){
+			//启动节点
+			String roleName=role.getName();
+			if(roleName.contains("院")||roleName.contains("秘书")){
+				roles=userService.getRolesByName(role.getEnname(),proModel.getDeclareId());
+			}else{
+				roles=userService.getRolesByName(role.getEnname());
+			}
+			if(roleId.equals(SysIds.SYS_ROLE_USER.getId())){
+				roles.clear();
+				roles.add(userService.findUserById(proModel.getDeclareId()).getName());
+			}
+			vars=proModel.getVars();
+			vars.put(nextRoleId+"s",roles);
+		}*/
+
+		String nextGnodeRoleId = getProcessNextRoleName(taskDefinitionKeyaskDefKey, key);
+		if (StringUtil.isNotEmpty(nextGnodeRoleId)) {
+			String nextRoleId = nextGnodeRoleId.substring(ActYwTool.FLOW_ROLE_ID_PREFIX.length());
+			Role role = systemService.getNamebyId(nextRoleId);
+			//启动节点
+			String roleName = role.getName();
+			List<String> roles = new ArrayList<String>();
+			if (roleName.contains(SysIds.ISCOLLEGE.getRemark()) || roleName.contains(SysIds.ISMS.getRemark())) {
+				roles = userService.getRolesByName(role.getEnname(), proModel.getDeclareId());
+			} else {
+				roles = userService.getRolesByName(role.getEnname());
+			}
+			//后台学生角色id
+
+			if (nextRoleId.equals(SysIds.SYS_ROLE_USER.getId())) {
+				roles.clear();
+				roles.add(userService.findUserById(proModel.getDeclareId()).getName());
+			}
+			vars = proModel.getVars();
+			//List<String> roles=userService.getCollegeExperts(proModel.getDeclareId());
+			vars.put(nextGnodeRoleId + "s", roles);
+		} else {
+			//更改完成后团队历史表中的状态
+			teamUserHistoryService.updateFinishAsClose(proModel.getId());
+			//流程没有角色为没有后续流程 将流程表示为已经结束
+			proModel.setState("1");
+		}
+
+		if (taskId != null) {
+			taskService.complete(taskId, vars);
+			ProcessInstance pro = runtimeService.createProcessInstanceQuery().processInstanceId(proModel.getProcInsId()).singleResult();
+		}
+	}
+
+
 	/**
 	 * 启动流程
-	 * @param procDefKey 流程定义KEY
+	 *
+	 * @param procDefKey    流程定义KEY
 	 * @param businessTable 业务表表名
-	 * @param businessId	业务表编号
-	 * @param title			流程标题，显示在待办任务标题
+	 * @param businessId    业务表编号
+	 * @param title         流程标题，显示在待办任务标题
 	 * @return 流程实例ID
 	 */
 	@Transactional(readOnly = false)
@@ -718,37 +1112,33 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 启动流程
-	 * @param procDefKey 流程定义KEY
+	 *
+	 * @param procDefKey    流程定义KEY
 	 * @param businessTable 业务表表名
-	 * @param businessId	业务表编号
-	 * @param title			流程标题，显示在待办任务标题
-	 * @param vars			流程变量
+	 * @param businessId    业务表编号
+	 * @param title         流程标题，显示在待办任务标题
+	 * @param vars          流程变量
 	 * @return 流程实例ID
 	 */
 	@Transactional(readOnly = false)
 	public String startProcess(String procDefKey, String businessTable, String businessId, String title, Map<String, Object> vars) {
 		String userId = UserUtils.getUser().getLoginName();//ObjectUtils.toString(UserUtils.getUser().getId())
-
 		// 用来设置启动流程的人员ID，引擎会自动把用户ID保存到activiti:initiator中
 		identityService.setAuthenticatedUserId(userId);
-
 		// 设置流程变量
 		if (vars == null) {
 			vars = Maps.newHashMap();
 		}
-
 		// 设置流程标题
 		if (StringUtil.isNotBlank(title)) {
 			vars.put("title", title);
 		}
-
 		// 启动流程
-		ProcessInstance procIns = runtimeService.startProcessInstanceByKey(procDefKey, businessTable+":"+businessId, vars);
-
+		ProcessInstance procIns = runtimeService.startProcessInstanceByKey(procDefKey, businessTable + ":" + businessId, vars);
 		// 更新业务表流程实例ID
 		Act act = new Act();
 		act.setBusinessTable(businessTable);// 业务表名
-		act.setBusinessId(businessId);	// 业务表ID
+		act.setBusinessId(businessId);    // 业务表ID
 		act.setProcInsId(procIns.getId());
 		actDao.updateProcInsIdByBusinessId(act);
 		return act.getProcInsId();
@@ -756,6 +1146,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 获取任务
+	 *
 	 * @param taskId 任务ID
 	 */
 	public Task getTask(String taskId) {
@@ -764,7 +1155,8 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 删除任务
-	 * @param taskId 任务ID
+	 *
+	 * @param taskId       任务ID
 	 * @param deleteReason 删除原因
 	 */
 	@Transactional(readOnly = false)
@@ -774,6 +1166,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 签收任务
+	 *
 	 * @param taskId 任务ID
 	 * @param userId 签收用户ID（用户登录名）
 	 */
@@ -783,21 +1176,22 @@ public class ActTaskService extends BaseService {
 	}
 
 
-	public void claimByProcInsId(String procInsId,List<String> claims) {
+	public void claimByProcInsId(String procInsId, List<String> claims) {
 		//下个节点自动签收
-		if (claims!=null&&claims.size()==1) {
-			String  taskId=getTaskidByProcInsId(procInsId);
-			String claimName=claims.get(0);
+		if (claims != null && claims.size() == 1) {
+			String taskId = getTaskidByProcInsId(procInsId);
+			String claimName = claims.get(0);
 			taskService.claim(taskId, claimName);
 		}
 	}
 
 	/**
 	 * 提交任务, 并保存意见
-	 * @param taskId 任务ID
+	 *
+	 * @param taskId    任务ID
 	 * @param procInsId 流程实例ID，如果为空，则不保存任务提交意见
-	 * @param comment 任务提交意见的内容
-	 * @param vars 任务变量
+	 * @param comment   任务提交意见的内容
+	 * @param vars      任务变量
 	 */
 	@Transactional(readOnly = false)
 	public void complete(String taskId, String procInsId, String comment, Map<String, Object> vars) {
@@ -806,11 +1200,12 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 提交任务, 并保存意见
-	 * @param taskId 任务ID
+	 *
+	 * @param taskId    任务ID
 	 * @param procInsId 流程实例ID，如果为空，则不保存任务提交意见
-	 * @param comment 任务提交意见的内容
-	 * @param title			流程标题，显示在待办任务标题
-	 * @param vars 任务变量
+	 * @param comment   任务提交意见的内容
+	 * @param title     流程标题，显示在待办任务标题
+	 * @param vars      任务变量
 	 */
 	@Transactional(readOnly = false)
 	public void complete(String taskId, String procInsId, String comment, String title, Map<String, Object> vars) {
@@ -835,6 +1230,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 完成第一个任务
+	 *
 	 * @param procInsId
 	 */
 	@Transactional(readOnly = false)
@@ -844,6 +1240,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 完成第一个任务
+	 *
 	 * @param procInsId
 	 * @param comment
 	 * @param title
@@ -919,7 +1316,8 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 跳转（包括回退和向前）至指定活动节点
-	 * @param currentTaskEntity 当前任务节点
+	 *
+	 * @param currentTaskEntity       当前任务节点
 	 * @param targetTaskDefinitionKey 目标任务节点（在模型定义里面的节点名称）
 	 * @throws Exception
 	 */
@@ -931,8 +1329,9 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 跳转（包括回退和向前）至指定活动节点
+	 *
 	 * @param currentTaskEntity 当前任务节点
-	 * @param targetActivity 目标任务节点（在模型定义里面的节点名称）
+	 * @param targetActivity    目标任务节点（在模型定义里面的节点名称）
 	 * @throws Exception
 	 */
 	private void jumpTask(TaskEntity currentTaskEntity, ActivityImpl targetActivity, Map<String, Object> variables) {
@@ -949,7 +1348,7 @@ public class ActTaskService extends BaseService {
 		assigneeList.add(Authentication.getAuthenticatedUserId());
 		assigneeList.addAll(CollectionUtils.arrayToList(assignees));
 		String[] newAssignees = assigneeList.toArray(new String[0]);
-		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)repositoryService.getProcessDefinition(procDefId);
+		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(procDefId);
 		ActivityImpl prototypeActivity = ProcessDefUtils.getActivity(processEngine, processDefinition.getId(), targetTaskDefinitionKey);
 		return cloneAndMakeChain(processDefinition, procInsId, targetTaskDefinitionKey, prototypeActivity.getOutgoingTransitions().get(0).getDestination().getId(), variables, newAssignees);
 	}
@@ -958,7 +1357,7 @@ public class ActTaskService extends BaseService {
 	 * 前加签
 	 */
 	public ActivityImpl[] insertTasksBefore(String procDefId, String procInsId, String targetTaskDefinitionKey, Map<String, Object> variables, String... assignees) {
-		ProcessDefinitionEntity procDef = (ProcessDefinitionEntity)repositoryService.getProcessDefinition(procDefId);
+		ProcessDefinitionEntity procDef = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(procDefId);
 		return cloneAndMakeChain(procDef, procInsId, targetTaskDefinitionKey, targetTaskDefinitionKey, variables, assignees);
 	}
 
@@ -984,7 +1383,7 @@ public class ActTaskService extends BaseService {
 		radei.setAssignees(CollectionUtils.arrayToList(assignees));
 		radei.setSequential(isSequential);
 
-		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)repositoryService.getProcessDefinition(procDefId);
+		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(procDefId);
 		ActivityImpl clone = new MultiInstanceActivityCreator().createActivities(processEngine, processDefinition, info)[0];
 
 		TaskEntity currentTaskEntity = this.getCurrentTask(procInsId);
@@ -1024,13 +1423,11 @@ public class ActTaskService extends BaseService {
 	}
 
 
-
-
-
 	/**
 	 * 读取带跟踪的图片
-	 * @param executionId	环节ID
-	 * @return	封装了各种节点信息
+	 *
+	 * @param executionId 环节ID
+	 * @return 封装了各种节点信息
 	 */
 	public InputStream tracePhoto(String processDefinitionId, String executionId) {
 //		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(executionId).singleResult();
@@ -1054,8 +1451,9 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 流程跟踪图信息
-	 * @param processInstanceId		流程实例ID
-	 * @return	封装了各种节点信息
+	 *
+	 * @param processInstanceId 流程实例ID
+	 * @return 封装了各种节点信息
 	 */
 	public List<Map<String, Object>> traceProcess(String processInstanceId) throws Exception {
 		Execution execution = runtimeService.createExecutionQuery().executionId(processInstanceId).singleResult();//执行实例
@@ -1092,6 +1490,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 封装输出信息，包括：当前节点的X、Y坐标、变量信息、任务类型、任务描述
+	 *
 	 * @param activity
 	 * @param processInstance
 	 * @param currentActiviti
@@ -1148,6 +1547,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 设置任务组
+	 *
 	 * @param vars
 	 * @param candidateGroupIdExpressions
 	 */
@@ -1163,6 +1563,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 设置当前处理人信息
+	 *
 	 * @param vars
 	 * @param currentTask
 	 */
@@ -1177,6 +1578,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 获取当前节点信息
+	 *
 	 * @param processInstance
 	 * @return
 	 */
@@ -1198,6 +1600,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 设置宽度、高度属性
+	 *
 	 * @param activity
 	 * @param activityInfo
 	 */
@@ -1208,6 +1611,7 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 设置坐标位置
+	 *
 	 * @param activity
 	 * @param activityInfo
 	 */
@@ -1223,49 +1627,50 @@ public class ActTaskService extends BaseService {
 
 	/**
 	 * 根据数据库表中procInsId得到任务Id
-	 * @author zhangzheng
-	 * @version 2017-3-15
+	 *
 	 * @param procInsId
 	 * @return 任务Id
+	 * @author zhangzheng
+	 * @version 2017-3-15
 	 */
 	public String getTaskidByProcInsId(String procInsId) {
-		List<HistoricTaskInstance> hisList=historyService.createHistoricTaskInstanceQuery()
+		List<HistoricTaskInstance> hisList = historyService.createHistoricTaskInstanceQuery()
 				.processInstanceId(procInsId).orderByHistoricTaskInstanceEndTime().asc().list();
-		if (hisList.size()>0) {
-			HistoricTaskInstance hisTaskIns=hisList.get(0);
+		if (hisList.size() > 0) {
+			HistoricTaskInstance hisTaskIns = hisList.get(0);
 			return hisTaskIns.getId();
-		}else{
+		} else {
 			return "";
 		}
 	}
 
 	/**
-	 *根据数据库表中procInsId得到任务名称
-	 * @author zhangzheng
-	 * @version 2017-3-15
+	 * 根据数据库表中procInsId得到任务名称
+	 *
 	 * @param procInsId
 	 * @return string taskName
-	*/
+	 * @author zhangzheng
+	 * @version 2017-3-15
+	 */
 	public String getTaskNameByProcInsId(String procInsId) {
-		List<HistoricTaskInstance> hisList=historyService.createHistoricTaskInstanceQuery()
+		List<HistoricTaskInstance> hisList = historyService.createHistoricTaskInstanceQuery()
 				.processInstanceId(procInsId).orderByHistoricTaskInstanceEndTime().asc().list();
-		if (hisList.size()>0) {
-			HistoricTaskInstance hisTaskIns=hisList.get(0);
+		if (hisList.size() > 0) {
+			HistoricTaskInstance hisTaskIns = hisList.get(0);
 			return hisTaskIns.getName();
-		}else{
+		} else {
 			return "";
 		}
 	}
 
 
-
 	public String getProcessDefinitionId(String procInsId) {
-		List<HistoricTaskInstance> hisList=historyService.createHistoricTaskInstanceQuery()
+		List<HistoricTaskInstance> hisList = historyService.createHistoricTaskInstanceQuery()
 				.processInstanceId(procInsId).orderByHistoricTaskInstanceEndTime().asc().list();
-		if (hisList.size()>0) {
-			HistoricTaskInstance hisTaskIns=hisList.get(0);
+		if (hisList.size() > 0) {
+			HistoricTaskInstance hisTaskIns = hisList.get(0);
 			return hisTaskIns.getProcessDefinitionId();
-		}else{
+		} else {
 			return "";
 		}
 	}
@@ -1277,4 +1682,245 @@ public class ActTaskService extends BaseService {
 		}
 		return false;
 	}
+
+	/**
+	 * 查询流程当前节点的下一步节点。用于流程提示时的提示。
+	 * @param taskId
+	 * @return
+	 * @throws Exception
+	 */
+	/*public Map<String, FlowNode> findNextTask(String taskId) throws Exception{
+	Map<String, org.activiti.bpmn.model.FlowNode> nodeMap = new HashMap<String, org.activiti.bpmn.model.FlowNode>();
+	ProcessInstance processInstance = findProcessInstanceByTaskId(taskId);
+	//查询当前节点
+	HistoricTaskInstance histask =
+			findHistricTaskById(taskId, processInstance.getProcessInstanceId());
+	//查询流程定义 。
+	BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
+	List<org.activiti.bpmn.model.Process> listp = bpmnModel.getProcesses();
+	org.activiti.bpmn.model.Process process = listp.get(0);
+	//当前节点流定义
+	FlowNode sourceFlowElement = ( FlowNode) process.getFlowElement(histask.getTaskDefinitionKey());
+	// 找到当前任务的流程变量
+	List<HistoricVariableInstance> listVar=historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstance.getId()).list() ;
+	iteratorNextNodes(process, sourceFlowElement, nodeMap,listVar);
+	return nodeMap;
+	}
+
+*/
+
+	/**
+	 * 查询流程当前节点的下一步节点。用于流程提示时的提示。
+	 *
+	 * @param process
+	 * @param sourceFlowElement
+	 * @param nodeMap
+	 * @param listVar
+	 * @throws Exception
+	 */
+	private void iteratorNextNodes(org.activiti.bpmn.model.Process process, FlowNode sourceFlowElement, Map<String, FlowNode> nodeMap, List<HistoricVariableInstance> listVar)
+			throws Exception {
+		List<SequenceFlow> list = sourceFlowElement.getOutgoingFlows();
+		for (SequenceFlow sf : list) {
+			sourceFlowElement = (FlowNode) process.getFlowElement(sf.getTargetRef());
+			if (StringUtils.isNotEmpty(sf.getConditionExpression())) {
+				ExpressionFactory factory = new ExpressionFactoryImpl();
+				SimpleContext context = new SimpleContext();
+				for (HistoricVariableInstance var : listVar) {
+					context.setVariable(var.getVariableName(), factory.createValueExpression(var.getValue(), var.getValue().getClass()));
+				}
+				ValueExpression e = factory.createValueExpression(context, sf.getConditionExpression(), boolean.class);
+				if ((Boolean) e.getValue(context)) {
+					nodeMap.put(sourceFlowElement.getId(), sourceFlowElement);
+					break;
+				}
+			}
+			if (sourceFlowElement instanceof org.activiti.bpmn.model.UserTask) {
+				nodeMap.put(sourceFlowElement.getId(), sourceFlowElement);
+				break;
+			} else if (sourceFlowElement instanceof org.activiti.bpmn.model.ExclusiveGateway) {
+				iteratorNextNodes(process, sourceFlowElement, nodeMap, listVar);
+			}
+		}
+	}
+
+	/**
+	 * 根据实例编号查找下一个任务节点
+	 *
+	 * @param procInstId ：实例编号
+	 * @return
+	 */
+	public TaskDefinition nextTaskDefinition(String procInstId) {
+		//流程标示
+		String processDefinitionId = historyService.createHistoricProcessInstanceQuery().processInstanceId(procInstId).singleResult().getProcessDefinitionId();
+
+		ProcessDefinitionEntity def = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService).getDeployedProcessDefinition(processDefinitionId);
+		//执行实例
+		ExecutionEntity execution = (ExecutionEntity) runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
+		//当前实例的执行到哪个节点
+		String activitiId = execution.getActivityId();
+		//获得当前任务的所有节点
+		List<ActivityImpl> activitiList = def.getActivities();
+		String id = null;
+		for (ActivityImpl activityImpl : activitiList) {
+			id = activityImpl.getId();
+			if (activitiId.equals(id)) {
+				System.out.println("当前任务：" + activityImpl.getProperty("name"));
+				return nextTaskDefinition(activityImpl, activityImpl.getId(), "${iscorrect==1}");
+				//              System.out.println(taskDefinition.getCandidateGroupIdExpressions().toArray()[0]);
+				//              return taskDefinition;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 下一个任务节点
+	 *
+	 * @param activityImpl
+	 * @param activityId
+	 * @param elString
+	 * @return
+	 */
+	private TaskDefinition nextTaskDefinition(ActivityImpl activityImpl, String activityId, String elString) {
+		if ("userTask".equals(activityImpl.getProperty("type")) && !activityId.equals(activityImpl.getId())) {
+			TaskDefinition taskDefinition = ((UserTaskActivityBehavior) activityImpl.getActivityBehavior()).getTaskDefinition();
+			//              taskDefinition.getCandidateGroupIdExpressions().toArray();
+			return taskDefinition;
+		} else {
+			List<PvmTransition> outTransitions = activityImpl.getOutgoingTransitions();
+			List<PvmTransition> outTransitionsTemp = null;
+			for (PvmTransition tr : outTransitions) {
+				PvmActivity ac = tr.getDestination(); //获取线路的终点节点
+				if ("exclusiveGateway".equals(ac.getProperty("type"))) {
+					outTransitionsTemp = ac.getOutgoingTransitions();
+					if (outTransitionsTemp.size() == 1) {
+						return nextTaskDefinition((ActivityImpl) outTransitionsTemp.get(0).getDestination(), activityId, elString);
+					} else if (outTransitionsTemp.size() > 1) {
+						for (PvmTransition tr1 : outTransitionsTemp) {
+							Object s = tr1.getProperty("conditionText");
+							if (elString.equals(StringUtils.trim(s.toString()))) {
+								return nextTaskDefinition((ActivityImpl) tr1.getDestination(), activityId, elString);
+							}
+						}
+					}
+				} else if ("userTask".equals(ac.getProperty("type"))) {
+					return ((UserTaskActivityBehavior) ((ActivityImpl) ac).getActivityBehavior()).getTaskDefinition();
+				} else {
+
+				}
+			}
+			return null;
+		}
+	}
+
+	public boolean getGrateBygondeId(String gondeId) {
+		boolean res = false;
+		ActYwGnode actYwGnode = actYwGnodeService.get(gondeId);
+		List<ActYwGnode> actYwGnodeList = actYwGnodeService.findByYwParentIdsLike(actYwGnode);
+		for (ActYwGnode actYwGnodeIndex : actYwGnodeList) {
+			if (actYwGnodeIndex.getForm() != null) {
+				String path = actYwGnodeIndex.getForm().getPath();
+				//判断是否为立项
+				if (path.contains("grate")) {
+					res = true;
+					break;
+				}
+			}
+		}
+		return res;
+	}
+
+	public ActYwGnode getFrontByGondeId(String gondeId) {
+		ActYwGnode res = null;
+		ActYwGnode actYwGnode = new ActYwGnode();
+		actYwGnode.setParent(new ActYwGnode(gondeId));
+		//actYwGnodeService.get(gondeId);
+		List<ActYwGnode> actYwGnodeList = actYwGnodeService.findByYwParentIdsLike(actYwGnode);
+		for (ActYwGnode actYwGnodeIndex : actYwGnodeList) {
+			if (actYwGnodeIndex.getForm() != null) {
+				String clientType = actYwGnodeIndex.getForm().getClientType();
+				//判断表单类型
+				if (clientType.contains("1")) {
+					res = actYwGnodeIndex;
+					break;
+				}
+			}
+		}
+		return res;
+	}
+
+
+	public ActYwGnode getNodeByProInsId(String proInsId) {
+		return getNodeByProInsIdByGroupId(null, proInsId);
+	}
+
+	public ActYwGnode getNodeByProInsIdByGroupId(String groupId, String proInsId) {
+		ProcessInstance pro = runtimeService.createProcessInstanceQuery().processInstanceId(proInsId).singleResult();
+		if (StringUtil.isEmpty(proInsId) && StringUtil.isNotEmpty(groupId)) {
+			return actYwGnodeService.getStart(groupId);
+		}
+		if ((pro == null) && StringUtil.isNotEmpty(groupId)) {
+			return actYwGnodeService.getEnd(groupId);
+		}
+		if ((pro == null)) {
+			return null;
+		}
+		String procDefId = getProcessDefinitionIdByProInstId(proInsId);
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+				.processDefinitionId(procDefId).singleResult();
+		if (processDefinition == null) {
+			return null;
+		}
+		ProcessDefinitionImpl pdImpl = (ProcessDefinitionImpl) processDefinition;
+		String processDefinitionId = pdImpl.getId();// 流程标识
+		ProcessDefinitionEntity def = (ProcessDefinitionEntity) ((RepositoryServiceImpl) repositoryService)
+				.getDeployedProcessDefinition(processDefinitionId);
+		List<ActivityImpl> activitiList = def.getActivities();// 获得当前任务的所有节点
+		//activitiList.get(0).getId();
+
+		List<String> activeActivityIds = runtimeService.getActiveActivityIds(proInsId);
+		try {
+			activeActivityIds = runtimeService.getActiveActivityIds(proInsId);
+		} catch (ActivitiObjectNotFoundException e) {
+			activeActivityIds = Lists.newArrayList();
+		}
+		String gnodeId = null;
+		for (String activeId : activeActivityIds) {
+			for (ActivityImpl activityImpl : activitiList) {
+				String id = activityImpl.getId();
+				if (activityImpl.isScope()) {
+					if (activityImpl.getActivities().size() > 1) {
+						List<ActivityImpl> subAcList = activityImpl.getActivities();
+						for (ActivityImpl subActImpl : subAcList) {
+							String subid = subActImpl.getId();
+							if (activeId.equals(subid)) {// 获得执行到那个节点
+								gnodeId = subid;
+								break;
+							}
+						}
+					}
+				}
+				if (activeId.equals(id)) {
+					// 获得执行到那个节点
+					gnodeId = id;
+					break;
+				}
+			}
+			if (StringUtil.isNotEmpty(gnodeId)) {
+				break;
+			}
+		}
+		ActYwGnode actYwGnode = new ActYwGnode();
+		if (StringUtil.isNotEmpty(gnodeId)) {
+			if (gnodeId.contains(ActYwTool.FLOW_ID_PREFIX)) {
+				actYwGnode = actYwGnodeService.get(gnodeId.substring(ActYwTool.FLOW_ID_PREFIX.length()));
+			} else if (gnodeId.contains(ActYwTool.FLOW_ID_START)) {
+				actYwGnode = actYwGnodeService.get(gnodeId.substring(ActYwTool.FLOW_ID_START.length()));
+			}
+		}
+		actYwGnode.setSuspended(pro.isSuspended());
+		return actYwGnode;
+	}
+
 }

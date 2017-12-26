@@ -1,24 +1,19 @@
 package com.oseasy.initiate.modules.project.service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import org.activiti.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
+import com.oseasy.initiate.common.utils.IdGen;
+import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.project.dao.ProjectAuditInfoDao;
+import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
+import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 
 /**
  * 项目审核信息Service
@@ -29,7 +24,7 @@ import com.oseasy.initiate.modules.project.dao.ProjectAuditInfoDao;
 @Transactional(readOnly = true)
 public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, ProjectAuditInfo> {
 	@Autowired
-	ProjectDeclareDao projectDeclareDao;
+	ProjectDeclareService projectDeclareService;
 
 
 	public ProjectAuditInfo get(String id) {
@@ -42,6 +37,10 @@ public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, Pr
 	
 	public Page<ProjectAuditInfo> findPage(Page<ProjectAuditInfo> page, ProjectAuditInfo projectAuditInfo) {
 		return super.findPage(page, projectAuditInfo);
+	}
+
+	public ProjectAuditInfo findInfoByUserId(ProjectAuditInfo projectAuditInfo){
+		return dao.findInfoByUserId(projectAuditInfo);
 	}
 	
 	@Transactional(readOnly = false)
@@ -103,7 +102,7 @@ public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, Pr
 			projectDeclare.setLevel("");  //更改项目级别
 			projectDeclare.setMidScore(0.0f);
 			projectDeclare.setFinalScore(0.0f);
-			projectDeclareDao.updateFinalResult(projectDeclare);
+			projectDeclareService.updateFinalResult(projectDeclare);
 			return ;
 		}
 
@@ -112,7 +111,7 @@ public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, Pr
 		}
 
 
-		//如果是中期检查不合格 后面的数据没用
+		//如果是中期检查不合格(项目终止） 后面的数据没用
 		if (StringUtil.equals("2",auditInfoList.get(2).getGrade())) {
 			auditInfoList=auditInfoList.subList(0,3);
 			//保存评审信息
@@ -137,7 +136,7 @@ public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, Pr
 			//主表状态改为中期不合格
 			ProjectDeclare projectDeclare=new ProjectDeclare();
 			projectDeclare.setId(projectId);
-			projectDeclare.setFinalResult("4"); //中期不合格
+			projectDeclare.setFinalResult("4"); //中期不合格(项目终止）
 			projectDeclare.setStatus("8");   //项目终止
 			projectDeclare.setMidScore(midScore);
 			projectDeclare.setFinalScore(0.0f);
@@ -153,7 +152,7 @@ public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, Pr
 			number=newPrefix+number;
 			projectDeclare.setNumber(number);
 			projectDeclare.setLevel(newLevel);  //更改项目级别
-			projectDeclareDao.updateFinalResult(projectDeclare);
+			projectDeclareService.updateFinalResult(projectDeclare);
 			return ;
 		}
 		//如果是中期检查合格
@@ -204,7 +203,7 @@ public class ProjectAuditInfoService extends CrudService<ProjectAuditInfoDao, Pr
 			projectDeclare.setLevel(newLevel);  //更改项目级别
 			projectDeclare.setMidScore(midScore);
 			projectDeclare.setFinalScore(finalScore);
-			projectDeclareDao.updateFinalResult(projectDeclare);
+			projectDeclareService.updateFinalResult(projectDeclare);
 			return ;
 
 		}

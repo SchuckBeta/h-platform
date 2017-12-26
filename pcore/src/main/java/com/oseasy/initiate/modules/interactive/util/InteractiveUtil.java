@@ -16,7 +16,7 @@ import com.oseasy.initiate.modules.sys.utils.UserUtils;
  */
 public class InteractiveUtil {
     public static void updateViews(String foreignId,HttpServletRequest request,String queue){
-        User user= UserUtils.getUser();
+    	User user= UserUtils.getUser();
         SysViews sc=new SysViews();
         sc.setId(IdGen.uuid());
         sc.setCreateDate(new Date());

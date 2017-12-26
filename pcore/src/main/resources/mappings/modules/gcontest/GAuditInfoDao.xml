@@ -36,6 +36,20 @@
 		</if>
 		ORDER BY  create_date ASC
 	</select>
+
+	<!-- 审核意见 -->
+	<select id="getInfoByLoginname" resultType="GAuditInfo">
+		SELECT
+		 <include refid="gAuditInfoColumns"/>
+		FROM g_audit_info a
+		WHERE a.g_id = #{gId}
+		AND   a.audit_level = #{auditLevel}
+		AND   a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="auditId != null and auditId != '' ">
+			AND   a.audit_id = #{auditId}
+		</if>
+		ORDER BY  create_date ASC limit 1
+	</select>
 	
 	<!-- 审核意见排名 -->
 	<select id="getSortInfo" resultType="GAuditInfo">

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.oseasy.initiate.modules.sys.dao;
 
@@ -20,11 +20,18 @@ public interface MenuDao extends CrudDao<Menu> {
 	public List<Menu> findByParentIdsLike(Menu menu);
 
 	public List<Menu> findByUserId(Menu menu);
-	
+
 	public int updateParentIds(Menu menu);
-	
+
 	public int updateSort(Menu menu);
 
 	public Menu getMenuByName(String name);
+
+	/**
+	 * 根据ID获取菜单，不考虑删除状态.
+	 * @param id 唯一标识
+	 * @return Menu
+	 */
+	public Menu getById(String id);
 
 }

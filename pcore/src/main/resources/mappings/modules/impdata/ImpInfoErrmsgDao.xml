@@ -7,6 +7,7 @@
 		a.imp_id AS "impId",
 		a.data_id AS "dataId",
 		a.colname AS "colname",
+		a.sheet_indx AS "sheetIndx",
 		a.errmsg AS "errmsg",
 		a.create_by AS
 		"createBy.id",
@@ -73,7 +74,8 @@
 		create_by,
 		create_date,
 		update_by,
-		update_date
+		update_date,
+		sheet_indx
 		) VALUES (
 		#{id},
 		#{impId},
@@ -83,7 +85,8 @@
 		#{createBy.id},
 		#{createDate},
 		#{updateBy.id},
-		#{updateDate}
+		#{updateDate},
+		#{sheetIndx}
 		)
 	</insert>
 
@@ -94,7 +97,8 @@
 		colname = #{colname},
 		errmsg = #{errmsg},
 		update_by = #{updateBy.id},
-		update_date = #{updateDate}
+		update_date = #{updateDate},
+		sheet_indx=#{sheetIndx}
 		WHERE id = #{id}
 	</update>
 
@@ -110,6 +114,17 @@
 		imp_info_errmsg t
 		WHERE
 		t.imp_id = #{impid}
+		order by
+		t.create_date desc
+	</select>
+	<select id="getListByImpIdAndSheet" resultType="java.util.HashMap"
+		parameterType="java.lang.String">
+		SELECT
+		t.*
+		FROM
+		imp_info_errmsg t
+		WHERE
+		t.imp_id = #{impid} and t.sheet_indx=#{sheet}
 		order by
 		t.create_date desc
 	</select>

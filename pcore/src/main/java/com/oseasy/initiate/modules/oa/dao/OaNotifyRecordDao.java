@@ -5,11 +5,12 @@ package com.oseasy.initiate.modules.oa.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.oa.entity.OaNotify;
 import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.sys.entity.User;
 
 /**
  * 通知通告记录DAO接口
@@ -18,7 +19,7 @@ import com.oseasy.initiate.modules.sys.entity.User;
  */
 @MyBatisDao
 public interface OaNotifyRecordDao extends CrudDao<OaNotifyRecord> {
-
+	public String getReadFlag(@Param("oid")String oid,@Param("uid")String uid);
 	/**
 	 * 插入通知记录
 	 * @param oaNotifyRecordList
@@ -36,5 +37,9 @@ public interface OaNotifyRecordDao extends CrudDao<OaNotifyRecord> {
 	public OaNotifyRecord findMyList(OaNotify oaNotify);
 	
 	public OaNotifyRecord getMine(OaNotifyRecord oaNotifyRecord);
+	public void updateOperateFlag(OaNotifyRecord oaNotifyRecord);
+	public void updateReadFlag(OaNotifyRecord oaNotifyRecord);
+	public void updateReadOperateFlag(OaNotifyRecord oaNotifyRecord);
+	
 	
 }

@@ -69,14 +69,8 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
 			model.setName(values.getFirst("name"));
 
 			repositoryService.saveModel(model);
-
-      System.out.println("---------------------------------------");
-			System.out.println(values.getFirst("json_xml"));
 			repositoryService.addModelEditorSource(model.getId(), values.getFirst("json_xml").getBytes("utf-8"));
 
-      System.out.println("---------------------------------------");
-      System.out.println(values.getFirst("svg_xml"));
-      System.out.println("---------------------------------------");
 			InputStream svgStream = new ByteArrayInputStream(values.getFirst("svg_xml").getBytes("utf-8"));
 			TranscoderInput input = new TranscoderInput(svgStream);
 

@@ -2,6 +2,7 @@ package com.oseasy.initiate.modules.gcontest.service;
 
 import java.util.List;
 
+import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.modules.cms.entity.Category;
 import com.oseasy.initiate.modules.cms.service.CategoryService;
@@ -33,20 +34,20 @@ public class GContestAnnounceService extends CrudService<GContestAnnounceDao, GC
 	public GContestAnnounce get(String id) {
 		return super.get(id);
 	}
-	
+
 	public List<GContestAnnounce> findList(GContestAnnounce gContestAnnounce) {
 		return super.findList(gContestAnnounce);
 	}
-	
+
 	public Page<GContestAnnounce> findPage(Page<GContestAnnounce> page, GContestAnnounce gContestAnnounce) {
 		return super.findPage(page, gContestAnnounce);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void save(GContestAnnounce gContestAnnounce) {
 		super.save(gContestAnnounce);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void delete(GContestAnnounce gContestAnnounce) {
 		super.delete(gContestAnnounce);
@@ -59,7 +60,7 @@ public class GContestAnnounceService extends CrudService<GContestAnnounceDao, GC
 		}
 		return null;
 	}
-	
+
 	public GContestAnnounce getGContestByName(String name) {
 		return dao.getGContestByName(name);
 	}
@@ -74,9 +75,9 @@ public class GContestAnnounceService extends CrudService<GContestAnnounceDao, GC
 		category.setSite(parent.getSite());
 		category.setOffice(parent.getOffice());
 		category.setName(gContestAnnounce.getgName());
-		category.setInMenu("1");
-		category.setInList("1");
-		category.setIsAudit("0");
+		category.setInMenu(Global.SHOW);
+		category.setInList(Global.SHOW);
+    category.setIsAudit(Global.NO);
 		category.setSort(40);
 		categoryService.save(category);
 		//生成后台菜单

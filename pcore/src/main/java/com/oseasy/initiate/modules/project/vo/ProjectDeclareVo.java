@@ -3,23 +3,38 @@ package com.oseasy.initiate.modules.project.vo;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import com.oseasy.initiate.modules.project.entity.ProjectPlan;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
 
 /**
  * 项目申报Vo
  * @author 9527
  * @version 2017-03-11
  */
-public class ProjectDeclareVo  {
+public class ProjectDeclareVo {
 	private ProjectDeclare projectDeclare;
 	private List<ProjectPlan> plans;
 	private List<Map<String,String>> teamStudent;
 	private List<Map<String,String>> teamTeacher;
 	private Map<String,String> auditInfo;
-	private List<Map<String,String>> fileInfo;
+	private List<SysAttachment> fileInfo;
 	private Map<String,String> projectAnnounce;
-	
+	private AttachMentEntity attachMentEntity;
+
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
+	}
+
+	private List<TeamUserHistory>  teamUserRelationList = Lists.newArrayList(); //团队信息
 	
 	public Map<String, String> getProjectAnnounce() {
 		return projectAnnounce;
@@ -29,11 +44,11 @@ public class ProjectDeclareVo  {
 		this.projectAnnounce = projectAnnounce;
 	}
 
-	public List<Map<String, String>> getFileInfo() {
+	public List<SysAttachment> getFileInfo() {
 		return fileInfo;
 	}
 
-	public void setFileInfo(List<Map<String, String>> fileInfo) {
+	public void setFileInfo(List<SysAttachment> fileInfo) {
 		this.fileInfo = fileInfo;
 	}
 
@@ -77,5 +92,13 @@ public class ProjectDeclareVo  {
 
 	public void setPlans(List<ProjectPlan> plans) {
 		this.plans = plans;
+	}
+
+	public List<TeamUserHistory> getTeamUserRelationList() {
+		return teamUserRelationList;
+	}
+
+	public void setTeamUserRelationList(List<TeamUserHistory> teamUserRelationList) {
+		this.teamUserRelationList = teamUserRelationList;
 	}
 }

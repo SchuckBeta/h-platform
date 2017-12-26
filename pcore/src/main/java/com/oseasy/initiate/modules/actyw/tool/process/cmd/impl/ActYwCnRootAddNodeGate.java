@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
@@ -27,6 +26,7 @@ import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
 import com.oseasy.initiate.modules.actyw.tool.process.cmd.vo.ActYwPgroot;
 import com.oseasy.initiate.modules.actyw.tool.process.cmd.vo.ActYwRgnode;
 import com.oseasy.initiate.modules.actyw.tool.process.impl.ActYwEngineImpl;
+import com.oseasy.initiate.modules.actyw.tool.process.rest.GnodeMargeVo;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.GnodeType;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtSvl;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.StenEsubType;
@@ -67,7 +67,7 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
 
   /**
    *执行必要参数 .
-   *  group 流程组不能为空
+   *  group 自定义流程不能为空
    *  gnode 新增业务节点不能为空
    *  startGnode 新增业务上一节点 startGnode节点不能为空
    *  endGnode 新增业务下一节点 endGnode节点不能为空
@@ -87,6 +87,7 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
       ActYwGnode gnode = tpl.getGnode();
       ActYwGnode startGnode = tpl.getStartGnode();
       ActYwGnode preFunGnode = tpl.getPreFunGnode();
+      ActYwGnode endGnode = tpl.getEndGnode();
       ActYwGnode nextFunGnode = tpl.getNextFunGnode();
       ActYwNode node = gnode.getNode();
 
@@ -113,15 +114,17 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
       gnode.setType(GnodeType.getByActYwNode(node, node.getLevel()).getId());
       gnode.setTypefun(StenFuntype.SFT_SELECT.getVal());
       gnode.setGroup(group);
+      gnode.setPreGnodes(Lists.newArrayList());
+      gnode.setNextGnodes(Lists.newArrayList());
+      gnode.setRemarks("RootAddNodeGate"+node.getName());
+
+      //TODO 保存或更新 gnode
       gnode.setPreGnode(startGnode);
       gnode.setPreFunGnode(preFunGnode);
-      gnode.setPreGnodes(Lists.newArrayList());
-
+      gnode.setNextGnode(new ActYwGnode(nextFunGnode.getId()));
       gnode.setNextFunGnode(nextFunGnode);
-      gnode.setNextGnodes(Lists.newArrayList());
-      gnode.setRemarks("RootAddNode"+node.getName());
-      //TODO 保存或更新 gnode
-      engine.service().save(gnode);
+      GnodeMargeVo gnodeMargeVo = engine.service().margeList(group, gnode);
+
 
       /**
        * 新增业务节点和结束节点连接线,并关联新增业务节点.
@@ -136,19 +139,27 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
         endSflowGnodeNew.setType(GnodeType.getByActYwNodeAndNodekey(node, RtSvl.RtLevelVal.RT_LV1, StenType.ST_FLOW_SEQUENCE.getKey()).getId());
       }
       endSflowGnodeNew.setNodeId(StenType.ST_FLOW_SEQUENCE.getId());
+      endSflowGnodeNew.setName(StenType.ST_FLOW_SEQUENCE.getRemark());
       endSflowGnodeNew.setIsShow(true);
       endSflowGnodeNew.setIsForm(false);
       endSflowGnodeNew.setSort(100);
       endSflowGnodeNew.setOffice(UserUtils.getAdminOffice());
-      endSflowGnodeNew.setPreGnode(gnode);
-      endSflowGnodeNew.setPreFunGnode(gnode);
+      endSflowGnodeNew.setRemarks("RootAddNodeGate" + StenType.ST_FLOW_SEQUENCE.getRemark());
+      //TODO 保存 endSflowGnodeNew
+
+//    endSflowGnodeNew.setPreGnode(gnode);
+//    endSflowGnodeNew.setPreFunGnode(gnode);
+      endSflowGnodeNew.setPreGnode(gnodeMargeVo.getGnode());
+      endSflowGnodeNew.setPreFunGnode(gnodeMargeVo.getGnode());
       endSflowGnodeNew.setPreGnodes(Lists.newArrayList());
       endSflowGnodeNew.setNextGnode(nextFunGnode);
       endSflowGnodeNew.setNextFunGnode(nextFunGnode);
+//      endSflowGnodeNew.setNextGnode(gnodeMargeVo.getGnode().getNextGnode());
+//      endSflowGnodeNew.setNextFunGnode(gnodeMargeVo.getGnode().getNextFunGnode());
       endSflowGnodeNew.setNextGnodes(Lists.newArrayList());
-      endSflowGnodeNew.setRemarks("RootAddNode" + StenType.ST_FLOW_SEQUENCE.getRemark());
       //TODO 保存 endSflowGnodeNew
-      engine.service().save(endSflowGnodeNew);
+       gnodeMargeVo = engine.service().margeList(group, endSflowGnodeNew);
+
 
       /**
        * 更新业务节点下个节点连接线.
@@ -199,7 +210,6 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
        * 更新前置业务节点 preFunGnode 的pre_id和pre_fun_id和pre_ids.
        */
       preFunGnode.setGroup(group);
-
 
       /**
        * 更新 endSflowGnodeNew 的pre_ids和next_ids.
@@ -258,80 +268,139 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
       engine.service().save(preFunGnode);
 
       /**********************************************************************
+       * 新增网关节点和上一节点连接线,并关联网关节点和上一节点.
+       */
+      ActYwGnode gatewaySflowGnodeNew = new ActYwGnode();
+      gatewaySflowGnodeNew.setParent(gnode.getParent());
+      gatewaySflowGnodeNew.setGroup(group);
+      gatewaySflowGnodeNew.setTypefun(StenFuntype.SFT_NOT_SELECT.getVal());
+      gatewaySflowGnodeNew.setType(GnodeType.getByActYwNodeAndNodekey(node, RtSvl.RtLevelVal.RT_LV1, StenType.ST_FLOW_SEQUENCE.getKey()).getId());
+      gatewaySflowGnodeNew.setNodeId(StenType.ST_FLOW_SEQUENCE.getId());
+      gatewaySflowGnodeNew.setName(StenType.ST_FLOW_SEQUENCE.getRemark());
+      gatewaySflowGnodeNew.setIsShow(true);
+      gatewaySflowGnodeNew.setIsForm(false);
+      gatewaySflowGnodeNew.setSort(100);
+      gatewaySflowGnodeNew.setOffice(UserUtils.getAdminOffice());
+      gatewaySflowGnodeNew.setPreGnode(preFunGnode);
+      gatewaySflowGnodeNew.setPreFunGnode(preFunGnode);
+      gatewaySflowGnodeNew.setPreGnodes(Lists.newArrayList());
+      gatewaySflowGnodeNew.setNextGnode(null);
+      gatewaySflowGnodeNew.setNextFunGnode(null);
+      gatewaySflowGnodeNew.setNextGnodes(Lists.newArrayList());
+      gatewaySflowGnodeNew.setRemarks("RootAddNodeGate111" + StenType.ST_FLOW_SEQUENCE.getRemark());
+      //TODO 保存 gatewaySflowGnodeNew
+      engine.service().save(gatewaySflowGnodeNew);
+
+      /**
        * 新增网关节点.
        */
       ActYwGnode gatewayGnodeNew = new ActYwGnode();
-      gatewayGnodeNew.setParent(new ActYwGnode(SysIds.SYS_TREE_PROOT.getId()));
+      gatewayGnodeNew.setParent(gnode.getParent());
       gatewayGnodeNew.setGroup(group);
-      gatewayGnodeNew.setTypefun(StenFuntype.SFT_SELECT.getVal());
+      gatewayGnodeNew.setTypefun(StenFuntype.SFT_NOT_SELECT.getVal());
       gatewayGnodeNew.setType(GnodeType.getByActYwNodeAndNodekey(node, node.getLevel(), StenType.ST_GATEWAY_EXCLUSIVE.getKey()).getId());
       gatewayGnodeNew.setNodeId(StenType.ST_GATEWAY_EXCLUSIVE.getId());
+      gatewayGnodeNew.setName(StenType.ST_GATEWAY_EXCLUSIVE.getRemark());
       gatewayGnodeNew.setIsShow(true);
       gatewayGnodeNew.setIsForm(false);
       gatewayGnodeNew.setSort(100);
       gatewayGnodeNew.setOffice(UserUtils.getAdminOffice());
-      gatewayGnodeNew.setPreGnode(null);
-      gatewayGnodeNew.setPreFunGnode(null);
+      gatewayGnodeNew.setPreGnode(gatewaySflowGnodeNew);
+      gatewayGnodeNew.setPreFunGnode(preFunGnode);
+      gatewayGnodeNew.setPreGnodes(Lists.newArrayList());
+      gatewayGnodeNew.getPreGnodes().add(gatewaySflowGnodeNew);
+
       gatewayGnodeNew.setNextGnode(null);
       gatewayGnodeNew.setNextFunGnode(null);
-      gatewayGnodeNew.setPreGnodes(Lists.newArrayList());
-      gatewayGnodeNew.setNextGnodes(nextFlowGnodes);
+      gatewayGnodeNew.setNextGnodes(Lists.newArrayList());
+//      gatewayGnodeNew.getNextGnodes().addAll(engine.service().findSlibingsByParentId(gnode));
+      gatewayGnodeNew.getNextGnodes().add(gnode);
+      gatewayGnodeNew.setNextFunGnodes(Lists.newArrayList());
+      gatewayGnodeNew.getNextFunGnodes().add(gnode);
+//      gatewayGnodeNew.getNextFunGnodes().add(engine.service().findSlibingsByParentId(gnode));
       gatewayGnodeNew.setRemarks("RootAddNodeGate" + StenType.ST_GATEWAY_EXCLUSIVE.getRemark());
       //TODO 保存 gatewayGnodeNew
       engine.service().save(gatewayGnodeNew);
 
       /**
-       * 新增网关节点和上一节点连接线,并关联网关节点和上一节点.
+       * 上一业务节点关联网关和网关连接线节点.
        */
-      ActYwGnode gatewaySflowGnodeNew = new ActYwGnode();
-      gatewaySflowGnodeNew.setParent(startGnode.getParent());
-      gatewaySflowGnodeNew.setGroup(group);
-      gatewaySflowGnodeNew.setTypefun(StenFuntype.SFT_NOT_SELECT.getVal());
-      gatewaySflowGnodeNew.setType(GnodeType.getByActYwNodeAndNodekey(node, RtSvl.RtLevelVal.RT_LV1, StenType.ST_FLOW_SEQUENCE.getKey()).getId());
-      gatewaySflowGnodeNew.setNodeId(StenType.ST_FLOW_SEQUENCE.getId());
-      gatewaySflowGnodeNew.setIsShow(true);
-      gatewaySflowGnodeNew.setIsForm(false);
-      gatewaySflowGnodeNew.setSort(100);
-      gatewaySflowGnodeNew.setOffice(UserUtils.getAdminOffice());
-      gatewaySflowGnodeNew.setPreGnode(startGnode);
-      gatewaySflowGnodeNew.setPreFunGnode(startGnode);
-      gatewaySflowGnodeNew.setPreGnodes(Lists.newArrayList());
-      gatewaySflowGnodeNew.setNextGnode(gatewayGnodeNew);
-      gatewaySflowGnodeNew.setNextFunGnode(gatewayGnodeNew);
-      gatewaySflowGnodeNew.setNextGnodes(Lists.newArrayList());
-      gatewaySflowGnodeNew.setRemarks("RootAddNodeGate" + StenType.ST_FLOW_SEQUENCE.getRemark());
-      //TODO 保存 gatewaySflowGnodeNew
-      engine.service().save(gatewaySflowGnodeNew);
+      preFunGnode.setNextGnode(gatewaySflowGnodeNew);
+      preFunGnode.setNextFunGnode(gatewayGnodeNew);
+      preFunGnode.setNextGnodes(Lists.newArrayList());
+      preFunGnode.getNextGnodes().add(gatewaySflowGnodeNew);
+      preFunGnode.setNextFunGnodes(Lists.newArrayList());
+      preFunGnode.getNextFunGnodes().add(gatewayGnodeNew);
+      //TODO 更新 startGnode
+      engine.service().save(preFunGnode);
 
       /**
-       * 上一节点关联网关连接线节点.
+       * 前置业务节点更新与网关节点关系.
        */
-      startGnode.setNextGnode(gatewaySflowGnodeNew);
-      startGnode.setNextFunGnode(gatewayGnodeNew);
-      startGnode.getNextGnodes().add(gatewaySflowGnodeNew);
+      startGnode.setPreGnode(gatewayGnodeNew);
+      startGnode.setPreGnodes(Lists.newArrayList());
+      startGnode.getPreGnodes().add(gatewayGnodeNew);
+      startGnode.setPreFunGnode(gatewayGnodeNew);
+      startGnode.setPreFunGnodes(Lists.newArrayList());
+      startGnode.getPreFunGnodes().add(gatewayGnodeNew);
       //TODO 更新 startGnode
       engine.service().save(startGnode);
 
       /**
-       * 网关关联网关连接线节点.
+       * 业务节点更新与网关节点关系.
        */
-      gatewayGnodeNew.setPreGnode(gatewaySflowGnodeNew);
-      gatewayGnodeNew.setPreFunGnode(startGnode);
-      gatewayGnodeNew.getPreGnodes().add(gatewaySflowGnodeNew);
-      //TODO 更新 gatewayGnodeNew
-      engine.service().save(gatewayGnodeNew);
+      gnode.setPreGnode(startGnode);
+      gnode.getPreGnodes().add(startGnode);
+      gnode.setPreFunGnode(gatewayGnodeNew);
+      gnode.getPreGnodes().add(gatewayGnodeNew);
+      //TODO 更新 gnode
+      engine.service().save(gnode);
+
+      /**
+       * 业务节点更新与网关节点关系.
+       */
+      if(endGnode == null){
+        endGnode = gnode.getNextGnode();
+      }
+      endGnode.setPreGnode(gnode);
+      endGnode.setPreGnodes(Lists.newArrayList());
+      endGnode.getPreGnodes().add(gnode);
+      endGnode.setPreFunGnode(gnode);
+      endGnode.setPreFunGnodes(Lists.newArrayList());
+      endGnode.getPreFunGnodes().add(gnode);
+      //TODO 更新 gnode
+      engine.service().save(endGnode);
 
       /**
        * 上一节点连接线关联到节点.
        */
       for (ActYwGnode nfGnode : nextFlowGnodes) {
-        nfGnode.setPreGnode(gatewayGnodeNew);
-        nfGnode.setPreFunGnode(gatewayGnodeNew);
-        nfGnode.getPreGnodes().add(gatewayGnodeNew);
+        nfGnode.setPreGnode(gnode);
+        nfGnode.setPreFunGnode(gnode);
+        nfGnode.getPreGnodes().add(gnode);
+        nfGnode.getPreFunGnodes().add(gnode);
         engine.service().save(nfGnode);
       }
       //TODO 批量更新 nextFlowGnodes
 
+      List<ActYwGnode> slibingsGnodes = engine.service().findSlibings(group.getId(), startGnode.getId());
+      for (ActYwGnode slibingsGnode : slibingsGnodes) {
+        slibingsGnode.setPreGnode(gatewayGnodeNew);
+        slibingsGnode.setPreFunGnode(gatewayGnodeNew);
+        slibingsGnode.setPreGnodes(Lists.newArrayList());
+        slibingsGnode.getPreGnodes().add(gatewayGnodeNew);
+        slibingsGnode.setPreFunGnodes(Lists.newArrayList());
+        slibingsGnode.getPreFunGnodes().add(gatewayGnodeNew);
+        engine.service().save(slibingsGnode);
+      }
+
+      List<ActYwGnode> slibingsFunGnodes = engine.service().findFunSlibings(group.getId(), preFunGnode.getId());
+      for (ActYwGnode slibingsFunGnode : slibingsFunGnodes) {
+        slibingsFunGnode.setPreFunGnode(gatewayGnodeNew);
+        slibingsFunGnode.setPreFunGnodes(Lists.newArrayList());
+        slibingsFunGnode.getPreFunGnodes().add(gatewayGnodeNew);
+        engine.service().save(slibingsFunGnode);
+      }
 
       /**
        * 按顺序返回所有节点.
@@ -469,7 +538,14 @@ public class ActYwCnRootAddNodeGate extends ActYwAbsEngine<ActYwEngineImpl> impl
   }
 
   @Override
-  public ActYwRstatus checkPerfect(ActYwPgroot tpl) {
+  public ActYwRstatus<ActYwGnode> checkPerfect(ActYwPgroot tpl) {
+    // TODO Auto-generated method stub
+    return tpl;
+  }
+
+  @Override
+  public ActYwRstatus<ActYwGnode> initParams(ActYwPgroot tpl) {
+    // TODO Auto-generated method stub
     return tpl;
   }
 }

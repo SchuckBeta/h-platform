@@ -32,7 +32,6 @@ import com.oseasy.initiate.modules.cms.service.CategoryService;
 import com.oseasy.initiate.modules.cms.service.FileTplService;
 import com.oseasy.initiate.modules.cms.service.SiteService;
 import com.oseasy.initiate.modules.cms.utils.TplUtils;
-import com.oseasy.initiate.modules.sys.entity.Office;
 
 /**
  * 栏目Controller
@@ -63,7 +62,7 @@ public class CategoryController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Model model) {
 		List<Category> list = Lists.newArrayList();
-		List<Category> sourcelist = categoryService.findByUser(true, null);
+		List<Category> sourcelist = categoryService.find(true, null);
 		Category.sortList(list, sourcelist, SysIds.SITE_CATEGORYS_SYS_ROOT.getId());
         model.addAttribute("list", list);
 		return "modules/cms/categoryList";
@@ -143,7 +142,7 @@ public class CategoryController extends BaseController {
 	public List<Map<String, Object>> treeData(String module, @RequestParam(required=false) String extId, HttpServletResponse response) {
 		response.setContentType("application/json; charset=UTF-8");
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<Category> list = categoryService.findByUser(true, module);
+		List<Category> list = categoryService.find(true, module);
 		for (int i=0; i<list.size(); i++) {
 			Category e = list.get(i);
 			if (extId == null || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1)) {

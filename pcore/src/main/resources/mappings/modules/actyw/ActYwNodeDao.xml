@@ -13,6 +13,7 @@
 		a.is_show AS "isShow",
 		a.is_require AS "isRequire",
 		a.is_group AS "isGroup",
+		a.icon_url AS "iconUrl",
 		a.flow_group AS "flowGroup",
 		a.node_type AS "nodeType",
 		a.node_key AS "nodeKey",
@@ -29,12 +30,36 @@
 		a.del_flag AS "delFlag",
 		o10.name AS "office.name",
 
+		f.id AS "form.id",
+		f.name AS "form.name",
+		f.fname AS "form.fname",
+		f.list_id AS "form.listId",
+		f.pro_type AS "form.proType",
+		f.type AS "form.type",
+		f.model AS "form.model",
+		f.params AS "form.params",
+		f.path AS "form.path",
+		f.content AS "form.content",
+		f.office_id AS "form.office.id",
+		f.update_date AS "form.updateDate",
+		f.update_by AS "form.updateBy.id",
+		f.create_date AS "form.createDate",
+		f.create_by AS "form.createBy.id",
+		f.remarks AS "form.remarks",
+		f.del_flag AS "form.delFlag",
+
+    	r.id AS "role.id",
+    	r.name AS "role.name",
+    	r.enname AS "role.enname",
+
 		re.NAME_ AS "flowName"
 	</sql>
 
 	<sql id="actYwNodeJoins">
 		LEFT JOIN sys_office o10 ON o10.id = a.office_id
 		LEFT JOIN ACT_RE_PROCDEF re on re.ID_ = a.flow_id
+		LEFT JOIN act_yw_form f ON f.id = a.form_id
+		LEFT JOIN sys_role r ON r.id = a.flow_group
 	</sql>
 
 	<select id="get" resultType="ActYwNode">
@@ -52,6 +77,79 @@
 		<include refid="actYwNodeJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="level != null and level != ''">
+				AND a.level = #{level}
+			</if>
+			<if test="isSys != null and isSys != ''">
+				AND a.is_sys = #{isSys}
+			</if>
+			<if test="isForm != null and isForm != ''">
+				AND a.is_form = #{isForm}
+			</if>
+			<if test="isFlow != null and isFlow != ''">
+				AND a.is_flow = #{isFlow}
+			</if>
+			<if test="isShow != null and isShow != ''">
+				AND a.is_show = #{isShow}
+			</if>
+			<if test="isRequire != null and isRequire != ''">
+				AND a.is_require = #{isRequire}
+			</if>
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
+			</if>
+			<if test="formId != null and formId != ''">
+				AND a.form_id = #{formId}
+			</if>
+			<if test="flowId != null and flowId != ''">
+				AND a.flow_id = #{flowId}
+			</if>
+			<if test="isGroup != null and isGroup != ''">
+				AND a.is_group = #{flowId}
+			</if>
+			<if test="flowGroup != null and flowGroup != ''">
+				AND a.flow_group = #{flowGroup}
+			</if>
+			<if test="nodeType != null and nodeType != ''">
+				AND a.node_type = #{nodeType}
+			</if>
+			<if test="nodeKey != null and nodeKey != ''">
+				AND a.node_key = #{nodeKey}
+			</if>
+			<if test="nodePrekey != null and nodePrekey != ''">
+				AND a.node_prekey = #{nodePrekey}
+			</if>
+			<if test="nodeNextkey != null and nodeNextkey != ''">
+				AND a.node_nextkey = #{nodeNextkey}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.level ASC, a.type ASC, a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByTypeNoZero" resultType="ActYwNode">
+		SELECT
+			<include refid="actYwNodeColumns"/>
+		FROM act_yw_node a
+		<include refid="actYwNodeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.type <![CDATA[ <> ]]> 0
 			<if test="name != null and name != ''">
 				AND a.name LIKE
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
@@ -147,6 +245,7 @@
 			is_show,
 			is_require,
 			is_group,
+			icon_url,
 			flow_group,
 			node_type,
 			node_key,
@@ -172,6 +271,7 @@
 			#{isShow},
 			#{isRequire},
 			#{isGroup},
+			#{iconUrl},
 			#{flowGroup},
 			#{nodeType},
 			#{nodeKey},
@@ -200,6 +300,7 @@
 			is_show = #{isShow},
 			is_require = #{isRequire},
 			is_group = #{isGroup},
+			icon_url = #{iconUrl},
 			flow_group = #{flowGroup},
 			node_type = #{nodeType},
 			node_key = #{nodeKey},

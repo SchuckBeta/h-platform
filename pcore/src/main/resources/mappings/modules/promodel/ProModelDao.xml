@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oseasy.initiate.modules.promodel.dao.ProModelDao">
-    
+
 	<sql id="proModelColumns">
 		a.id AS "id",
+		a.actyw_id AS "actYwId",
 		a.p_name AS "pName",
 		a.declare_id AS "declareId",
+		a.pro_type AS "proType",
+		a.pro_category AS "proCategory",
 		a.type AS "type",
 		a.level AS "level",
 		a.introduction AS "introduction",
 		a.financing_stat AS "financingStat",
+		a.final_status AS "finalStatus",
+		a.state AS "state",
 		a.team_id AS "teamId",
 		a.update_date AS "updateDate",
 		a.update_by AS "updateBy.id",
@@ -20,23 +25,306 @@
 		a.pro_mark AS "proMark",
 		a.source AS "source",
 		a.competition_number AS "competitionNumber",
+		a.project_source AS "projectSource",
+		a.sub_time AS "subTime",
 		a.grade AS "grade",
-		a.g_score AS "gScore"
+		a.g_score AS "gScore",
+
+		yw.id AS "actYw.id",
+		yw.rel_id AS "actYw.relId",
+		yw.group_id AS "actYw.groupId",
+		yw.flow_id AS "actYw.flowId",
+		yw.deployment_id AS "actYw.deploymentId",
+		yw.is_deploy AS "actYw.isDeploy",
+		yw.status  AS  "status",
+		yw.show_time AS "actYw.showTime",
+		yw.key_Type AS "actYw.keyType",
+
+		pp.id AS "actYw.proProject.id",
+		pp.menu_rid AS "actYw.proProject.menuRid",
+		pp.category_rid AS "actYw.proProject.categoryRid",
+		pp.content AS "actYw.proProject.content",
+		pp.project_name AS "actYw.proProject.projectName",
+		pp.project_mark AS "actYw.proProject.projectMark",
+		pp.state AS "actYw.proProject.state",
+		pp.pro_type AS "actYw.proProject.proType",
+		pp.type AS "actYw.proProject.type",
+		pp.pro_category AS "actYw.proProject.proCategory",
+		pp.level AS "actYw.proProject.level",
+		pp.final_status AS "actYw.proProject.finalStatus",
+		pp.start_date AS "actYw.proProject.startDate",
+		pp.end_date AS "actYw.proProject.endDate",
+		pp.node_state AS "actYw.proProject.nodeState",
+		pp.node_start_date AS "actYw.proProject.nodeStartDate",
+		pp.node_end_date AS "actYw.proProject.nodeEndDate",
+		pp.update_date AS "actYw.proProject.updateDate",
+		pp.update_by AS "actYw.proProject.updateBy.id",
+		pp.create_date AS "actYw.proProject.createDate",
+		pp.create_by AS "actYw.proProject.createBy.id",
+		pp.del_flag AS "actYw.proProject.delFlag",
+
+
+		u.id AS "deuser.id",
+		u.company_id AS "deuser.company.id",
+		u.office_id AS "deuser.office.id",
+		u.login_name AS "deuser.loginName",
+		u.password AS "deuser.password",
+		u.no AS "deuser.no",
+		u.sex AS "deuser.sex",
+		u.name AS "deuser.name",
+		u.email AS "deuser.email",
+		u.phone AS "deuser.phone",
+		u.mobile AS "deuser.mobile",
+		u.user_type AS "deuser.userType",
+		u.login_ip AS "deuser.loginIp",
+		u.login_date AS "deuser.loginDate",
+		u.remarks AS "deuser.remarks",
+		u.login_flag AS "deuser.loginFlag",
+		u.photo AS "deuser.photo",
+		u.professional AS "deuser.professional",
+		u.create_by AS "deuser.createBy.id",
+		u.create_date AS "deuser.deuser.name",
+		u.update_by AS "deuser.updateBy.id",
+		u.update_date AS "deuser.updateDate",
+		u.del_flag AS "deuser.delFlag",
+		u.id_type AS "deuser.idType",
+		u.birthday AS "deuser.birthday",
+		u.id_no AS "deuser.idNumber",
+		u.national AS "deuser.national",
+		u.political AS "deuser.political",
+		u.country AS "deuser.country",
+		u.qq AS "deuser.qq",
+		u.education AS "deuser.education",
+		u.degree AS "deuser.degree",
+		u.views AS "deuser.views",
+		u.likes AS "deuser.likes",
+
+
+		o6.name AS "deuser.office.name",
+
+		op.id AS "deuser.subject.id",
+		op.name AS "deuser.subject.name"
 	</sql>
-	
+
 	<sql id="proModelJoins">
+		LEFT JOIN act_yw yw ON yw.id = a.actyw_id
+		LEFT JOIN pro_project pp ON pp.id = yw.rel_id
+		LEFT JOIN sys_user u ON u.id = a.declare_id
+		LEFT JOIN sys_office o6 ON o6.id = u.office_id
+		LEFT JOIN sys_office op ON op.id = u.professional
 	</sql>
-    
+
 	<select id="get" resultType="ProModel">
-		SELECT 
+		SELECT
 			<include refid="proModelColumns"/>
 		FROM pro_model a
 		<include refid="proModelJoins"/>
-		WHERE a.id = #{id}
+		WHERE a.del_flag = '0'
+		and a.id=#{id}
 	</select>
-	
+
+	<select id="getByProModel" resultType="ProModel">
+		SELECT
+			<include refid="proModelColumns"/>
+		FROM pro_model a
+		<include refid="proModelJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="actYwId != null and actYwId != ''">
+			AND a.actyw_Id = #{actYwId}
+		</if>
+		<if test="declareId != null and declareId != ''">
+			AND a.declare_id = #{declareId}
+		</if>
+	</select>
+
+
+	<select id="getPromodelList" resultType="ProModel">
+		SELECT
+			<include refid="proModelColumns"/>
+		FROM pro_model a
+		<include refid="proModelJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="actYwId != null and actYwId != ''">
+			AND a.actyw_Id = #{actYwId}
+		</if>
+
+	</select>
+
+
+	<select id="findProModelByTeamId" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM pro_model a
+		LEFT JOIN team t ON a.team_id=t.id
+   		WHERE 	(a.state is null or a.state='0'  or a.state='')   AND a.team_id=#{teamId} AND a.del_flag='0'
+   		AND t.del_flag='0'
+	</select>
+
 	<select id="findList" resultType="ProModel">
-		SELECT 
+		SELECT
+			<include refid="proModelColumns"/>
+		FROM pro_model a
+		<include refid="proModelJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="actYwId != null and actYwId != ''">
+				AND a.actyw_Id = #{actYwId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByLeader" resultType="ProModel" parameterType="java.lang.String">
+		SELECT
+			p.id AS "id",
+			p.`name` AS "pName",
+			p.leader AS "declareId",
+			p.leader AS "deuser.id",
+			'1,' AS "proType",
+			dpp.type AS "type",
+			p.team_id AS "teamId",
+			p.actyw_id AS "actYwId",
+			p.actyw_id AS "actYw.id",
+			p.proc_ins_id AS "procInsId",
+			p.status AS "state",
+			t.name AS "team.name",
+			t.state AS "team.state",
+			t.summary AS "team.summary",
+			t.enterprise_teacher_num AS "team.enterpriseTeacherNum",
+			t.school_teacher_num AS "team.schoolTeacherNum",
+			t.member_num AS "team.memberNum",
+			t.local_college AS "team.localCollege"
+		FROM
+			project_declare p
+			LEFT JOIN team t ON t.id = p.team_id
+			LEFT JOIN act_yw day ON day.id = p.actyw_id
+			LEFT JOIN pro_project dpp ON dpp.id = day.rel_id
+		WHERE
+			p.leader = #{uid}
+		UNION ALL SELECT
+			p.id AS "id",
+			p.p_name AS "pName",
+			p.declare_id AS "declareId",
+			p.declare_id AS "deuser.id",
+			ppp.pro_type AS "proType",
+			ppp.type AS "type",
+			p.team_id AS "teamId",
+			p.actyw_id AS "actYwId",
+			p.actyw_id AS "actYw.id",
+			p.proc_ins_id AS "procInsId",
+			p.state AS "state",
+			t.name AS "team.name",
+			t.state AS "team.state",
+			t.summary AS "team.summary",
+			t.enterprise_teacher_num AS "team.enterpriseTeacherNum",
+			t.school_teacher_num AS "team.schoolTeacherNum",
+			t.member_num AS "team.memberNum",
+			t.local_college AS "team.localCollege"
+		FROM
+			pro_model p
+			LEFT JOIN team t ON t.id = p.team_id
+			LEFT JOIN act_yw pay ON pay.id = p.actyw_id
+			LEFT JOIN pro_project ppp ON ppp.id = pay.rel_id
+		WHERE
+			p.declare_id = #{uid}
+	</select>
+
+	<select id="findListAllByLeader" resultType="ProModel" parameterType="java.lang.String">
+		SELECT
+			p.id AS "id",
+			p.`name` AS "pName",
+			p.leader AS "declareId",
+			p.leader AS "deuser.id",
+			'1,' AS "proType",
+			dpp.type AS "type",
+			p.team_id AS "teamId",
+			p.actyw_id AS "actYwId",
+			p.actyw_id AS "actYw.id",
+			p.proc_ins_id AS "procInsId",
+			p.status AS "state",
+			t.name AS "team.name",
+			t.state AS "team.state",
+			t.summary AS "team.summary",
+			t.enterprise_teacher_num AS "team.enterpriseTeacherNum",
+			t.school_teacher_num AS "team.schoolTeacherNum",
+			t.member_num AS "team.memberNum",
+			t.local_college AS "team.localCollege"
+		FROM project_declare p
+			LEFT JOIN team t ON t.id = p.team_id
+			LEFT JOIN act_yw day ON day.id = p.actyw_id
+			LEFT JOIN pro_project dpp ON dpp.id = day.rel_id
+		WHERE p.leader = #{uid}
+		UNION ALL SELECT
+			p.id AS "id",
+			p.p_name AS "pName",
+			p.declare_id AS "declareId",
+			p.declare_id AS "deuser.id",
+			ppp.pro_type AS "proType",
+			ppp.type AS "type",
+			p.team_id AS "teamId",
+			p.actyw_id AS "actYwId",
+			p.actyw_id AS "actYw.id",
+			p.proc_ins_id AS "procInsId",
+			p.state AS "state",
+			t.name AS "team.name",
+			t.state AS "team.state",
+			t.summary AS "team.summary",
+			t.enterprise_teacher_num AS "team.enterpriseTeacherNum",
+			t.school_teacher_num AS "team.schoolTeacherNum",
+			t.member_num AS "team.memberNum",
+			t.local_college AS "team.localCollege"
+		FROM pro_model p
+			LEFT JOIN team t ON t.id = p.team_id
+			LEFT JOIN act_yw pay ON pay.id = p.actyw_id
+			LEFT JOIN pro_project ppp ON ppp.id = pay.rel_id
+		WHERE p.declare_id = #{uid}
+		UNION ALL SELECT
+			g.id AS "id",
+			g.p_name AS "pName",
+			g.declare_id AS "declareId",
+			g.declare_id AS "deuser.id",
+			'7,' AS "proType",
+			gpp.type AS "type",
+			g.team_id AS "teamId",
+			g.actyw_id AS "actYwId",
+			g.actyw_id AS "actYw.id",
+			g.proc_ins_id AS "procInsId",
+			g.audit_state AS "state",
+			t.name AS "team.name",
+			t.state AS "team.state",
+			t.summary AS "team.summary",
+			t.enterprise_teacher_num AS "team.enterpriseTeacherNum",
+			t.school_teacher_num AS "team.schoolTeacherNum",
+			t.member_num AS "team.memberNum",
+			t.local_college AS "team.localCollege"
+		FROM g_contest g
+			LEFT JOIN team t ON t.id = g.team_id
+			LEFT JOIN act_yw gay ON gay.id = g.actyw_id
+			LEFT JOIN pro_project gpp ON gpp.id = gay.rel_id
+		WHERE g.declare_id = #{uid}
+	</select>
+
+	<select id="getProModelAuditListCount" resultType="java.lang.Integer">
+		SELECT
+			COUNT(1)
+		FROM pro_model a
+		<include refid="proModelJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="actYwId != null and actYwId != ''">
+				AND a.actyw_Id = #{actYwId}
+			</if>
+		</where>
+	</select>
+
+	<select id="findAllList" resultType="ProModel">
+		SELECT
 			<include refid="proModelColumns"/>
 		FROM pro_model a
 		<include refid="proModelJoins"/>
@@ -52,34 +340,20 @@
 			</otherwise>
 		</choose>
 	</select>
-	
-	<select id="findAllList" resultType="ProModel">
-		SELECT 
-			<include refid="proModelColumns"/>
-		FROM pro_model a
-		<include refid="proModelJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO pro_model(
 			id,
+			actyw_id,
 			p_name,
 			declare_id,
+			pro_type,
 			type,
+			pro_category,
 			level,
 			introduction,
 			financing_stat,
+			final_status,
 			team_id,
 			update_date,
 			update_by,
@@ -90,16 +364,23 @@
 			pro_mark,
 			source,
 			competition_number,
+			sub_time,
+			project_source,
 			grade,
+			state,
 			g_score
 		) VALUES (
 			#{id},
+			#{actYwId},
 			#{pName},
 			#{declareId},
+			#{proType},
 			#{type},
+			#{proCategory},
 			#{level},
 			#{introduction},
 			#{financingStat},
+			#{finalStatus},
 			#{teamId},
 			#{updateDate},
 			#{updateBy.id},
@@ -110,16 +391,25 @@
 			#{proMark},
 			#{source},
 			#{competitionNumber},
+			#{subTime},
+			#{projectSource},
 			#{grade},
+			#{state},
 			#{gScore}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE pro_model SET 	
+		UPDATE pro_model SET
 			p_name = #{pName},
+			actYw_id = #{actYwId},
 			declare_id = #{declareId},
+			sub_time = #{subTime},
+			<if test="{proType!=null and proType!=''}">
+			pro_type = #{proType},
+			</if>
 			type = #{type},
+			pro_category = #{proCategory},
 			level = #{level},
 			introduction = #{introduction},
 			financing_stat = #{financingStat},
@@ -129,16 +419,41 @@
 			proc_ins_id = #{procInsId},
 			pro_mark = #{proMark},
 			source = #{source},
+			final_status =#{finalStatus},
 			competition_number = #{competitionNumber},
+			project_source = #{projectSource},
 			grade = #{grade},
+			state = #{state},
 			g_score = #{gScore}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE pro_model SET 
+		UPDATE pro_model SET
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+	<update id="myDelete">
+		UPDATE pro_model SET
+			del_flag = '1'
+		WHERE id = #{id} and proc_ins_id is null
+	</update>
+	<update id="updateResult">
+		UPDATE pro_model SET
+			grade = #{result}
+		WHERE id = #{pid}
+	</update>
+	<update id="updateState">
+		UPDATE pro_model SET
+			state = #{state}
+		WHERE id = #{id}
+	</update>
+	<update id="modifyLeaderAndTeam">
+		UPDATE pro_model SET
+		declare_id =#{uid}
+		<if test="tid!=null and tid !='' ">
+			,team_id=#{tid}
+		</if>
+		WHERE id = #{pid}
+	</update>
 </mapper>

@@ -143,7 +143,7 @@ public class FrontPasswAuthorizingRealm extends SystemAuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginName(principal.getLoginName());
+		User user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();

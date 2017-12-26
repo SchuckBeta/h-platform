@@ -42,23 +42,31 @@
 		a.del_flag AS "delFlag",
 		a.proc_ins_id AS "procInsId",
 		a.team_id AS "teamId",
-		a.template_id AS "templateId",
+		a.template_id AS
+		"templateId",
 		a.finance_grant AS "financeGrant",
-		a.university_grant AS "universityGrant",
+		a.university_grant AS
+		"universityGrant",
 		a.total_grant AS "totalGrant",
-		a.province AS "province",
+		a.province AS
+		"province",
 		a.university_code AS "universityCode",
-		a.university_name AS "universityName",
-		a.approval_date AS "approvalDate"
+		a.university_name AS
+		"universityName",
+		a.approval_date AS "approvalDate",
+		a.actyw_id AS "actywId"
 	</sql>
+
+
 
 	<!-- 项目组成员 addBy 张正 -->
 	<sql id="snamesColumns">
 		(SELECT GROUP_CONCAT(u.name SEPARATOR '/')
-		FROM team_user_relation t
-		LEFT JOIN sys_user u ON t.user_id = u.id
-		AND u.user_type='1' WHERE t.`team_id`=a.team_id
-		GROUP BY t.`team_id` )
+		FROM
+		team_user_relation t
+		LEFT JOIN sys_user u ON t.user_id = u.id AND u.user_type='1'
+		WHERE t.team_id=a.team_id AND (t.state='0' or t.state='4')
+		GROUP BY t.team_id )
 	</sql>
 
 	<!-- 指导老师 addBy 张正 -->
@@ -68,7 +76,7 @@
 		team_user_relation t
 		LEFT JOIN sys_user u ON t.user_id = u.id
 		AND
-		u.user_type='2' WHERE t.`team_id`=a.team_id
+		u.user_type='2' WHERE t.team_id=a.team_id AND (t.state='0' or t.state='4')
 		GROUP BY t.`team_id` )
 	</sql>
 
@@ -76,7 +84,8 @@
 	<sql id="typeStringClolums">
 		( SELECT label
 		FROM sys_dict dict
-		WHERE TYPE="project_type" AND dict.value=a.type)
+		WHERE TYPE="project_type"
+		AND dict.value=a.type)
 	</sql>
 
 
@@ -93,7 +102,8 @@
 	<sql id="finalResultClolums">
 		( SELECT label
 		FROM sys_dict dict
-		WHERE TYPE="project_result" AND dict.value=a.final_result)
+		WHERE TYPE="project_result"
+		AND dict.value=a.final_result)
 	</sql>
 
 	<!--负责人 -->
@@ -115,6 +125,27 @@
 		WHERE a.id = #{id}
 	</select>
 
+
+	<!--根据项目id获取学分配置相关属性 -->
+	<select id="getScoreConfigure" resultType="ProjectDeclare">
+		SELECT a.id AS "id",
+		a.type AS "type",
+		a.leader AS "leader",
+		a.status AS "status",
+		a.level AS
+		"level",
+		a.final_result AS "finalResult",
+		a.team_id AS "teamId",
+		(SELECT
+		pa.pro_type FROM project_announce pa WHERE pa.id=a.template_id)
+		AS "pType",
+		(SELECT COUNT(tur.id) FROM team_user_history tur WHERE
+		tur.team_id=a.team_id AND tur.u_type='1' AND  tur.del_flag='0') AS "snumber"
+		FROM
+		project_declare a
+		WHERE a.id = #{id}
+	</select>
+
 	<!-- 传给工作流查询的参数 addBy 张正 -->
 	<select id="getVars" resultType="ProjectDeclare" parameterType="java.lang.String">
 		SELECT
@@ -131,7 +162,7 @@
 		AS tnames
 		FROM project_declare a
 		<where>
-			a.del_flag = '0' and a.id = #{id}
+			a.del_flag = '0' AND a.id = #{id}
 		</where>
 	</select>
 
@@ -158,7 +189,8 @@
 		<include refid="finalResultClolums" />
 		AS finalResultString
 		FROM project_declare a
-		LEFT JOIN sys_user sysu ON a.leader=sysu.id
+		LEFT JOIN sys_user sysu ON
+		a.leader=sysu.id
 		LEFT JOIN sys_office syso ON syso.id=sysu.office_id
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
@@ -171,13 +203,25 @@
 			<if test="level != null and level != ''">
 				AND a.level = #{level}
 			</if>
+			<if test="status != null and status !=''">
+				AND a.status = #{status}
+			</if>
+			<if test="number != null and number !=''">
+				AND a.number like concat('%',#{number},'%')
+			</if>
+			<if test="name !=null and name!=''">
+				AND a.name like concat('%',#{name},'%')
+			</if>
+			<if test="leader !=null and leader!=''">
+				AND <include refid="leaderStringClolums" />  like concat('%',#{leader},'%')
+			</if>
 			<if test="leaderString != null and leaderString != ''">
 				AND
 				<include refid="leaderStringClolums" />
 				like concat('%',#{leaderString},'%')
 			</if>
 			<if test="startDate != null ">
-				AND a.apply_time  &gt;= #{startDate}
+				AND a.apply_time &gt;= #{startDate}
 			</if>
 			<if test="endDate != null">
 				AND a.apply_time &lt; #{endDate}
@@ -185,7 +229,8 @@
 
 			<if test="keyword != null and keyword != ''">
 				AND ( a.number like concat('%',#{keyword},'%') or
-				a.name like concat('%',#{keyword},'%') or
+				a.name like
+				concat('%',#{keyword},'%') or
 				<include refid="typeStringClolums" />
 				like concat('%',#{keyword},'%') or
 				<include refid="leaderStringClolums" />
@@ -203,7 +248,8 @@
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''  ">
-				ORDER BY   CONVERT(${page.orderBy} using GBK)  ${page.orderByType}
+				ORDER BY CONVERT(${page.orderBy} using GBK)
+				${page.orderByType}
 			</when>
 			<otherwise>
 				ORDER BY a.update_date DESC
@@ -212,27 +258,30 @@
 	</select>
 
 	<!--根据userId 找到其对应的项目 -->
-    <select id="getExpsByUserId" parameterType="java.lang.String" resultType="com.oseasy.initiate.modules.project.vo.ProjectExpVo">
-		 SELECT *  FROM (   SELECT  a.id  AS id , a.create_date AS "startDate" ,
+	<select id="getExpsByUserId" parameterType="java.lang.String"
+		resultType="com.oseasy.initiate.modules.project.vo.ProjectExpVo">
+		SELECT * FROM ( SELECT a.id AS id , a.create_date AS "startDate" ,
 		a.update_date AS "endDate" ,
-		a.name  AS "name",
-	        (CASE WHEN #{userId}=a.leader THEN '负责人'
-			ELSE
-			(CASE WHEN
-				FIND_IN_SET(#{userId},(SELECT GROUP_CONCAT(t.user_id  SEPARATOR ',' ) FROM team_user_relation t WHERE t.team_id=a.team_id ))
-			 THEN '组成员'
-			 ELSE ''
-			 END)
-		END)  AS "roleName",
+		a.name AS "name",
+		(CASE WHEN #{userId}=a.leader THEN '负责人'
+		ELSE
+		(CASE WHEN
+		FIND_IN_SET(#{userId},(SELECT GROUP_CONCAT(t.user_id SEPARATOR ',' ) FROM team_user_relation t
+		WHERE t.team_id=a.team_id AND  (t.state='0' or t.state='4') ))
+		THEN '组成员'
+		ELSE ''
+		END)
+		END) AS "roleName",
 		( SELECT label FROM sys_dict dict
-		   WHERE TYPE="project_degree" AND dict.value=a.level) AS "level",
-		( SELECT label FROM sys_dict dict
-		WHERE TYPE="project_result" AND dict.value=a.final_result)  AS "result"
-	   FROM project_declare a
-	   WHERE a.status = '9' and a.del_flag='0' ) vi WHERE vi.roleName!="" ORDER BY `level` ASC,startDate DESC
+		WHERE TYPE="project_degree" AND dict.value=a.level) AS "level",
+		( SELECT
+		label FROM sys_dict dict
+		WHERE TYPE="project_result" AND
+		dict.value=a.final_result) AS "result"
+		FROM project_declare a
+		WHERE a.status = '9' AND a.del_flag='0' ) vi WHERE vi.roleName!="" ORDER BY
+		level ASC,startDate DESC
 	</select>
-
-
 
 	<select id="findAllList" resultType="ProjectDeclare">
 		SELECT
@@ -243,7 +292,7 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>
 		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+			<when test="page !=null and page.orderBy != null AND page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
@@ -251,7 +300,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="getCurProjectInfoByLeader" resultType="ProjectDeclare">
 		SELECT
 		<include refid="projectDeclareColumns" />
@@ -259,7 +308,8 @@
 		<include refid="projectDeclareJoins" />
 		WHERE a.leader = #{leader}
 		and a.del_flag = '0'
-		ORDER BY a.update_date DESC
+		ORDER BY a.update_date
+		DESC
 	</select>
 
 	<insert id="insert">
@@ -302,8 +352,10 @@
 		province,
 		university_code,
 		university_name,
-		approval_date
-		) VALUES (
+		approval_date,
+		actyw_id
+		)
+		VALUES (
 		#{id},
 		#{orgId},
 		#{planContent},
@@ -342,7 +394,8 @@
 		#{province},
 		#{universityCode},
 		#{universityName},
-		#{approvalDate}
+		#{approvalDate},
+		#{actywId}
 		)
 	</insert>
 
@@ -353,19 +406,23 @@
 		plan_start_date = #{planStartDate},
 		plan_end_date = #{planEndDate},
 		plan_step = #{planStep},
-		result_type = #{resultType},
+		result_type =
+		#{resultType},
 		result_content = #{resultContent},
 		level = #{level},
-		type = #{type},
+		type
+		= #{type},
 		name = #{name},
 		leader = #{leader},
 		number = #{number},
 		introduction = #{introduction},
 		apply_time = #{applyTime},
-		innovation = #{innovation},
+		innovation =
+		#{innovation},
 		budget = #{budget},
 		mid_result = #{midResult},
-		mid_score = #{midScore},
+		mid_score =
+		#{midScore},
 		final_score = #{finalScore},
 		final_result = #{finalResult},
 		development = #{development},
@@ -373,23 +430,28 @@
 		status = #{status},
 		update_date = #{updateDate},
 		update_by = #{updateBy.id},
-		proc_ins_id = #{procInsId},
+		proc_ins_id =
+		#{procInsId},
 		team_id = #{teamId},
 		template_id = #{templateId},
 		finance_grant = #{financeGrant},
 		university_grant = #{universityGrant},
 		total_grant = #{totalGrant},
 		province = #{province},
-		university_code = #{universityCode},
+		university_code =
+		#{universityCode},
 		university_name = #{universityName},
-		approval_date =#{approvalDate}
+		approval_date
+		=#{approvalDate},
+		actyw_id=#{actywId}
 		WHERE id = #{id}
 	</update>
 
 	<update id="updateStatus">
 		UPDATE project_declare SET
 		status = #{status},
-		final_result = #{finalResult},
+		final_result =
+		#{finalResult},
 		mid_result = #{midResult},
 		reply_Score = #{replyScore},
 		level = #{level},
@@ -450,98 +512,374 @@
 
 	<update id="delete">
 		UPDATE project_declare SET
-		del_flag = #{DEL_FLAG_DELETE},number=null
+		del_flag =
+		#{DEL_FLAG_DELETE},number=null
 		WHERE id = #{id}
+	</update>
+	<update id="myDelete">
+		UPDATE project_declare SET
+		del_flag ='1',number=null
+		WHERE id = #{id} AND (status='0' or status is null)
 	</update>
 	<select id="findTeams" resultType="com.oseasy.initiate.modules.team.entity.Team"
 		parameterType="java.lang.String">
 		<if test="teamid != null and teamid != '' ">
-			select t.* from team t where t.id=#{teamid}
+			SELECT t.* FROM team t WHERE t.id=#{teamid}
 			union
 		</if>
 		SELECT
 		t.*
 		FROM team t
-		WHERE t.sponsor = #{userid} and t.del_flag='0' and
-		t.state='1' 
-		and not EXISTS(select 1 from project_declare p where p.del_flag='0' and p.team_id=t.id)
-		and not EXISTS(select 1 from g_contest p where p.del_flag='0' and p.team_id=t.id)
+		WHERE t.sponsor = #{userid} AND t.del_flag='0' AND
+		t.state='1'
 	</select>
-	<select id="findTeamStudent" resultType="java.util.HashMap"
-		parameterType="java.lang.String">
-		select u.name,u.no,o.name org_name
-		,op.name professional,(select GROUP_CONCAT(s6.label)  from sys_dict s6 where FIND_IN_SET(s6.value,u.domain) and s6.type='technology_field') domain,u.mobile,s1.label instudy,t.user_type
-		from team_user_relation t
-		left join sys_user u on t.user_id=u.id
-		left join sys_office o on u.office_id=o.id
-		left join sys_office op on u.professional=op.id
-		left join sys_student_expansion ss on u.id=ss.user_id
-		left join sys_dict s1 on ss.instudy=s1.value and s1.type='degree_type'
-		where t.user_type='1' and t.team_id=#{id} and t.del_flag='0' and (t.state='0' or  t.state='4')
+	<select id="findTeamStudentFromTUH" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+			u.name AS "name",
+			u.no AS "no",
+			o.name AS "org_name",
+			op.name AS "professional",
+			(
+				SELECT
+					GROUP_CONCAT(s6.label)
+				FROM sys_dict s6
+				WHERE
+					FIND_IN_SET(s6.value,u.domain)
+					AND s6.type='technology_field'
+			) AS "domain",
+			(select GROUP_CONCAT(DISTINCT ifnull(s31.label,s32.label)) from
+		team_user_history thu
+		left join sys_dict s31 on
+		s31.value=thu.pro_sub_type and
+		s31.type='project_style' and
+		thu.pro_type='1,'
+		left join sys_dict s32 on s32.value=thu.pro_sub_type
+		and
+		s32.type='competition_type' and thu.pro_type='7,'
+		where
+		thu.user_id=u.id and thu.del_flag='0' and thu.finish='0')
+		curJoin,
+			u.mobile AS "mobile",
+			s1.label AS "instudy",
+			t.u_type AS "user_type",
+			t.weight_val AS "weightVal",
+			t.id AS "id", 
+			u.id AS "userId"
+		FROM team_user_history t
+			LEFT JOIN sys_user u ON t.user_id=u.id
+			LEFT JOIN sys_office o ON u.office_id=o.id
+			LEFT JOIN sys_office op ON u.professional=op.id
+			LEFT JOIN sys_student_expansion ss ON u.id=ss.user_id
+			LEFT JOIN sys_dict s1 ON ss.instudy=s1.value AND s1.type='degree_type'
+		WHERE
+			t.u_type='1'
+			AND t.team_id=#{teamid}
+			AND t.pro_id=#{proid}
+			AND t.del_flag='0'
 	</select>
-		<select id="findTeamTeacher" resultType="java.util.HashMap"
-		parameterType="java.lang.String">
-		select u.name,ifnull(st.work_unit,o.name)
-		org_name,st.technical_title,
-		(select GROUP_CONCAT(s6.label) from sys_dict s6 where
-		FIND_IN_SET(s6.value,u.domain) and s6.type='technology_field') domain,
-		u.mobile,u.email,t.user_type,
-		(select GROUP_CONCAT(s1.label) from sys_dict s1 where
-		FIND_IN_SET(s1.value,st.teacherType) and s1.type='master_type')
-		teacherType,
-		st.teacherType ttv
-		from team_user_relation t
-		left join sys_user u on
-		t.user_id=u.id
-		left join sys_office o on u.office_id=o.id
-		left join
-		sys_teacher_expansion st on u.id=st.user_id
-		where t.user_type='2' and t.team_id=#{id} and t.del_flag='0' and (t.state='0' or  t.state='4')
+	<select id="findTeamTeacherFromTUH" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+			u.name AS "name",
+			ifnull(st.work_unit,o.name) AS "org_name",
+			st.technical_title AS "technical_title",
+			(
+				SELECT
+					GROUP_CONCAT(s6.label)
+				FROM
+					sys_dict s6
+				WHERE
+					FIND_IN_SET(s6.value,u.domain)
+					AND s6.type='technology_field'
+			) AS "domain",
+			(select GROUP_CONCAT(DISTINCT ifnull(s31.label,s32.label)) from
+		team_user_history thu
+		left join sys_dict s31 on
+		s31.value=thu.pro_sub_type and
+		s31.type='project_style' and
+		thu.pro_type='1,'
+		left join sys_dict s32 on s32.value=thu.pro_sub_type
+		and
+		s32.type='competition_type' and thu.pro_type='7,'
+		where
+		thu.user_id=u.id and thu.del_flag='0' and thu.finish='0')
+		curJoin,
+			u.mobile AS "mobile",
+			u.no AS "no",
+			u.education AS "education",
+			u.email AS "email",
+			t.u_type AS "user_type",
+			(
+				SELECT
+					GROUP_CONCAT(s1.label)
+				FROM
+					sys_dict s1
+				WHERE
+					FIND_IN_SET(s1.value,st.teacherType)
+					AND s1.type='master_type'
+			) AS "teacherType",
+			st.post_title AS "postTitle",
+			st.teacherType AS "ttv",
+			u.id AS "userId"
+		FROM team_user_history t
+			LEFT JOIN sys_user u on t.user_id=u.id
+			LEFT JOIN sys_office o on u.office_id=o.id
+			LEFT JOIN sys_teacher_expansion st on u.id=st.user_id
+		WHERE
+			t.u_type='2'
+			AND t.team_id=#{teamid}
+			AND t.pro_id=#{proid}
+			AND t.del_flag='0'
+	</select>
+	<select id="findTeamStudent" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+			u.name,
+			u.no,
+			o.name org_name,
+			op.name professional,
+			(
+				SELECT
+					GROUP_CONCAT(s6.label)
+				FROM sys_dict s6
+				WHERE
+					FIND_IN_SET(s6.value,u.domain)
+					AND s6.type='technology_field'
+			) AS "domain",
+			u.mobile,
+			s1.label instudy,
+			t.user_type,
+			t.weight_val AS "weightVal",
+			t.id AS "id",
+			u.id userId
+		FROM team_user_relation t
+			LEFT JOIN sys_user u ON t.user_id=u.id AND  (t.state='0' or t.state='4')
+			LEFT JOIN sys_office o ON u.office_id=o.id
+			LEFT JOIN sys_office op ON u.professional=op.id
+			LEFT JOIN sys_student_expansion ss ON u.id=ss.user_id
+			LEFT JOIN sys_dict s1 ON ss.instudy=s1.value AND s1.type='degree_type'
+		WHERE
+			t.user_type='1'
+			AND t.team_id=#{id}
+			AND t.del_flag='0'
+			AND (t.state='0' or t.state='4')
+	</select>
+	<select id="findTeamTeacher" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+			u.name AS "name",
+			ifnull(st.work_unit,o.name) AS "org_name",
+			st.technical_title AS "technical_title",
+			(
+				SELECT
+					GROUP_CONCAT(s6.label)
+				FROM sys_dict s6
+				WHERE
+					FIND_IN_SET(s6.value,u.domain)
+					AND s6.type='technology_field'
+			) AS "domain",
+			u.mobile AS "mobile",
+			u.no AS "no",
+			u.education AS "education",
+			u.email AS "email",
+			t.user_type AS "user_type",
+			(
+				SELECT
+					GROUP_CONCAT(s1.label)
+				FROM sys_dict s1
+				WHERE
+					FIND_IN_SET(s1.value,st.teacherType)
+					AND s1.type='master_type'
+			) AS "teacherType",
+			st.post_title AS "postTitle",
+			st.teacherType AS "ttv",
+			u.id AS "userId"
+		FROM team_user_relation t
+			LEFT JOIN sys_user u on t.user_id=u.id
+			LEFT JOIN sys_office o on u.office_id=o.id
+			LEFT JOIN sys_teacher_expansion st on u.id=st.user_id
+		WHERE
+			t.user_type='2'
+			AND t.team_id=#{id}
+			AND t.del_flag='0'
+			AND (t.state='0' or t.state='4')
+	</select>
+	<select id="getProjectDeclareListVoById" parameterType="java.lang.String" resultType="com.oseasy.initiate.modules.project.vo.ProjectDeclareListVo" >
+		SELECT distinct t.id,t.number,
+		t.name project_name,
+		date_format(t.apply_time,'%Y-%m-%d %H:%i:%s') apply_time,
+		t.final_result final_result_code,t.proc_ins_id,
+		t.status status_code,
+		t.create_date ,
+		t.actyw_id,
+		ay.group_id groupId
+		FROM project_declare t
+		LEFT JOIN act_yw ay on t.actyw_id=ay.id
+		WHERE t.del_flag='0' AND t.id=#{id}
+	</select>
+
+	<select id="getMyProjectListPlus" resultType="com.oseasy.initiate.modules.project.vo.ProjectDeclareListVo" >
+		SELECT tem.* FROM (
+		SELECT distinct t.id,t.number,
+		t.name project_name,
+		s1.label type,
+		s2.label level,
+		3 state,
+		3 grade,
+		u.name leader,
+		date_format(t.apply_time,'%Y-%m-%d') apply_time,
+		t.final_result final_result_code,
+		t.proc_ins_id,
+		t.status status_code,
+		u.id leaderId,
+		t.create_date ,
+		pp.type proType,
+		s5.label proTypeStr ,
+		'0' ftb,t.actyw_id,ay.group_id groupId
+		FROM project_declare t LEFT JOIN
+		team_user_history r on
+		t.team_id=r.team_id
+		LEFT JOIN sys_dict s1 on
+		t.type=s1.value AND s1.type='project_type'
+		LEFT JOIN sys_dict s2 on
+		t.level=s2.value AND s2.type='project_degree'
+		LEFT JOIN sys_user u on
+		t.leader=u.id
+		LEFT JOIN act_yw ay on t.actyw_id=ay.id
+		LEFT JOIN pro_project pp on ay.rel_id=pp.id
+		LEFT JOIN sys_dict s5 on
+		pp.type=s5.value AND s5.type='project_style'
+		WHERE t.del_flag='0' AND (t.leader=#{userid} or r.user_id=#{userid} )
+		union all
+		SELECT distinct t.id,t.competition_number number,t.p_name
+		project_name,
+		s1.label type,
+		s2.label level,
+		t.state state,
+		t.grade grade,
+		u.name leader,date_format(t.sub_time,'%Y-%m-%d') apply_time,
+		t.final_status final_result_code,
+		t.proc_ins_id,
+		'-999' status_code,
+		u.id leaderId,
+		t.create_date ,
+		pp.type proType,
+		s5.label proTypeStr,'1' ftb,t.actyw_id,ay.group_id groupId
+		FROM pro_model t LEFT JOIN team_user_history r on t.team_id=r.team_id
+		LEFT JOIN sys_dict s1 on
+		t.pro_category=s1.value AND s1.type='project_type'
+		LEFT JOIN sys_dict s2 on
+		t.level=s2.value AND s2.type='project_degree'
+		LEFT JOIN sys_user u on
+		t.declare_id=u.id
+		LEFT JOIN act_yw ay on t.actyw_id=ay.id
+		LEFT JOIN pro_project pp on ay.rel_id=pp.id
+		LEFT JOIN sys_dict s5 on
+		pp.type=s5.value AND s5.type='project_style'
+		WHERE t.del_flag='0' AND t.pro_type='1,' AND (t.declare_id=#{userid} or r.user_id=#{userid} )) tem
+		order by tem.create_date desc
 	</select>
 	<select id="getMyProjectList" resultType="java.util.HashMap"
 		parameterType="java.util.Map">
-		select distinct t.id,t.number,t.name
+		SELECT distinct t.id,t.number,t.name
 		project_name,s1.label type,s2.label level,u.name
 		leader,date_format(t.apply_time,'%Y-%m-%d %H:%i:%s') apply_time,
 		t.status,t.final_result,t.proc_ins_id,t.status
-		status_code,t.leader create_by,t.create_date
-		from project_declare t left join team_user_relation r on
-		t.team_id=r.team_id
-		left join sys_dict s1 on t.type=s1.value and s1.type='project_type'
-		left join sys_dict s2 on t.level=s2.value and s2.type='project_degree'
-		left join sys_user u on t.leader=u.id
-		where t.del_flag='0' and (t.leader=#{userid}
-		or r.user_id=#{userid} ) order by t.create_date desc limit
+		status_code,t.leader
+		create_by,t.create_date
+		FROM project_declare t LEFT JOIN
+		team_user_relation r on
+		t.team_id=r.team_id  AND  (r.state='0' or r.state='4')
+		LEFT JOIN sys_dict s1 on
+		t.type=s1.value AND s1.type='project_type'
+		LEFT JOIN sys_dict s2 on
+		t.level=s2.value AND s2.type='project_degree'
+		LEFT JOIN sys_user u on
+		t.leader=u.id
+		WHERE t.del_flag='0' AND (t.leader=#{userid}
+		or
+		r.user_id=#{userid} ) order by t.create_date desc limit
 		#{offset},#{pageSize}
 	</select>
 	<select id="getMyProjectListCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(distinct t.id)
-		from project_declare t left join team_user_relation r on
-		t.team_id=r.team_id
-		where t.del_flag='0' and (t.leader=#{userid}
+		SELECT count(distinct t.id)
+		FROM project_declare t left
+		join team_user_relation r on
+		t.team_id=r.team_id AND  (r.state='0' or r.state='4')
+		WHERE t.del_flag='0'
+		AND (t.leader=#{userid}
 		or r.user_id=#{userid} )
+	</select>
+	<select id="getCurProProject" resultType="java.util.HashMap" >
+		SELECT tem.id,tem.label,tem.actywId,tem.type,date_format(tem.st,'%Y-%m-%d %H:%i:%s') st,date_format(tem.ed,'%Y-%m-%d %H:%i:%s') ed FROM ( SELECT
+			pp.id,s.label,ay.id actywId,pp.type,pp.node_start_date st,max(g.end_date) ed
+		FROM
+			pro_project pp
+		LEFT JOIN sys_dict s on s.value=pp.type AND s.type='project_style'
+		LEFT JOIN act_yw ay on pp.id=ay.rel_id
+		LEFT JOIN act_yw_gtime g on ay.group_id=g.grounp_id
+		WHERE
+			pp.pro_type = '1,'
+		AND pp.del_flag = '0'
+		AND ay.is_deploy='1'
+		group by pp.id,s.label,ay.id,pp.type,pp.node_start_date) tem
+		WHERE SYSDATE() BETWEEN tem.st AND tem.ed order by tem.type
 	</select>
 	<select id="getMyProjectListPerson" resultType="java.util.HashMap"
 		parameterType="java.util.Map">
 		SELECT p.id,
 		GROUP_CONCAT(u.name SEPARATOR '/') pname,
-		t.user_type team_user_type
+		t.u_type
+		team_user_type
 		FROM project_declare p
-		left join team_user_relation t on p.team_id=t.team_id
+		LEFT JOIN team_user_history t on
+		p.team_id=t.team_id AND  p.id= t.pro_id
 		LEFT JOIN sys_user u ON t.user_id = u.id
-		where
+		WHERE
 		<foreach collection="list" item="proid" index="index" open="("
 			close=")" separator=" or ">
 			p.id=#{proid}
 		</foreach>
-		group by p.id,t.user_type
+		group by p.id,t.u_type
 	</select>
+	<select id="getMyProjectListPersonPlus" resultType="java.util.HashMap"
+		parameterType="java.util.Map">
+		SELECT p.id,
+		GROUP_CONCAT(u.name SEPARATOR '/') pname,
+		t.u_type
+		team_user_type
+		FROM project_declare p
+		LEFT JOIN team_user_history t on
+		p.team_id=t.team_id  AND  p.id= t.pro_id
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		WHERE
+		<foreach collection="list" item="proid" index="index" open="("
+			close=")" separator=" or ">
+			p.id=#{proid}
+		</foreach>
+		group by p.id,t.u_type
+		union all
+		SELECT p.id,
+		GROUP_CONCAT(u.name SEPARATOR '/') pname,
+		t.u_type
+		team_user_type
+		FROM pro_model p
+		LEFT JOIN team_user_history t on
+		p.team_id=t.team_id  AND  p.id= t.pro_id
+		LEFT JOIN sys_user u ON t.user_id = u.id
+		WHERE
+		<foreach collection="list" item="proid" index="index" open="("
+			close=")" separator=" or ">
+			p.id=#{proid}
+		</foreach>
+		group by p.id,t.u_type
+	</select>
+
 	<select id="getProjectAuditResult" resultType="java.util.HashMap"
 		parameterType="java.lang.String">
-		select s2.label level,t.mid_result,t.final_result from project_declare t
-		left join sys_dict s2 on t.level=s2.value and s2.type='project_degree'
-		where t.id=#{projectId}
+		SELECT s2.label level,t.mid_result,t.final_result FROM
+		project_declare t
+		LEFT JOIN sys_dict s2 on t.level=s2.value AND
+		s2.type='project_degree'
+		WHERE t.id=#{projectId}
 	</select>
 	<select id="getProjectAuditInfo" resultType="java.util.HashMap"
 		parameterType="java.lang.String">
@@ -553,7 +891,8 @@
 		AND a.del_flag = '0'
 	</select>
 	<select id="getValidProjectAnnounce" resultType="java.util.HashMap">
-		select t.id,date_format(t.begin_date,'%Y-%m-%d')
+		SELECT
+		t.id,date_format(t.begin_date,'%Y-%m-%d')
 		begin_date,date_format(t.end_date,'%Y-%m-%d')
 		end_date,date_format(t.p_init_start,'%Y-%m-%d')
 		p_init_start,date_format(t.p_init_end,'%Y-%m-%d') p_init_end
@@ -562,12 +901,14 @@
 		date_format(t.final_start_date,'%Y-%m-%d')
 		final_start_date,date_format(t.final_end_date,'%Y-%m-%d')
 		final_end_date
-		from project_announce t where t.del_flag='0' and t.project_state='1' and   pro_type='1' and
-		t.begin_date &lt;=SYSDATE() and t.end_date &gt;=SYSDATE()
+		FROM project_announce t WHERE t.del_flag='0' AND
+		t.project_state='1' AND pro_type='1' AND
+		t.begin_date &lt;=SYSDATE()
+		AND t.end_date &gt;=SYSDATE()
 	</select>
 	<select id="getProjectAnnounceByid" resultType="java.util.HashMap"
 		parameterType="java.lang.String">
-		select t.id,date_format(t.begin_date,'%Y-%m-%d')
+		SELECT t.id,date_format(t.begin_date,'%Y-%m-%d')
 		begin_date,date_format(t.end_date,'%Y-%m-%d')
 		end_date,date_format(t.p_init_start,'%Y-%m-%d')
 		p_init_start,date_format(t.p_init_end,'%Y-%m-%d') p_init_end
@@ -576,21 +917,75 @@
 		date_format(t.final_start_date,'%Y-%m-%d')
 		final_start_date,date_format(t.final_end_date,'%Y-%m-%d')
 		final_end_date
-		from project_announce t where t.id=#{id}
+		FROM project_announce t WHERE t.id=#{id}
 	</select>
 	<select id="getCurProjectInfo" resultType="java.util.HashMap"
 		parameterType="java.lang.String">
-		select t.id,t.status,t.name,t.number from
-		project_declare t where t.del_flag='0' and t.status!='8' and
-		t.status!='9' and t.leader=#{uid}
+		SELECT t.id,t.status,t.name,t.number FROM
+		project_declare t WHERE t.del_flag='0' AND t.status!='8' AND
+		t.status!='9' AND t.leader=#{uid}
 	</select>
 	<select id="getCurProjectInfoByTeam" resultType="java.util.HashMap"
 		parameterType="java.lang.String">
-		select t.id,t.status,t.name,t.number from
-		project_declare t where t.del_flag='0' and t.status!='8' and
-		t.status!='9' and t.team_id=#{tid}
+		SELECT t.id,t.status,t.name,t.number FROM
+		project_declare t WHERE t.del_flag='0' AND t.status!='8' AND
+		t.status!='9' AND t.team_id=#{tid}
 	</select>
-
+	<select id="getLastDcInfoByActyw" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+						SELECT
+		t.id,
+		t. status,
+		t. name,
+		t.number,
+		t.template_id,
+		t.leader create_by,
+		t.level,
+		date_format(t.approval_date,'%Y-%m-%d') approval_date,
+		s1.label
+		level_str,
+		t.create_date,
+		u.name leader,
+		date_format(t.apply_time,'%Y-%m-%d %H:%i:%s') apply_time
+		FROM
+		project_declare t LEFT JOIN team_user_relation r on
+		t.team_id=r.team_id AND  (r.state='0' or r.state='4')
+		LEFT JOIN
+		sys_user u on t.leader=u.id
+		LEFT JOIN
+		sys_dict s1 on t.level=s1.value AND s1.type='project_degree'
+		WHERE
+		t.del_flag = '0' AND t.actyw_id=#{actywId}
+		AND (u.id = #{uid} or r.user_id=#{uid}) AND t.id=#{projectId}
+		order by
+		t.create_date desc limit 1
+	</select>
+	<select id="getLastProjectInfoByActyw" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+		t.id,
+		t.proc_ins_id,
+		t.p_name name,
+		t.competition_number number,
+		u.id create_by,
+		t.final_status level,
+		s1.label
+		level_str,
+		t.create_date,
+		u.name leader,
+		u.id leaderid,
+		date_format(t.sub_time,'%Y-%m-%d %H:%i:%s') apply_time
+		FROM
+		pro_model t LEFT JOIN team_user_relation r on
+		t.team_id=r.team_id AND  (r.state='0' or r.state='4')
+		LEFT JOIN
+		sys_user u on t.declare_id=u.id
+		LEFT JOIN
+		sys_dict s1 on t.final_status=s1.value AND s1.type='project_degree'
+		WHERE
+		t.del_flag = '0' AND t.actyw_id=#{actywId}
+		AND (u.id = #{uid} or r.user_id=#{uid}) AND t.id=#{projectId}
+		order by
+		t.create_date desc limit 1
+	</select>
 	<select id="getLastProjectInfo" resultType="java.util.HashMap"
 		parameterType="java.lang.String">
 		SELECT distinct
@@ -602,15 +997,18 @@
 		t.leader create_by,
 		t.level,
 		date_format(t.approval_date,'%Y-%m-%d') approval_date,
-		s1.label level_str,
+		s1.label
+		level_str,
 		t.create_date,
 		u.name leader,
 		date_format(t.apply_time,'%Y-%m-%d %H:%i:%s') apply_time
 		FROM
-		project_declare t left join team_user_relation r on t.team_id=r.team_id
-		left join
+		project_declare t LEFT JOIN team_user_relation r on
+		t.team_id=r.team_id AND  (r.state='0' or r.state='4')
+		LEFT JOIN
 		sys_user u on t.leader=u.id
-		left join sys_dict s1 on t.level=s1.value and s1.type='project_degree'
+		LEFT JOIN
+		sys_dict s1 on t.level=s1.value AND s1.type='project_degree'
 		WHERE
 		t.del_flag = '0'
 		AND (t.leader = #{uid} or r.user_id=#{uid})
@@ -620,40 +1018,116 @@
 
 	<select id="getProjectByName" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(1)
-		from project_declare t
-		where t.del_flag='0' and t.leader=#{cby} and t.name=#{name}
+		SELECT count(1)
+		FROM project_declare t
+		WHERE t.del_flag='0' AND
+		t.leader=#{cby} AND t.name=#{name}
 		<if test="id != null and id!= '' ">
-			and t.id!=#{id}
+			AND t.id!=#{id}
 		</if>
 	</select>
 
 	<select id="getProjectByTeamId" resultType="ProjectDeclare">
-		select p.name 
-		from project_declare p 
-		where p.del_flag='0' and p.team_id=#{tid} and status in (0,1,2,3,4,5,6,7)
-		
+		SELECT p.name
+		FROM project_declare p
+		WHERE p.del_flag='0' AND p.team_id=#{tid} AND status in (0,1,2,3,4,5,6,7)
+
 	</select>
 
-	
+
 	<select id="findByTeamId" resultType="java.lang.Integer">
-	   SELECT COUNT(1) 
-	   FROM project_declare pd 
-	   LEFT JOIN team t ON pd.team_id=t.id 
-	   WHERE pd.status BETWEEN '0' AND '7' AND pd.team_id=#{teamId} AND pd.del_flag='0'
+		SELECT COUNT(1)
+		FROM project_declare pd
+		LEFT JOIN team t ON pd.team_id=t.id
+		WHERE pd.status BETWEEN '0' AND '7' AND pd.team_id=#{teamId} AND
+		pd.del_flag='0'
 	</select>
 	<select id="getProjectByCdn" resultType="ProjectDeclare">
-		select p.* 
-		from project_declare p 
-		where p.del_flag='0'  
+		SELECT p.*
+		FROM project_declare p
+		WHERE p.del_flag='0'
 		<if test="num != null and num !='' ">
-			and p.number=#{num}
+			AND p.number=#{num}
 		</if>
 		<if test="name != null and name != '' ">
 			and p.name=#{name}
 		</if>
 		<if test="uid != null and uid != '' ">
-			and p.leader=#{uid}
+			AND p.leader=#{uid}
 		</if>
 	</select>
+	<select id="getPersonNumForAsdIndex" resultType="java.util.HashMap">
+		SELECT sum(case
+		when tem.user_type='1' then 1 else 0
+		end) st,
+		sum(case when
+		tem.user_type='2' then 1 else 0 end) te FROM (SELECT distinct f.user_id,f.user_type FROM project_declare t
+		LEFT JOIN
+		team_user_relation f on t.team_id=f.team_id AND  (f.state='0' or f.state='4')
+		AND
+		f.del_flag='0'
+		WHERE t.del_flag='0' AND t.status !='0' AND t.status is not null
+		AND
+		t.apply_time &gt;=str_to_date(#{date},'%Y-%m-%d %H:%i:%s')
+		AND
+		t.apply_time &lt;date_add(str_to_date(#{date},'%Y-%m-%d %H:%i:%s'),
+		interval 1 year)) tem
+	</select>
+	<select id="getProjectNumForAsdIndex" resultType="java.util.HashMap">
+		SELECT sum(case
+		when t.type='1' or t.type='2' then 1 else 0 end) st,
+		sum(case when t.type='3' then 1 else 0 end) te FROM project_declare t
+		WHERE t.del_flag='0' AND t.status !='0' AND t.status is not null
+		AND t.apply_time
+		&gt;=str_to_date(#{date},'%Y-%m-%d %H:%i:%s')
+		AND t.apply_time
+		&lt;date_add(str_to_date(#{date},'%Y-%m-%d %H:%i:%s'), interval 1
+		year)
+	</select>
+	<select id="getPersonNumForAsdIndexFromModel" resultType="java.util.HashMap" parameterType="com.oseasy.initiate.modules.auditstandard.vo.AsdVo">
+		SELECT sum(case
+		when tem.user_type='1' then 1 else 0
+		end) st,
+		sum(case when
+		tem.user_type='2' then 1 else 0 end) te FROM (SELECT distinct f.user_id,f.user_type FROM pro_model t
+		LEFT JOIN
+		team_user_relation f on t.team_id=f.team_id AND  (f.state='0' or f.state='4')
+		AND
+		f.del_flag='0'
+		WHERE t.del_flag='0' AND t.proc_ins_id is not null AND t.pro_type='1,' AND t.type=#{vo.subType}
+		AND
+		t.sub_time &gt;=str_to_date(concat(#{vo.dataYear},'-01-01 00:00:00'),'%Y-%m-%d %H:%i:%s')
+		AND
+		t.sub_time &lt;date_add(str_to_date(concat(#{vo.dataYear},'-01-01 00:00:00'),'%Y-%m-%d %H:%i:%s'),
+		interval 1 year)) tem
+	</select>
+	<select id="getProjectNumForAsdIndexFromModel" resultType="java.util.HashMap" parameterType="com.oseasy.initiate.modules.auditstandard.vo.AsdVo">
+		SELECT sum(case
+		when t.type='1' or t.type='2' then 1 else 0 end) st,
+		sum(case when t.type='3' then 1 else 0 end) te FROM pro_model t
+		WHERE t.del_flag='0' AND t.proc_ins_id is not null AND t.pro_type='1,' AND t.type=#{vo.subType}
+		AND t.sub_time
+		&gt;=str_to_date(concat(#{vo.dataYear},'-01-01 00:00:00'),'%Y-%m-%d %H:%i:%s')
+		AND t.sub_time
+		&lt;date_add(str_to_date(concat(#{vo.dataYear},'-01-01 00:00:00'),'%Y-%m-%d %H:%i:%s'), interval 1
+		year)
+	</select>
+	<select id="getTimeIndexSecondTabs" resultType="java.util.HashMap">
+		SELECT distinct t.name,t.id FROM project_declare t LEFT JOIN team_user_history f on t.id=f.pro_id AND f.del_flag='0'
+		WHERE t.actyw_id=#{actywId} AND t.del_flag='0' AND f.user_id=#{uid}
+		order by t.apply_time desc
+	</select>
+	<select id="getTimeIndexSecondTabsFromModel" resultType="java.util.HashMap">
+		SELECT distinct t.p_name name,t.id FROM pro_model t LEFT JOIN team_user_history f on t.id=f.pro_id AND f.del_flag='0'
+		WHERE t.actyw_id=#{actywId} AND t.del_flag='0' AND f.user_id=#{uid}
+		order by t.sub_time desc
+	</select>
+	<update id="modifyLeaderAndTeam">
+		UPDATE project_declare SET
+		leader =#{uid}
+		<if test="tid!=null and tid !='' ">
+			,team_id=#{tid}
+		</if>
+		WHERE id = #{pid}
+	</update>
 </mapper>

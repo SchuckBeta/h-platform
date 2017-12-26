@@ -119,6 +119,19 @@ public class ActYwResult implements ActYwRtpl, ActYwPtpl{
    * @return List
    */
   public static List<ActYwResult> genActYwResults(String json) {
-    return (List<ActYwResult>) JsonAliUtils.toBean("[" + json + "]", ActYwResult.class);
+    return (List<ActYwResult>) JsonAliUtils.toBean("[" + dealJsonException(json) + "]", ActYwResult.class);
+  }
+
+  /**
+   * 处理json中对象为""导致的异常.
+   * @param json json
+   * @return String
+   */
+  public static String dealJsonException(String json) {
+    json = json.replaceAll(" ", "");
+    json = json.replaceAll("\"tasklisteners\":\"\"", "\"usertaskassignment\":{}");
+    json = json.replaceAll("\"usertaskassignment\":\"\"", "\"usertaskassignment\":{}");
+    json = json.replaceAll("\"formproperties\":\"\"", "\"formproperties\":{}");
+    return json.replaceAll("\"assignment\":\"\"", "\"assignment\":{}");
   }
 }

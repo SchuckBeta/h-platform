@@ -1,14 +1,17 @@
 package com.oseasy.initiate.modules.gcontest.entity;
 
-import com.oseasy.initiate.common.persistence.ActEntity;
-import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
+import com.oseasy.initiate.common.persistence.ActEntity;
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
 
 /**
  * 大赛信息Entity
@@ -18,6 +21,7 @@ import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
 public class GContest extends ActEntity<GContest> {
 	
 	private static final long serialVersionUID = 1L;
+	private String actywId;//流程业务表
 	private String pName;		// 项目名称
 	private String declareId;		// 申报人ID
 	private String profession;		// 专业
@@ -61,7 +65,49 @@ public class GContest extends ActEntity<GContest> {
 	private String announceId;				//通告id
 	
 	private List<SysAttachment> attList=Lists.newArrayList();
-	
+
+	private AttachMentEntity attachMentEntity;
+
+	private List<TeamUserHistory>  teamUserRelationList = Lists.newArrayList(); //团队信息
+
+	private List<TeamUserHistory>  teamUserHistoryList = Lists.newArrayList(); //团队信息
+
+	public List<TeamUserHistory> getTeamUserHistoryList() {
+		return teamUserHistoryList;
+	}
+
+	public void setTeamUserHistoryList(List<TeamUserHistory> teamUserHistoryList) {
+		this.teamUserHistoryList = teamUserHistoryList;
+	}
+
+	//评分标准list
+	private List<String> scoreList;
+
+	public String getActywId() {
+		return actywId;
+	}
+
+	public void setActywId(String actywId) {
+		this.actywId = actywId;
+	}
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
+	}
+
+	public List<String> getScoreList() {
+		return scoreList;
+	}
+
+	public void setScoreList(List<String> scoreList) {
+		this.scoreList = scoreList;
+	}
+	private int snumber;
+
 	public GContest() {
 		super();
 	}
@@ -249,15 +295,14 @@ public class GContest extends ActEntity<GContest> {
 		this.schoolSug = schoolSug;
 	}
 
-	@Length(min=0, max=32, message="项目名称长度必须介于 0 和 32 之间")
-	public String getPName() {
+	public String getpName() {
 		return pName;
 	}
 
-	public void setPName(String pName) {
+	public void setpName(String pName) {
 		this.pName = pName;
 	}
-	
+
 	@Length(min=0, max=64, message="申报人ID长度必须介于 0 和 64 之间")
 	public String getDeclareId() {
 		return declareId;
@@ -355,14 +400,14 @@ public class GContest extends ActEntity<GContest> {
 	public void setGoodStatement(String goodStatement) {
 		this.goodStatement = goodStatement;
 	}
-
+/*
 	public String getpName() {
 		return pName;
 	}
 
 	public void setpName(String pName) {
 		this.pName = pName;
-	}
+	}*/
 
 	public String getAuditState() {
 		return auditState;
@@ -430,5 +475,21 @@ public class GContest extends ActEntity<GContest> {
 
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+
+	public List<TeamUserHistory> getTeamUserRelationList() {
+		return teamUserRelationList;
+	}
+
+	public void setTeamUserRelationList(List<TeamUserHistory> teamUserRelationList) {
+		this.teamUserRelationList = teamUserRelationList;
+	}
+
+	public int getSnumber() {
+		return snumber;
+	}
+
+	public void setSnumber(int snumber) {
+		this.snumber = snumber;
 	}
 }

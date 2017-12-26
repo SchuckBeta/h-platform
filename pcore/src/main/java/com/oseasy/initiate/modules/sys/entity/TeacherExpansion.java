@@ -30,7 +30,7 @@ public class TeacherExpansion extends User {
 	private String firstBank;// 开户银行
 	private String bankAccount;// 银行账号
 	private String teacherNumber;// 教工号
-	private String teachertype;		// 导师类型
+	private String teachertype;		// 导师来源
 	private String educationType;//学历类别
 
 	public static long getSerialVersionUID() {

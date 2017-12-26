@@ -4,6 +4,7 @@
 
 	<sql id="actYwGnodeColumns">
 		a.id AS "id",
+		a.name AS "name",
 		a.parent_id AS "parent.id",
 		a.parent_ids AS "parentIds",
 		a.group_id AS "groupId",
@@ -13,96 +14,181 @@
 		a.pre_id AS "preId",
 		a.pre_ids AS "preIds",
 		a.pre_idss AS "preIdss",
-		a.pre_fun_id AS "preFunId",
+		a.pre_fun_id AS
+		"preFunId",
 		a.next_id AS "nextId",
 		a.next_ids AS "nextIds",
-		a.next_idss AS "nextIdss",
+		a.next_idss
+		AS "nextIdss",
 		a.next_fun_id AS "nextFunId",
+		a.flow_group AS
+		"flowGroup",
 		a.is_show AS "isShow",
 		a.is_form AS "isForm",
-		a.form_id AS "formId",
-		a.sort AS "sort",
-		a.office_id AS "office.id",
+		a.form_id AS
+		"formId",
+		a.pos_lux AS "posLux",
+		a.pos_luy AS "posLuy",
+		a.width AS
+		"width",
+		a.height AS "height",
+		a.pos_alux AS "posAlux",
+		a.pos_aluy AS
+		"posAluy",
+		a.widtha AS "widtha",
+		a.heighta AS "heighta",
+		a.sort AS
+		"sort",
+		a.has_group AS "hasGroup",
+		a.icon_url AS "iconUrl",
+		a.office_id
+		AS "office.id",
 		a.update_date AS "updateDate",
-		a.update_by AS "updateBy.id",
+		a.update_by AS
+		"updateBy.id",
 		a.create_date AS "createDate",
-		a.create_by AS "createBy.id",
+		a.create_by AS
+		"createBy.id",
 		a.remarks AS "remarks",
-		a.flow_group AS "flowGroup",
 		a.del_flag AS "delFlag",
-		o7.name AS "office.name",
+		o7.name
+		AS "office.name",
 
 		p.id AS "parent.id",
+		p.pre_idss AS "parent.preIdss",
+		p.next_idss AS "parent.nextIdss",
 
 		pe.id AS "preGnode.id",
-		pe.del_flag AS "preGnode.delFlag",
+		pe.name AS
+		"preGnode.name",
+		pe.has_group AS "preGnode.hasGroup",
+		pe.icon_url AS
+		"preGnode.iconUrl",
+		pe.type AS "preGnode.type",
+		pe.del_flag AS
+		"preGnode.delFlag",
+
+		pef.id AS "preFunGnode.id",
+		pef.name AS
+		"preGnode.name",
+		pef.has_group AS "preGnode.hasGroup",
+		pef.icon_url AS
+		"preGnode.iconUrl",
+		pef.type AS "preFunGnode.type",
+		pef.del_flag AS
+		"preFunGnode.delFlag",
 
 		nt.id AS "nextGnode.id",
-		nt.del_flag AS "nextGnode.delFlag",
+		nt.name AS
+		"nextGnode.name",
+		nt.has_group AS "nextGnode.hasGroup",
+		nt.icon_url AS
+		"nextGnode.iconUrl",
+		nt.type AS "nextGnode.type",
+		nt.del_flag AS
+		"nextGnode.delFlag",
 
-		b.id AS "group.id",
+		ntf.id AS "nextFunGnode.id",
+		ntf.name AS
+		"nextFunGnode.name",
+		ntf.has_group AS "nextFunGnode.hasGroup",
+		ntf.icon_url AS "nextFunGnode.iconUrl",
+		ntf.type AS
+		"nextFunGnode.type",
+		ntf.del_flag AS "nextFunGnode.delFlag",
+
+		b.id AS
+		"group.id",
 		b.name AS "group.name",
 		b.status AS "group.status",
-		b.sort AS "group.sort",
+		b.sort AS
+		"group.sort",
 		b.type AS "group.type",
 		b.keyss AS "group.keyss",
-		b.author AS "group.author",
+		b.author
+		AS "group.author",
 		b.version AS "group.version",
-		b.flow_id AS "group.flowId",
+		b.flow_id AS
+		"group.flowId",
 		b.update_date AS "group.updateDate",
-		b.update_by AS "group.updateBy.id",
+		b.update_by AS
+		"group.updateBy.id",
 		b.create_date AS "group.createDate",
-		b.create_by AS "group.createBy.id",
+		b.create_by AS
+		"group.createBy.id",
 		b.remarks AS "group.remarks",
-		b.del_flag AS "group.delFlag",
+		b.del_flag AS
+		"group.delFlag",
 
 		c.id AS "node.id",
 		c.name AS "node.name",
-		c.type AS "node.type",
+		c.type AS
+		"node.type",
 		c.level AS "node.level",
 		c.is_sys AS "node.isSys",
 		c.is_form AS "node.isForm",
 		c.is_flow AS "node.isFlow",
-		c.is_show AS "node.isShow",
-		c.is_require AS "node.isRequire",
+		c.is_show AS
+		"node.isShow",
+		c.icon_url AS "node.iconUrl",
+		c.is_require AS
+		"node.isRequire",
 		c.is_group AS "node.isGroup",
-		c.flow_group AS "node.flowGroup",
+		c.flow_group AS
+		"node.flowGroup",
 		c.node_type AS "node.nodeType",
-		c.node_key AS "node.nodeKey",
+		c.node_key AS
+		"node.nodeKey",
 		c.node_prekey AS "node.nodePrekey",
-		c.node_nextkey AS "node.nodeNextkey",
+		c.node_nextkey AS
+		"node.nodeNextkey",
 		c.office_id AS "node.office.id",
-		c.form_id AS "node.formId",
+		c.form_id AS
+		"node.formId",
 		c.flow_id AS "node.flowId",
-		c.update_date AS "node.updateDate",
+		c.update_date AS
+		"node.updateDate",
 		c.update_by AS "node.updateBy.id",
-		c.create_date AS "node.createDate",
+		c.create_date AS
+		"node.createDate",
 		c.create_by AS "node.createBy.id",
-		c.remarks AS "node.remarks",
+		c.remarks AS
+		"node.remarks",
 		c.del_flag AS "node.delFlag",
 
 		cp.id AS "parent.node.id",
 		cp.name AS "parent.node.name",
 		cp.type AS "parent.node.type",
-		cp.level AS "parent.node.level",
+		cp.level
+		AS "parent.node.level",
 		cp.is_sys AS "parent.node.isSys",
-		cp.is_form AS "parent.node.isForm",
+		cp.is_form AS
+		"parent.node.isForm",
 		cp.is_flow AS "parent.node.isFlow",
-		cp.is_show AS "parent.node.isShow",
+		cp.is_show AS
+		"parent.node.isShow",
+		cp.icon_url AS "parent.node.iconUrl",
 		cp.is_require AS "parent.node.isRequire",
-		cp.is_group AS "parent.node.isGroup",
+		cp.is_group AS
+		"parent.node.isGroup",
 		cp.flow_group AS "parent.node.flowGroup",
 
-		cpe.id AS "preGnode.node.id",
+		cpe.id
+		AS "preGnode.node.id",
 		cpe.name AS "preGnode.node.name",
-		cpe.type AS "preGnode.node.type",
+		cpe.type AS
+		"preGnode.node.type",
 		cpe.level AS "preGnode.node.level",
-		cpe.is_sys AS "preGnode.node.isSys",
+		cpe.is_sys AS
+		"preGnode.node.isSys",
 		cpe.is_form AS "preGnode.node.isForm",
 		cpe.is_flow AS "preGnode.node.isFlow",
-		cpe.is_show AS "preGnode.node.isShow",
+		cpe.is_show AS
+		"preGnode.node.isShow",
+		cpe.icon_url AS "preGnode.node.iconUrl",
 		cpe.is_require AS "preGnode.node.isRequire",
-		cpe.is_group AS "preGnode.node.isGroup",
+		cpe.is_group AS
+		"preGnode.node.isGroup",
 		cpe.flow_group AS "preGnode.node.flowGroup",
 
 		cnt.id AS "nextGnode.node.id",
@@ -110,19 +196,27 @@
 		cnt.type AS "nextGnode.node.type",
 		cnt.level AS "nextGnode.node.level",
 		cnt.is_sys AS "nextGnode.node.isSys",
-		cnt.is_form AS "nextGnode.node.isForm",
+		cnt.is_form AS
+		"nextGnode.node.isForm",
 		cnt.is_flow AS "nextGnode.node.isFlow",
 		cnt.is_show AS "nextGnode.node.isShow",
+		cnt.icon_url AS
+		"nextGnode.node.iconUrl",
 		cnt.is_require AS "nextGnode.node.isRequire",
 		cnt.is_group AS "nextGnode.node.isGroup",
-		cnt.flow_group AS "nextGnode.node.flowGroup",
+		cnt.flow_group AS
+		"nextGnode.node.flowGroup",
 
 		f.id AS "form.id",
 		f.name AS "form.name",
-		f.pro_type AS "form.proType",
+		f.fname AS "form.fname",
+		f.list_id AS "form.listId",
+		f.pro_type AS
+		"form.proType",
 		f.type AS "form.type",
 		f.model AS "form.model",
-		f.params AS "form.params",
+		f.params
+		AS "form.params",
 		f.path AS "form.path",
 		f.content AS "form.content",
 		f.office_id AS "form.office.id",
@@ -131,35 +225,337 @@
 		f.create_date AS "form.createDate",
 		f.create_by AS "form.createBy.id",
 		f.remarks AS "form.remarks",
-		f.del_flag AS "form.delFlag"
+		f.del_flag AS "form.delFlag",
+		f.client_type AS "form.clientType",
+
+		r.id AS "role.id",
+		r.name AS "role.name",
+		r.enname AS "role.enname"
 	</sql>
 
 	<sql id="actYwGnodeJoins">
 		LEFT JOIN act_yw_node c ON c.id = a.node_id
-		LEFT JOIN act_yw_gnode pe ON pe.id = a.pre_id
+		LEFT JOIN
+		act_yw_gnode pe ON pe.id = a.pre_id
+		LEFT JOIN act_yw_gnode pef ON
+		pef.id = a.pre_fun_id
 		LEFT JOIN act_yw_node cpe ON cpe.id = pe.node_id
 		LEFT JOIN act_yw_gnode nt ON nt.id = a.next_id
-		LEFT JOIN act_yw_node cnt ON cnt.id = nt.node_id
+		LEFT JOIN act_yw_gnode
+		ntf ON ntf.id = a.next_fun_id
+		LEFT JOIN act_yw_node cnt ON cnt.id =
+		nt.node_id
 		LEFT JOIN act_yw_gnode p ON p.id = a.parent_id
-		LEFT JOIN act_yw_node cp ON cp.id = p.node_id
-		LEFT JOIN act_yw_group b ON b.id = a.group_id
+		LEFT JOIN
+		act_yw_node cp ON cp.id = p.node_id
+		LEFT JOIN act_yw_group b ON b.id =
+		a.group_id
 		LEFT JOIN act_yw_form f ON f.id = a.form_id
-		LEFT JOIN sys_office o7 ON o7.id = a.office_id
+		LEFT JOIN
+		sys_role r ON r.id = a.flow_group
+		LEFT JOIN sys_office o7 ON o7.id =
+		a.office_id
 	</sql>
+
+	<sql id="actYwGnodeTimeColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.group_id AS "groupId",
+		a.type AS "type",
+		a.typefun AS "typefun",
+		a.node_id AS "nodeId",
+		a.pre_id AS "preId",
+		a.pre_ids AS "preIds",
+		a.pre_idss AS "preIdss",
+		a.pre_fun_id AS
+		"preFunId",
+		a.next_id AS "nextId",
+		a.next_ids AS "nextIds",
+		a.next_idss
+		AS "nextIdss",
+		a.next_fun_id AS "nextFunId",
+		a.flow_group AS
+		"flowGroup",
+		a.is_show AS "isShow",
+		a.is_form AS "isForm",
+		a.form_id AS
+		"formId",
+		a.pos_lux AS "posLux",
+		a.pos_luy AS "posLuy",
+		a.width AS
+		"width",
+		a.height AS "height",
+		a.pos_alux AS "posAlux",
+		a.pos_aluy AS
+		"posAluy",
+		a.widtha AS "widtha",
+		a.heighta AS "heighta",
+		a.sort AS
+		"sort",
+		a.has_group AS "hasGroup",
+		a.icon_url AS "iconUrl",
+		a.office_id
+		AS "office.id",
+		a.update_date AS "updateDate",
+		a.update_by AS
+		"updateBy.id",
+		a.create_date AS "createDate",
+		a.create_by AS
+		"createBy.id",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		o7.name
+		AS "office.name",
+
+		p.id AS "parent.id",
+
+		pe.id AS "preGnode.id",
+		pe.name AS
+		"preGnode.name",
+		pe.has_group AS "preGnode.hasGroup",
+		pe.icon_url AS
+		"preGnode.iconUrl",
+		pe.type AS "preGnode.type",
+		pe.del_flag AS
+		"preGnode.delFlag",
+
+		pef.id AS "preFunGnode.id",
+		pef.name AS
+		"preGnode.name",
+		pef.has_group AS "preGnode.hasGroup",
+		pef.icon_url AS
+		"preGnode.iconUrl",
+		pef.type AS "preFunGnode.type",
+		pef.del_flag AS
+		"preFunGnode.delFlag",
+
+		nt.id AS "nextGnode.id",
+		nt.name AS
+		"nextGnode.name",
+		nt.has_group AS "nextGnode.hasGroup",
+		nt.icon_url AS
+		"nextGnode.iconUrl",
+		nt.type AS "nextGnode.type",
+		nt.del_flag AS
+		"nextGnode.delFlag",
+
+		ntf.id AS "nextFunGnode.id",
+		ntf.name AS
+		"nextFunGnode.name",
+		ntf.has_group AS "nextFunGnode.hasGroup",
+		ntf.icon_url AS "nextFunGnode.iconUrl",
+		ntf.type AS
+		"nextFunGnode.type",
+		ntf.del_flag AS "nextFunGnode.delFlag",
+
+		b.id AS
+		"group.id",
+		b.name AS "group.name",
+		b.status AS "group.status",
+		b.sort AS
+		"group.sort",
+		b.type AS "group.type",
+		b.keyss AS "group.keyss",
+		b.author
+		AS "group.author",
+		b.version AS "group.version",
+		b.flow_id AS
+		"group.flowId",
+		b.update_date AS "group.updateDate",
+		b.update_by AS
+		"group.updateBy.id",
+		b.create_date AS "group.createDate",
+		b.create_by AS
+		"group.createBy.id",
+		b.remarks AS "group.remarks",
+		b.del_flag AS
+		"group.delFlag",
+
+		c.id AS "node.id",
+		c.name AS "node.name",
+		c.type AS
+		"node.type",
+		c.level AS "node.level",
+		c.is_sys AS "node.isSys",
+		c.is_form AS "node.isForm",
+		c.is_flow AS "node.isFlow",
+		c.is_show AS
+		"node.isShow",
+		c.icon_url AS "node.iconUrl",
+		c.is_require AS
+		"node.isRequire",
+		c.is_group AS "node.isGroup",
+		c.flow_group AS
+		"node.flowGroup",
+		c.node_type AS "node.nodeType",
+		c.node_key AS
+		"node.nodeKey",
+		c.node_prekey AS "node.nodePrekey",
+		c.node_nextkey AS
+		"node.nodeNextkey",
+		c.office_id AS "node.office.id",
+		c.form_id AS
+		"node.formId",
+		c.flow_id AS "node.flowId",
+		c.update_date AS
+		"node.updateDate",
+		c.update_by AS "node.updateBy.id",
+		c.create_date AS
+		"node.createDate",
+		c.create_by AS "node.createBy.id",
+		c.remarks AS
+		"node.remarks",
+		c.del_flag AS "node.delFlag",
+
+		cp.id AS "parent.node.id",
+		cp.name AS "parent.node.name",
+		cp.type AS "parent.node.type",
+		cp.level
+		AS "parent.node.level",
+		cp.is_sys AS "parent.node.isSys",
+		cp.is_form AS
+		"parent.node.isForm",
+		cp.is_flow AS "parent.node.isFlow",
+		cp.is_show AS
+		"parent.node.isShow",
+		cp.icon_url AS "parent.node.iconUrl",
+		cp.is_require AS "parent.node.isRequire",
+		cp.is_group AS
+		"parent.node.isGroup",
+		cp.flow_group AS "parent.node.flowGroup",
+
+		cpe.id
+		AS "preGnode.node.id",
+		cpe.name AS "preGnode.node.name",
+		cpe.type AS
+		"preGnode.node.type",
+		cpe.level AS "preGnode.node.level",
+		cpe.is_sys AS
+		"preGnode.node.isSys",
+		cpe.is_form AS "preGnode.node.isForm",
+		cpe.is_flow AS "preGnode.node.isFlow",
+		cpe.is_show AS
+		"preGnode.node.isShow",
+		cpe.icon_url AS "preGnode.node.iconUrl",
+		cpe.is_require AS "preGnode.node.isRequire",
+		cpe.is_group AS
+		"preGnode.node.isGroup",
+		cpe.flow_group AS "preGnode.node.flowGroup",
+
+		cnt.id AS "nextGnode.node.id",
+		cnt.name AS "nextGnode.node.name",
+		cnt.type AS "nextGnode.node.type",
+		cnt.level AS "nextGnode.node.level",
+		cnt.is_sys AS "nextGnode.node.isSys",
+		cnt.is_form AS
+		"nextGnode.node.isForm",
+		cnt.is_flow AS "nextGnode.node.isFlow",
+		cnt.is_show AS "nextGnode.node.isShow",
+		cnt.icon_url AS
+		"nextGnode.node.iconUrl",
+		cnt.is_require AS "nextGnode.node.isRequire",
+		cnt.is_group AS "nextGnode.node.isGroup",
+		cnt.flow_group AS
+		"nextGnode.node.flowGroup",
+
+		f.id AS "form.id",
+		f.name AS "form.name",
+		f.fname AS "form.fname",
+		f.list_id AS "form.listId",
+		f.pro_type AS
+		"form.proType",
+		f.type AS "form.type",
+		f.model AS "form.model",
+		f.params
+		AS "form.params",
+		f.path AS "form.path",
+		f.content AS "form.content",
+		f.office_id AS "form.office.id",
+		f.update_date AS "form.updateDate",
+		f.update_by AS "form.updateBy.id",
+		f.create_date AS "form.createDate",
+		f.create_by AS "form.createBy.id",
+		f.remarks AS "form.remarks",
+		f.del_flag AS "form.delFlag",
+
+		r.id AS "role.id",
+		r.name AS "role.name",
+		r.enname AS "role.enname",
+
+		ayg.begin_date AS "actYwGtime.beginDate",
+		ayg.end_date AS "actYwGtime.endDate"
+	</sql>
+
 
 	<select id="get" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+		<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+		<include refid="actYwGnodeJoins" />
 		WHERE a.id = #{id}
+	</select>
+
+	<select id="getStart" resultType="ActYwGnode">
+		SELECT
+			<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+			<include refid="actYwGnodeJoins" />
+		WHERE a.group_id = #{groupId} AND a.type = 11
+	</select>
+
+	<select id="getProcessStart" resultType="ActYwGnode">
+		SELECT
+			<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+			<include refid="actYwGnodeJoins" />
+		WHERE a.group_id = #{groupId} AND b.parent_id = #{processId} AND a.type = 30
+	</select>
+
+	<select id="getEnd" resultType="ActYwGnode">
+		SELECT
+			<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+			<include refid="actYwGnodeJoins" />
+		WHERE a.group_id = #{groupId} AND a.type = 13
+	</select>
+
+	<select id="getProcessEnd" resultType="ActYwGnode">
+		SELECT
+			<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+			<include refid="actYwGnodeJoins" />
+		WHERE a.group_id = #{groupId} AND b.parent_id = #{processId} AND a.type = 40
+	</select>
+
+	<select id="getEndPreFun" resultType="ActYwGnode">
+		SELECT
+			<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+			<include refid="actYwGnodeJoins" />
+		WHERE
+			a.group_id = #{groupId} AND a.type = 19
+			AND a.next_fun_id = (SELECT b.id FROM act_yw_gnode b WHERE b.group_id = #{groupId} AND b.type = 13)
+	</select>
+
+	<select id="getProcessEndPreFun" resultType="ActYwGnode">
+		SELECT
+			<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+			<include refid="actYwGnodeJoins" />
+		WHERE
+			a.group_id = #{groupId} AND a.parent_id = #{processId} AND a.type = 70
+			AND a.next_fun_id = (
+				SELECT b.id FROM act_yw_gnode b WHERE b.group_id = #{groupId} AND b.parent_id = #{processId} AND b.type = 40
+			)
 	</select>
 
 	<select id="findList" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+			<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+			<include refid="actYwGnodeJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			AND b.del_flag = #{DEL_FLAG_NORMAL}
@@ -170,17 +566,25 @@
 					AND b.id = #{group.id}
 				</if>
 			</if>
+			<if test="node != null">
+				<if test="node.id != null and node.id != ''">
+					AND c.id = #{node.id}
+				</if>
+				<if test="node.level != null and node.level != ''">
+					AND c.level = #{node.level}
+				</if>
+			</if>
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id = #{groupId}
+			</if>
 			<if test="parent != null and parent.id != null and parent.id != ''">
 				AND a.parent_id = #{parent.id}
 			</if>
 			<if test="parentIds != null and parentIds != ''">
 				AND a.parent_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
-			</if>
-			<if test="groupId != null and groupId != ''">
-				AND a.group_id = #{groupId}
+				<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
 			</if>
 			<if test="type != null and type != ''">
 				AND a.type = #{type}
@@ -197,15 +601,15 @@
 			</if>
 			<if test="preIds != null and preIds != ''">
 				AND a.pre_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
 			</if>
 			<if test="preIdss != null and preIdss != ''">
 				AND a.pre_idss LIKE
-					<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
 			</if>
 			<if test="preFunId != null and preFunId != ''">
 				AND a.pre_fun_id = #{preFunId}
@@ -215,15 +619,15 @@
 			</if>
 			<if test="nextIds != null and nextIds != ''">
 				AND a.next_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
 			</if>
 			<if test="nextIdss != null and nextIdss != ''">
 				AND a.next_idss LIKE
-					<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
 			</if>
 			<if test="nextFunId != null and nextFunId != ''">
 				AND a.next_fun_id = #{nextFunId}
@@ -240,24 +644,63 @@
 			<if test="office != null and office.id != null and office.id != ''">
 				AND a.office_id = #{office.id}
 			</if>
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			<!-- ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+				b.sort ASC, a.update_date DESC -->
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, p.id ASC, a.update_date
+			DESC
 		</where>
 	</select>
 
-	<select id="findListByYw" resultType="ActYwGnode">
+	<select id="findListForTimeIndexByYw" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+		<include refid="actYwGnodeTimeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+		LEFT JOIN act_yw_node c ON c.id = a.node_id
+		LEFT
+		JOIN act_yw_gnode pe ON pe.id = a.pre_id
+		LEFT JOIN act_yw_gnode pef ON
+		pef.id = a.pre_fun_id
+		LEFT JOIN act_yw_node cpe ON cpe.id = pe.node_id
+		LEFT JOIN act_yw_gnode nt ON nt.id = a.next_id
+		LEFT JOIN act_yw_gnode
+		ntf ON ntf.id = a.next_fun_id
+		LEFT JOIN act_yw_node cnt ON cnt.id =
+		nt.node_id
+		LEFT JOIN act_yw_gnode p ON p.id = a.parent_id
+		LEFT JOIN
+		act_yw_node cp ON cp.id = p.node_id
+		LEFT JOIN act_yw_group b ON b.id =
+		a.group_id
+		LEFT JOIN act_yw_form f ON f.id = a.form_id
+		LEFT JOIN
+		act_yw_gtime ayg ON a.group_id = ayg.grounp_id and a.id= ayg.gnode_id
+		and ayg.del_flag='0' AND ayg.project_id =#{actYwGtime.projectId}
+		LEFT
+		JOIN sys_role r ON r.id = a.flow_group
+		LEFT JOIN sys_office o7 ON o7.id
+		= a.office_id
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			AND b.del_flag = #{DEL_FLAG_NORMAL}
 			AND c.del_flag = #{DEL_FLAG_NORMAL}
-			AND (a.type = '70 'or a.type ='19')
 
+			<if test="!hasGateway">
+				AND (a.type = '70' or a.type ='19')
+			</if>
+			<if test="hasGateway">
+				AND (a.type = '70' or a.type ='19' or a.type ='50')
+			</if>
 			<if test="group != null">
 				<if test="group.id != null and group.id != ''">
 					AND b.id = #{group.id}
+				</if>
+			</if>
+			<if test="node != null">
+				<if test="node.id != null and node.id != ''">
+					AND c.id = #{node.id}
+				</if>
+				<if test="node.level != null and node.level != ''">
+					AND c.level = #{node.level}
 				</if>
 			</if>
 			<if test="groupId != null and groupId != ''">
@@ -269,12 +712,10 @@
 			</if>
 			<if test="parentIds != null and parentIds != ''">
 				AND a.parent_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
 			</if>
-
-
 			<if test="typefun != null and typefun != ''">
 				AND a.typefun = #{typefun}
 			</if>
@@ -286,15 +727,15 @@
 			</if>
 			<if test="preIds != null and preIds != ''">
 				AND a.pre_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
 			</if>
 			<if test="preIdss != null and preIdss != ''">
 				AND a.pre_idss LIKE
-					<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
 			</if>
 			<if test="preFunId != null and preFunId != ''">
 				AND a.pre_fun_id = #{preFunId}
@@ -304,15 +745,15 @@
 			</if>
 			<if test="nextIds != null and nextIds != ''">
 				AND a.next_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
 			</if>
 			<if test="nextIdss != null and nextIdss != ''">
 				AND a.next_idss LIKE
-					<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
 			</if>
 			<if test="nextFunId != null and nextFunId != ''">
 				AND a.next_fun_id = #{nextFunId}
@@ -329,15 +770,144 @@
 			<if test="office != null and office.id != null and office.id != ''">
 				AND a.office_id = #{office.id}
 			</if>
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findListByinIds" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.id in
+			<foreach item="id" collection="ids" open="(" separator=","
+				close=")">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+
+	<select id="findListByinPids" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.parent_id in
+			<foreach item="id" collection="ids" open="(" separator=","
+				close=")">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+
+	<select id="findListByYw" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag = #{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="!hasGateway">
+				AND (a.type = '70' or a.type ='19')
+			</if>
+			<if test="hasGateway">
+				AND (a.type = '70' or a.type ='19' or a.type ='50')
+			</if>
+			<if test="group != null">
+				<if test="group.id != null and group.id != ''">
+					AND b.id = #{group.id}
+				</if>
+			</if>
+			<if test="node != null">
+				<if test="node.id != null and node.id != ''">
+					AND c.id = #{node.id}
+				</if>
+				<if test="node.level != null and node.level != ''">
+					AND c.level = #{node.level}
+				</if>
+			</if>
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id = #{groupId}
+			</if>
+
+			<if test="parent != null and parent.id != null and parent.id != ''">
+				AND a.parent_id = #{parent.id}
+			</if>
+			<if test="parentIds != null and parentIds != ''">
+				AND a.parent_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
+			</if>
+			<if test="typefun != null and typefun != ''">
+				AND a.typefun = #{typefun}
+			</if>
+			<if test="nodeId != null and nodeId != ''">
+				AND a.node_id = #{nodeId}
+			</if>
+			<if test="preId != null and preId != ''">
+				AND a.pre_id = #{preId}
+			</if>
+			<if test="preIds != null and preIds != ''">
+				AND a.pre_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
+			</if>
+			<if test="preIdss != null and preIdss != ''">
+				AND a.pre_idss LIKE
+				<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
+			</if>
+			<if test="preFunId != null and preFunId != ''">
+				AND a.pre_fun_id = #{preFunId}
+			</if>
+			<if test="nextId != null and nextId != ''">
+				AND a.next_id = #{nextId}
+			</if>
+			<if test="nextIds != null and nextIds != ''">
+				AND a.next_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
+			</if>
+			<if test="nextIdss != null and nextIdss != ''">
+				AND a.next_idss LIKE
+				<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
+			</if>
+			<if test="nextFunId != null and nextFunId != ''">
+				AND a.next_fun_id = #{nextFunId}
+			</if>
+			<if test="isShow != null and isShow != ''">
+				AND a.is_show = #{isShow}
+			</if>
+			<if test="isForm != null and isForm != ''">
+				AND a.is_form = #{isForm}
+			</if>
+			<if test="formId != null and formId != ''">
+				AND a.form_id = #{formId}
+			</if>
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
+			</if>
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
 		</where>
 	</select>
 
 	<select id="findListByYwProcess" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+		<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+		<include refid="actYwGnodeJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			AND b.del_flag = #{DEL_FLAG_NORMAL}
@@ -349,14 +919,22 @@
 					AND b.id = #{group.id}
 				</if>
 			</if>
+			<if test="node != null">
+				<if test="node.id != null and node.id != ''">
+					AND c.id = #{node.id}
+				</if>
+				<if test="node.level != null and node.level != ''">
+					AND c.level = #{node.level}
+				</if>
+			</if>
 			<if test="parent != null and parent.id != null and parent.id != ''">
 				AND a.parent_id = #{parent.id}
 			</if>
 			<if test="parentIds != null and parentIds != ''">
 				AND a.parent_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
 			</if>
 			<if test="groupId != null and groupId != ''">
 				AND a.group_id = #{groupId}
@@ -373,15 +951,15 @@
 			</if>
 			<if test="preIds != null and preIds != ''">
 				AND a.pre_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
 			</if>
 			<if test="preIdss != null and preIdss != ''">
 				AND a.pre_idss LIKE
-					<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
 			</if>
 			<if test="preFunId != null and preFunId != ''">
 				AND a.pre_fun_id = #{preFunId}
@@ -391,15 +969,15 @@
 			</if>
 			<if test="nextIds != null and nextIds != ''">
 				AND a.next_ids LIKE
-					<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{nextIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIds},'%')</if>
 			</if>
 			<if test="nextIdss != null and nextIdss != ''">
 				AND a.next_idss LIKE
-					<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
+				<if test="dbName == 'oracle'">'%'||#{nextIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{nextIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{nextIdss},'%')</if>
 			</if>
 			<if test="nextFunId != null and nextFunId != ''">
 				AND a.next_fun_id = #{nextFunId}
@@ -416,58 +994,417 @@
 			<if test="office != null and office.id != null and office.id != ''">
 				AND a.office_id = #{office.id}
 			</if>
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findSlibings" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag = #{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.group_id = #{groupId}
+			<if test="parent != null and parent.id != null and parent.id != ''">
+				AND a.parent_id = #{parent.id}
+			</if>
+			<if test="parentIds != null and parentIds != ''">
+				AND a.parent_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{parentIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{parentIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{parentIds},'%')</if>
+			</if>
+			<if test="preId != null and preId != ''">
+				AND a.pre_id = #{preId}
+			</if>
+			<if test="preIds != null and preIds != ''">
+				AND a.pre_ids LIKE
+				<if test="dbName == 'oracle'">'%'||#{preIds}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIds}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIds},'%')</if>
+			</if>
+			<if test="preIdss != null and preIdss != ''">
+				AND a.pre_idss LIKE
+				<if test="dbName == 'oracle'">'%'||#{preIdss}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{preIdss}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{preIdss},'%')</if>
+			</if>
+			<if test="preFunId != null and preFunId != ''">
+				AND a.pre_fun_id = #{preFunId}
+			</if>
+			<if test="isShow != null and isShow != ''">
+				AND a.is_show = #{isShow}
+			</if>
+			<if test="isForm != null and isForm != ''">
+				AND a.is_form = #{isForm}
+			</if>
+			<if test="formId != null and formId != ''">
+				AND a.form_id = #{formId}
+			</if>
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
+			</if>
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
 		</where>
 	</select>
 
 	<select id="findAllList" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+		<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+		<include refid="actYwGnodeJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			AND b.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
 			AND c.del_flag = #{DEL_FLAG_NORMAL}
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			ORDER BY o7.name
+			ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC,
+			a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findAll" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			1=1 ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC,
+			p.id ASC, b.sort ASC, a.update_date DESC
 		</where>
 	</select>
 
 	<select id="findByParentIdsLike" resultType="ActYwGnode">
 		SELECT
-			a.id,
-			a.parent_id AS "parent.id",
-			a.parent_ids
+			<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+			<include refid="actYwGnodeJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			AND b.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
 			AND c.del_flag = #{DEL_FLAG_NORMAL}
-			AND a.parent_ids LIKE #{parentIds}
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			AND a.parent_ids
+			LIKE #{parentIds}
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort
+			ASC, p.id ASC, b.sort ASC, a.update_date DESC
 		</where>
+	</select>
+
+	<select id="findByPidsLike" resultType="ActYwGnode">
+		SELECT
+		a.id,
+		a.parent_id AS "parent.id",
+		a.parent_ids,
+		a.group_id AS "groupId",
+		a.type AS "type",
+		a.typefun AS "typefun",
+		a.node_id AS "nodeId",
+		a.pre_id AS "preId",
+		a.pre_ids AS "preIds",
+		a.pre_idss AS "preIdss",
+		a.pre_fun_id AS "preFunId",
+		a.next_id AS "nextId",
+		a.next_ids AS "nextIds",
+		a.next_idss AS "nextIdss",
+		a.next_fun_id AS "nextFunId",
+		a.remarks AS "remarks"
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.parent_ids
+			LIKE #{parentIds}
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort
+			ASC, p.id ASC, b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findByYwParentIdsLike" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND (a.type =
+			'70' or a.type ='19')
+			AND a.parent_ids LIKE #{parentIds}
+			ORDER BY
+			o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort
+			ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findNextByGpreIdsLike" resultType="ActYwGnode">
+		SELECT
+		a.id AS "Id",
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.group_id AS "groupId",
+		a.type AS "type",
+		a.typefun AS "typefun",
+		a.node_id AS "nodeId",
+		a.pre_id AS "preId",
+		a.pre_ids AS "preIds",
+		a.pre_idss AS "preIdss",
+		a.pre_fun_id AS "preFunId",
+		a.next_id AS "nextId",
+		a.next_ids AS "nextIds",
+		a.next_idss AS "nextIdss",
+		a.next_fun_id AS "nextFunId",
+		a.remarks AS "remarks"
+		FROM act_yw_gnode a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		AND a.group_id = #{groupId}
+		AND a.pre_ids LIKE
+		concat('%',#{preIds},'%')
+		<if test="parent != null and parent.id != null and parent.id != ''">
+			AND (a.parent_id = #{parent.id} OR a.parent_id = '1')
+		</if>
+		ORDER BY a.next_idss ASC
+	</select>
+
+	<select id="findNextByGpreIdssLike" resultType="ActYwGnode">
+		SELECT
+		a.id AS "Id",
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.group_id AS "groupId",
+		a.type AS "type",
+		a.typefun AS "typefun",
+		a.node_id AS "nodeId",
+		a.pre_id AS "preId",
+		a.pre_ids AS "preIds",
+		a.pre_idss AS "preIdss",
+		a.pre_fun_id AS "preFunId",
+		a.next_id AS "nextId",
+		a.next_ids AS "nextIds",
+		a.next_idss AS "nextIdss",
+		a.next_fun_id AS "nextFunId",
+		a.remarks AS "remarks"
+		FROM act_yw_gnode a
+		WHERE a.del_flag = '0' AND a.group_id
+		= #{gnode.groupId}
+		<if test="cascade == null or cascade == '' or cascade == false">
+			AND a.pre_idss LIKE concat('%',#{gnode.preIdss},'%')
+			<if
+				test="gnode.parent != null and gnode.parent.id != null and gnode.parent.id != ''">
+				AND (a.parent_id = #{gnode.parent.id} OR a.parent_id = '1')
+			</if>
+		</if>
+		<if test="cascade != null and cascade != '' and cascade == true">
+			AND (
+			(a.parent_id = #{gnode.parent.id} AND a.pre_idss LIKE
+			concat('%',#{gnode.preIdss},'%')) OR
+			(a.parent_id = '1' AND a.pre_idss LIKE concat('%',#{gnode.parent.preIdss},'%'))
+			)
+		</if>
+		ORDER BY a.next_idss ASC
+	</select>
+
+	<select id="findPreByGnextIdsLike" resultType="ActYwGnode">
+		SELECT
+		a.id AS "Id",
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.group_id AS "groupId",
+		a.type AS "type",
+		a.typefun AS "typefun",
+		a.node_id AS "nodeId",
+		a.pre_id AS "preId",
+		a.pre_ids AS "preIds",
+		a.pre_idss AS "preIdss",
+		a.pre_fun_id AS "preFunId",
+		a.next_id AS "nextId",
+		a.next_ids AS "nextIds",
+		a.next_idss AS "nextIdss",
+		a.next_fun_id AS "nextFunId",
+		a.remarks AS "remarks"
+		FROM act_yw_gnode a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		AND a.group_id = #{groupId}
+		AND a.next_ids LIKE
+		concat('%',#{nextIds},'%')
+		<if test="parent != null and parent.id != null and parent.id != ''">
+			AND (a.parent_id = #{parent.id} OR a.parent_id = '1')
+		</if>
+		ORDER BY a.pre_idss ASC
+	</select>
+
+	<select id="findPreByGnextIdssLike" resultType="ActYwGnode">
+		SELECT
+		a.id AS "Id",
+		a.parent_id AS "parent.id",
+		a.parent_ids AS "parentIds",
+		a.group_id AS "groupId",
+		a.type AS "type",
+		a.typefun AS "typefun",
+		a.node_id AS "nodeId",
+		a.pre_id AS "preId",
+		a.pre_ids AS "preIds",
+		a.pre_idss AS "preIdss",
+		a.pre_fun_id AS "preFunId",
+		a.next_id AS "nextId",
+		a.next_ids AS "nextIds",
+		a.next_idss AS "nextIdss",
+		a.next_fun_id AS "nextFunId",
+		a.remarks AS "remarks"
+		FROM act_yw_gnode a
+		WHERE a.del_flag = '0' AND a.group_id
+		= #{gnode.groupId}
+		<if test="cascade == null or cascade == '' or cascade == false">
+			AND a.next_idss LIKE concat('%',#{gnode.nextIdss},'%')
+			<if
+				test="gnode.parent != null and gnode.parent.id != null and gnode.parent.id != ''">
+				AND (a.parent_id = #{gnode.parent.id} OR a.parent_id = '1')
+			</if>
+		</if>
+		<if test="cascade != null and cascade != '' and cascade == true">
+			AND (
+			(a.parent_id = #{gnode.parent.id} AND a.next_idss LIKE
+			concat('%',#{gnode.nextIdss},'%')) OR
+			(a.parent_id = '1' AND a.next_idss LIKE concat('%',#{gnode.parent.nextIdss},'%'))
+			)
+			<if test="ids != null and ids != null and ids != ''">
+				AND a.id not in
+				<foreach item="id" collection="ids" open="(" separator=","
+					close=")">
+					#{id}
+				</foreach>
+			</if>
+		</if>
+		ORDER BY a.pre_idss ASC
 	</select>
 
 	<select id="findListByGroup" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+		<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.id =
+			#{group.id}
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC,
+			p.id ASC, b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findListByGroupAscPreIdss" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.id =
+			#{group.id}
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss ASC, a.sort
+			ASC, p.id ASC, b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findListByGroupAscNextIdss" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag =
+			#{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.id =
+			#{group.id}
+			ORDER BY o7.name ASC, a.group_id, a.next_idss ASC, a.sort
+			ASC, p.id ASC, b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findPreByGroupAndIdss" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			AND b.del_flag = #{DEL_FLAG_NORMAL}
 			AND c.del_flag = #{DEL_FLAG_NORMAL}
 			AND b.id = #{group.id}
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			<if test="isYw != null and isYw != ''">
+				<if test="!hasGateway">
+					AND (a.type = '70' or a.type ='19')
+				</if>
+				<if test="hasGateway">
+					AND (a.type = '70' or a.type ='19' or a.type ='50')
+				</if>
+			</if>
+			<if test="preidssx != null and preidssx != ''">
+				AND a.id in
+				<foreach item="pid" collection="preidssx" open="("
+					separator="," close=")">
+					#{pid}
+				</foreach>
+			</if>
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
+		</where>
+	</select>
+
+	<select id="findNextByGroupAndIdss" resultType="ActYwGnode">
+		SELECT
+		<include refid="actYwGnodeColumns" />
+		FROM act_yw_gnode a
+		<include refid="actYwGnodeJoins" />
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.del_flag = #{DEL_FLAG_NORMAL}
+			AND c.del_flag = #{DEL_FLAG_NORMAL}
+			AND b.id = #{group.id}
+			<if test="isYw != null and isYw != ''">
+				<if test="!hasGateway">
+					AND (a.type = '70' or a.type ='19')
+				</if>
+				<if test="hasGateway">
+					AND (a.type = '70' or a.type ='19' or a.type ='50')
+				</if>
+			</if>
+			<if test="preidssx != null and preidssx != ''">
+				AND a.id in
+				<foreach item="nid" collection="nextidssx" open="("
+					separator="," close=")">
+					#{nid}
+				</foreach>
+			</if>
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
 		</where>
 	</select>
 
 	<select id="findPreNextListByGroup" resultType="ActYwGnode">
 		SELECT
-			<include refid="actYwGnodeColumns"/>
+		<include refid="actYwGnodeColumns" />
 		FROM act_yw_gnode a
-		<include refid="actYwGnodeJoins"/>
+		<include refid="actYwGnodeJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			AND b.del_flag = #{DEL_FLAG_NORMAL}
@@ -494,13 +1431,15 @@
 					AND a.next_id = #{nextGnode.id}
 				</if>
 			</if>
-			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC, b.sort ASC, a.update_date DESC
+			ORDER BY o7.name ASC, a.group_id, a.pre_idss, a.sort ASC, p.id ASC,
+			b.sort ASC, a.update_date DESC
 		</where>
 	</select>
 
 	<insert id="insert">
 		INSERT INTO act_yw_gnode(
 			id,
+			name,
 			parent_id,
 			parent_ids,
 			group_id,
@@ -518,7 +1457,17 @@
 			is_show,
 			is_form,
 			form_id,
+			pos_lux,
+			pos_luy,
+			width,
+			height,
+			pos_alux,
+			pos_aluy,
+			widtha,
+			heighta,
 			sort,
+			has_group,
+			icon_url,
 			office_id,
 			update_date,
 			update_by,
@@ -529,6 +1478,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{name},
 			#{parent.id},
 			#{parentIds},
 			#{groupId},
@@ -546,7 +1496,17 @@
 			#{isShow},
 			#{isForm},
 			#{formId},
+			#{posLux},
+			#{posLuy},
+			#{width},
+			#{height},
+			#{posAlux},
+			#{posAluy},
+			#{widtha},
+			#{heighta},
 			#{sort},
+			#{hasGroup},
+			#{iconUrl},
 			#{office.id},
 			#{updateDate},
 			#{updateBy.id},
@@ -558,8 +1518,94 @@
 		)
 	</insert>
 
+	<insert id="insertPL" parameterType="java.util.List">
+		INSERT INTO act_yw_gnode(
+			id,
+			name,
+			parent_id,
+			parent_ids,
+			group_id,
+			type,
+			typefun,
+			node_id,
+			pre_id,
+			pre_ids,
+			pre_idss,
+			pre_fun_id,
+			next_id,
+			next_ids,
+			next_idss,
+			next_fun_id,
+			is_show,
+			is_form,
+			form_id,
+			pos_lux,
+			pos_luy,
+			width,
+			height,
+			pos_alux,
+			pos_aluy,
+			widtha,
+			heighta,
+			sort,
+			has_group,
+			icon_url,
+			office_id,
+			update_date,
+			update_by,
+			create_date,
+			create_by,
+			flow_group,
+			remarks,
+			del_flag
+		) VALUES
+		<foreach collection="gnodes" item="item" index="index" separator="," >
+		(
+			#{item.id},
+			#{item.name},
+			#{item.parent.id},
+			#{item.parentIds},
+			#{item.groupId},
+			#{item.type},
+			#{item.typefun},
+			#{item.nodeId},
+			#{item.preId},
+			#{item.preIds},
+			#{item.preIdss},
+			#{item.preFunId},
+			#{item.nextId},
+			#{item.nextIds},
+			#{item.nextIdss},
+			#{item.nextFunId},
+			#{item.isShow},
+			#{item.isForm},
+			#{item.formId},
+			#{item.posLux},
+			#{item.posLuy},
+			#{item.width},
+			#{item.height},
+			#{item.posAlux},
+			#{item.posAluy},
+			#{item.widtha},
+			#{item.heighta},
+			#{item.sort},
+			#{item.hasGroup},
+			#{item.iconUrl},
+			#{item.office.id},
+			#{item.updateDate},
+			#{item.updateBy.id},
+			#{item.createDate},
+			#{item.createBy.id},
+			#{item.flowGroup},
+			#{item.remarks},
+			#{item.delFlag}
+		)
+    	</foreach>
+	</insert>
+
 	<update id="update">
 		UPDATE act_yw_gnode SET
+			name = #{name},
 			parent_id = #{parent.id},
 			parent_ids = #{parentIds},
 			group_id = #{groupId},
@@ -577,7 +1623,17 @@
 			is_show = #{isShow},
 			is_form = #{isForm},
 			form_id = #{formId},
+			pos_lux = #{posLux},
+			pos_luy = #{posLuy},
+			width = #{width},
+			height = #{height},
+			pos_alux = #{posAlux},
+			pos_aluy = #{posAluy},
+			widtha = #{widtha},
+			heighta = #{heighta},
 			sort = #{sort},
+			has_group = #{hasGroup},
+			icon_url = #{iconUrl},
 			office_id = #{office.id},
 			update_date = #{updateDate},
 			update_by = #{updateBy.id},
@@ -586,23 +1642,241 @@
 		WHERE id = #{id}
 	</update>
 
+	<update id="updatePropPL" parameterType="java.util.List">
+		UPDATE act_yw_gnode
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="parent_id =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.parent.id}
+				</foreach>
+			</trim>
+			<trim prefix="parent_ids =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.parentIds}
+				</foreach>
+			</trim>
+			<trim prefix="pre_id =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.preId}
+				</foreach>
+			</trim>
+			<trim prefix="pre_ids =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.preIds}
+				</foreach>
+			</trim>
+			<trim prefix="pre_idss =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.preIdss}
+				</foreach>
+			</trim>
+			<trim prefix="pre_fun_id =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.preFunId}
+				</foreach>
+			</trim>
+			<trim prefix="next_id =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.nextId}
+				</foreach>
+			</trim>
+			<trim prefix="next_ids =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.nextIds}
+				</foreach>
+			</trim>
+			<trim prefix="next_idss =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.nextIdss}
+				</foreach>
+			</trim>
+			<trim prefix="next_fun_id =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.nextFunId}
+				</foreach>
+			</trim>
+		</trim>
+		where id in
+		<foreach item="item" collection="gnodes" index="index" open="("
+			close=")" separator=",">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<!-- 根据nodeId和ywId找到GnodeId -->
+	<select id="findGnodeIDByNode" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		SELECT a.id FROM act_yw_gnode a
+		INNER JOIN act_yw_node b ON a.node_id=b.id
+		INNER JOIN act_yw c ON a.group_id = c.group_id
+		WHERE b.id=#{nodeId} AND c.id = #{ywId};
+	</select>
+
 	<update id="updateSort">
 		UPDATE act_yw_gnode SET
-			sort = #{sort}
+		sort = #{sort}
 		WHERE id = #{id}
 	</update>
 
 	<update id="updateParentIds">
 		UPDATE act_yw_gnode SET
-			parent_id = #{parent.id},
-			parent_ids = #{parentIds}
+		parent_id = #{parent.id},
+		parent_ids = #{parentIds}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGpreId">
+		UPDATE act_yw_gnode SET
+		pre_id = #{preId}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGpreIds">
+		UPDATE act_yw_gnode SET
+		pre_id = #{preId},
+		pre_ids = #{preIds}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGpreIdss">
+		UPDATE act_yw_gnode SET
+		pre_idss = #{preIdss}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGpreIdssPL">
+		UPDATE act_yw_gnode SET
+		pre_idss = #{preIdss}
+		WHERE id in
+		<foreach item="id" collection="ids" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="updateGpreIdssByPL" parameterType="java.util.List">
+		UPDATE act_yw_gnode
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="pre_idss =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.preIdss}
+				</foreach>
+			</trim>
+		</trim>
+		where id in
+		<foreach item="item" collection="gnodes" index="index" open="("
+			close=")" separator=",">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<update id="updateGpreIdssByPL2" parameterType="java.util.List">
+		UPDATE act_yw_gnode SET
+		pre_idss =
+		<foreach item="item" collection="gnodes" index="index"
+			separator=" " open="case id" close="end">
+			when #{item.id} then #{item.preIdss}
+		</foreach>
+		WHERE id in
+		<foreach item="item" collection="gnodes" separator="," open="("
+			close=")">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<update id="updateGpreFunId">
+		UPDATE act_yw_gnode SET
+		pre_fun_id = #{preFunId}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGnextId">
+		UPDATE act_yw_gnode SET
+		next_id = #{nextId}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGnextIds">
+		UPDATE act_yw_gnode SET
+		next_id = #{nextId},
+		next_ids = #{nextIds}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGnextIdss">
+		UPDATE act_yw_gnode SET
+		next_idss = #{nextIdss}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateGnextIdssPL">
+		UPDATE act_yw_gnode SET
+		next_idss = #{nextIdss}
+		WHERE id in
+		<foreach item="id" collection="ids" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="updateGnextIdssByPL" parameterType="java.util.List">
+		UPDATE act_yw_gnode
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="next_idss =case" suffix="end,">
+				<foreach item="item" collection="gnodes" index="index">
+					when id=#{item.id} then #{item.nextIdss}
+				</foreach>
+			</trim>
+		</trim>
+		where id in
+		<foreach item="item" collection="gnodes" index="index" open="("
+			close=")" separator=",">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<update id="updateGnextIdssByPL2" parameterType="java.util.List">
+		UPDATE act_yw_gnode SET
+		next_idss =
+		<foreach item="item" collection="gnodes" index="index"
+			separator=" " open="case id" close="end">
+			when #{item.id} then #{item.nextIdss}
+		</foreach>
+		WHERE id in
+		<foreach item="item" collection="gnodes" separator="," open="("
+			close=")">
+			#{item.id}
+		</foreach>
+	</update>
+
+	<update id="updateGnextFunId">
+		UPDATE act_yw_gnode SET
+		next_fun_id = #{nextFunId}
 		WHERE id = #{id}
 	</update>
 
 	<update id="delete">
 		UPDATE act_yw_gnode SET
-			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id} OR parent_ids LIKE '%,'||#{id}||',%'
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
 	</update>
 
+	<update id="deleteWL">
+		DELETE FROM act_yw_gnode
+		WHERE id = #{id}
+	</update>
+
+	<update id="deletePLWL">
+		DELETE FROM act_yw_gnode
+		WHERE id in
+		<foreach item="id" collection="ids" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="deleteByGroup">
+		DELETE FROM act_yw_gnode
+		WHERE group_id = #{groupId}
+	</update>
 </mapper>

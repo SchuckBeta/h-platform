@@ -7,16 +7,16 @@
 	</jsonparam>
 	<content>
 		<![CDATA[<div class="notice-module">
-            <div class="container w1240">
+            <div class="w1240">
                 <div id="myCarousel" class="carousel-notice carousel slide">
                     <input id="userId" type="hidden" value="${user.id!''}"/>
                     <!-- 轮播（Carousel）项目 -->
                     <div class="carousel-head">
                         <img class="icon-notice" src="/img/index-notify2.png" title="${title}">
-                        <span style="color:#e04527;font-weight: bold;">${title}：</span>
+                        <span style="color:#fff;">${title}：</span>
                     </div>
                     <div class="carousel-inner" id="wrap"></div>
-                    <a class="in-notice-list" href="/f/frontNotice/noticeList">列表<i class="icon  icon-double-angle-right"></i></a>
+                    <a class="in-notice-list" href="/f/frontNotice/noticeList">更多...</a>
                 </div>
             </div>
         </div>]]>

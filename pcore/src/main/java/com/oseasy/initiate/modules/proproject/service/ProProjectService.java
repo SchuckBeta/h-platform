@@ -1,33 +1,40 @@
 package com.oseasy.initiate.modules.proproject.service;
 
+import java.text.ParseException;
 import java.util.List;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGtime;
-import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
-import com.oseasy.initiate.modules.actyw.service.ActYwGroupService;
-import com.oseasy.initiate.modules.actyw.service.ActYwGtimeService;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
-import com.oseasy.initiate.modules.sys.entity.Menu;
-import com.oseasy.initiate.modules.sys.service.SystemService;
+import javax.servlet.http.HttpServletRequest;
+
+import com.thoughtworks.xstream.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oseasy.initiate.common.config.Global;
+import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
+import com.oseasy.initiate.common.utils.DateUtil;
+import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.modules.actyw.entity.ActYw;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
+import com.oseasy.initiate.modules.actyw.entity.ActYwGtime;
+import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
+import com.oseasy.initiate.modules.actyw.service.ActYwGroupService;
+import com.oseasy.initiate.modules.actyw.service.ActYwGtimeService;
+import com.oseasy.initiate.modules.actyw.tool.project.ActProParamVo;
+import com.oseasy.initiate.modules.actyw.tool.project.ActProRunner;
+import com.oseasy.initiate.modules.actyw.tool.project.ActProStatus;
+import com.oseasy.initiate.modules.actyw.tool.project.impl.ActProProject;
+import com.oseasy.initiate.modules.cms.entity.Category;
+import com.oseasy.initiate.modules.cms.service.CategoryService;
 import com.oseasy.initiate.modules.proproject.dao.ProProjectDao;
-
-import javax.servlet.http.HttpServletRequest;
+import com.oseasy.initiate.modules.proproject.entity.ProProject;
+import com.oseasy.initiate.modules.sys.entity.Menu;
+import com.oseasy.initiate.modules.sys.entity.Role;
+import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.oseasy.initiate.modules.sys.tool.SysNoType;
+import com.oseasy.initiate.modules.sys.tool.SysNodeTool;
 
 /**
  * 创建项目Service.
@@ -46,8 +53,6 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 	ActYwGtimeService actYwGtimeService;
 
 	@Autowired
-	private ActYwGroupService actYwGroupService;
-	@Autowired
 	private ActYwGnodeService actYwGnodeService;
 
 	public ProProject get(String id) {
@@ -62,8 +67,50 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 		return super.findPage(page, proProject);
 	}
 
-	@Transactional(readOnly = false)
-	public void save(ProProject proProject) {
+  	@Transactional(readOnly = false)
+  	public void save(ProProject proProject) {
+		if(StringUtil.isEmpty(proProject.getProjectMark())){
+		  	proProject.setProjectMark(SysNodeTool.genByKeyss(SysNoType.NO_PROJECT));
+		}
+		//判断是否已经生成过栏目和菜单
+		//将生成栏目和菜单隐藏不可见
+		/*if(StringUtil.isEmpty(proProject.getId())){
+		  //生成栏目表
+		  	Category category=new Category();
+		  //category.setParent(new Category(SysIds.SITE_CATEGORYS_SYS_ROOT.getId()));
+		  	Category parent = categoryService.get(SysIds.SITE_CATEGORYS_TOP_ROOT.getId());
+		  	category.setParent(parent);
+		  	category.setSite(parent.getSite());
+		  	category.setOffice(parent.getOffice());
+		  	category.setName(proProject.getProjectName());
+		  	category.setDescription(proProject.getContent());
+		  	category.setInMenu(Global.SHOW);
+		  	category.setInList(Global.HIDE);
+		  	category.setIsAudit(Global.NO);
+		  	category.setSort(10);
+			category.setRemarks("流程栏目");
+		  	categoryService.save(category);
+		  	proProject.setCategory(category);
+		  //生成后台菜单
+		  	Menu menu=new Menu();
+		  	menu.setParent(systemService.getMenu(Menu.getRootId()));
+		  	menu.setName(proProject.getProjectName());
+		  	menu.setIsShow(Global.HIDE);
+		  	menu.setImgUrl(proProject.getImgUrl());
+		  	menu.setRemarks(proProject.getContent());
+		  	menu.setSort(10);
+			menu.setRemarks("流程菜单");
+		  	systemService.saveMenu(menu);
+		  	proProject.setMenu(menu);
+		}*/
+    try {
+      proProject.setStartDate(DateUtil.getStartDate(proProject.getStartDate()));
+      proProject.setEndDate(DateUtil.getEndDate(proProject.getEndDate()));
+      proProject.setNodeStartDate(DateUtil.getStartDate(proProject.getNodeStartDate()));
+      proProject.setNodeEndDate(DateUtil.getEndDate(proProject.getNodeEndDate()));
+    } catch (ParseException e) {
+      logger.error(e.getMessage());
+    }
 		super.save(proProject);
 	}
 
@@ -79,23 +126,23 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 	public void saveProProject(ProProject proProject) {
 		//生成栏目表
 		Category category=new Category();
-		//category.setParent(new Category(SysIds.SITE_CATEGORYS_SYS_ROOT.getId()));
 		Category parent = categoryService.get(SysIds.SITE_CATEGORYS_TOP_ROOT.getId());
 		category.setParent(parent);
 		category.setSite(parent.getSite());
 		category.setOffice(parent.getOffice());
 		category.setName(proProject.getProjectName());
 		category.setDescription(proProject.getContent());
-		category.setInMenu("1");
-		category.setInList("1");
-		category.setIsAudit("0");
-		category.setSort(40);
+		category.setInMenu(Global.SHOW);
+		category.setInList(Global.SHOW);
+		category.setIsAudit(Global.NO);
+		category.setSort(10);
 		categoryService.save(category);
+
 		//生成后台菜单
 		Menu menu=new Menu();
 		menu.setParent(systemService.getMenu(Menu.getRootId()));
 		menu.setName(proProject.getProjectName());
-		menu.setIsShow("1");
+		menu.setIsShow(Global.SHOW);
 		menu.setRemarks(proProject.getContent());
 		menu.setSort(10);
 		systemService.saveMenu(menu);
@@ -106,61 +153,10 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 	@Transactional(readOnly = false)
 	public void changeProProjectModel(ActYw actYw, HttpServletRequest request)  {
 		ProProject proProject = actYw.getProProject();
-		Category category = new Category();
-		Menu menu = new Menu();
-		if(proProject!=null){
 
-			Category parent = categoryService.get(SysIds.SITE_CATEGORYS_TOP_ROOT.getId());
-			category.setParent(parent);
-			category.setSite(parent.getSite());
-			category.setOffice(parent.getOffice());
-			category.setName(proProject.getProjectName());
-			category.setDescription(proProject.getContent());
-			category.setInMenu("1");
-			category.setInList("1");
-			category.setIsAudit("0");
-			category.setSort(40);
-			categoryService.save(category);
-			proProject.setCategory(category);
-			/**
-			 * 生成后台菜单.
-			 */
-
-			menu.setParent(systemService.getMenu(Menu.getRootId()));
-			menu.setName(proProject.getProjectName());
-			menu.setIsShow("1");
-			menu.setRemarks(proProject.getContent());
-			menu.setSort(10);
-			menu.setImgUrl(proProject.getImgUrl());
-			systemService.saveMenu(menu);
-			proProject.setMenu(menu);
-		}
 		//根据流程生成子菜单
 		if (actYw.getGroupId() != null) {
-			ActYwGnode actYwGnode = new ActYwGnode();
-			actYwGnode.setGroupId(actYw.getGroupId());
-			List<ActYwGnode> sourcelist = actYwGnodeService.findListByYwProcess(actYwGnode);
-			if (sourcelist.size() > 0) {
-				for (int i = 0; i < sourcelist.size(); i++) {
-					if (sourcelist.get(i) != null) {
-						Menu menuForm = new Menu();
-						menuForm.setParent(menu);
-						menuForm.setName(sourcelist.get(i).getNode().getName());
-						menuForm.setIsShow("1");
-						menuForm.setHref("form/" + proProject.getProjectMark() + "/" + sourcelist.get(i).getFormId() + "?id=" + actYw.getId());
-						menuForm.setSort(10);
-						systemService.saveMenu(menuForm);
 
-						Menu menuNextForm = new Menu();
-						menuNextForm.setParent(menuForm);
-						menuNextForm.setName(sourcelist.get(i).getNode().getName());
-						menuNextForm.setIsShow("1");
-						menuNextForm.setHref("cms/form/" + proProject.getProjectMark() + "/" + sourcelist.get(i).getFormId() + "?id=" + actYw.getId());
-						menuNextForm.setSort(10);
-						systemService.saveMenu(menuNextForm);
-					}
-				}
-			}
 
 			String[] gNodeId = request.getParameterValues("nodeId");
 			String[] beginDate = request.getParameterValues("beginDate");
@@ -182,83 +178,13 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 		}
 	}
 
-	@Transactional(readOnly = false)
-	public void editProProject(ActYw actYw, HttpServletRequest request) {
-		ProProject proProject = actYw.getProProject();
-		Menu menu = proProject.getMenu();
-		if(StringUtil.isNotEmpty(proProject.getMenuRid())){
-			menu = systemService.getMenu(proProject.getMenuRid());
-		}
-		Category category = proProject.getCategory();
-		if((category == null) && StringUtil.isNotEmpty(proProject.getCategoryRid())){
-			category = categoryService.get(proProject.getCategoryRid());
-		}
-		if(category!=null){
-			category.setName(proProject.getProjectName());
-			category.setDescription(proProject.getContent());
-			categoryService.save(category);
-			proProject.setCategory(category);
-		}
-		if(menu!=null) {
-			menu.setParent(systemService.getMenu(Menu.getRootId()));
-			menu.setName(proProject.getProjectName());
-			menu.setRemarks(proProject.getContent());
-			menu.setImgUrl(proProject.getImgUrl());
-			systemService.saveMenu(menu);
-			proProject.setMenu(menu);
-		}
-		//是否变换菜单
-		if(proProject.isRestMenu()){
-			Menu menuOld =systemService.getMenu(proProject.getMenuRid());
-		  //删除菜单
-			if(menuOld!=null) {
-				systemService.deleteMenu(menuOld);
-			}
-			createMenu(proProject);
-			if(actYw.getGroupId()!=null){
-				ActYwGnode actYwGnode=new ActYwGnode();
-				actYwGnode.setGroupId(actYw.getGroupId());
-				List<ActYwGnode> sourcelist = actYwGnodeService.findListByYwProcess(actYwGnode);
-				if(sourcelist.size()>0){
-					for(int i=0;i<sourcelist.size();i++) {
-						if(sourcelist.get(i)!=null){
-							Menu menuForm = new Menu();
-							menuForm.setParent(proProject.getMenu());
-							menuForm.setName(sourcelist.get(i).getNode().getName());
-							menuForm.setIsShow("1");
-							menuForm.setHref("form/"+proProject.getProjectMark()+"/"+sourcelist.get(i).getFormId()+"?id="+ actYw.getId());
-							menuForm.setSort(10);
-							systemService.saveMenu(menuForm);
-
-							Menu menuNextForm = new Menu();
-							menuNextForm.setParent(menuForm);
-							menuNextForm.setName(sourcelist.get(i).getNode().getName());
-							menuNextForm.setIsShow("1");
-							menuNextForm.setHref("cms/form/"+proProject.getProjectMark()+"/"+sourcelist.get(i).getFormId()+"?id="+ actYw.getId());
-							menuNextForm.setSort(10);
-							systemService.saveMenu(menuNextForm);
-						}
-					}
-				}
-			}
-		}
-		//是否变换栏目
-		if(proProject.isRestCategory()){
-			Category categoryOld =categoryService.get(proProject.getCategoryRid());
-		  //删除栏目
-			if(categoryOld!=null) {
-				categoryService.delete(categoryOld);
-			}
-			createMenu(proProject);
-		}
-	}
 	//创建菜单
 	@Transactional(readOnly = false)
 	public void createMenu(ProProject proProject) {
 		Menu menu=new Menu();
 		menu.setParent(systemService.getMenu(Menu.getRootId()));
 		menu.setName(proProject.getProjectName());
-		menu.setIsShow("1");
+		menu.setIsShow(Global.SHOW);
 		menu.setRemarks(proProject.getContent());
 		menu.setSort(10);
 		menu.setImgUrl(proProject.getImgUrl());
@@ -276,9 +202,9 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 		category.setOffice(parent.getOffice());
 		category.setName(proProject.getProjectName());
 		category.setDescription(proProject.getContent());
-		category.setInMenu("1");
-		category.setInList("1");
-		category.setIsAudit("0");
+		category.setInMenu(Global.SHOW);
+		category.setInList(Global.SHOW);
+		category.setIsAudit(Global.NO);
 		category.setSort(40);
 		categoryService.save(category);
 		//默认添加申报表单
@@ -289,9 +215,9 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 		categoryapp.setOffice(category.getOffice());
 		categoryapp.setName(proProject.getProjectName());
 		categoryapp.setDescription(proProject.getContent());
-		categoryapp.setInMenu("1");
-		categoryapp.setInList("1");
-		categoryapp.setIsAudit("0");
+		categoryapp.setInMenu(Global.SHOW);
+		categoryapp.setInList(Global.SHOW);
+		categoryapp.setIsAudit(Global.NO);
 		categoryapp.setHref("/form/"+proProject.getProjectMark()+"/applyForm?id="+actYw.getId());
 
 		categoryapp.setSort(40);
@@ -303,7 +229,6 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 	//屏蔽以发布流程
 	@Transactional(readOnly = false)
 	public void savedis(ProProject proProject) {
-
 		Menu menu = proProject.getMenu();
 		if(StringUtil.isNotEmpty(proProject.getMenuRid())){
 			menu = systemService.getMenu(proProject.getMenuRid());
@@ -313,14 +238,14 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 			category = categoryService.get(proProject.getCategoryRid());
 		}
 		if(category!=null){
-			category.setInMenu("0");
+			category.setInMenu(Global.HIDE);
 			category.setName(proProject.getProjectName());
 			category.setDescription(proProject.getContent());
 			categoryService.save(category);
 			proProject.setCategory(category);
 		}
 		if(menu!=null) {
-			menu.setIsShow("0");
+			menu.setIsShow(Global.HIDE);
 			menu.setParent(systemService.getMenu(Menu.getRootId()));
 			menu.setName(proProject.getProjectName());
 			menu.setRemarks(proProject.getContent());
@@ -328,7 +253,7 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 			systemService.saveMenu(menu);
 			proProject.setMenu(menu);
 		}
-
+		save(proProject);
 	}
 
 	@Transactional(readOnly = false)
@@ -338,34 +263,45 @@ public class ProProjectService extends CrudService<ProProjectDao, ProProject> {
 			/**
 			 * 生成前台栏目.
 			 */
-			createCategory(proProject,actYw);
-			/**
+			ActProParamVo actProParamVo =new ActProParamVo();
+			actProParamVo.setActYw(actYw);
+			actProParamVo.setProProject(proProject);
+
+			ActProRunner<ActProProject> projectRunner = new ActProRunner<ActProProject>(new ActProProject());
+			ActProStatus actProStatus = projectRunner.execute(actProParamVo);
+			actProParamVo = actProStatus.getActProParamVo();
+			proProject = actProParamVo.getProProject();
+
+			/*createCategory(proProject,actYw);
+			*//**
 			 * 生成后台菜单.
-			 */
-			createMenu(proProject);
+			 *//*
+			createMenu(proProject);*/
 			//根据流程生成子菜单
 			if(actYw.getGroupId()!=null){
 				ActYwGnode actYwGnode=new ActYwGnode();
 				actYwGnode.setGroupId(actYw.getGroupId());
 				List<ActYwGnode> sourcelist = actYwGnodeService.findListByYwProcess(actYwGnode);
-				if(sourcelist.size()>0){
-					for(int i=0;i<sourcelist.size();i++) {
-						if(sourcelist.get(i)!=null){
-							Menu menuForm = new Menu();
-							menuForm.setParent(proProject.getMenu());
-							menuForm.setName(sourcelist.get(i).getNode().getName());
-							menuForm.setIsShow("1");
-							menuForm.setHref("form/"+proProject.getProjectMark()+"/"+sourcelist.get(i).getFormId()+"?id="+ actYw.getId());
-							menuForm.setSort(10);
-							systemService.saveMenu(menuForm);
+				if(proProject.getMenu()!=null){
+					if(sourcelist.size()>0){
+						for(int i=0;i<sourcelist.size();i++) {
+							if(sourcelist.get(i)!=null){
+								Menu menuForm = new Menu();
+								menuForm.setParent(proProject.getMenu());
+								menuForm.setName(sourcelist.get(i).getName());
+								menuForm.setIsShow(Global.SHOW);
+								menuForm.setHref("form/"+proProject.getProjectMark()+"/"+sourcelist.get(i).getFormId()+"?id="+ actYw.getId());
+								menuForm.setSort(10);
+								systemService.saveMenu(menuForm);
 
-							Menu menuNextForm = new Menu();
-							menuNextForm.setParent(menuForm);
-							menuNextForm.setName(sourcelist.get(i).getNode().getName());
-							menuNextForm.setIsShow("1");
-							menuNextForm.setHref("/cms/form/"+proProject.getProjectMark()+"/"+sourcelist.get(i).getFormId()+"?id="+ actYw.getId());
-							menuNextForm.setSort(10);
-							systemService.saveMenu(menuNextForm);
+								Menu menuNextForm = new Menu();
+								menuNextForm.setParent(menuForm);
+								menuNextForm.setName(sourcelist.get(i).getNode().getName());
+								menuNextForm.setIsShow(Global.SHOW);
+								menuNextForm.setHref("/cms/form/"+proProject.getProjectMark()+"/"+sourcelist.get(i).getFormId()+"?id="+ actYw.getId());
+								menuNextForm.setSort(10);
+								systemService.saveMenu(menuNextForm);
+							}
 						}
 					}
 				}

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.IdGen;
@@ -46,20 +47,20 @@ public class TeacherErrorService extends CrudService<TeacherErrorDao, TeacherErr
 	public TeacherError get(String id) {
 		return super.get(id);
 	}
-	
+
 	public List<TeacherError> findList(TeacherError teacherError) {
 		return super.findList(teacherError);
 	}
-	
+
 	public Page<TeacherError> findPage(Page<TeacherError> page, TeacherError teacherError) {
 		return super.findPage(page, teacherError);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void save(TeacherError teacherError) {
 		super.save(teacherError);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void delete(TeacherError teacherError) {
 		super.delete(teacherError);
@@ -81,10 +82,11 @@ public class TeacherErrorService extends CrudService<TeacherErrorDao, TeacherErr
 		User user = UserUtils.getUser();
 		nuser.setPassword(SystemService.entryptPassword("123456"));
 		List<Role> roleList=new ArrayList<Role>();
-		roleList.add(roleDao.get("13757518f4da45ecaa32a3b582e8396a"));
+		roleList.add(roleDao.get(SysIds.SYS_ROLE_USER.getId()));
 		nuser.setRoleList(roleList);
 		nuser.setId(IdGen.uuid());
 		nuser.setUserType("2");
+		nuser.setSource("1");
 		if (StringUtils.isNotBlank(user.getId())) {
 			nuser.setUpdateBy(user);
 			nuser.setCreateBy(user);

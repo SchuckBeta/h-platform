@@ -1,17 +1,12 @@
 package com.oseasy.initiate.modules.gcontest.web;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +18,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.annotation.JsonFormat.Value;
 import com.oseasy.initiate.common.config.Global;
 import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.common.utils.FtpUtil;
 import com.oseasy.initiate.common.utils.StringUtil;
+import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.ftp.service.FtpService;
 import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
 import com.oseasy.initiate.modules.gcontest.service.GContestAnnounceService;
-import com.oseasy.initiate.modules.gcontest.vo.GContestVo;
 
 /**
  * 大赛通告表Controller
@@ -135,7 +129,7 @@ public class GContestAnnounceController extends BaseController {
 				}
 				SysAttachment sysAttachment=new SysAttachment();
 				sysAttachment.setUid(gContestAnnounce.getId());
-				sysAttachment.setType("3");
+				sysAttachment.setType(FileTypeEnum.S3);
 				sysAttachment.setName(arrNames[i]);
 				sysAttachment.setUrl(arrUrl[i]);
 				sysAttachment.setSuffix(arrNames[i].substring(arrNames[i].lastIndexOf(".")+1));

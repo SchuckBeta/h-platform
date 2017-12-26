@@ -3,14 +3,14 @@ package com.oseasy.initiate.modules.course.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.common.collect.Lists;
-import com.oseasy.initiate.modules.course.entity.CourseAttachment;
+import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.course.entity.CourseCategory;
 import com.oseasy.initiate.modules.course.entity.CourseTeacher;
-import com.oseasy.initiate.modules.course.service.CourseAttachmentService;
 import com.oseasy.initiate.modules.course.service.CourseCategoryService;
 import com.oseasy.initiate.modules.course.service.CourseTeacherService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +45,7 @@ public class CourseController extends BaseController {
 	@Autowired
 	CourseTeacherService courseTeacherService;
 	@Autowired
-	CourseAttachmentService courseAttachmentService;
+	SysAttachmentService sysAttachmentService;
 
 
 
@@ -97,7 +97,12 @@ public class CourseController extends BaseController {
 			course.setCategoryList(categoryList);
 			List<CourseTeacher> teacherList =  courseTeacherService.getByCourseId(course.getId());  //查找授课老师
 			course.setTeacherList(teacherList);
-			List<CourseAttachment> attachmentList = courseAttachmentService.getByCourseId(course.getId()); //查找课件
+			//查找课件
+			SysAttachment sa=new SysAttachment();
+			sa.setUid(course.getId());
+			sa.setType(FileTypeEnum.S9);
+			sa.setFileStep(FileStepEnum.S900);
+			List<SysAttachment> attachmentList =  sysAttachmentService.getFiles(sa);
 			course.setAttachmentList(attachmentList);
 		}
 

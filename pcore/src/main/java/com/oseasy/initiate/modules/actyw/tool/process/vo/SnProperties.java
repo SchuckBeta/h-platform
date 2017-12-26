@@ -10,7 +10,7 @@
 package com.oseasy.initiate.modules.actyw.tool.process.vo;
 
 /**
- * 流程属性.
+ * 自定义流程.
  *
  * @author chenhao
  * @date 2017年6月2日 上午8:56:58

@@ -1,15 +1,18 @@
 /**
- * 
+ *
  */
 package com.oseasy.initiate.modules.sys.dao;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.oseasy.initiate.common.persistence.CrudDao;
 import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
 import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.entity.gContestUndergo;
-import org.apache.ibatis.annotations.Param;
+import com.oseasy.initiate.modules.sys.vo.UserVo;
+import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
 
 /**
  * 用户DAO接口
@@ -18,7 +21,12 @@ import org.apache.ibatis.annotations.Param;
  */
 @MyBatisDao
 public interface UserDao extends CrudDao<User> {
-	public User getByNo(User user);
+	public List<UserVo> findListByVo(UserVo vo);
+	public List<UserVo> getTeaInfo(@Param("idsArr")String[] idsArr);
+	public List<UserVo> getStudentInfo(@Param("idsArr")String[] idsArr);
+	public void updateLikes(@Param("param") Map<String,Integer> param);
+	//批量更新浏览量
+    public void updateViews(@Param("param") Map<String,Integer> param);
 	public User getByMobile(User user);
 	public User getByMobileWithId(User user);
 	public void updateMobile(User user);
@@ -26,7 +34,6 @@ public interface UserDao extends CrudDao<User> {
 	public  String getTeacherTypeByUserId(@Param("userId") String userId);
 	/**
 	 * 根据登录名称查询用户
-	 * @param loginName
 	 * @return
 	 */
 	public User getByLoginName(User user);
@@ -36,7 +43,8 @@ public interface UserDao extends CrudDao<User> {
 	 * @param loginNameOrNo 录名或者学号
 	 * @return User
      */
-	public User getByLoginNameOrNo(String  loginNameOrNo);
+	public User getByLoginNameOrNo(@Param("loginNameOrNo")String  loginNameOrNo,@Param("id")String  id);
+	public User getByLoginNameAndNo(@Param("loginName")String  loginName,@Param("no")String no);
 
 	/**
 	 * 通过OfficeId获取用户列表，仅返回用户id和name（树查询用户时用）
@@ -57,7 +65,7 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public long findAllCount(User user);
-	
+
 	/**
 	 * 更新用户密码
 	 * @param user
@@ -84,14 +92,14 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public int deleteUserRole(User user);
-	
+
 	/**
 	 * 插入用户角色关联数据
 	 * @param user
 	 * @return
 	 */
 	public int insertUserRole(User user);
-	
+
 	/**
 	 * 更新用户信息
 	 * @param user
@@ -99,28 +107,56 @@ public interface UserDao extends CrudDao<User> {
 	 */
 	public int updateUserInfo(User user);
 
-	public List<User> findListByRoleName(String ename);
+	public List<User> findListByRoleName(String enname);
 	public List<User> getCollegeSecs(String id);
 	public List<User> getCollegeExperts(String id);
 	public List<User> getSchoolSecs();
 	public List<User> getSchoolExperts();
 
 	public List<User> findByType(User user);
-	
+
 	public int insert(User user);
-	
+
 	public void updateUserByPhone(User user);
 
 	public User findUserByLoginName(String loginName);
-	
 
-	public List<gContestUndergo> findContestByUserId(String userId);//根据userid获取大赛经历
-	
+
+	public List<GContestUndergo> findContestByUserId(String userId);//根据userid获取大赛经历
+
 
 	public User getUserByName(String name);
-	
+
 	public List<User> findListTree(User user);
-	
+
+	/**
+	 * 查询学生.
+   * @param user 用户
+   * @return List
+	 */
+	public List<User> findListTreeByStudent(User user);
+
+  /**
+   * 查询导师.
+   * @param user 用户
+   * @return List
+   */
+	public List<User> findListTreeByTeacher(User user);
+
+  /**
+   * 查询用户（基本信息）.
+   * @param user 用户
+   * @return List
+   */
+	public List<User> findListTreeByUser(User user);
 	public List<User> getStuByCdn(@Param("no") String no,@Param("name") String name);
 	public List<User> getTeaByCdn(@Param("no") String no,@Param("name") String name);
+	public User getByNo(@Param("no")String no);
+	List<String> findListByRoleId(String roleId);
+
+	List<User> findListByRoleNameAndOffice(@Param("enname") String enname, @Param("userId") String userId);
+	/**
+	 * 查询所有需要修复的学生.
+	 */
+  public List<String> findUserByRepair();
 }

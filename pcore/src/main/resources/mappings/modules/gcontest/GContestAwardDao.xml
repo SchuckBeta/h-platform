@@ -31,7 +31,7 @@
 			<include refid="gContestAwardColumns"/>
 		FROM g_contest_award a
 		<include refid="gContestAwardJoins"/>
-		WHERE a.contest_id = #{id}
+		WHERE a.contest_id = #{id} and a.del_flag='0'
 	</select>
 	
 	<select id="findList" resultType="GContestAward">

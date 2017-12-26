@@ -25,7 +25,6 @@ import com.oseasy.initiate.modules.cms.entity.Category;
 import com.oseasy.initiate.modules.cms.entity.Site;
 import com.oseasy.initiate.modules.cms.utils.CmsUtils;
 import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
 import com.oseasy.initiate.modules.sys.utils.UserUtils;
 
 /**
@@ -42,14 +41,12 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 	private Category entity = new Category();
 
 	@SuppressWarnings("unchecked")
-	public List<Category> findByUser(boolean isCurrentSite, String module) {
+	public List<Category> find(boolean isCurrentSite, String module) {
 
 		List<Category> list = (List<Category>)UserUtils.getCache(CACHE_CATEGORY_LIST);
 		if (list == null) {
-			User user = UserUtils.getUser();
 			Category category = new Category();
 			category.setOffice(new Office());
-			category.getSqlMap().put("dsf", dataScopeFilter(user, "o", "u"));
 			category.setSite(new Site());
 			category.setParent(new Category());
 			list = dao.findList(category);
@@ -204,12 +201,11 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 		category.setParent(root);
 		category.setSite(site);
 		category.setOffice(office);
-		category.setInMenu("1");
-		category.setInList("1");
+		category.setInMenu(Global.SHOW);
+		category.setInList(Global.SHOW);
 		category.setShowModes("0");
-		category.setAllowComment("0");
-		category.setIsAudit("0");
-		category.setIsAudit("0");
+		category.setAllowComment(Global.NO);
+		category.setIsAudit(Global.NO);
 		category.setName(site.getName()+"根栏目");
 		category.setRemarks("系统自动创建["+site.getName()+"根栏目],禁止删除");
 		super.save(category);

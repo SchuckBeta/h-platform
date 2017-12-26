@@ -20,9 +20,9 @@ import com.oseasy.initiate.modules.sys.entity.SysNo;
 import com.oseasy.initiate.modules.sys.service.SysNoService;
 
 /**
- * 系统编号Controller
- * @author chenh
- * @version 2017-05-05
+ * 系统全局编号Controller.
+ * @author chenhao
+ * @version 2017-07-17
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/sysNo")
@@ -30,23 +30,23 @@ public class SysNoController extends BaseController {
 
 	@Autowired
 	private SysNoService sysNoService;
-	
+
 	@ModelAttribute
 	public SysNo get(@RequestParam(required=false) String id) {
 		SysNo entity = null;
-		if (StringUtil.isNotBlank(id)) {
+		if (StringUtil.isNotBlank(id)){
 			entity = sysNoService.get(id);
 		}
-		if (entity == null) {
+		if (entity == null){
 			entity = new SysNo();
 		}
 		return entity;
 	}
-	
+
 	@RequiresPermissions("sys:sysNo:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(SysNo sysNo, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<SysNo> page = sysNoService.findPage(new Page<SysNo>(request, response), sysNo); 
+		Page<SysNo> page = sysNoService.findPage(new Page<SysNo>(request, response), sysNo);
 		model.addAttribute("page", page);
 		return "modules/sys/sysNoList";
 	}
@@ -61,19 +61,19 @@ public class SysNoController extends BaseController {
 	@RequiresPermissions("sys:sysNo:edit")
 	@RequestMapping(value = "save")
 	public String save(SysNo sysNo, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, sysNo)) {
+		if (!beanValidator(model, sysNo)){
 			return form(sysNo, model);
 		}
 		sysNoService.save(sysNo);
-		addMessage(redirectAttributes, "保存系统编号成功");
+		addMessage(redirectAttributes, "保存系统全局编号成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/sysNo/?repage";
 	}
-	
+
 	@RequiresPermissions("sys:sysNo:edit")
 	@RequestMapping(value = "delete")
 	public String delete(SysNo sysNo, RedirectAttributes redirectAttributes) {
 		sysNoService.delete(sysNo);
-		addMessage(redirectAttributes, "删除系统编号成功");
+		addMessage(redirectAttributes, "删除系统全局编号成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/sysNo/?repage";
 	}
 

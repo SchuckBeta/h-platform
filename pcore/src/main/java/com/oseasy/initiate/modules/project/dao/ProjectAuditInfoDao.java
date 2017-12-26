@@ -21,4 +21,6 @@ public interface ProjectAuditInfoDao extends CrudDao<ProjectAuditInfo> {
     //根据 projectId 和 auditStep获取评分、审核意见
     // auditStep(1立项评审 2中期检查评分 3中期检查评级 4结项审核 5结项评级)
     public List<ProjectAuditInfo> getInfo(ProjectAuditInfo projectAuditInfo);
+
+    public ProjectAuditInfo findInfoByUserId(ProjectAuditInfo projectAuditInfo);
 }

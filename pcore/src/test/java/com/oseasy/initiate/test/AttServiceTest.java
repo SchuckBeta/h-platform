@@ -1,6 +1,7 @@
 package com.oseasy.initiate.test;
 
 import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
 import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
 import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
 import com.oseasy.initiate.modules.project.vo.ProjectDeclareVo;
@@ -31,7 +32,7 @@ public class AttServiceTest {
     public void saveTest() {
 		SysAttachment sysAttachment=new SysAttachment();
 		sysAttachment.setUid("111111");
-		sysAttachment.setType("2");
+		sysAttachment.setType(FileTypeEnum.S2);
 		sysAttachment.setName("jiaose.txt");
 		sysAttachment.setUrl("/tool/oseasy/temp/gcontest/2017-03-24/jiaose.txt");
 		sysAttachmentService.save(sysAttachment);

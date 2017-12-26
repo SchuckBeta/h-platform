@@ -44,7 +44,7 @@ public class ProjectAnnounce extends DataEntity<ProjectAnnounce> {
 		super(id);
 	}
 
-	@Length(min=0, max=1, message="项目类型 1双创 2创业长度必须介于 0 和 1 之间")
+	@Length(min=0, max=64, message="项目类型 1双创 2创业长度必须介于 0 和 1 之间")
 	public String getProType() {
 		return proType;
 	}

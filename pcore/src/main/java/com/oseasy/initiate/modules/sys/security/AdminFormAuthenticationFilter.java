@@ -121,11 +121,11 @@ public class AdminFormAuthenticationFilter extends org.apache.shiro.web.filter.a
 	protected boolean onLoginFailure(AuthenticationToken token,
 			AuthenticationException e, ServletRequest request, ServletResponse response) {
 		String className = e.getClass().getName(), message = "";
-		if (IncorrectCredentialsException.class.getName().equals(className)
-				|| UnknownAccountException.class.getName().equals(className)) {
-			message = "用户或密码错误, 请重试.";
-		}
-		else if (e.getMessage() != null && StringUtil.startsWith(e.getMessage(), "msg:")) {
+		if (IncorrectCredentialsException.class.getName().equals(className)) {
+			message = "密码错误, 请重试.";
+		}else if (UnknownAccountException.class.getName().equals(className)) {
+			message = "该账号不存在";
+		}else if (e.getMessage() != null && StringUtil.startsWith(e.getMessage(), "msg:")) {
 			message = StringUtil.replace(e.getMessage(), "msg:", "");
 		}
 		else{

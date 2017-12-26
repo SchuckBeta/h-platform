@@ -1,5 +1,9 @@
 package com.oseasy.initiate.modules.project.entity;
 
+import com.google.common.collect.Lists;
+import com.oseasy.initiate.common.persistence.AttachMentEntity;
+import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +30,21 @@ public class ProjectClose extends DataEntity<ProjectClose> {
 	private List<ProProgress> proProgresseList;    // 子表 计划工作任务
 	private List<ProjectCloseFund> projectCloseFundList; // 经费使用情况
 	private List<ProjectCloseResult> projectCloseResultList;  //成果描述
-	
+
+	private List<TeamUserRelation>  teamUserRelationList = Lists.newArrayList(); //团队信息
+
+	private List<TeamUserHistory>  teamUserHistoryList = Lists.newArrayList();
+
+	private AttachMentEntity attachMentEntity;
+
+	public List<TeamUserHistory> getTeamUserHistoryList() {
+		return teamUserHistoryList;
+	}
+
+	public void setTeamUserHistoryList(List<TeamUserHistory> teamUserHistoryList) {
+		this.teamUserHistoryList = teamUserHistoryList;
+	}
+
 	public ProjectClose() {
 		super();
 	}
@@ -98,5 +116,21 @@ public class ProjectClose extends DataEntity<ProjectClose> {
 
 	public void setProjectCloseResultList(List<ProjectCloseResult> projectCloseResultList) {
 		this.projectCloseResultList = projectCloseResultList;
+	}
+
+	public List<TeamUserRelation> getTeamUserRelationList() {
+		return teamUserRelationList;
+	}
+
+	public void setTeamUserRelationList(List<TeamUserRelation> teamUserRelationList) {
+		this.teamUserRelationList = teamUserRelationList;
+	}
+
+	public AttachMentEntity getAttachMentEntity() {
+		return attachMentEntity;
+	}
+
+	public void setAttachMentEntity(AttachMentEntity attachMentEntity) {
+		this.attachMentEntity = attachMentEntity;
 	}
 }

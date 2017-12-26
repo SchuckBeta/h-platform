@@ -18,6 +18,7 @@ import com.oseasy.initiate.modules.actyw.tool.process.ActYwTool;
 import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwCommand;
 import com.oseasy.initiate.modules.actyw.tool.process.cmd.vo.ActYwRchildShapes;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.RtChildShapes;
+import com.oseasy.initiate.modules.actyw.tool.process.vo.RtPropertiesX;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.StenType;
 
 /***
@@ -36,29 +37,29 @@ public class ActYwCrootSub implements ActYwCommand<ActYwResult>{
 
     List<RtChildShapes> rtcShapess = Lists.newArrayList();
 
-    rtcShapess.add(ActYwTool.initRtChildShapesByName(tpl, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", StenType.ST_START_EVENT_NONE,
-            0,
-            new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-                "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
-            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-            Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
-
-    rtcShapess.add(ActYwTool.initRtChildShapesByName(tpl, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", StenType.ST_FLOW_SEQUENCE,
-        0,
-        new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-    "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
-        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-        Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
-
-    rtcShapess.add(ActYwTool.initRtChildShapesByName(tpl, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", StenType.ST_START_EVENT_NONE,
-        0,
-        new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-    "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
-        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
-        Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
+//    rtcShapess.add(ActYwTool.initRtChildShapesByName(tpl, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", null, new RtPropertiesX(), StenType.ST_START_EVENT_NONE,
+//            0,
+//            new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//                "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
+//            "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//            Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
+//
+//    rtcShapess.add(ActYwTool.initRtChildShapesByName(tpl, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", null, new RtPropertiesX(), StenType.ST_FLOW_SEQUENCE,
+//        0,
+//        new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//    "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
+//        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//        Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
+//
+//    rtcShapess.add(ActYwTool.initRtChildShapesByName(tpl, new RtChildShapes(), "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B", "学生（项目负责人）", null, new RtPropertiesX(), StenType.ST_START_EVENT_NONE,
+//        0,
+//        new String[] { "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//    "sid-E76260EF-151A-49A4-B235-825E54BAFF5B" },
+//        "sid-E76260EF-151A-49A4-B235-825E54BAFF5B",
+//        Lists.newArrayList(Arrays.asList(new Double[][] { { 1.0, 1.0 }, { 2.0, 2.0 } }))));
 
     return new ActYwRchildShapes(rtcShapess);
   }

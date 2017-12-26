@@ -80,8 +80,9 @@ public class RtChildShapes {
     return target;
   }
 
-  public void setTarget(RtTarget target) {
+  public RtChildShapes setTarget(RtTarget target) {
     this.target = target;
+    return this;
   }
 
   public List<RtChildShapes> getChildShapes() {

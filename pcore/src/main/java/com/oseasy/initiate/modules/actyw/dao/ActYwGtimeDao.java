@@ -12,4 +12,7 @@ import com.oseasy.initiate.modules.actyw.entity.ActYwGtime;
 @MyBatisDao
 public interface ActYwGtimeDao extends CrudDao<ActYwGtime> {
 
+	void deleteByGroupId(ActYwGtime actYwGtime);
+
+	ActYwGtime getTimeByGnodeId(ActYwGtime actYwGtime);
 }

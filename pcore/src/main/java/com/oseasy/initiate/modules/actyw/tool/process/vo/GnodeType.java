@@ -64,12 +64,19 @@ public enum GnodeType {
     String type = node.getType();
     if (StringUtil.isNotEmpty(nodekey)) {
       StenType stenType = StenType.getByKey(nodekey);
-      if (stenType == null) {
-        type = RtSvl.RtTypeVal.RT_T1;
-      }else if (!(stenType.getSubtype().equals(StenEsubType.SES_TASK) || stenType.getSubtype().equals(StenEsubType.SES_JG))) {
-        type = RtSvl.RtTypeVal.RT_T0;
-      }else{
-        return null;
+//      if (stenType == null) {
+//        type = RtSvl.RtTypeVal.RT_T1;
+//      }else if (!(stenType.getSubtype().equals(StenEsubType.SES_TASK) || stenType.getSubtype().equals(StenEsubType.SES_JG) || stenType.getSubtype().equals(StenEsubType.SES_GATEWAY))) {
+//        type = RtSvl.RtTypeVal.RT_T0;
+//      }else{
+//        return null;
+//      }
+      if (stenType != null) {
+        if ((!((stenType.getSubtype()).equals(StenEsubType.SES_TASK)) || (stenType.getSubtype()).equals(StenEsubType.SES_JG) || (stenType.getSubtype()).equals(StenEsubType.SES_GATEWAY))) {
+          type = RtSvl.RtTypeVal.RT_T0;
+        }else{
+          return null;
+        }
       }
     }
     return getByLevelTypeNodekey(node.getLevel(), ntlevel, type, nodekey);
@@ -98,6 +105,10 @@ public enum GnodeType {
       }else if ((nodeType.getStype().getSubtype()).equals(StenEsubType.SES_FLOW)) {
         if ((nodeType.getStype()).equals(StenType.ST_FLOW_SEQUENCE)) {
           return GnodeType.GT_ROOT_FLOW;
+        }
+      }else if ((nodeType.getStype().getSubtype()).equals(StenEsubType.SES_GATEWAY)) {
+        if ((nodeType.getStype()).equals(StenType.ST_GATEWAY_EXCLUSIVE)) {
+          return GnodeType.GT_PROCESS_GATEWAY;
         }
       }
     }else if ((level).equals(RtSvl.RtLevelVal.RT_LV2)) {
