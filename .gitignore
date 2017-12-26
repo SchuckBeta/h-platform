@@ -71,15 +71,93 @@ target
 /temp
 
 
-# wf-mplatformxx-proxy #
-# /wf-mplatformxx-proxy/.settings
-# /wf-mplatformxx-proxy/*.project
-# /wf-mplatformxx-proxy/*.classpath
-# /wf-mplatformxx-proxy/logs
-# /wf-mplatformxx-proxy/temp
-# /wf-mplatformxx-proxy/bin
+# ptool #
+/ptool/.settings
+/ptool/*.project
+/ptool/*.classpath
+/ptool/logs
+/ptool/temp
+/ptool/bin
+
+
+# pdb #
+/pdb/.settings
+/pdb/*.project
+/pdb/*.classpath
+/pdb/logs
+/pdb/temp
+/pdb/bin
+
+
+# pcore #
+/pcore/.settings
+/pcore/*.project
+/pcore/*.classpath
+/pcore/logs
+/pcore/temp
+/pcore/bin
+
+# pcms #
+/pcms/.settings
+/pcms/*.project
+/pcms/*.classpath
+/pcms/logs
+/pcms/temp
+/pcms/bin
+
+# pactivit #
+/pactivit/.settings
+/pactivit/*.project
+/pactivit/*.classpath
+/pactivit/logs
+/pactivit/temp
+/pactivit/bin
+
+# pfastdfs #
+/pfastdfs/.settings
+/pfastdfs/*.project
+/pfastdfs/*.classpath
+/pfastdfs/logs
+/pfastdfs/temp
+/pfastdfs/bin
+
+
+# pftp #
+/pftp/.settings
+/pftp/*.project
+/pftp/*.classpath
+/pftp/logs
+/pftp/temp
+/pftp/bin
+
+
+# pjob #
+/pjob/.settings
+/pjob/*.project
+/pjob/*.classpath
+/pjob/logs
+/pjob/temp
+/pjob/bin
+
+
+# psys #
+/psys/.settings
+/psys/*.project
+/psys/*.classpath
+/psys/logs
+/psys/temp
+/psys/bin
+
+
+# ptask #
+/ptask/.settings
+/ptask/*.project
+/ptask/*.classpath
+/ptask/logs
+/ptask/temp
+/ptask/bin
 
 
 
 
-/.settings
+
