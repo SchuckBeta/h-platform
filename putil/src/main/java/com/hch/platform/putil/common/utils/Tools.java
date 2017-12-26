@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +13,7 @@ public class Tools {
 	public static boolean notEmpty(String s) {
 		return s!=null && !"".equals(s) && !"null".equals(s);
 	}
-	
+
 	/**
 	 * 检测字符串是否为空(null,"","null")
 	 * @param s
@@ -22,7 +22,7 @@ public class Tools {
 	public static boolean isEmpty(String s) {
 		return s==null || "".equals(s) || "null".equals(s);
 	}
-	
+
 	/**
 	 * 字符串转换为字符串数组
 	 * @param str 字符串
@@ -35,7 +35,7 @@ public class Tools {
 		}
 		return str.split(splitRegex);
 	}
-	
+
 	/**
 	 * 用默认的分隔符(,)将字符串转换为字符串数组
 	 * @param str	字符串
@@ -44,7 +44,7 @@ public class Tools {
 	public static String[] str2StrArray(String str) {
 		return str2StrArray(str,",\\s*");
 	}
-	
+
 	/**
 	 * 按照yyyy-MM-dd HH:mm:ss的格式，日期转字符串
 	 * @param date
@@ -53,7 +53,7 @@ public class Tools {
 	public static String date2Str(Date date) {
 		return date2Str(date,"yyyy-MM-dd HH:mm:ss");
 	}
-	
+
 	/**
 	 * 按照yyyy-MM-dd HH:mm:ss的格式，字符串转日期
 	 * @param date
@@ -73,7 +73,7 @@ public class Tools {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 按照参数format的格式，日期转字符串
 	 * @param date
@@ -88,7 +88,7 @@ public class Tools {
 			return "";
 		}
 	}
-	
+
 	/**
 	 * 检测对象
 	 * @param s

@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.hch.platform.putil.common.ftp.vo.FileVo;
 import com.hch.platform.putil.common.utils.file.BrowserType;
+import com.hch.platform.putil.common.utils.ftp.vo.FileVo;
 
 /**
  * 文件操作工具类.

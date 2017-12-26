@@ -1,13 +1,13 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.common.utils.json
+ * @Package com.hch.platform.putil.common.utils.json
  * @Description [[_JsonNUtils_]]文件
  * @date 2017年6月2日 上午10:21:05
  *
  */
 
-package com.oseasy.initiate.common.utils.json;
+package com.hch.platform.putil.common.utils.json;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -179,7 +179,7 @@ public class JsonNetUtils {
    * @param objectClass 实体
    * @return T
    */
-  @SuppressWarnings({ "unchecked" })
+  @SuppressWarnings({ "unchecked", "deprecation" })
   public static <T> List<T> toList(JSONArray jsonArray, Class<T> objectClass) {
     return JSONArray.toList(jsonArray, objectClass);
   }
@@ -191,7 +191,7 @@ public class JsonNetUtils {
    * @param objectClass 实体
    * @return Y
    */
-  @SuppressWarnings({ "unchecked" })
+  @SuppressWarnings({ "unchecked", "deprecation" })
   public static <T> List<T> toList(Object object, Class<T> objectClass) {
     JSONArray jsonArray = JSONArray.fromObject(object);
     return JSONArray.toList(jsonArray, objectClass);

@@ -2,8 +2,6 @@ package com.hch.platform.putil.common.utils.base;
 
 import java.io.Serializable;
 
-import com.hch.platform.putil.common.utils.Ftp;
-
 
 /**
  * This is an object that contains data related to the jo_ftp table.
@@ -15,6 +13,7 @@ import com.hch.platform.putil.common.utils.Ftp;
  */
 
 public abstract class BaseFtp  implements Serializable {
+	private static final long serialVersionUID = -6291271106725369155L;
 
 	public static String REF = "Ftp";
 	public static String PROP_TIMEOUT = "timeout";

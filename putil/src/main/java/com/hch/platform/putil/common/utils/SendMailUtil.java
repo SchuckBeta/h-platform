@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -88,7 +88,7 @@ public class SendMailUtil {
 
 	/**
 	 * 发送模板邮件
-	 * 
+	 *
 	 * @param toMailAddr
 	 *            收信人地址
 	 * @param subject
@@ -132,7 +132,7 @@ public class SendMailUtil {
 
 	/**
 	 * 发送普通邮件
-	 * 
+	 *
 	 * @param toMailAddr
 	 *            收信人地址
 	 * @param subject
@@ -244,11 +244,11 @@ public class SendMailUtil {
 		// 如果类文件被打包到JAR等文件中时，去掉对应的JAR等打包文件名
 		if (realPath.endsWith("!"))
 			realPath = realPath.substring(0, realPath.lastIndexOf("/"));
-		/*------------------------------------------------------------ 
-		 ClassLoader的getResource方法使用了utf-8对路径信息进行了编码，当路径 
-		  中存在中文和空格时，他会对这些字符进行转换，这样，得到的往往不是我们想要 
-		  的真实路径，在此，调用了URLDecoder的decode方法进行解码，以便得到原始的 
-		  中文及空格路径 
+		/*------------------------------------------------------------
+		 ClassLoader的getResource方法使用了utf-8对路径信息进行了编码，当路径
+		  中存在中文和空格时，他会对这些字符进行转换，这样，得到的往往不是我们想要
+		  的真实路径，在此，调用了URLDecoder的decode方法进行解码，以便得到原始的
+		  中文及空格路径
 		-------------------------------------------------------------*/
 		try {
 			realPath = java.net.URLDecoder.decode(realPath, "utf-8");

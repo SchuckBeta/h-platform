@@ -1,9 +1,9 @@
 /**
  * Copyright (c) 2005-2011 springside.org.cn
- * 
+ *
  * $Id: PropertiesLoader.java 1690 2012-02-22 13:42:00Z calvinxiu $
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

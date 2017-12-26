@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.Serializable;
 import java.security.SecureRandom;

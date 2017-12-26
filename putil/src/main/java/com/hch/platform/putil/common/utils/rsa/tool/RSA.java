@@ -1,11 +1,6 @@
-package com.oseasy.initiate.common.utils.rsa.tool;
+package com.hch.platform.putil.common.utils.rsa.tool;
 
 
-import com.oseasy.initiate.common.utils.Tools;
-import com.oseasy.initiate.common.utils.rsa.Base64;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -15,6 +10,12 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import com.hch.platform.putil.common.utils.Tools;
+import com.hch.platform.putil.common.utils.rsa.Base64;
+
 
 public class RSA {
 
@@ -22,13 +23,14 @@ public class RSA {
 
 	public static String SIGN_ALGORITHMS = "SHA1WithRSA";// 摘要加密算饭
 
+	@SuppressWarnings("unused")
 	private static String log = "RSAUtil";
 
 	public static String CHAR_SET = "UTF-8";
 
 	/**
 	 * 数据签名
-	 * 
+	 *
 	 * @param content
 	 *            签名内容
 	 * @param privateKey
@@ -60,7 +62,7 @@ public class RSA {
 
 	/**
 	 * 签名验证
-	 * 
+	 *
 	 * @param content
 	 * @param sign
 	 * @param lakala_public_key
@@ -90,7 +92,7 @@ public class RSA {
 
 	/**
 	 * 通过公钥解密
-	 * 
+	 *
 	 * content待解密数据
 	 *  pk公钥
 	 * @return 返回 解密后的数据
@@ -132,7 +134,7 @@ public class RSA {
 
 	/**
 	 * 通过私钥加密
-	 * 
+	 *
 	 * @param content
 	 * @param pk
 	 * @return,加密数据，未进行base64进行加密
@@ -167,7 +169,7 @@ public class RSA {
             return null;
         }
     }
-	
+
     public static String byte2hex(byte[] b) {
         String hs = "";
         String stmp = "";
@@ -185,13 +187,13 @@ public class RSA {
 	public static void main(String[] args) {
 		String str = Base64.encode("test".getBytes());
 		System.out.println("Base64加密-->" + str);
-		 
+
 		String aaa = sign(str,"PRIVATE_KEY");
-		
+
 //		String aaa = sign(str,
 //				"MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKWmOMF5zQBqc8xA41zq9BKHI8GUdZdJR8qP57mv8y2N7T/TD1YeNEx3UH7cSWpsZpdzV5BWKAhH7sTOWfhIU+EhrXrWbQWAndWcT2+ZDYlI0ctJ5Bo1gM0MEU01+g3mhOf70I9DJrYGvoVYV815m+F46bjq8qVEL06zZZLEKCTPAgMBAAECgYEAjZl3rrvFp/NXpWRadtVJaoUm5ZVYp8g2nEtDVJG5mFlYU1TCKWWMY0kjAC6ie1zKnfA1C+b6NYn36zhR5FE/kTSwUYT1P6INT4rD7JUEiwE8hi4MTvWIDCyqeUmb2H+abHpBo9VZymmh5wmwRTi1PgPQGTDq5uP519lgD00DzEECQQDZzHPSvgy0GztmD6Uip1mHDI9j7syIEVCEPtuIsNzH63GQdR5jLH7hZn0WRXEgrZa+f3gKZnFIew+lj6Ip1lPRAkEAwrQrwe6dcioJHdc0PsW/In5TOBTY+ppVKhrkJ6x9UOzZT/BYuXUFVJL8kiKGIK0wihOzMhHK57HjoN5fT5w2nwJBAJ5D4npmXgbWrxAYGFCZOQZYyy28DmZl5pNitdabZqPj5A8r/Bvm7oBOIGF5rp4nZh4htJIiJPmdax5MxHMQarECQH8yMPvqpJT2fSovcwQnL2ybVkZm6DEfLc/p7W81slBxyq38eBoAJtFPjQzy3Ojv+6vYntJw6Ttf7TMk0uMxTEUCQDw1ZXU5jiKoktSYjHjFL2EfqtfT9F8xTHVyaruKL+R67Z0OvxMNlM0j77ADUS/BAFlwF2bCsSkMT3PLvcNtpPk=");
 		System.out.println("加签-->" + aaa);
-		
+
 		System.out.println("验签-->"+ verify(str,aaa,"QL_PUBLIC_KEY"));
 //		System.out.println("验签-->"
 //						+ verify(str,aaa,

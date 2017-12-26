@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.ueditor;
+package com.hch.platform.putil.common.utils.ueditor;
 
 import java.util.HashSet;
 import java.util.Set;

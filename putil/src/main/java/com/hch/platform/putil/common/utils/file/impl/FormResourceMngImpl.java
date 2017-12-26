@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -116,7 +115,8 @@ public class FormResourceMngImpl implements ResourceMng {
     });
   }
 
-  public void unZipFile(File file) throws IOException {
+  @SuppressWarnings("unchecked")
+public void unZipFile(File file) throws IOException {
     // 用默认编码或UTF-8编码解压会乱码！windows7的原因吗？
     // 解压之前要坚持是否冲突
     ZipFile zip = new ZipFile(file, "GBK");
@@ -166,7 +166,8 @@ public class FormResourceMngImpl implements ResourceMng {
     zip.close();
   }
 
-  private String getPlugPerms(File file) throws IOException {
+  @SuppressWarnings({ "unused", "unchecked" })
+private String getPlugPerms(File file) throws IOException {
     ZipFile zip = new ZipFile(file, "GBK");
     ZipEntry entry;
     String name, filename;
@@ -192,7 +193,8 @@ public class FormResourceMngImpl implements ResourceMng {
     return plugPerms;
   }
 
-  public void deleteZipFile(File file) throws IOException {
+  @SuppressWarnings("unchecked")
+public void deleteZipFile(File file) throws IOException {
     // 根据压缩包删除解压后的文件
     // 用默认编码或UTF-8编码解压会乱码！windows7的原因吗
     ZipFile zip = new ZipFile(file, "GBK");
@@ -229,7 +231,8 @@ public class FormResourceMngImpl implements ResourceMng {
     zip.close();
   }
 
-  public String readFileFromZip(File file, String readFileName) throws IOException {
+  @SuppressWarnings("unchecked")
+public String readFileFromZip(File file, String readFileName) throws IOException {
     // 用默认编码或UTF-8编码解压会乱码！windows7的原因吗？
     // 解压之前要坚持是否冲突
     ZipFile zip = new ZipFile(file, "GBK");

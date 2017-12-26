@@ -1,9 +1,8 @@
 package com.hch.platform.putil.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by zhangzheng on 2017/7/18.

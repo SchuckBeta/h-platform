@@ -1,7 +1,5 @@
-package com.oseasy.initiate.common.utils.rsa;
-import java.io.UnsupportedEncodingException;
+package com.hch.platform.putil.common.utils.rsa;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 /**
  * Created by victor on 2017/3/22.
  */

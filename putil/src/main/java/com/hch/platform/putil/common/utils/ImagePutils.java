@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.hch.platform</groupId>
-    <artifactId>h-platform</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.hch.platform</groupId>
-  <artifactId>putil</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>putil</name>
-  <url>http://maven.apache.org</url>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.hch.platform</groupId>
+		<artifactId>h-platform</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>putil</artifactId>
+	<name>putil</name>
+	<url>http://maven.apache.org</url>
 	<inceptionYear>2017</inceptionYear>
 
 	<!-- 项目属性 -->
 	<properties>
-		<artifactId.finalName>pcore</artifactId.finalName>
+		<platform.version>0.0.1-SNAPSHOT</platform.version>
+		<artifactId.finalName>putil</artifactId.finalName>
 		<!-- main version setting -->
-		<!--<spring.version>4.1.9.RELEASE</spring.version>-->
+		<!--<spring.version>4.1.9.RELEASE</spring.version> -->
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<validator.version>5.2.4.Final</validator.version>
 		<mybatis.version>3.2.8</mybatis.version>
@@ -64,11 +64,8 @@
 
 	<!-- 设定主仓库，按设定顺序进行查找。 -->
 	<repositories>
-		<!--<repository>
-			<id>Oseasy-repos</id>
-			<name>Oseasy Repository</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
-		</repository>-->
+		<!--<repository> <id>Oseasy-repos</id> <name>Oseasy Repository</name> <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+			</repository> -->
 
 		<repository>
 			<id>nexus</id>
@@ -80,11 +77,8 @@
 	<!-- 设定插件仓库 -->
 	<pluginRepositories>
 
-		<!--<pluginRepository>
-			<id>oseasy-repos</id>
-			<name>Oseasy Repository</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
-		</pluginRepository>-->
+		<!--<pluginRepository> <id>oseasy-repos</id> <name>Oseasy Repository</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url> </pluginRepository> -->
 
 	</pluginRepositories>
 
@@ -92,9 +86,9 @@
 		<dependencies>
 			<!-- platform -->
 			<dependency>
-			    <groupId>com.hch.platform</groupId>
-			    <artifactId>h-platform</artifactId>
-			    <version>0.0.1-SNAPSHOT</version>
+				<groupId>com.hch.platform</groupId>
+				<artifactId>h-platform</artifactId>
+				<version>${platform.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -103,8 +97,8 @@
 	<dependencies>
 		<!-- platform -->
 		<dependency>
-		    <groupId>com.hch.platform</groupId>
-		    <artifactId>h-platform</artifactId>
+			<groupId>com.hch.platform</groupId>
+			<artifactId>h-platform</artifactId>
 		</dependency>
 
 		<!-- SPRING begin -->
@@ -205,9 +199,9 @@
 
 		<!-- connection pool -->
 		<dependency>
-		     <groupId>com.alibaba</groupId>
-		     <artifactId>druid</artifactId>
-		     <version>${druid.version}</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
 		</dependency>
 
 		<!-- jdbc driver -->
@@ -274,18 +268,10 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version> <scope>provided</scope> </dependency> <dependency>
+			<groupId>javax.servlet.jsp</groupId> <artifactId>jsp-api</artifactId> <version>2.2</version>
+			<scope>provided</scope> </dependency> -->
 		<!-- WEB end -->
 
 		<!-- CACHE begin -->
@@ -300,12 +286,12 @@
 			<version>${ehcache-web.version}</version>
 		</dependency>
 
-	<!--1.7.2 开始支持Redis 集群-->
-		<!--redis相关-->
-			    <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+		<!--1.7.2 开始支持Redis 集群 -->
+		<!--redis相关 -->
+		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
 		<dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-redis</artifactId>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
 			<version>1.7.5.RELEASE</version>
 		</dependency>
 		<dependency>
@@ -315,16 +301,13 @@
 		</dependency>
 
 		<dependency>
-		  <groupId>redis.clients</groupId>
-		  <artifactId>jedis</artifactId>
-		  <version>2.9.0</version>
-		</dependency>
-
-		<!-- <dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			 <version>2.5.1</version>
-		</dependency> -->
+			<version>2.9.0</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>redis.clients</groupId> <artifactId>jedis</artifactId>
+			<version>2.5.1</version> </dependency> -->
 
 		<!-- CACHE end -->
 
@@ -395,7 +378,7 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-modeler</artifactId>
-            <version>${activiti.version}</version>
+			<version>${activiti.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
@@ -404,11 +387,8 @@
 		</dependency>
 
 		<!-- 支持activiti缓存 -->
-		<!-- <dependency>
-			<groupId>org.infinispan</groupId>
-			<artifactId>infinispan-core</artifactId>
-			<version>5.1.7.Final</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.infinispan</groupId> <artifactId>infinispan-core</artifactId>
+			<version>5.1.7.Final</version> </dependency> -->
 
 		<!-- LOGGING begin -->
 		<dependency>
@@ -452,9 +432,9 @@
 			<version>${commons-codec.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-fileupload</groupId>
-		    <artifactId>commons-fileupload</artifactId>
-		    <version>${commons-fileupload.version}</version>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -506,10 +486,10 @@
 
 		<!-- json-lib -->
 		<dependency>
-		    <groupId>net.sf.json-lib</groupId>
-		    <artifactId>json-lib</artifactId>
-		    <version>${jsonlib.version}</version>
-		    <classifier>jdk15</classifier>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>${jsonlib.version}</version>
+			<classifier>jdk15</classifier>
 		</dependency>
 
 		<dependency>
@@ -519,9 +499,9 @@
 		</dependency>
 
 		<dependency>
-   			<groupId>org.json</groupId>
-  			 <artifactId>json</artifactId>
- 	   	  <version>${orgjson.version}</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${orgjson.version}</version>
 		</dependency>
 
 		<!-- xstream xml -->
@@ -581,7 +561,7 @@
 			<version>2.6.2</version>
 		</dependency>
 
-		<!-- 条形码、二维码生成  -->
+		<!-- 条形码、二维码生成 -->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
@@ -632,7 +612,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<!--<version>4.2.5.RELEASE</version>-->
+			<!--<version>4.2.5.RELEASE</version> -->
 			<version>${spring.version}</version>
 		</dependency>
 		<!-- TEST end -->
@@ -643,88 +623,72 @@
 			<artifactId>UserAgentUtils</artifactId>
 		</dependency>
 
-		<!--ftpjar包-->
+		<!--ftpjar包 -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-ftp</artifactId>
 			<version>2.13.2</version>
 		</dependency>
 
-		<!--httpclient 依赖包-->
+		<!--httpclient 依赖包 -->
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.2.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpcore</artifactId>
-		    <version>4.2.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.2.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpmime</artifactId>
-		    <version>4.2.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.2.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient-cache</artifactId>
-		    <version>4.2.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-cache</artifactId>
+			<version>4.2.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>commons-httpclient</groupId>
-		    <artifactId>commons-httpclient</artifactId>
-		    <version>3.1</version>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>net.sf.json-lib</groupId>
-		    <artifactId>json-lib</artifactId>
-		    <version>2.4</version>
-		    <classifier>jdk15</classifier>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
 		</dependency>
 		<dependency>
-		    <groupId>net.sf.ehcache</groupId>
-		    <artifactId>ehcache-jgroupsreplication</artifactId>
-		    <version>1.7</version>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-jgroupsreplication</artifactId>
+			<version>1.7</version>
 		</dependency>
 		<dependency>
-		  <groupId>taobao</groupId>
-		  <artifactId>sdk</artifactId>
-		  <version>20160607</version>
-		</dependency>
-
-		<dependency>
-		  <groupId>taobao</groupId>
-		  <artifactId>sdk</artifactId>
-		  <version>20160607-source</version>
-		  <classifier>source</classifier>
+			<groupId>taobao</groupId>
+			<artifactId>sdk</artifactId>
+			<version>20160607</version>
 		</dependency>
 
-		<!-- 自定义jar依赖包
 		<dependency>
-			<groupId>com.thinkgem.jeesite</groupId>
-			<artifactId>test-core</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/test-core-1.0.jar</systemPath>
-		</dependency> -->
+			<groupId>taobao</groupId>
+			<artifactId>sdk</artifactId>
+			<version>20160607-source</version>
+			<classifier>source</classifier>
+		</dependency>
 
-		<!-- 使用 Jetty JSP引擎
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jsp</artifactId>
-			<version>${jetty.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.jetty.orbit</groupId>
-					<artifactId>javax.servlet</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.jetty.orbit</groupId>
-					<artifactId>org.apache.taglibs.standard.glassfish</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
+		<!-- 自定义jar依赖包 <dependency> <groupId>com.thinkgem.jeesite</groupId> <artifactId>test-core</artifactId>
+			<version>1.0</version> <scope>system</scope> <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/test-core-1.0.jar</systemPath>
+			</dependency> -->
+
+		<!-- 使用 Jetty JSP引擎 <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-jsp</artifactId>
+			<version>${jetty.version}</version> <exclusions> <exclusion> <groupId>org.eclipse.jetty.orbit</groupId>
+			<artifactId>javax.servlet</artifactId> </exclusion> <exclusion> <groupId>org.eclipse.jetty.orbit</groupId>
+			<artifactId>org.apache.taglibs.standard.glassfish</artifactId> </exclusion>
+			</exclusions> </dependency> -->
 
 
 		<!-- svg 生成png格式图片 -->
@@ -818,50 +782,39 @@
 
 		<!-- 上传文件的支持 -->
 		<dependency>
-			  <groupId>org.oseasy</groupId>
-			  <artifactId>ueditor</artifactId>
-			  <version>1.1.2</version>
-			</dependency>
-		<!--<dependency>
-		    <groupId>commons-fileupload</groupId>
-		    <artifactId>commons-fileupload</artifactId>
-		    <version>1.3.1</version>
-		</dependency>-->
-		<!--<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.4</version>
-		</dependency>-->
+			<groupId>org.oseasy</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<!--<dependency> <groupId>commons-fileupload</groupId> <artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version> </dependency> -->
+		<!--<dependency> <groupId>commons-io</groupId> <artifactId>commons-io</artifactId>
+			<version>2.4</version> </dependency> -->
 
-		<!--<dependency>
-		    <groupId>commons-codec</groupId>
-		    <artifactId>commons-codec</artifactId>
-		    <version>1.10</version>
-		</dependency>-->
+		<!--<dependency> <groupId>commons-codec</groupId> <artifactId>commons-codec</artifactId>
+			<version>1.10</version> </dependency> -->
 
 		<!-- org.json -->
-		<!--JSON is a light-weight, language independent, data interchange format. See http://www.JSON.org/-->
-		<!--<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20160212</version>
-		</dependency>-->
-		<!-- 上传文件的支持  end-->
+		<!--JSON is a light-weight, language independent, data interchange format.
+			See http://www.JSON.org/ -->
+		<!--<dependency> <groupId>org.json</groupId> <artifactId>json</artifactId>
+			<version>20160212</version> </dependency> -->
+		<!-- 上传文件的支持 end -->
 		<dependency>
-		    <groupId>org.quartz-scheduler</groupId>
-		    <artifactId>quartz</artifactId>
-		    <version>2.2.1</version>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>javax.websocket</groupId>
-		    <artifactId>javax.websocket-api</artifactId>
-		    <version>1.1</version>
-		    <scope>provided</scope>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish.tyrus.bundles</groupId>
-		    <artifactId>tyrus-standalone-client</artifactId>
-		    <version>1.9</version>
+			<groupId>org.glassfish.tyrus.bundles</groupId>
+			<artifactId>tyrus-standalone-client</artifactId>
+			<version>1.9</version>
 		</dependency>
 	</dependencies>
 
@@ -885,54 +838,27 @@
 			</plugin>
 			<!-- 增加的plugin节点用于pom.xml的server与maven的setting.xml中的id关联 -->
 			<plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>tomcat-maven-plugin</artifactId>
-		        <configuration>
-		        	<server>tomcat</server>
-		          	<url>http://localhost:8080/manager/text</url>
-		          	<path>/framework</path>
-		       </configuration>
-	      	</plugin>
-			<!-- JSP 预编译插件  jspweb.xml
-			<plugin>
-				<groupId>org.jasig.mojo.jspc</groupId>
-				<artifactId>jspc-maven-plugin</artifactId>
-				<version>2.0.0</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
 				<configuration>
-					<injectString>&lt;!- - [INSERT FRAGMENT HERE] - -&gt;</injectString>
+					<server>tomcat</server>
+					<url>http://localhost:8080/manager/text</url>
+					<path>/framework</path>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.jasig.mojo.jspc</groupId>
-						<artifactId>jspc-compiler-tomcat6</artifactId>
-						<version>2.0.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>-->
+			</plugin>
+			<!-- JSP 预编译插件 jspweb.xml <plugin> <groupId>org.jasig.mojo.jspc</groupId>
+				<artifactId>jspc-maven-plugin</artifactId> <version>2.0.0</version> <configuration>
+				<injectString>&lt;!- - [INSERT FRAGMENT HERE] - -&gt;</injectString> </configuration>
+				<executions> <execution> <goals> <goal>compile</goal> </goals> </execution>
+				</executions> <dependencies> <dependency> <groupId>org.jasig.mojo.jspc</groupId>
+				<artifactId>jspc-compiler-tomcat6</artifactId> <version>2.0.0</version> </dependency>
+				</dependencies> </plugin> -->
 
-			<!-- Jetty JSP 预编译插件  web.xml
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-jspc-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
-				<configuration>
-					<insertionMarker>&lt;!- - [INSERT FRAGMENT HERE] - -&gt;</insertionMarker>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jspc</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>-->
+			<!-- Jetty JSP 预编译插件 web.xml <plugin> <groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-jspc-maven-plugin</artifactId> <version>${jetty.version}</version>
+				<configuration> <insertionMarker>&lt;!- - [INSERT FRAGMENT HERE] - -&gt;</insertionMarker>
+				</configuration> <executions> <execution> <goals> <goal>jspc</goal> </goals>
+				</execution> </executions> </plugin> -->
 
 			<!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->
 			<plugin>
@@ -942,7 +868,7 @@
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
-			 	<executions>
+				<executions>
 					<execution>
 						<phase>prepare-package</phase>
 						<goals>
@@ -953,8 +879,8 @@
 							<finalName>${artifactId.finalName}</finalName>
 							<outputDirectory>${project.build.directory}/${project.artifactId}/WEB-INF/lib</outputDirectory>
 							<includes>
-					        	<include>com/oseasy/initiate/**</include>
-					       	</includes>
+								<include>com/oseasy/initiate/**</include>
+							</includes>
 						</configuration>
 					</execution>
 				</executions>
@@ -975,54 +901,51 @@
 				</executions>
 				<configuration>
 					<obfuscate>true</obfuscate>
-                    <options>
-			    		<!-- <option>-dontobfuscate</option> -->
-                        <!--忽略所有告警-->
-                        <option>-ignorewarnings</option>
-                        <!--不做 shrink -->
-                        <option>-dontshrink</option>
-                        <!--不做 optimize -->
-                        <option>-dontoptimize</option>
-                        <!--保持包注解类-->
-                        <option>-keep class **.package-info</option>
+					<options>
+						<!-- <option>-dontobfuscate</option> -->
+						<!--忽略所有告警 -->
+						<option>-ignorewarnings</option>
+						<!--不做 shrink -->
+						<option>-dontshrink</option>
+						<!--不做 optimize -->
+						<option>-dontoptimize</option>
+						<!--保持包注解类 -->
+						<option>-keep class **.package-info</option>
 
 						<!-- 开始配置 -->
-                        <!-- 以下为 Keep，哪些内容保持不变，因为有一些内容混淆后（a,b,c）导致反射或按类名字符串相关的操作失效 -->
-                        <!--JAXB NEED，具体原因不明，不加会导致 JAXB 出异常，如果不使用 JAXB 根据需要修改-->
-                        <option>-keepattributes Signature</option>
+						<!-- 以下为 Keep，哪些内容保持不变，因为有一些内容混淆后（a,b,c）导致反射或按类名字符串相关的操作失效 -->
+						<!--JAXB NEED，具体原因不明，不加会导致 JAXB 出异常，如果不使用 JAXB 根据需要修改 -->
+						<option>-keepattributes Signature</option>
 
-                        <!--保持源码名与行号（异常时有明确的栈信息），注解（默认会过滤掉所有注解，会影响框架的注解）-->
-                        <option>-keepattributes SourceFile,LineNumberTable,*Annotation*</option>
+						<!--保持源码名与行号（异常时有明确的栈信息），注解（默认会过滤掉所有注解，会影响框架的注解） -->
+						<option>-keepattributes SourceFile,LineNumberTable,*Annotation*</option>
 						<!-- 结束配置 -->
 
 						<!-- <option>-injars ${project.build.directory}/${artifactId.finalName}.war</option> -->
-						<option>-injars ${project.build.directory}/${project.artifactId}/WEB-INF/lib/${artifactId.finalName}.jar</option>
-                    </options>
-                    <outjar>${project.artifactId}/WEB-INF/lib/${artifactId.finalName}-out.jar</outjar>
+						<option>-injars
+							${project.build.directory}/${project.artifactId}/WEB-INF/lib/${artifactId.finalName}.jar</option>
+					</options>
+					<outjar>${project.artifactId}/WEB-INF/lib/${artifactId.finalName}-out.jar</outjar>
 
-			       <!-- <options>
-						<option>-injars ${project.build.directory}/${project.artifactId}/WEB-INF/lib/${artifactId.finalName}.jar</option>
-                    </options>
-                    <outjar>${project.artifactId}/WEB-INF/lib/${artifactId.finalName}-out.jar</outjar> -->
-
-
-			        <!-- <options>
-						<option>-injars ${project.build.directory}/${artifactId.finalName}.war</option>
-                    </options>
-                    <outjar>${project.artifactId}/${artifactId.finalName}-out.war</outjar> -->
+					<!-- <options> <option>-injars ${project.build.directory}/${project.artifactId}/WEB-INF/lib/${artifactId.finalName}.jar</option>
+						</options> <outjar>${project.artifactId}/WEB-INF/lib/${artifactId.finalName}-out.jar</outjar> -->
 
 
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-			        <proguardInclude>${basedir}/pom-proguard.cfg</proguardInclude>
+					<!-- <options> <option>-injars ${project.build.directory}/${artifactId.finalName}.war</option>
+						</options> <outjar>${project.artifactId}/${artifactId.finalName}-out.war</outjar> -->
+
+
+					<outputDirectory>${project.build.directory}</outputDirectory>
+					<proguardInclude>${basedir}/pom-proguard.cfg</proguardInclude>
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<libs>
 						<lib>${java.home}/lib/rt.jar</lib>
 						<lib>${java.home}/lib/jsse.jar</lib>
-			            <lib>${java.home}/lib/jce.jar</lib>
+						<lib>${java.home}/lib/jce.jar</lib>
 					</libs>
-			        <addMavenDescriptor>false</addMavenDescriptor>
+					<addMavenDescriptor>false</addMavenDescriptor>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -1065,7 +988,7 @@
 						test/**
 					</warSourceExcludes>
 					<webappDirectory>${project.build.directory}/${project.artifactId}</webappDirectory><!--
-					<webXml>${project.basedir}/target/jspweb.xml</webXml> -->
+						<webXml>${project.basedir}/target/jspweb.xml</webXml> -->
 					<warName>${project.artifactId}</warName>
 				</configuration>
 			</plugin>
@@ -1179,92 +1102,68 @@
 
 			<!-- sonar插件 -->
 			<plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>sonar-maven-plugin</artifactId>
-		        <version>2.7.1</version>
-		    </plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>2.7.1</version>
+			</plugin>
 
 			<!-- pmd插件 -->
-           <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.8</version>
-                <configuration>
-                    <rulesets>
-                        <ruleset>rulesets/java/ali-comment.xml</ruleset>
-                        <ruleset>rulesets/java/ali-concurrent.xml</ruleset>
-                        <ruleset>rulesets/java/ali-constant.xml</ruleset>
-                        <ruleset>rulesets/java/ali-exception.xml</ruleset>
-                        <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
-                        <ruleset>rulesets/java/ali-naming.xml</ruleset>
-                        <ruleset>rulesets/java/ali-oop.xml</ruleset>
-                        <ruleset>rulesets/java/ali-orm.xml</ruleset>
-                        <ruleset>rulesets/java/ali-other.xml</ruleset>
-                        <ruleset>rulesets/java/ali-set.xml</ruleset>
-                    </rulesets>
-                    <printFailingErrors>true</printFailingErrors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.alibaba.p3c</groupId>
-                        <artifactId>p3c-pmd</artifactId>
-                        <version>1.3.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
--->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-pmd-plugin</artifactId>
+				<version>3.8</version> <configuration> <rulesets> <ruleset>rulesets/java/ali-comment.xml</ruleset>
+				<ruleset>rulesets/java/ali-concurrent.xml</ruleset> <ruleset>rulesets/java/ali-constant.xml</ruleset>
+				<ruleset>rulesets/java/ali-exception.xml</ruleset> <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
+				<ruleset>rulesets/java/ali-naming.xml</ruleset> <ruleset>rulesets/java/ali-oop.xml</ruleset>
+				<ruleset>rulesets/java/ali-orm.xml</ruleset> <ruleset>rulesets/java/ali-other.xml</ruleset>
+				<ruleset>rulesets/java/ali-set.xml</ruleset> </rulesets> <printFailingErrors>true</printFailingErrors>
+				</configuration> <executions> <execution> <goals> <goal>check</goal> </goals>
+				</execution> </executions> <dependencies> <dependency> <groupId>com.alibaba.p3c</groupId>
+				<artifactId>p3c-pmd</artifactId> <version>1.3.0</version> </dependency> </dependencies>
+				</plugin> -->
 		</plugins>
 
 		<resources>
-		            <resource>
-		                <directory>src/main/resources</directory>
-		                <!-- 资源根目录排除各环境的配置，使用单独的资源目录来指定 -->
-		                <excludes>
-		                    <exclude>config-dev/*</exclude>
-		                    <exclude>config-pro/*</exclude>
-		                </excludes>
-		            </resource>
-		            <resource>
-		                <!-- 根据参数指定资源目录 -->
-		                <directory>src/main/resources/config-${profiles.active}</directory>
-		                <!-- 指定编译后的目录即生成文件位置（默认为WEB-INF/class） -->
-		                <targetPath>config</targetPath>
-		            </resource>
-		        </resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- 资源根目录排除各环境的配置，使用单独的资源目录来指定 -->
+				<excludes>
+					<exclude>config-dev/*</exclude>
+					<exclude>config-pro/*</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<!-- 根据参数指定资源目录 -->
+				<directory>src/main/resources/config-${profiles.active}</directory>
+				<!-- 指定编译后的目录即生成文件位置（默认为WEB-INF/class） -->
+				<targetPath>config</targetPath>
+			</resource>
+		</resources>
 
 	</build>
 
 	<profiles>
-	        <profile>
-	            <!-- 本地开发环境 -->
-	            <id>develop</id>
-	            <properties>
-	                <profiles.active>dev</profiles.active>
-	            </properties>
-	            <activation>
-	                <activeByDefault>true</activeByDefault>
-	            </activation>
-	        </profile>
-	        <profile>
-	            <!-- 测试环境 -->
-	            <id>test</id>
-	            <properties>
-	                <profiles.active>test</profiles.active>
-	            </properties>
-	        </profile>
-	        <profile>
-	            <!-- 生产环境 -->
-	            <id>production</id>
-	            <properties>
-	                <profiles.active>pro</profiles.active>
-	            </properties>
-	        </profile>
-	    </profiles>
+		<profile>
+			<!-- 本地开发环境 -->
+			<id>develop</id>
+			<properties>
+				<profiles.active>dev</profiles.active>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<!-- 测试环境 -->
+			<id>test</id>
+			<properties>
+				<profiles.active>test</profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<!-- 生产环境 -->
+			<id>production</id>
+			<properties>
+				<profiles.active>pro</profiles.active>
+			</properties>
+		</profile>
+	</profiles>
 </project>

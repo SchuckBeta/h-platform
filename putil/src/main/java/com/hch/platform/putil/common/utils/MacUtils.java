@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 
 /**
  * MAC地址工具
- * 
+ *
 
 
  */
@@ -24,7 +24,7 @@ public class MacUtils {
 
 	/**
 	 * 获取Unix网卡的mac地址.
-	 * 
+	 *
 	 * @return mac地址
 	 */
 	public static String getUnixMACAddress() {
@@ -75,7 +75,7 @@ public class MacUtils {
 
 	/**
 	 * 获取Linux网卡的mac地址.
-	 * 
+	 *
 	 * @return mac地址
 	 */
 	public static String getLinuxMACAddress() {
@@ -117,7 +117,7 @@ public class MacUtils {
 			bufferedReader = null;
 			process = null;
 		}
-		
+
 		// 取不到，试下Unix取发
 		if (mac == null) {
 			return getUnixMACAddress();
@@ -128,7 +128,7 @@ public class MacUtils {
 
 	/**
 	 * 获取widnows网卡的mac地址.
-	 * 
+	 *
 	 * @return mac地址
 	 */
 	public static String getWindowsMACAddress() {
@@ -200,10 +200,10 @@ public class MacUtils {
 		}
 		return mac == null ? "" : mac;
 	}
-	
+
 	/**
 	 * 测试用的main方法.
-	 * 
+	 *
 	 * @param argc 运行参数.
 	 */
 	public static void main(String[] argc) {

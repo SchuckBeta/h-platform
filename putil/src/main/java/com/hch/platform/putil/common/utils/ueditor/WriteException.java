@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.ueditor;
+package com.hch.platform.putil.common.utils.ueditor;
 
 /**
  * Thrown to indicate that an error has occurred during some write action.

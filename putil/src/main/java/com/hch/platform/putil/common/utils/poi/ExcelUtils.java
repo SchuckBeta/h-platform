@@ -1,14 +1,11 @@
-package com.oseasy.initiate.common.utils.poi;
+package com.hch.platform.putil.common.utils.poi;
 
 import java.awt.Color;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -18,10 +15,6 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 
 /**
@@ -120,9 +113,9 @@ public class ExcelUtils {
       XSSFWorkbook excel=new XSSFWorkbook(pkg);
       //获取第一个sheet
       XSSFSheet sheet0=excel.getSheetAt(0);
-      for (Iterator rowIterator=sheet0.iterator();rowIterator.hasNext();) {
+      for (Iterator<?> rowIterator=sheet0.iterator();rowIterator.hasNext();) {
         XSSFRow row=(XSSFRow) rowIterator.next();
-        for (Iterator iterator=row.cellIterator();iterator.hasNext();) {
+        for (Iterator<?> iterator=row.cellIterator();iterator.hasNext();) {
           XSSFCell cell=(XSSFCell) iterator.next();
           //根据单元的的类型 读取相应的结果
           if(cell.getCellType()==XSSFCell.CELL_TYPE_STRING) content+=cell.getStringCellValue()+"\t";

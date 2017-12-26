@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,10 +21,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  * 文件上传工具类
- * 
+ *
  * @author yangdc
  * @date Apr 18, 2012
- * 
+ *
  * <pre>
  * </pre>
  */
@@ -71,7 +71,7 @@ public class UploadUtils {
 
 	/**
 	 * 文件上传
-	 * 
+	 *
 	 * @param request
 	 * @return infos info[0] 验证文件域返回错误信息 info[1] 上传文件错误信息 info[2] savePath info[3] saveUrl info[4] fileUrl
 	 */
@@ -100,7 +100,7 @@ public class UploadUtils {
 
 	/**
 	 * 上传验证,并初始化文件目录
-	 * 
+	 *
 	 * @param request
 	 */
 	private String validateFields(HttpServletRequest request) {
@@ -166,7 +166,7 @@ public class UploadUtils {
 
 	/**
 	 * 处理上传内容
-	 * 
+	 *
 	 * @param request
 	 * @param maxSize
 	 * @return
@@ -233,7 +233,7 @@ public class UploadUtils {
 
 	/**
 	 * 保存文件
-	 * 
+	 *
 	 * @param obj
 	 *            要上传的文件域
 	 * @param file

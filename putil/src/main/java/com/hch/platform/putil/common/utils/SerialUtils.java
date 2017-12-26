@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

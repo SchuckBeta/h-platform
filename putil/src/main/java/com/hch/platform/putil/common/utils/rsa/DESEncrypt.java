@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.rsa;
+package com.hch.platform.putil.common.utils.rsa;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -17,6 +17,7 @@ public class DESEncrypt {
 	// 该字节数组负责保存加密的结果
 	private byte[] cipherByte;
 
+	@SuppressWarnings("restriction")
 	public DESEncrypt() {
 		Security.addProvider(new com.sun.crypto.provider.SunJCE());
 		try {
@@ -75,7 +76,7 @@ public class DESEncrypt {
 		System.out.println("明文是：" + msg);
 		byte[] p12_01 = enc.createEncryptor(msg);
 		System.out.println("密文是：" + new String(p12_01));
-		
+
 		byte[] dec = enc.createDecryptor(p12_01);
 		System.out.println("解密后的结果是：" + new String(dec));
 	}

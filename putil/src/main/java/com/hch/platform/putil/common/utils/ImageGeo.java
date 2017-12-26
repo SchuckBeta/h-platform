@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import com.drew.metadata.*;
 import com.drew.metadata.exif.*;
@@ -54,7 +54,7 @@ public class ImageGeo {
 		}
 		System.out.println(filename + ": (" + lat + ", " + lon + ")");
 	}
-	
+
 	public static void main(String[] args) {
 		ImageGeo imageGeo = new ImageGeo(ImageGeo.class.getResource("IMAG0068.jpg").getFile());
 		System.out.println(imageGeo.lon+","+imageGeo.lat);

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.machine;
+package com.hch.platform.putil.common.utils.machine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

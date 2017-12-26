@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.sms;
+package com.hch.platform.putil.common.utils.sms;
 
 /**
  * Created by victor on 2017/3/11.

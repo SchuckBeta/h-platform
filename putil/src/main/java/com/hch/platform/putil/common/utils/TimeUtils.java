@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -14,7 +14,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
  */
 public class TimeUtils {
-	
+
 	public static String toTimeString(long time) {
 		TimeUtils t = new TimeUtils(time);
 		int day = t.get(TimeUtils.DAY);
@@ -36,7 +36,7 @@ public class TimeUtils {
 		}
 		return sb.toString();
 	}
-	
+
     /**
      * 时间字段常量，表示“秒”
      */
@@ -120,7 +120,7 @@ public class TimeUtils {
     public TimeUtils(long time) {
     	this(new Date(time));
     }
-    
+
     /**
      * 使用日期对象构造时间
      * @param date
@@ -320,5 +320,5 @@ public class TimeUtils {
         }
         return true;
     }
-    
+
 }

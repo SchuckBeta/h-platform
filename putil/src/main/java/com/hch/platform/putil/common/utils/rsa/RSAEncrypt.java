@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.rsa;
+package com.hch.platform.putil.common.utils.rsa;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

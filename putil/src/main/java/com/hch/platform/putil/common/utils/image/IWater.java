@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.image;
+package com.hch.platform.putil.common.utils.image;
 
 /**
  * Created by Administrator on 2017/10/26 0026.

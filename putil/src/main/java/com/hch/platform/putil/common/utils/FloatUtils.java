@@ -53,10 +53,6 @@ public class FloatUtils {
     }
 
     public static void main(String[] args) {
-        float f=1.45f;
-        int a=1;
-        int b=3;
-
         System.out.println(getOnePoint( 0.56f));
     }
 

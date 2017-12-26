@@ -1,6 +1,6 @@
-package com.oseasy.initiate.common.utils.sms.impl;
+package com.hch.platform.putil.common.utils.sms.impl;
 
-import com.oseasy.initiate.common.utils.sms.ISendParam;
+import com.hch.platform.putil.common.utils.sms.ISendParam;
 
 /**
  * Created by victor on 2017/9/28.

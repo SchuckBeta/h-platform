@@ -1,12 +1,11 @@
-package com.oseasy.initiate.common.utils.image.impl;
+package com.hch.platform.putil.common.utils.image.impl;
 
-import java.io.File;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Rstatus;
-import com.oseasy.initiate.common.config.RstatusGroup;
-import com.oseasy.initiate.common.utils.image.IWater;
+import com.hch.platform.putil.common.config.Rstatus;
+import com.hch.platform.putil.common.config.RstatusGroup;
+import com.hch.platform.putil.common.utils.image.IWater;
 
 /**
  * Created by Administrator on 2017/10/26 0026.

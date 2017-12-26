@@ -1,17 +1,4 @@
-package com.oseasy.initiate.common.utils.poi;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
+package com.hch.platform.putil.common.utils.poi;
 
 /**
 * 实现java用poi实现对word读取和修改操作

@@ -1,6 +1,6 @@
-package com.oseasy.initiate.common.utils.sms.impl;
+package com.hch.platform.putil.common.utils.sms.impl;
 
-import com.oseasy.initiate.common.utils.sms.ISendParam;
+import com.hch.platform.putil.common.utils.sms.ISendParam;
 
 public class SendOeyParam extends ISendParam{
   private String inviteNo;

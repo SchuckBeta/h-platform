@@ -1,16 +1,16 @@
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class WorkDayUtils {
-	
+
 	public static void main(String[] args) {
 		try {
 			String strDateStart = "2013-08-01";
 			String strDateEnd = "2014-08-31";
-			
+
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date date_start = sdf.parse(strDateStart);
 			Date date_end = sdf.parse(strDateEnd);
@@ -19,7 +19,7 @@ public class WorkDayUtils {
 			Calendar cal_end = Calendar.getInstance();
 			cal_start.setTime(date_start);
 			cal_end.setTime(date_end);
-			System.out.println("开始日：" + cal_start.get(Calendar.YEAR) + "-" + (cal_start.get(Calendar.MONTH) + 1) 
+			System.out.println("开始日：" + cal_start.get(Calendar.YEAR) + "-" + (cal_start.get(Calendar.MONTH) + 1)
 					+ "-" + cal_start.get(Calendar.DAY_OF_MONTH) + " " + app.getChineseWeek(cal_start));
 			System.out.println("结束日：" + cal_end.get(Calendar.YEAR) + "-" + (cal_end.get(Calendar.MONTH) + 1)
 					+ "-" + cal_end.get(Calendar.DAY_OF_MONTH) + " " + app.getChineseWeek(cal_end));
@@ -99,7 +99,7 @@ public class WorkDayUtils {
 	 */
 	public String getChineseWeek(Calendar date) {
 		final String dayNames[] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
-		int dayOfWeek = date.get(Calendar.DAY_OF_WEEK); 
+		int dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
 		// System.out.println(dayNames[dayOfWeek - 1]);
 		return dayNames[dayOfWeek - 1];
 	}
@@ -128,5 +128,5 @@ public class WorkDayUtils {
 	public int getHolidays(Calendar d1, Calendar d2) {
 		return this.getDaysBetween(d1, d2) - this.getWorkingDay(d1, d2);
 	}
-	
+
 }

@@ -1,14 +1,12 @@
 /**
  *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,16 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.LocaleResolver;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.json.JsonAliUtils;
-import com.oseasy.initiate.modules.pw.vo.PwEnterExpireVo;
-import com.oseasy.initiate.modules.pw.vo.SvalPw;
-
-import net.sf.json.JSONObject;
 
 
 /**
@@ -334,16 +324,6 @@ public class StringUtil extends StringUtils {
 	}
 
 	/**
-	 * 获得i18n字符串
-	 */
-	public static String getMessage(String code, Object[] args) {
-		LocaleResolver localLocaleResolver = (LocaleResolver) SpringContextHolder.getBean(LocaleResolver.class);
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		Locale localLocale = localLocaleResolver.resolveLocale(request);
-		return SpringContextHolder.getApplicationContext().getMessage(code, args, localLocale);
-	}
-
-	/**
 	 * 获得用户远程地址
 	 */
 	public static String getRemoteAddr(HttpServletRequest request) {
@@ -630,7 +610,7 @@ public class StringUtil extends StringUtils {
   }
 
 	public static void main(String[] args) {
-    JsonAliUtils.writeBean(SvalPw.ENTER_EXPIRE_LOGFILE + StringUtil.LINE + DateUtil.formatDate(new Date(), DateUtil.FMT_YYYY_MM_DD_HH) + StringUtil.LOG,
-        JSONObject.fromObject(new PwEnterExpireVo()));
+//    JsonAliUtils.writeBean(SvalPw.ENTER_EXPIRE_LOGFILE + StringUtil.LINE + DateUtil.formatDate(new Date(), DateUtil.FMT_YYYY_MM_DD_HH) + StringUtil.LOG,
+//        JSONObject.fromObject(new PwEnterExpireVo()));
   }
 }

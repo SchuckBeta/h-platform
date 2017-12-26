@@ -1,9 +1,9 @@
-package com.oseasy.initiate.common.utils.sms;
+package com.hch.platform.putil.common.utils.sms;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 public class SmsRstate{
   private static final String MSG_SUCCESS = "短信发送成功";

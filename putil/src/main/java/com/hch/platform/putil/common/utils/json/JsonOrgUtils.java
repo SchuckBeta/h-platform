@@ -1,13 +1,13 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.common.utils.json
+ * @Package com.hch.platform.putil.common.utils.json
  * @Description [[_JsonOUtils_]]文件
  * @date 2017年6月2日 上午10:23:41
  *
  */
 
-package com.oseasy.initiate.common.utils.json;
+package com.hch.platform.putil.common.utils.json;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

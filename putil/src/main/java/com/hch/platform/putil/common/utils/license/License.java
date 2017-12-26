@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.license;
+package com.hch.platform.putil.common.utils.license;
 
 import net.sf.json.JSONArray;
 
@@ -17,7 +17,7 @@ public class License {
     private String product_key;//产品标识
     private String valid;//是否有效,0-无效，1-有效
     private String modules;//菜单功能
-    
+
 	public String getModules() {
 		return modules;
 	}

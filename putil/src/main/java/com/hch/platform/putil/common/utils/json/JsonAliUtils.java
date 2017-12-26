@@ -1,27 +1,24 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.common.utils.json
+ * @Package com.hch.platform.putil.common.utils.json
  * @Description [[_JsonAUtils_]]文件
  * @date 2017年6月2日 上午10:19:00
  *
  */
 
-package com.oseasy.initiate.common.utils.json;
+package com.hch.platform.putil.common.utils.json;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.StenType;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -122,20 +119,4 @@ public class JsonAliUtils {
     }
     return false;
   }
-
-  /**
-   * 读取json文件 .
-   * @author chenhao
-   * @param path 路径
-   */
-  public static String readJson(String path) throws Exception {
-    InputStream stencilsetStream = StenType.class.getClassLoader().getResourceAsStream(path);
-    try {
-      return IOUtils.toString(stencilsetStream, "utf-8");
-    } catch (Exception e) {
-      throw new Exception("Error while loading json", e);
-    }
-  }
-
-
 }

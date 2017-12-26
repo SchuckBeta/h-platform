@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,13 +14,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import com.oseasy.initiate.common.utils.json.JsonAliUtils;
-import com.oseasy.initiate.modules.tpl.vo.impl.WparamApply;
-import com.oseasy.initiate.modules.tpl.vo.impl.Wpro;
-import com.oseasy.initiate.modules.tpl.vo.impl.Wteam;
-
-import net.sf.json.JSONObject;
 
 /**
  * 对象操作工具类, 继承org.apache.commons.lang3.ObjectUtils类
@@ -133,16 +126,16 @@ public class ObjectUtil extends ObjectUtils {
   }
 
 	public static void main(String[] args) {
-	  WparamApply param = new WparamApply();
-	  Wpro pro = new Wpro();
-	  pro.setName("asdasdas");
-	  Wteam team = new Wteam();
-	  team.setSpname("1111asdasdas");
-	  param.setPro(pro);
-	  param.setTeam(team);
-//	  Map<String, Object> model = obj2Map(param);
-	  Map model = obj2Map(param);
-    System.out.println(JSONObject.fromObject(model).toString());
+//	  WparamApply param = new WparamApply();
+//	  Wpro pro = new Wpro();
+//	  pro.setName("asdasdas");
+//	  Wteam team = new Wteam();
+//	  team.setSpname("1111asdasdas");
+//	  param.setPro(pro);
+//	  param.setTeam(team);
+////	  Map<String, Object> model = obj2Map(param);
+//	  Map model = obj2Map(param);
+//    System.out.println(JSONObject.fromObject(model).toString());
 //  return FreeMarkers.renderString(cotent, model);
 //  return FreeMarkers.renderString(StringUtil.trimToEmpty(cotent), model);
   }

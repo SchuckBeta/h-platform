@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.httpclient;
+package com.hch.platform.putil.common.utils.httpclient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -64,8 +64,6 @@ public class URLConnectionUtil {
 	}
 	public static String sendHttp(String url, Map<String, String> cloneParamMap) throws Exception {
 		List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		HttpResponse response = null;
-		HttpEntity entity = null;
 		String postResp = null;
 		httpclient = new DefaultHttpClient();
 		httpclient.getParams().setIntParameter(HttpConnectionParams.SO_TIMEOUT, 15000); // 超时设置
@@ -77,11 +75,11 @@ public class URLConnectionUtil {
 		httpost.addHeader("Accept-Language", "zh-cn");
 		httpost.addHeader("Accept-Encoding", "gzip, deflate");
 		try {
-			
+
 			nvp = getNameValuePairArr(cloneParamMap);
 			httpost.setEntity(new UrlEncodedFormEntity(nvp, "UTF-8"));
 			httpclient.execute(httpost);
-			
+
 		} catch (Exception e) {
 			httpost.abort();
 			throw new Exception();
@@ -101,11 +99,11 @@ public class URLConnectionUtil {
 		}
 		return nvps;
 	}
-	
-	
+
+
 	 /**
      * 使用Get方式获取数据
-     * 
+     *
      * @param url URL包括参数，http://HOST/XX?XX=XX&XXX=XXX
      * @return
      */

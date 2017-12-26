@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.image;
+package com.hch.platform.putil.common.utils.image;
 
 import java.util.Arrays;
 import java.util.List;

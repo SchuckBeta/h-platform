@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.utils;
+package com.hch.platform.putil.common.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,22 +14,22 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
- * 
+ *
  * @author Andy.Chen
  * @mail Chenjunjun.ZJ@gmail.com
- * 
+ *
  */
 public class StreamUtils {
 
 	final static int BUFFER_SIZE = 4096;
 	/**
 	 * 将InputStream转换成String
-	 * 
+	 *
 	 * @param in
 	 *            InputStream
 	 * @return String
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	public static String InputStreamTOString(InputStream in) {
 
@@ -55,7 +55,7 @@ public class StreamUtils {
 
 	/**
 	 * 将InputStream转换成某种字符编码的String
-	 * 
+	 *
 	 * @param in
 	 * @param encoding
 	 * @return
@@ -84,7 +84,7 @@ public class StreamUtils {
 
 	/**
 	 * 将String转换成InputStream
-	 * 
+	 *
 	 * @param in
 	 * @return
 	 * @throws Exception
@@ -97,7 +97,7 @@ public class StreamUtils {
 
 	/**
 	 * 将String转换成InputStream
-	 * 
+	 *
 	 * @param in
 	 * @return
 	 * @throws Exception
@@ -115,7 +115,7 @@ public class StreamUtils {
 
 	/**
 	 * 将InputStream转换成byte数组
-	 * 
+	 *
 	 * @param in
 	 *            InputStream
 	 * @return byte[]
@@ -135,7 +135,7 @@ public class StreamUtils {
 
 	/**
 	 * 将byte数组转换成InputStream
-	 * 
+	 *
 	 * @param in
 	 * @return
 	 * @throws Exception
@@ -148,7 +148,7 @@ public class StreamUtils {
 
 	/**
 	 * 将byte数组转换成String
-	 * 
+	 *
 	 * @param in
 	 * @return
 	 * @throws Exception
@@ -167,7 +167,7 @@ public class StreamUtils {
 	}
 	/**
 	 * 将byte数组转换成String
-	 * 
+	 *
 	 * @param in
 	 * @return
 	 * @throws Exception

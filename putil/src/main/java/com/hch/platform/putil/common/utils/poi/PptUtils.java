@@ -1,10 +1,9 @@
-package com.oseasy.initiate.common.utils.poi;
+package com.hch.platform.putil.common.utils.poi;
 
 /**
  *
  */
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,11 +13,8 @@ import java.io.OutputStream;
 import java.util.Iterator;
 
 import org.apache.poi.util.IOUtils;
-import org.apache.poi.xslf.XSLFSlideShow;
 import org.apache.poi.xslf.usermodel.Placeholder;
 import org.apache.poi.xslf.usermodel.SlideLayout;
-import org.apache.poi.xslf.usermodel.TextAlign;
-import org.apache.poi.xslf.usermodel.TextDirection;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFGroupShape;
 import org.apache.poi.xslf.usermodel.XSLFPictureData;
@@ -26,11 +22,9 @@ import org.apache.poi.xslf.usermodel.XSLFShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
 import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
-import org.apache.poi.xslf.usermodel.XSLFTextBox;
 import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
 import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 /**
  * @author u1
@@ -116,7 +110,7 @@ public class PptUtils {
             //content+=slide.getTitle()+"\t";
             for(XSLFShape shape:slide.getShapes()){
               if(shape instanceof XSLFTextShape){ //获取到ppt的文本信息
-                for(Iterator iterator=((XSLFTextShape) shape).iterator();iterator.hasNext();){
+                for(Iterator<?> iterator=((XSLFTextShape) shape).iterator();iterator.hasNext();){
                 //获取到每一段的文本信息
                   XSLFTextParagraph paragraph=(XSLFTextParagraph) iterator.next();
                   for (XSLFTextRun xslfTextRun : paragraph) {

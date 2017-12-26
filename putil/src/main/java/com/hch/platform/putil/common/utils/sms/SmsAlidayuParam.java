@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.utils.sms;
+package com.hch.platform.putil.common.utils.sms;
 
 public class SmsAlidayuParam<T extends ISendParam> {
   private String tels; // 手机号(多个号码以,分隔)
