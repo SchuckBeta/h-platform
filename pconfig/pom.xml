@@ -21,12 +21,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- platform -->
-			<dependency>
-				<groupId>com.hch.platform</groupId>
-				<artifactId>h-platform</artifactId>
-				<version>${platform.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>com.hch.platform</groupId>
 				<artifactId>putil</artifactId>
@@ -37,11 +31,6 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
-		<!-- platform -->
-		<dependency>
-			<groupId>com.hch.platform</groupId>
-			<artifactId>h-platform</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>com.hch.platform</groupId>
 			<artifactId>putil</artifactId>
