@@ -13,6 +13,7 @@
 
 	<!-- 项目属性 -->
 	<properties>
+		<platform.version>0.0.1-SNAPSHOT</platform.version>
 		<artifactId.finalName>pcore</artifactId.finalName>
 		<!-- main version setting -->
 		<!--<spring.version>4.1.9.RELEASE</spring.version>-->
@@ -85,8 +86,42 @@
 
 	</pluginRepositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<!-- platform -->
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>h-platform</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>putil</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>pconfig</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<!-- 依赖项定义 -->
 	<dependencies>
+		<!-- platform -->
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>h-platform</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>putil</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>pconfig</artifactId>
+		</dependency>
 
 		<!-- SPRING begin -->
 		<dependency>
