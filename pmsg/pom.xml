@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.hch.platform</groupId>
+    <artifactId>h-platform</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.hch.platform</groupId>
+  <artifactId>pmsg</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>pmsg</name>
+  <url>http://maven.apache.org</url>
+  <inceptionYear>2017</inceptionYear>
+
+	<!-- 项目属性 -->
+	<properties>
+		<platform.version>0.0.1-SNAPSHOT</platform.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- platform -->
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>h-platform</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>putil</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- 依赖项定义 -->
+	<dependencies>
+		<!-- platform -->
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>h-platform</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>putil</artifactId>
+		</dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,60 @@
+package com.oseasy.initiate.modules.actyw.tool.process.gnodcmd;
+
+public enum Gcmd {
+  NODE_INIT,//初始化NODE节点
+
+  //level = 0
+  //parentId = 0
+  //nodeId = 0
+  //groupId = NULL
+  //typefun = 0
+  //isShow = 1
+  //isForm = 0
+  //pos.. = 0
+  //数据库有0个节点
+  GNODE_INIT,//初始化GNODE节点
+  GNODE_UPDATE_POSTION,//修改GNODE节点位置
+
+  //level = 0
+  //parentId = 1
+  //nodeId = (990211/990911/991211)
+  //该流程只有3个节点
+  GROOT_ADD_START,//新增ROOT START
+  GROOT_ADD_END,//新增ROOT END
+  GROOT_ADD_FLOW,//新增ROOT FLOW
+  GROOT_UPDATE_START,//修改ROOT START
+  GROOT_UPDATE_END,//修改ROOT END
+  GROOT_UPDATE_FLOW,//修改ROOT FLOW
+  GROOT_ADD,//新增ROOT
+
+  //level = 1
+  //nodeId = (991211/990411)
+  GPROCESS_ADD,//新增PROCESS
+  GPROCESS_GNODE_ADD,//新增PROCESS节点
+  GPROCESS_GNODE_UPDATE,//修改PROCESS节点
+  GPROCESS_ADD_N_FLOW,//新增PROCESS FLOW
+  GPROCESS_UPDATE,//修改PROCESS
+  GPROCESS_UPDATE_P_FLOW,//修改PROCESS前置FLOW
+  GPROCESS_UPDATE_N_FLOW,//修改PROCESS后置FLOW
+  GPROCESS_UPDATE_P,//修改PROCESS前置流程
+  GPROCESS_UPDATE_N,//修改PROCESS后置流程
+
+  //level = 2
+  GPNODE_ADD,//新增PNODE
+  GPNODE_ADD_N_FLOW,//新增PNODE后置FLOW
+  GPNODE_UPDATE,//修改PNODE
+  GPNODE_UPDATE_P_FLOW,//修改PNODE前置FLOW
+  GPNODE_UPDATE_N_FLOW,//修改PNODE后置FLOW
+  GPNODE_UPDATE_P,//修改PNODE前置节点
+  GPNODE_UPDATE_N,//修改PNODE后置节点
+
+  //level = 2
+  GGATEWAY_ADD,//新增GATEWAY
+  GGATEWAY_ADD_N_FLOW,//新增GATEWAY后置FLOW
+  GGATEWAY_UPDATE,//修改GATEWAY
+  GGATEWAY_UPDATE_P_FLOW,//修改GATEWAY前置FLOW
+  GGATEWAY_UPDATE_N_FLOW,//修改GATEWAY后置FLOW
+  GGATEWAY_UPDATE_P,//修改GATEWAY前置节点
+  GGATEWAY_UPDATE_N,//修改GATEWAY后置节点
+  ;
+}
