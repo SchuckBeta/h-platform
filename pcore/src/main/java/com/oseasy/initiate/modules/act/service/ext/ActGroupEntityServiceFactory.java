@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.service.ext;
+package com.hch.platform.pcore.modules.act.service.ext;
 
 import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;

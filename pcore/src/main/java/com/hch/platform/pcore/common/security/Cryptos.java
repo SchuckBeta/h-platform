@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2005-2012 springside.org.cn
  */
-package com.oseasy.initiate.common.security;
+package com.hch.platform.pcore.common.security;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -15,8 +15,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.oseasy.initiate.common.utils.Encodes;
-import com.oseasy.initiate.common.utils.Exceptions;
+import com.hch.platform.putil.common.utils.Encodes;
+import com.hch.platform.putil.common.utils.Exceptions;
 
 /**
  * 支持HMAC-SHA1消息签名 及 DES/AES对称加密的工具类.

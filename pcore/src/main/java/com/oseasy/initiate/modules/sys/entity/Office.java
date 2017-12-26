@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.TreeEntity;
+import com.hch.platform.pcore.common.persistence.TreeEntity;
 
 /**
  * 机构Entity

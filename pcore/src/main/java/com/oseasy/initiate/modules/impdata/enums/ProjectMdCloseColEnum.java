@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.enums;
+package com.hch.platform.pcore.modules.impdata.enums;
 
 public enum ProjectMdCloseColEnum {
 		S1("1","p_number")

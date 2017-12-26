@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.excellent.enums;
+package com.hch.platform.pcore.modules.excellent.enums;
 
 public enum ExcTemplateEnum {
 	 R1("1","双创项目展示模板","project.xml")

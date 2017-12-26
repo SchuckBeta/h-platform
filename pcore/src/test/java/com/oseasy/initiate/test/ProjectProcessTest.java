@@ -1,14 +1,14 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.act.dao.ActDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;

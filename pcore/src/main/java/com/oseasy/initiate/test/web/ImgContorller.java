@@ -1,6 +1,6 @@
-package com.oseasy.initiate.test.web;
+package com.hch.platform.pcore.test.web;
 
-import com.oseasy.initiate.common.web.BaseController;
+import com.hch.platform.pcore.common.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.state.web;
+package com.hch.platform.pcore.modules.state.web;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.state.service.StateService;
-import com.oseasy.initiate.modules.state.vo.MidVo;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.state.service.StateService;
+import com.hch.platform.pcore.modules.state.vo.MidVo;
 import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sco.vo;
+package com.hch.platform.pcore.modules.sco.vo;
 
 /**
  * 学分类型枚举.

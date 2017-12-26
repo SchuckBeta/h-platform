@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.web;
+package com.hch.platform.pcore.modules.cms.web;
 
 import java.util.Date;
 
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.entity.Comment;
-import com.oseasy.initiate.modules.cms.service.CommentService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.entity.Comment;
+import com.hch.platform.pcore.modules.cms.service.CommentService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 评论Controller

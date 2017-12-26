@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,22 +20,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysJkey;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.SysCertificate;
-import com.oseasy.initiate.modules.sys.entity.SysCertificateIssued;
-import com.oseasy.initiate.modules.sys.entity.SysCertificateRel;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysCertificateIssuedService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.vo.SysCertificateIsstype;
-import com.oseasy.initiate.modules.sys.vo.SysSval.SysCertSval;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysJkey;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificate;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificateIssued;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificateRel;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysCertificateIssuedService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.vo.SysCertificateIsstype;
+import com.hch.platform.pcore.modules.sys.vo.SysSval.SysCertSval;
 
 /**
  * 系统证书执行记录Controller.
@@ -141,10 +141,10 @@ public class SysCertificateIssuedController extends BaseController {
     SysCertificateIssued psysCertificateIssued = new SysCertificateIssued();
     psysCertificateIssued.setSysCert(new SysCertificate(certId));
     if(StringUtil.isNotEmpty(issuedId)){
-      psysCertificateIssued.setIssuedBy(new User(issuedId));
+      psysCertificateIssued.setIssuedBy(new AbsUser(issuedId));
     }
     if(StringUtil.isNotEmpty(userId)){
-      psysCertificateIssued.setAcceptBy(new User(userId));
+      psysCertificateIssued.setAcceptBy(new AbsUser(userId));
     }
     if(StringUtil.isNotEmpty(ywId)){
       psysCertificateIssued.setActYw(new ActYw(ywId));
@@ -184,9 +184,9 @@ public class SysCertificateIssuedController extends BaseController {
     Map<String, Object> result = new HashMap<String, Object>();
 
     SysCertificateIssued psysCertificateIssued = new SysCertificateIssued();
-    psysCertificateIssued.setAcceptBy(new User(userId));
+    psysCertificateIssued.setAcceptBy(new AbsUser(userId));
     if(StringUtil.isNotEmpty(issuedId)){
-      psysCertificateIssued.setIssuedBy(new User(issuedId));
+      psysCertificateIssued.setIssuedBy(new AbsUser(issuedId));
     }
     if(StringUtil.isNotEmpty(certId)){
       psysCertificateIssued.setSysCert(new SysCertificate(certId));
@@ -229,9 +229,9 @@ public class SysCertificateIssuedController extends BaseController {
     Map<String, Object> result = new HashMap<String, Object>();
 
     SysCertificateIssued psysCertificateIssued = new SysCertificateIssued();
-    psysCertificateIssued.setIssuedBy(new User(issuedId));
+    psysCertificateIssued.setIssuedBy(new AbsUser(issuedId));
     if(StringUtil.isNotEmpty(userId)){
-      psysCertificateIssued.setAcceptBy(new User(userId));
+      psysCertificateIssued.setAcceptBy(new AbsUser(userId));
     }
     if(StringUtil.isNotEmpty(certId)){
       psysCertificateIssued.setSysCert(new SysCertificate(certId));
@@ -276,13 +276,13 @@ public class SysCertificateIssuedController extends BaseController {
     SysCertificateIssued psysCertificateIssued = new SysCertificateIssued();
     psysCertificateIssued.setActYw(new ActYw(ywId));
     if(StringUtil.isNotEmpty(userId)){
-      psysCertificateIssued.setAcceptBy(new User(userId));
+      psysCertificateIssued.setAcceptBy(new AbsUser(userId));
     }
     if(StringUtil.isNotEmpty(certId)){
       psysCertificateIssued.setSysCert(new SysCertificate(certId));
     }
     if(StringUtil.isNotEmpty(issuedId)){
-      psysCertificateIssued.setIssuedBy(new User(issuedId));
+      psysCertificateIssued.setIssuedBy(new AbsUser(issuedId));
     }
     if(StringUtil.isNotEmpty(type)){
       psysCertificateIssued.setType(type);

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.state.service;
+package com.hch.platform.pcore.modules.state.service;
 
 import java.util.List;
 import java.util.Map;
@@ -14,21 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.attachment.dao.SysAttachmentDao;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.dao.ProjectPlanDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.entity.ProjectPlan;
-import com.oseasy.initiate.modules.project.service.ProjectAuditInfoService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.state.vo.MidVo;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.attachment.dao.SysAttachmentDao;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.dao.ProjectPlanDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectPlan;
+import com.hch.platform.pcore.modules.project.service.ProjectAuditInfoService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.state.vo.MidVo;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
 
 import net.sf.json.JSONObject;
 

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.auditstandard.web;
+package com.hch.platform.pcore.modules.auditstandard.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandard;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardFlow;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardFlowService;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardService;
-import com.oseasy.initiate.modules.auditstandard.vo.AuditStandardVo;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandard;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardFlow;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardDetailService;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardFlowService;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardService;
+import com.hch.platform.pcore.modules.auditstandard.vo.AuditStandardVo;
 
 import net.sf.json.JSONObject;
 

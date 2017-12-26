@@ -1,7 +1,7 @@
 /**
  * There are <a href="https://github.com/oseasy/initiate">JeeSite</a> code generation
  */
-package com.oseasy.initiate.modules.oa.web;
+package com.hch.platform.pcore.modules.oa.web;
 
 import java.util.List;
 import java.util.Map;
@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.mapper.JsonMapper;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.oa.entity.Leave;
-import com.oseasy.initiate.modules.oa.service.LeaveService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.mapper.JsonMapper;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.oa.entity.Leave;
+import com.hch.platform.pcore.modules.oa.service.LeaveService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 请假Controller

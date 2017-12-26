@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan;
+package com.hch.platform.pcore.common.supcan;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.supcan.annotation.treelist.SupTreeList;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupCol;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupGroup;
-import com.oseasy.initiate.common.supcan.treelist.TreeList;
-import com.oseasy.initiate.common.supcan.treelist.cols.Col;
-import com.oseasy.initiate.common.supcan.treelist.cols.Group;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.SupTreeList;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupCol;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupGroup;
+import com.hch.platform.pcore.common.supcan.treelist.TreeList;
+import com.hch.platform.pcore.common.supcan.treelist.cols.Col;
+import com.hch.platform.pcore.common.supcan.treelist.cols.Group;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
 
 /**
  * 硕正Controller

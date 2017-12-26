@@ -1,9 +1,9 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.persistence.dialect.db;
+package com.hch.platform.pcore.common.persistence.dialect.db;
 
-import com.oseasy.initiate.common.persistence.dialect.Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.Dialect;
 
 /**
  * Oracle的方言实现

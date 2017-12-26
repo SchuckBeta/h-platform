@@ -1,21 +1,21 @@
-package com.oseasy.initiate.modules.gcontest.service;
+package com.hch.platform.pcore.modules.gcontest.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
-import com.oseasy.initiate.modules.sys.entity.Menu;
-import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.service.CategoryService;
+import com.hch.platform.pcore.modules.sys.entity.Menu;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
-import com.oseasy.initiate.modules.gcontest.dao.GContestAnnounceDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.gcontest.entity.GContestAnnounce;
+import com.hch.platform.pcore.modules.gcontest.dao.GContestAnnounceDao;
 
 /**
  * 大赛通告表Service

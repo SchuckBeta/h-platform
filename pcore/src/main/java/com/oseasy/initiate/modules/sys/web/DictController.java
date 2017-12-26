@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.service.DictService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.service.DictService;
 
 import net.sf.json.JSONObject;
 

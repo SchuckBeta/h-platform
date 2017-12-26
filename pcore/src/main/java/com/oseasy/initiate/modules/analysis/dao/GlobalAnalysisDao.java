@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.analysis.dao;
+package com.hch.platform.pcore.modules.analysis.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.analysis.vo.EchartVo;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.analysis.vo.EchartVo;
 
 @MyBatisDao
 public interface GlobalAnalysisDao {

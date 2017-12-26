@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.course.entity;
+package com.hch.platform.pcore.modules.course.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 课程教师Entity.

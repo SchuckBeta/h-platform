@@ -1,21 +1,21 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.utils.GcontestUtils;
-import com.oseasy.initiate.modules.sys.utils.ProjectUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.utils.GcontestUtils;
+import com.hch.platform.pcore.modules.sys.utils.ProjectUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 菜单Entity

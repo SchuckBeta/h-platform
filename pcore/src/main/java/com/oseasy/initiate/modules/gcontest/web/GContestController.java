@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.gcontest.web;
+package com.hch.platform.pcore.modules.gcontest.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,41 +19,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailInsService;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
-import com.oseasy.initiate.modules.gcontest.service.GAuditInfoService;
-import com.oseasy.initiate.modules.gcontest.service.GContestAwardService;
-import com.oseasy.initiate.modules.gcontest.service.GContestService;
-import com.oseasy.initiate.modules.gcontest.vo.GContestNodeVo;
-import com.oseasy.initiate.modules.gcontest.vo.GContestVo;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardDetailInsService;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardDetailService;
+import com.hch.platform.pcore.modules.ftp.service.FtpService;
+import com.hch.platform.pcore.modules.gcontest.entity.GAuditInfo;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.gcontest.entity.GContestAward;
+import com.hch.platform.pcore.modules.gcontest.service.GAuditInfoService;
+import com.hch.platform.pcore.modules.gcontest.service.GContestAwardService;
+import com.hch.platform.pcore.modules.gcontest.service.GContestService;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestNodeVo;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestVo;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectStandardDetailVo;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysStudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONObject;
 
@@ -113,7 +113,7 @@ public class GContestController extends BaseController {
 	
 	@RequestMapping(value = "form")
 	public String form(GContest gContest, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(gContest.getId())) {
 			gContest = gContestService.get(gContest.getId());
 			user=userService.findUserById(gContest.getDeclareId());
@@ -296,7 +296,7 @@ public class GContestController extends BaseController {
 		//查找大赛提交的表单  供评分老师查看
 		String gcontestId=request.getParameter("gcontestId");
 		gContest=gContestService.get(gcontestId);
-		User declareUser=userService.findUserById(gContest.getDeclareId());
+		AbsUser declareUser=userService.findUserById(gContest.getDeclareId());
 		SysStudentExpansion sse = new SysStudentExpansion();
 		sse.setName(declareUser.getName());
 		sse.setEmail(declareUser.getEmail());
@@ -462,7 +462,7 @@ public class GContestController extends BaseController {
 		String state=request.getParameter("state");
 		model.addAttribute("state", state);
 		gContest=gContestService.get(gcontestId);
-		User declareUser=userService.findUserById(gContest.getDeclareId());
+		AbsUser declareUser=userService.findUserById(gContest.getDeclareId());
 		SysStudentExpansion sse = new SysStudentExpansion();
 		sse.setName(declareUser.getName());
 		sse.setEmail(declareUser.getEmail());
@@ -492,7 +492,7 @@ public class GContestController extends BaseController {
         model.addAttribute("turTeachers",turTeachers);
 
 
-		User loginUser = UserUtils.getUser();
+		AbsUser loginUser = UserUtils.getUser();
         //审核意见根据状态得到不同的审核结果
         if (state.equals("1")) {
         	//学院老师评分
@@ -635,7 +635,7 @@ public class GContestController extends BaseController {
 	public String schoolAuditedList(GContest gContest, HttpServletRequest request, HttpServletResponse response, Model model) {
 	 	Map<String,Object> param =new HashMap<String,Object>();
 	 	model.addAttribute("gContest",gContest);
-	 	User user= UserUtils.getUser();
+	 	AbsUser user= UserUtils.getUser();
     	
     	List<Role> roles=user.getRoleList();
     	//判断角色身份
@@ -672,7 +672,7 @@ public class GContestController extends BaseController {
 					   HttpServletResponse response, Model model) {
 	 	Map<String,Object> param =new HashMap<String,Object>();
 	 	model.addAttribute("gContest",gContest);
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
 		String userType=user.getUserType();
 		//3学院秘书可以查看本院大赛不能变更
 		if (userType.equals("3")) {
@@ -704,7 +704,7 @@ public class GContestController extends BaseController {
 		GContest gContest=gContestService.get(gcontestId);
 		String state=gContest.getAuditState();
 		model.addAttribute("state", state);
-		User declareUser=userService.findUserById(gContest.getDeclareId());
+		AbsUser declareUser=userService.findUserById(gContest.getDeclareId());
 		SysStudentExpansion sse = new SysStudentExpansion();
 		sse.setName(declareUser.getName());
 		sse.setEmail(declareUser.getEmail());
@@ -748,9 +748,9 @@ public class GContestController extends BaseController {
         	List<GAuditInfo> collegeinfos= getInfo(gContest.getId(),"1");
         	List<GAuditInfo> colleges= new ArrayList<GAuditInfo> ();
         	//找到学院专家
-        	List<User> users= userService.getCollegeExpertUsers(gContest.getDeclareId());
+        	List<AbsUser> users= userService.getCollegeExpertUsers(gContest.getDeclareId());
         	if (collegeinfos.size()!=users.size()) {
-        		for(User user:users) {
+        		for(AbsUser user:users) {
         			if (collegeinfos.size()>0) {
         				boolean add=true;
         				for(GAuditInfo gi:collegeinfos) {
@@ -777,8 +777,8 @@ public class GContestController extends BaseController {
         	}
         	//找到学校专家
         	List<GAuditInfo> schools= new ArrayList<GAuditInfo> ();
-        	List<User> userScholls= userService.getSchoolExpertUsers();
-        	for(User user:userScholls) {	
+        	List<AbsUser> userScholls= userService.getSchoolExpertUsers();
+        	for(AbsUser user:userScholls) {	
 				GAuditInfo newGi=new GAuditInfo();
 				newGi.setCreateBy(user);
 				schools.add(newGi);
@@ -790,8 +790,8 @@ public class GContestController extends BaseController {
      		model.addAttribute("infocolleges", collegeinfos);
      		//找到学校专家
         	List<GAuditInfo> schools= new ArrayList<GAuditInfo> ();
-        	List<User> userScholls= userService.getSchoolExpertUsers();
-        	for(User user:userScholls) {	
+        	List<AbsUser> userScholls= userService.getSchoolExpertUsers();
+        	for(AbsUser user:userScholls) {	
 				GAuditInfo newGi=new GAuditInfo();
 				newGi.setCreateBy(user);
 				schools.add(newGi);
@@ -811,9 +811,9 @@ public class GContestController extends BaseController {
      		
      		List<GAuditInfo> schools= new ArrayList<GAuditInfo> ();
         	//找到学校专家
-        	List<User> users= userService.getSchoolExpertUsers();
+        	List<AbsUser> users= userService.getSchoolExpertUsers();
         	if (schoolExportinfos.size()!=users.size()) {
-        		for(User user:users) {
+        		for(AbsUser user:users) {
         			if (schoolExportinfos.size()>0) {
         				boolean add=true;
         				for(GAuditInfo gi:schoolExportinfos) {
@@ -924,8 +924,8 @@ public class GContestController extends BaseController {
         	model.addAttribute("collegeSecinfo", collegeSecinfos.get(0));
      		//找到学校专家
         	List<GAuditInfo> schools= new ArrayList<GAuditInfo> ();
-        	List<User> userScholls= userService.getSchoolExpertUsers();
-        	for(User user:userScholls) {	
+        	List<AbsUser> userScholls= userService.getSchoolExpertUsers();
+        	for(AbsUser user:userScholls) {	
 				GAuditInfo newGi=new GAuditInfo();
 				newGi.setCreateBy(user);
 				schools.add(newGi);
@@ -934,7 +934,7 @@ public class GContestController extends BaseController {
             
 		
        	}
-        User loginUser = UserUtils.getUser();
+        AbsUser loginUser = UserUtils.getUser();
         model.addAttribute("loginUser", loginUser);
 		model.addAttribute("gContest", gContest);
 		model.addAttribute("sse", sse);
@@ -1001,7 +1001,7 @@ public class GContestController extends BaseController {
         Page<Act> pageForSearch =new Page<Act>(request, response);
         Page<Act> page=actTaskService.todoListForPage(pageForSearch,act);*/
     	Map<String,Object> param =new HashMap<String,Object>();
-    	User user = UserUtils.getUser();
+    	AbsUser user = UserUtils.getUser();
     	String userType=user.getUserType();
     	if (userType.equals("4")) {
     		param.put("auditState", "1");
@@ -1047,7 +1047,7 @@ public class GContestController extends BaseController {
 	@RequestMapping(value = "collegeExportScore")
     public String auditContestList(GContest gContest, HttpServletRequest request,HttpServletResponse response, Model model) {
     	Map<String,Object> param =new HashMap<String,Object>();
-    	User user = UserUtils.getUser();
+    	AbsUser user = UserUtils.getUser();
     	String userType=user.getUserType();
 		model.addAttribute("menuName", "参赛项目网评");
     	if (userType.equals("4")) {
@@ -1156,7 +1156,7 @@ public class GContestController extends BaseController {
 					   HttpServletResponse response, Model model) {
 	 	Map<String,Object> param =new HashMap<String,Object>();
 	 	model.addAttribute("gContest",gContest);
-	 	User user= UserUtils.getUser();
+	 	AbsUser user= UserUtils.getUser();
     	String userType=user.getUserType();
 		model.addAttribute("menuName", "参赛项目路演");
 		if (userType.equals("6")) {
@@ -1236,7 +1236,7 @@ public class GContestController extends BaseController {
 	public String schoolEndAuditList(GContest gContest, HttpServletRequest request,
 					   HttpServletResponse response, Model model) {
 		Map<String,Object> param =new HashMap<String,Object>();
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
 		model.addAttribute("gContest",gContest);
     	String userType=user.getUserType();
 		model.addAttribute("menuName", "参赛项目评级");

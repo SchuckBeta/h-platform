@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.common.properties;
+package com.hch.platform.pcore.common.supcan.common.properties;
 
-import com.oseasy.initiate.common.supcan.annotation.common.properties.SupExpress;
-import com.oseasy.initiate.common.utils.ObjectUtil;
+import com.hch.platform.pcore.common.supcan.annotation.common.properties.SupExpress;
+import com.hch.platform.putil.common.utils.ObjectUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.gcontest.service;
+package com.hch.platform.pcore.modules.gcontest.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,57 +16,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.FloatUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.dao.ActYwDao;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailInsService;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
-import com.oseasy.initiate.modules.auditstandard.vo.AsdVo;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.gcontest.dao.GContestDao;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAnnounce;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
-import com.oseasy.initiate.modules.gcontest.enums.AuditStatusEnum;
-import com.oseasy.initiate.modules.gcontest.enums.GContestStatusEnum;
-import com.oseasy.initiate.modules.gcontest.vo.GContestListVo;
-import com.oseasy.initiate.modules.gcontest.vo.GContestNodeVo;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAllotRatioDao;
-import com.oseasy.initiate.modules.sco.dao.ScoScoreDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sco.entity.ScoScore;
-import com.oseasy.initiate.modules.sco.vo.ScoAffrimCriterionVo;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FloatUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.dao.ActDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.dao.ActYwDao;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.service.ActYwGnodeService;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardDetailInsService;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardDetailService;
+import com.hch.platform.pcore.modules.auditstandard.vo.AsdVo;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.gcontest.dao.GContestDao;
+import com.hch.platform.pcore.modules.gcontest.entity.GAuditInfo;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.gcontest.entity.GContestAnnounce;
+import com.hch.platform.pcore.modules.gcontest.entity.GContestAward;
+import com.hch.platform.pcore.modules.gcontest.enums.AuditStatusEnum;
+import com.hch.platform.pcore.modules.gcontest.enums.GContestStatusEnum;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestListVo;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestNodeVo;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectStandardDetailVo;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmCriterionDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAllotRatioDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoScoreDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sco.entity.ScoScore;
+import com.hch.platform.pcore.modules.sco.vo.ScoAffrimCriterionVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -280,7 +280,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 					ids.add(map.get("id"));
 
 					//判断专家是否已经审核过该数据
-					User user= UserUtils.getUser();
+					AbsUser user= UserUtils.getUser();
 					GAuditInfo pai=new GAuditInfo();
 			        pai.setGId(map.get("id"));
 			        pai.setAuditLevel(map.get("auditState"));
@@ -342,7 +342,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 					ids.add(map.get("id"));
 
 					//判断专家是否已经审核过该数据
-					User user= UserUtils.getUser();
+					AbsUser user= UserUtils.getUser();
 					GAuditInfo pai=new GAuditInfo();
 			        pai.setGId(map.get("id"));
 			        pai.setAuditLevel(map.get("auditState"));
@@ -404,7 +404,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 					ids.add(map.get("id"));
 
 					//判断专家是否已经审核过该数据
-					User user= UserUtils.getUser();
+					AbsUser user= UserUtils.getUser();
 					GAuditInfo pai=new GAuditInfo();
 			        pai.setGId(map.get("id"));
 			        pai.setAuditLevel(map.get("auditState"));
@@ -459,7 +459,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 
 	@Transactional(readOnly = false)
 	public void save(GContest gContest) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		gContest.setCompetitionNumber(IdUtils.getGContestNumberByDb());
 		gContest.setSubTime(new Date());
 		gContest.setUniversityId(user.getOffice().getId());
@@ -479,7 +479,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 
 	@Transactional(readOnly = false)
 	public int submit(GContest gContest) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		gContest.setAuditState("1");
 		gContest.setCompetitionNumber(IdUtils.getGContestNumberByDb());
 		gContest.setSubTime(new Date());
@@ -517,7 +517,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 
 	@Transactional(readOnly = false)
 	public String submitOld(GContest gContest) {
-		User user =userService.findUserById(gContest.getDeclareId());
+		AbsUser user =userService.findUserById(gContest.getDeclareId());
 		GContest newGContest=new GContest();
 		newGContest.setAuditState("1");
 		newGContest.setId("");
@@ -616,7 +616,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			}
 		}
 
-		User rec_User=new User();
+		AbsUser rec_User=new AbsUser();
 		rec_User.setId(gContest.getDeclareId());
 //		oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学院专家审核",
 //				"学院专家"+apply_User.getName()+"已对您的作品给出评分；","",gContest.getId());
@@ -717,8 +717,8 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		//保存审核意见
 		pai.setSuggest(comment);
 		gAuditInfoService.save(pai);
-		User apply_User=UserUtils.getUser();
-		User rec_User=new User();
+		AbsUser apply_User=UserUtils.getUser();
+		AbsUser rec_User=new AbsUser();
 		rec_User.setId(gContest.getDeclareId());
 
 
@@ -879,7 +879,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			}
 		}
 
-		User rec_User=new User();
+		AbsUser rec_User=new AbsUser();
 		rec_User.setId(gContest.getDeclareId());
 
 		gContest=get(gContest.getId());
@@ -991,8 +991,8 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			}
 		}
 
-		User apply_User=UserUtils.getUser();
-		User rec_User=new User();
+		AbsUser apply_User=UserUtils.getUser();
+		AbsUser rec_User=new AbsUser();
 		rec_User.setId(gContest.getDeclareId());
 
 
@@ -1130,7 +1130,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				}
 			}
 		}
-		User rec_User=new User();
+		AbsUser rec_User=new AbsUser();
 		rec_User.setId(gContest.getDeclareId());
 
 		//完成工作流
@@ -1240,8 +1240,8 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				}
 			}
 		}
-		User apply_User=UserUtils.getUser();
-		User rec_User=new User();
+		AbsUser apply_User=UserUtils.getUser();
+		AbsUser rec_User=new AbsUser();
 		rec_User.setId(gContest.getDeclareId());
 		Map<String,Object> vars=new HashMap<String,Object>();
 		vars=gContest.getVars();
@@ -1361,7 +1361,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 
 	public JSONObject getListData(GContest gContest) {
        // User uesr=userService.findUserById(gContest.getDeclareId());
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         //jsondata 生产
     	JSONObject obj = new JSONObject();
 		//项目基础信息表头
@@ -1660,7 +1660,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			    	Act act=new Act();
 					act.setProcDefKey("gcontest");  //大赛流程名称
 				    act.setTaskDefKey("audit1");   // 表示大赛流程阶段 见流程图的userTask的id
-			    	User auditUser =userService.findUserById(auditName);
+			    	AbsUser auditUser =userService.findUserById(auditName);
 				    pai.setCreateBy(auditUser);
 				    pai.setCreateDate(new Date());
 				    pai.setAuditId(auditUser.getLoginName());
@@ -1678,7 +1678,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 		gContest.setComment(collegeSuggest);
 	    gContest.setGrade(collegeResult);
 	    //找到学院秘书
-    	User collegeUser = userService.getCollegeSecUsers(gContest.getDeclareId());
+    	AbsUser collegeUser = userService.getCollegeSecUsers(gContest.getDeclareId());
 		if (isAudit) {
 			GAuditInfo pai=new GAuditInfo();
 			pai.setAuditLevel("2");
@@ -1748,7 +1748,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			    	Act act=new Act();
 					act.setProcDefKey("gcontest");  //大赛流程名称
 				    act.setTaskDefKey("audit3");   // 表示大赛流程阶段 见流程图的userTask的id
-			    	User auditUser =userService.findUserById(auditName);
+			    	AbsUser auditUser =userService.findUserById(auditName);
 			    	pai.setId(IdGen.uuid());
 				    pai.setCreateBy(auditUser);
 				    pai.setCreateDate(new Date());
@@ -1782,7 +1782,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			act.setProcDefKey("gcontest");  //大赛流程名称
 		    act.setTaskDefKey("audit4");   // 表示大赛流程阶段 见流程图的userTask的id
 		    //找到学校秘书
-	    	User schoolUser = userService.getSchoolSecUsers();
+	    	AbsUser schoolUser = userService.getSchoolSecUsers();
 	    	GAuditInfo pai =new GAuditInfo();
 	    	pai.setId(IdGen.uuid());
 	    	pai.setCreateDate(new Date());
@@ -1820,7 +1820,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 	    	pai.setId(IdGen.uuid());
 	    	pai.setCreateDate(new Date());
 	    	 //找到学校秘书
-	    	User schoolUser = userService.getSchoolSecUsers();
+	    	AbsUser schoolUser = userService.getSchoolSecUsers();
 	    	pai.setCreateBy(schoolUser);
 	    	pai.setCreateDate(new Date());
 		    pai.setAuditId(schoolUser.getLoginName());
@@ -1890,7 +1890,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 	    	pai.setId(IdGen.uuid());
 	    	pai.setCreateDate(new Date());
 	    	 //找到学校秘书
-	    	User schoolUser = userService.getSchoolSecUsers();
+	    	AbsUser schoolUser = userService.getSchoolSecUsers();
 	    	pai.setCreateBy(schoolUser);
 	    	pai.setCreateDate(new Date());
 		    pai.setAuditId(schoolUser.getLoginName());
@@ -1933,7 +1933,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
         		for(GAuditInfo gAuditInfo:collegeinfos) {
         			for(int i=0;i<collegeExport.size();i++) {
         				String auditName=(String) collegeExport.getJSONObject(i).get("auditName");
-        				User exportUser=userService.findUserById(auditName);
+        				AbsUser exportUser=userService.findUserById(auditName);
         				if (gAuditInfo.getAuditId().equals(exportUser.getLoginName())) {
         					((JSONObject) collegeExport.get(i)).put("auditId","");
         					break;
@@ -1998,7 +1998,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
         		for(GAuditInfo gAuditInfo:collegeinfos) {
         			for(int i=0;i<collegeExport.size();i++) {
         				String auditName=(String) collegeExport.getJSONObject(i).get("auditName");
-        				User exportUser=userService.findUserById(auditName);
+        				AbsUser exportUser=userService.findUserById(auditName);
         				if (gAuditInfo.getAuditId().equals(exportUser.getLoginName())) {
         					((JSONObject) collegeExport.get(i)).put("auditId","");
         					break;
@@ -2052,7 +2052,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
         		for(GAuditInfo gAuditInfo:schoolinfos) {
         			for(int i=0;i<schoolExport.size();i++) {
         				String auditName=(String) schoolExport.getJSONObject(i).get("auditName");
-        				User exportUser=userService.findUserById(auditName);
+        				AbsUser exportUser=userService.findUserById(auditName);
         				if (gAuditInfo.getAuditId().equals(exportUser.getLoginName())) {
         					((JSONObject) schoolExport.get(i)).put("auditId","");
         					break;
@@ -2633,7 +2633,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 			if(!hasConfig){ //如果后台没有配比规则、则所有成员一样的分数
 				for(Map<String,String> teamUser:studentList ){
 					ScoScore scoScore = new ScoScore();
-					User user =new User();
+					AbsUser user =new AbsUser();
 					user.setId(teamUser.get("userId"));
 					scoScore.setUser(user);
 					float score = criterionResult.getScore();
@@ -2651,7 +2651,7 @@ public class GContestService extends CrudService<GContestDao, GContest> {
 				int weigthTotal = teamUserHistoryService.getWeightTotalByTeamId(gContest.getTeamId(),gContest.getId());
 				for(Map<String,String> teamUser:studentList ){
 					ScoScore scoScore = new ScoScore();
-					User user =new User();
+					AbsUser user =new AbsUser();
 					user.setId(teamUser.get("userId"));
 					scoScore.setUser(user);
 					String number=String.valueOf(teamUser.get("weightVal"));

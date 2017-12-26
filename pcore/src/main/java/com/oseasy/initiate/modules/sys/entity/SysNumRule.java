@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.joda.time.Hours;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 编号规则Entity

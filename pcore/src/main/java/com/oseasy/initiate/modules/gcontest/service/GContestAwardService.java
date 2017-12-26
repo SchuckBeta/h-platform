@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.gcontest.service;
+package com.hch.platform.pcore.modules.gcontest.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
-import com.oseasy.initiate.modules.gcontest.dao.GContestAwardDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.gcontest.entity.GContestAward;
+import com.hch.platform.pcore.modules.gcontest.dao.GContestAwardDao;
 
 /**
  * 大赛获奖表Service

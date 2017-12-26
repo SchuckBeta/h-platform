@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.service;
+package com.hch.platform.pcore.modules.project.service;
 
 import java.util.Date;
 import java.util.List;
@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.project.dao.ProjectAuditInfoDao;
-import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.project.dao.ProjectAuditInfoDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectAuditInfo;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
 
 /**
  * 项目审核信息Service

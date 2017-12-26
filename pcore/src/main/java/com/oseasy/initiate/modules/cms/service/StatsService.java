@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.service;
+package com.hch.platform.pcore.modules.cms.service;
 
 import java.util.Date;
 import java.util.List;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.modules.cms.dao.ArticleDao;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.entity.Site;
-import com.oseasy.initiate.modules.sys.entity.Office;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.modules.cms.dao.ArticleDao;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.entity.Site;
+import com.hch.platform.pcore.modules.sys.entity.Office;
 
 /**
  * 统计Service

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.tool;
+package com.hch.platform.pcore.modules.sys.tool;
 
 public enum SysNoType {
     NO_FLOW("FWNO", "流程惟一编号"),

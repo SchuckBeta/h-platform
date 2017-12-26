@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.pw.dao.PwEnterDetailDao;
-import com.oseasy.initiate.modules.pw.entity.PwCompany;
-import com.oseasy.initiate.modules.pw.entity.PwEnterDetail;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.pw.dao.PwEnterDetailDao;
+import com.hch.platform.pcore.modules.pw.entity.PwCompany;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterDetail;
 
 /**
  * 入驻申报详情Service.

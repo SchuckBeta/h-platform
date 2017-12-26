@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,22 +21,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.entity.ActYwApply;
-import com.oseasy.initiate.modules.actyw.service.ActYwApplyService;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.pw.entity.PwCompany;
-import com.oseasy.initiate.modules.pw.entity.PwEnter;
-import com.oseasy.initiate.modules.pw.exception.NoTeamException;
-import com.oseasy.initiate.modules.pw.service.PwEnterService;
-import com.oseasy.initiate.modules.pw.vo.DtypeTerm;
-import com.oseasy.initiate.modules.pw.vo.PwEnterStatus;
-import com.oseasy.initiate.modules.pw.vo.PwEnterVo;
-import com.oseasy.initiate.modules.pw.vo.SvalPw;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwApply;
+import com.hch.platform.pcore.modules.actyw.service.ActYwApplyService;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.pw.entity.PwCompany;
+import com.hch.platform.pcore.modules.pw.entity.PwEnter;
+import com.hch.platform.pcore.modules.pw.exception.NoTeamException;
+import com.hch.platform.pcore.modules.pw.service.PwEnterService;
+import com.hch.platform.pcore.modules.pw.vo.DtypeTerm;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterStatus;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterVo;
+import com.hch.platform.pcore.modules.pw.vo.SvalPw;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -167,7 +167,7 @@ public class FrontPwEnterController extends BaseController {
       pwEnter = new PwEnter();
       pwEnter.setStatus(PwEnterStatus.PES_DSH.getKey());
     }
-    pwEnter.setApplicant(new User(uid));
+    pwEnter.setApplicant(new AbsUser(uid));
     Integer addTerm = DtypeTerm.addDayByType(term, new Date());
     if(addTerm == null){
       return new ActYwRstatus<PwEnter>(false, "入驻失败");

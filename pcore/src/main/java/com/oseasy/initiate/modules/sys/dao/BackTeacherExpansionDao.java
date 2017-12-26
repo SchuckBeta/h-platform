@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.sys.dao;
+package com.hch.platform.pcore.modules.sys.dao;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.team.entity.Team;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.team.entity.Team;
 
 /**
  * 导师扩展信息表DAO接口

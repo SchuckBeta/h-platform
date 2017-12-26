@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.act.service.creator;
+package com.hch.platform.pcore.modules.act.service.creator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.springframework.util.CollectionUtils;
 
-import com.oseasy.initiate.modules.act.utils.ProcessDefUtils;
+import com.hch.platform.pcore.modules.act.utils.ProcessDefUtils;
 
 public class ChainedActivitiesCreator extends RuntimeActivityCreatorSupport implements RuntimeActivityCreator {
 	

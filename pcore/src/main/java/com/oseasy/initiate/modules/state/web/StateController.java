@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.state.web;
+package com.hch.platform.pcore.modules.state.web;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,42 +24,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FloatUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.act.service.ProjectActTaskService;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardDetailService;
-import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
-import com.oseasy.initiate.modules.project.entity.ProMid;
-import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
-import com.oseasy.initiate.modules.project.entity.ProjectClose;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.entity.ProjectPlan;
-import com.oseasy.initiate.modules.project.enums.ProjectStatusEnum;
-import com.oseasy.initiate.modules.project.service.ProMidService;
-import com.oseasy.initiate.modules.project.service.ProjectAuditInfoService;
-import com.oseasy.initiate.modules.project.service.ProjectCloseService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.service.ProjectPlanService;
-import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
-import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
-import com.oseasy.initiate.modules.state.service.StateService;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.utils.FloatUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.act.service.ProjectActTaskService;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardDetailService;
+import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
+import com.hch.platform.pcore.modules.project.entity.ProMid;
+import com.hch.platform.pcore.modules.project.entity.ProjectAuditInfo;
+import com.hch.platform.pcore.modules.project.entity.ProjectClose;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectPlan;
+import com.hch.platform.pcore.modules.project.enums.ProjectStatusEnum;
+import com.hch.platform.pcore.modules.project.service.ProMidService;
+import com.hch.platform.pcore.modules.project.service.ProjectAuditInfoService;
+import com.hch.platform.pcore.modules.project.service.ProjectCloseService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.service.ProjectPlanService;
+import com.hch.platform.pcore.modules.project.vo.ProjectNodeVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectStandardDetailVo;
+import com.hch.platform.pcore.modules.state.service.StateService;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysStudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONObject;
 
@@ -135,7 +135,7 @@ public class StateController extends BaseController {
     public String setAuditList(Act act, HttpServletRequest request,
                                HttpServletResponse response, Model model) {
         //如果是学校管理员跳转到
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         if (StringUtils.equals(user.getUserType(),"6")) { //学校管理员
             return "redirect:"+"/a/state/schoolSetList";
         }
@@ -262,7 +262,7 @@ public class StateController extends BaseController {
     public String middleAuditList(Act act, HttpServletRequest request,
                                   HttpServletResponse response, Model model) {
         //判断用户类型如果是学院秘书或者管理员进来，跳转到middleRatingList
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         if (StringUtils.equals(user.getUserType(),"3")||StringUtils.equals(user.getUserType(),"6")) { //学院秘书和学校管理员
             return "redirect:"+"/a/state/middleRatingList";  //跳转到中期评级页面
         }
@@ -335,7 +335,7 @@ public class StateController extends BaseController {
         act.setTaskDefKey("middleRating");   // 表示立项阶段 见流程图的userTask的id 所有的立项的userTask都是以set开始
         Page<Act> pageForSearch =new Page<Act>(request, response);
         //查找待提交中期报告的数据
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         ProjectDeclare projectDeclareForSearch = new ProjectDeclare();
         if(act.getMap() != null){
           if(StringUtil.isNotEmpty(act.getMap().get("number"))){
@@ -486,7 +486,7 @@ public class StateController extends BaseController {
     public String closeAuditList(Act act, HttpServletRequest request,
                                  HttpServletResponse response, Model model) {
         //判断用户类型如果是学院秘书或者管理员进来，跳转到secCloseSearch
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         if ((user.getUserType()).equals("3") || (user.getUserType()).equals("6")) { //学院秘书和学校管理员
             return "redirect:"+"/a/state/secCloseSearch";
         }
@@ -545,7 +545,7 @@ public class StateController extends BaseController {
         act.setStatus("closeScore");  //状态在结项评分中   closeScore2是学校专家结项评分  closeScore3 是学院专家评分 在流程图中主键ID可以看到
 
         //查找待提交结项报告的数据
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         ProjectDeclare projectDeclareForSearch = new ProjectDeclare();
         if(act.getMap() != null){
           if(StringUtil.isNotEmpty(act.getMap().get("number"))){
@@ -636,7 +636,7 @@ public class StateController extends BaseController {
         model.addAttribute("infos1",infos1);
         List<ProjectAuditInfo> infos2= getInfo(projectDeclare.getId(),"2");
         Iterator<ProjectAuditInfo> it=infos2.iterator();
-        User me= UserUtils.getUser();
+        AbsUser me= UserUtils.getUser();
         while (it.hasNext()) {
             ProjectAuditInfo info=it.next();
             if (!StringUtils.equals(info.getCreateBy().getId(),me.getId())) {
@@ -733,7 +733,7 @@ public class StateController extends BaseController {
         model.addAttribute("infos5",infos5);
         model.addAttribute("infos6",infos6);
 
-        User me= UserUtils.getUser();
+        AbsUser me= UserUtils.getUser();
         int showMiddleScore=0; //是否显示中期平均分 0不显示 1, 显示
         int showFinalScore=0; //是否显示结项平均分 0不显示 1, 显示
         int show2=0,show3=0,show4=0,show5=0,show6=0;
@@ -961,7 +961,7 @@ public class StateController extends BaseController {
             projectDeclare.setStartDate(startDate);
             projectDeclare.setEndDate(DateUtil.addYear(projectDeclare.getStartDate(),1));
         }
-        User user=UserUtils.getUser();
+        AbsUser user=UserUtils.getUser();
         String officeMap="";
         String levelMap="";
         Page<ProjectDeclare> page=null;
@@ -1011,7 +1011,7 @@ public class StateController extends BaseController {
         List<ProjectAuditInfo> infos6= getInfo(projectDeclare.getId(),"6"); //结项审核
 
 
-        User me=UserUtils.getUser();
+        AbsUser me=UserUtils.getUser();
         if (StringUtils.equals(me.getUserType(),"4")||StringUtils.equals(me.getUserType(),"5")) {  //如果是院级专家或者校级专家，只能看到自己的评分信息
             Iterator<ProjectAuditInfo> it2=infos2.iterator();
             while (it2.hasNext()) {
@@ -1109,13 +1109,13 @@ public class StateController extends BaseController {
 
         //查找审核信息
         //根据leader找到学院秘书，找到学校管理员，找到学院专家，找到学校专家
-        User collegeSec =  userService.getCollegeSecUsers(projectDeclare.getLeader()); //学院秘书
-        User schoolSec  = userService.getSchoolSecUser();  //学校管理员
+        AbsUser collegeSec =  userService.getCollegeSecUsers(projectDeclare.getLeader()); //学院秘书
+        AbsUser schoolSec  = userService.getSchoolSecUser();  //学校管理员
         model.addAttribute("collegeSec",collegeSec);
         model.addAttribute("schoolSec",schoolSec);
 
-        List<User> collegeExperts = userService.getCollegeExpertUsers(projectDeclare.getLeader()); // 院级专家
-        List<User> schoolExperts = userService.getSchoolExpertUsers();   // 学校专家
+        List<AbsUser> collegeExperts = userService.getCollegeExpertUsers(projectDeclare.getLeader()); // 院级专家
+        List<AbsUser> schoolExperts = userService.getSchoolExpertUsers();   // 学校专家
 
         List<ProjectAuditInfo> infos1= getInfo(projectDeclare.getId(),"1");  //立项评级
         List<ProjectAuditInfo> infos2= getInfo(projectDeclare.getId(),"2");  //中期评分
@@ -1152,7 +1152,7 @@ public class StateController extends BaseController {
         //中期检查评分记录处理
         List<ProjectAuditInfo>  info11 = new ArrayList<ProjectAuditInfo>();  // 院级专家中期评分
         List<ProjectAuditInfo> info12=new ArrayList<ProjectAuditInfo>();  // 校级专家中期评分
-        for(User expt:collegeExperts) {
+        for(AbsUser expt:collegeExperts) {
             ProjectAuditInfo info=new ProjectAuditInfo();
             info.setCreateBy(expt);
             info.setUserName(expt.getName());
@@ -1165,7 +1165,7 @@ public class StateController extends BaseController {
             info11.add(info);
         }
 
-        for(User expt:schoolExperts) {
+        for(AbsUser expt:schoolExperts) {
             ProjectAuditInfo info=new ProjectAuditInfo();
             info.setCreateBy(expt);
             info.setUserName(expt.getName());
@@ -1204,7 +1204,7 @@ public class StateController extends BaseController {
         //结项评分处理
         List<ProjectAuditInfo>  info41 = new ArrayList<ProjectAuditInfo>();  // 院级专家结项评分
         List<ProjectAuditInfo> info42=new ArrayList<ProjectAuditInfo>();  // 校级专家结项评分
-        for(User expt:collegeExperts) {
+        for(AbsUser expt:collegeExperts) {
             ProjectAuditInfo info=new ProjectAuditInfo();
             info.setCreateBy(expt);
             info.setUserName(expt.getName());
@@ -1217,7 +1217,7 @@ public class StateController extends BaseController {
             info41.add(info);
         }
 
-        for(User expt:schoolExperts) {
+        for(AbsUser expt:schoolExperts) {
             ProjectAuditInfo info=new ProjectAuditInfo();
             info.setCreateBy(expt);
             info.setUserName(expt.getName());

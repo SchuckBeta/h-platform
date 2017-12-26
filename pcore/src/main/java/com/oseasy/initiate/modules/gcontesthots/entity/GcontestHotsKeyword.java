@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.gcontesthots.entity;
+package com.hch.platform.pcore.modules.gcontesthots.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 大赛热点关键字Entity.

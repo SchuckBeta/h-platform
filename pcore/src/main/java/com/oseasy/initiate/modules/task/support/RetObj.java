@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.task.support;
+package com.hch.platform.pcore.modules.task.support;
 
 public class RetObj {
 	private boolean flag = true;

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.promodel.entity;
+package com.hch.platform.pcore.modules.promodel.entity;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -7,12 +7,12 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.ActEntity;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.common.persistence.ActEntity;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
 
 /**
  * proModelEntity.
@@ -25,7 +25,7 @@ public class ProModel extends ActEntity<ProModel> {
 	private String actYwId;		//业务id
 	private String pName;		// 项目名称
 	private String declareId;		// 申报人ID
-	private User deuser;
+	private AbsUser deuser;
 	private String proType;		//项目 大赛
 	private String type;		         // 大创 小创    互联网+ 创青春
 	private String proCategory;		//项目类别：创新,创业//项目类别：project_type；大赛类别：competition_net_type
@@ -113,11 +113,11 @@ public class ProModel extends ActEntity<ProModel> {
 		this.state = state;
 	}
 
-	public User getDeuser() {
+	public AbsUser getDeuser() {
     return deuser;
   }
 
-  	public void setDeuser(User deuser) {
+  	public void setDeuser(AbsUser deuser) {
     this.deuser = deuser;
   }
 

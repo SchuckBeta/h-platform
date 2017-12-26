@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.promodel.web;
+package com.hch.platform.pcore.modules.promodel.web;
 import java.lang.annotation.*;
 
 @Target({ElementType.PARAMETER, ElementType.METHOD})

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.gen.web;
+package com.hch.platform.pcore.modules.gen.web;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.gen.entity.GenTable;
-import com.oseasy.initiate.modules.gen.service.GenTableService;
-import com.oseasy.initiate.modules.gen.util.GenUtils;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.gen.entity.GenTable;
+import com.hch.platform.pcore.modules.gen.service.GenTableService;
+import com.hch.platform.pcore.modules.gen.util.GenUtils;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 业务表Controller
@@ -50,7 +50,7 @@ public class GenTableController extends BaseController {
 	@RequiresPermissions("gen:genTable:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(GenTable genTable, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (!user.getAdmin()) {
 			genTable.setCreateBy(user);
 		}

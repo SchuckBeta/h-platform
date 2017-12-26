@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,29 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.gcontest.dao.GContestDao;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.vo.GContestNodeVo;
-import com.oseasy.initiate.modules.impdata.dao.GcontestErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.GcontestError;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.gcontest.dao.GContestDao;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestNodeVo;
+import com.hch.platform.pcore.modules.impdata.dao.GcontestErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.GcontestError;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 /**
  * 导入互联网+大赛错误数据Service.
@@ -65,9 +65,9 @@ public class GcontestErrorService extends CrudService<GcontestErrorDao, Gcontest
 			String[] stss=teas.split("、");
 			for(int i=0;i<stss.length;i++){
 				String[] steas=stss[i].split("/");
-				User u=userService.getByNo(steas[1]);
+				AbsUser u=userService.getByNo(steas[1]);
 				if(u==null){
-					u=new User();
+					u=new AbsUser();
 					BackTeacherExpansion tea=new BackTeacherExpansion();
 					tea.setTeachertype(type);
 					u.setName(steas[0]);
@@ -86,9 +86,9 @@ public class GcontestErrorService extends CrudService<GcontestErrorDao, Gcontest
 		//负责人
 		String leadername=pe.getLeader().split("/")[0];
 		String leaderno=pe.getLeader().split("/")[1];
-		User leader=userService.getByNo(leaderno);
+		AbsUser leader=userService.getByNo(leaderno);
 		if(leader==null){
-			leader=new User();
+			leader=new AbsUser();
 			StudentExpansion leaderStu=new StudentExpansion();
 			leader.setOffice(new Office(pe.getOffice()));
 			if(StringUtil.isNotEmpty(pe.getProfes())){
@@ -222,7 +222,7 @@ public class GcontestErrorService extends CrudService<GcontestErrorDao, Gcontest
 	}
 	@Transactional(readOnly = false)
 	public void insert(GcontestError gcontestError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			gcontestError.setUpdateBy(user);
 			gcontestError.setCreateBy(user);

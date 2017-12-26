@@ -1,16 +1,16 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.promodel.utils;
+package com.hch.platform.pcore.modules.promodel.utils;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.promodel.dao.ProModelDao;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.proproject.service.ProProjectService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.promodel.dao.ProModelDao;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.modules.proproject.service.ProProjectService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 /**
  * 内容管理工具类

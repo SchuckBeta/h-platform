@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.pw.dao;
+package com.hch.platform.pcore.modules.pw.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.pw.entity.PwBillPrecords;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.pw.entity.PwBillPrecords;
 
 /**
  * 缴费记录DAO接口.

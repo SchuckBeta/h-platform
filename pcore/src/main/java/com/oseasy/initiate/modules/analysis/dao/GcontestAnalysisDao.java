@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.analysis.dao;
+package com.hch.platform.pcore.modules.analysis.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
 
 @MyBatisDao
 public interface GcontestAnalysisDao {

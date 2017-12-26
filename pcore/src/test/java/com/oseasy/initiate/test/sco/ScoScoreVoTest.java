@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.sco;
+package com.hch.platform.pcore.test.sco;
 
 import static org.junit.Assert.*;
 
@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.oseasy.initiate.modules.sco.entity.ScoScore;
-import com.oseasy.initiate.modules.sco.service.ScoScoreService;
-import com.oseasy.initiate.modules.sco.vo.ScoScoreVo;
-import com.oseasy.initiate.modules.sco.vo.ScoType;
+import com.hch.platform.pcore.modules.sco.entity.ScoScore;
+import com.hch.platform.pcore.modules.sco.service.ScoScoreService;
+import com.hch.platform.pcore.modules.sco.vo.ScoScoreVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-context.xml",

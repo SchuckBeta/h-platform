@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.vo;
+package com.hch.platform.pcore.modules.sys.vo;
 
 /**
  * 系统模块常量

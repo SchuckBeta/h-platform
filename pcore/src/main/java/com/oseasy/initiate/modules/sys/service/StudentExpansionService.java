@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,24 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyRecordDao;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.dao.StudentExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.oa.dao.OaNotifyRecordDao;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.dao.StudentExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONObject;
 

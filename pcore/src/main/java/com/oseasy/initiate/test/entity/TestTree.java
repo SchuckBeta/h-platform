@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.entity;
+package com.hch.platform.pcore.test.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.oseasy.initiate.common.persistence.TreeEntity;
+import com.hch.platform.pcore.common.persistence.TreeEntity;
 
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;

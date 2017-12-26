@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.service;
+package com.hch.platform.pcore.modules.project.service;
 
 import java.util.List;
 import java.util.Map;
@@ -6,11 +6,11 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.project.entity.ProjectAnnounce;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.project.dao.ProjectAnnounceDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.project.entity.ProjectAnnounce;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.project.dao.ProjectAnnounceDao;
 
 /**
  * 项目通告Service

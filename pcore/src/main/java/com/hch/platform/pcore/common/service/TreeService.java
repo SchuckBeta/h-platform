@@ -1,16 +1,16 @@
 /**
  *
  */
-package com.oseasy.initiate.common.service;
+package com.hch.platform.pcore.common.service;
 
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.TreeDao;
-import com.oseasy.initiate.common.persistence.TreeEntity;
-import com.oseasy.initiate.common.utils.Reflections;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.TreeDao;
+import com.hch.platform.pcore.common.persistence.TreeEntity;
+import com.hch.platform.putil.common.utils.Reflections;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * Service基类

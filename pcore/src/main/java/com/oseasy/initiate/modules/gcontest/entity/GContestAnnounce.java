@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.gcontest.entity;
+package com.hch.platform.pcore.modules.gcontest.entity;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 大赛通告表Entity

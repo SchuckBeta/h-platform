@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,18 +25,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.servlet.ValidateCodeServlet;
-import com.oseasy.initiate.common.utils.Encodes;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.web.Servlets;
-import com.oseasy.initiate.modules.cms.web.front.FrontController;
-import com.oseasy.initiate.modules.sys.entity.Menu;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.LogUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.servlet.ValidateCodeServlet;
+import com.hch.platform.putil.common.utils.Encodes;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.web.Servlets;
+import com.hch.platform.pcore.modules.cms.web.front.FrontController;
+import com.hch.platform.pcore.modules.sys.entity.Menu;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.LogUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 系统安全认证实现类
@@ -82,7 +82,7 @@ public class FrontPasswAuthorizingRealm extends SystemAuthorizingRealm {
 		}
 		// 校验用户名密码
 		//User user = getSystemService().getUserByLoginName(token.getUsername());
-		User user = getSystemService().getUserByLoginNameOrNo(token.getUsername());
+		AbsUser user = getSystemService().getUserByLoginNameOrNo(token.getUsername());
 		if (user != null) {
 			if (!"1".equals(user.getUserType())&&!"2".equals(user.getUserType())) {
 				throw new  UnknownAccountException();
@@ -143,7 +143,7 @@ public class FrontPasswAuthorizingRealm extends SystemAuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
+		AbsUser user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();

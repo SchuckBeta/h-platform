@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.utils;
+package com.hch.platform.pcore.modules.sys.utils;
 
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.sys.dao.OfficeDao;
-import com.oseasy.initiate.modules.sys.entity.Office;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.modules.sys.dao.OfficeDao;
+import com.hch.platform.pcore.modules.sys.entity.Office;
 
 /**
  * 工具类

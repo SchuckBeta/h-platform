@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web.front;
+package com.hch.platform.pcore.modules.sys.web.front;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -22,30 +22,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.interactive.service.SysViewsService;
-import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.BackTeacherExpansionService;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.service.TeamService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.interactive.service.SysViewsService;
+import com.hch.platform.pcore.modules.interactive.util.InteractiveUtil;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.BackTeacherExpansionService;
+import com.hch.platform.pcore.modules.sys.service.OfficeService;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.service.TeamService;
 
 import net.sf.json.JSONObject;
 
@@ -176,7 +176,7 @@ public class FrontStudentExpansionController extends BaseController {
 			studentExpansion.getUser().setLikes("0");
 		}
 		/*记录浏览量*/
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
     	if(user!=null&&StringUtil.isNotEmpty(user.getId())&&!user.getId().equals(studentExpansion.getUser().getId())){
     		InteractiveUtil.updateViews(studentExpansion.getUser().getId(), request,CacheUtils.USER_VIEWS_QUEUE);
     	}
@@ -252,7 +252,7 @@ public class FrontStudentExpansionController extends BaseController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				User user=studentExpansion.getUser();
+				AbsUser user=studentExpansion.getUser();
 				if (user!=null) {
 					user.setPhoto(arrUrl[i]);
 					userService.updateUser(user);
@@ -298,7 +298,7 @@ public class FrontStudentExpansionController extends BaseController {
 //				logger.error(e);
 //			}
 //		}
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if ("2".equals(user.getUserType())) {
 			String teachId = backTeacherExpansionService.findTeacherIdByUser(user.getId());
 			return "redirect:"+Global.getFrontPath()+"/sys/frontTeacherExpansion/form?custRedict=1&id="+teachId;
@@ -343,7 +343,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="frontUserPassword")
 	public String frontUserPassword(Model model) {
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if("1".equals(user.getUserType())){
 			StudentExpansion studentExpansion=studentExpansionService.getByUserId(String.valueOf(user.getId()));//查出用户基本信息
 			if (studentExpansion!=null) {
@@ -371,7 +371,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="frontUserMobile")
 	public String frontUserMobile(Model model) {
-	  User user=UserUtils.getUser();
+	  AbsUser user=UserUtils.getUser();
 	  if("1".equals(user.getUserType())){
 		  StudentExpansion studentExpansion=studentExpansionService.getByUserId(String.valueOf(user.getId()));//查出用户基本信息
 		  if (studentExpansion!=null) {
@@ -399,7 +399,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="updatePassWord")
 	public String updatePassWord(String oldPassword, String newPassword, Model model,RedirectAttributes redirectAttributes) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(oldPassword) && StringUtil.isNotBlank(newPassword)) {
 			if (SystemService.validatePassword(oldPassword, user.getPassword())) {
 				if(oldPassword.equals(newPassword)){
@@ -434,7 +434,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="updateMobile")
 	public String updateMobile(String mobile ,Model model,RedirectAttributes redirectAttributes) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(mobile) ) {
 			user.setMobile(mobile);
 			userService.updateMobile(user);
@@ -478,7 +478,7 @@ public class FrontStudentExpansionController extends BaseController {
 			addMessage(redirectAttributes, "修改学生信息成功");
 		}
 
-	 	User user=UserUtils.getUser();
+	 	AbsUser user=UserUtils.getUser();
 	 	if (user!=null) {
 	 		CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_ID_ + user.getId());
 			CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LOGIN_NAME_ + user.getLoginName());
@@ -489,7 +489,7 @@ public class FrontStudentExpansionController extends BaseController {
 	@RequestMapping(value="uploadFTP")
 	public String uploadFTP(HttpServletRequest request) {
 		String arrUrl = request.getParameter("arrUrl");
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if (user!=null) {
 			user.setPhoto(arrUrl);
 			userService.updateUser(user);

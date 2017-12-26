@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.mapper;
+package com.hch.platform.pcore.common.mapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -97,7 +97,7 @@ public class JsonMapper extends ObjectMapper {
 		}
 		return mapper;
 	}
-	
+
 	/**
 	 * Object可以是POJO，也可以是Collection或数组。
 	 * 如果对象为Null, 返回"null".
@@ -114,10 +114,10 @@ public class JsonMapper extends ObjectMapper {
 
 	/**
 	 * 反序列化POJO或简单Collection如List<String>.
-	 * 
+	 *
 	 * 如果JSON字符串为Null或"null"字符串, 返回Null.
 	 * 如果JSON字符串为"[]", 返回空集合.
-	 * 
+	 *
 	 * 如需反序列化复杂Collection如List<MyBean>, 请使用fromJson(String,JavaType)
 	 * @see #fromJson(String, JavaType)
 	 */
@@ -211,7 +211,7 @@ public class JsonMapper extends ObjectMapper {
 		this.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		return this;
 	}
-	
+
 	/**
 	 * 取出Mapper做进一步的设置或使用其他序列化API.
 	 */
@@ -227,7 +227,7 @@ public class JsonMapper extends ObjectMapper {
 	public static String toJsonString(Object object) {
 		return JsonMapper.getInstance().toJson(object);
 	}
-	
+
 	/**
 	 * JSON字符串转换为对象
 	 * @param jsonString
@@ -237,7 +237,7 @@ public class JsonMapper extends ObjectMapper {
 	public static Object fromJsonString(String jsonString, Class<?> clazz) {
 		return JsonMapper.getInstance().fromJson(jsonString, clazz);
 	}
-	
+
 	/**
 	 * 测试
 	 */
@@ -257,5 +257,5 @@ public class JsonMapper extends ObjectMapper {
 		String json = JsonMapper.getInstance().toJson(list);
 		System.out.println(json);
 	}
-	
+
 }

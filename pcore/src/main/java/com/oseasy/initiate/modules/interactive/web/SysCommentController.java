@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.interactive.web;
+package com.hch.platform.pcore.modules.interactive.web;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.interactive.service.SysCommentService;
-import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.interactive.service.SysCommentService;
+import com.hch.platform.pcore.modules.interactive.util.InteractiveUtil;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -52,7 +52,7 @@ public class SysCommentController extends BaseController {
 		param.put("foreignId", request.getParameter("foreignId"));
 		param.put("pageNo", request.getParameter("pageNo"));
 		String queryType=request.getParameter("queryType");
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		String token=request.getParameter("token");
 		String userid=user.getId();
 		if(StringUtil.isEmpty(userid)){

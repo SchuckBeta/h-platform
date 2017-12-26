@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Transient;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.team.entity.Team;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.team.entity.Team;
 
 /**
  * 入驻申报详情Entity.

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.oa.entity;
+package com.hch.platform.pcore.modules.oa.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -10,11 +10,11 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.Collections3;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.utils.Collections3;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 通知通告Entity
@@ -277,7 +277,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 			OaNotifyRecord entity = new OaNotifyRecord();
 			entity.setId(IdGen.uuid());
 			entity.setOaNotify(this);
-			entity.setUser(new User(id));
+			entity.setUser(new AbsUser(id));
 			entity.setReadFlag("0");
 			this.oaNotifyRecordList.add(entity);
 		}
@@ -297,7 +297,7 @@ public class OaNotify extends DataEntity<OaNotify> {
 			OaNotifyRecord entity = new OaNotifyRecord();
 			entity.setId(IdGen.uuid());
 			entity.setOaNotify(this);
-			entity.setUser(new User(id));
+			entity.setUser(new AbsUser(id));
 			entity.setReadFlag("0");
 			this.oaNotifyRecordListBroadcast.add(entity);
 		}

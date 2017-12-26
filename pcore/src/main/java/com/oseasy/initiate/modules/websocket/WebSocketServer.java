@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.websocket;
+package com.hch.platform.pcore.modules.websocket;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oseasy.initiate.common.utils.StringUtil;  
+import com.hch.platform.putil.common.utils.StringUtil;  
 /** 
  * 注解的值将被用于监听用户连接的终端访问URL地址 
  */  

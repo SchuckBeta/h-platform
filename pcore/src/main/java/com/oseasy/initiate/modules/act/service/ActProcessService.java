@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.act.service;
+package com.hch.platform.pcore.modules.act.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,9 +38,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 流程定义相关Controller

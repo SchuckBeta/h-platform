@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.sco.vo;
+package com.hch.platform.pcore.modules.sco.vo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oseasy.initiate.modules.sco.entity.ScoScore;
+import com.hch.platform.pcore.modules.sco.entity.ScoScore;
 
 /**
  * 学分处理Vo类.

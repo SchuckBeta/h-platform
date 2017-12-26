@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.cms.service;
+package com.hch.platform.pcore.modules.cms.service;
 
 import java.util.List;
 import java.util.Map;
@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.cms.dao.CmsIndexRegionDao;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.entity.CmsIndexRegion;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.cms.dao.CmsIndexRegionDao;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.entity.CmsIndexRegion;
 
 /**
  * 首页区域管理Service

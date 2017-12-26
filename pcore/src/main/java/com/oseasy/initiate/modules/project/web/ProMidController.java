@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.web;
+package com.hch.platform.pcore.modules.project.web;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -7,13 +7,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.promodel.service.ProModelService;
-import com.oseasy.initiate.modules.sco.service.ScoAllotRatioService;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.promodel.service.ProModelService;
+import com.hch.platform.pcore.modules.sco.service.ScoAllotRatioService;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,31 +24,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.FileUpUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.entity.ProMid;
-import com.oseasy.initiate.modules.project.entity.ProProgress;
-import com.oseasy.initiate.modules.project.entity.ProSituation;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.entity.ProjectPlan;
-import com.oseasy.initiate.modules.project.service.ProMidService;
-import com.oseasy.initiate.modules.project.service.ProProgressService;
-import com.oseasy.initiate.modules.project.service.ProSituationService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.service.ProjectPlanService;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.utils.FileUpUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.project.entity.ProMid;
+import com.hch.platform.pcore.modules.project.entity.ProProgress;
+import com.hch.platform.pcore.modules.project.entity.ProSituation;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectPlan;
+import com.hch.platform.pcore.modules.project.service.ProMidService;
+import com.hch.platform.pcore.modules.project.service.ProProgressService;
+import com.hch.platform.pcore.modules.project.service.ProSituationService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.service.ProjectPlanService;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysStudentExpansionService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 /**
  * 国创项目中期检查表单Controller
@@ -263,7 +263,7 @@ public class ProMidController extends BaseController {
 
 		}
 
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
 		if (StringUtil.equals("2",user.getUserType())) {
 			return "modules/project/proMidMasterEdit";
 		}else{

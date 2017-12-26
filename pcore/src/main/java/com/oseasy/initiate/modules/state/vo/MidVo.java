@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.state.vo;
+package com.hch.platform.pcore.modules.state.vo;
 
 /**
  * Created by zhangzheng on 2017/4/11.

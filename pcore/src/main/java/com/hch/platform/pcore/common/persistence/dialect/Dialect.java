@@ -1,7 +1,7 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.persistence.dialect;
+package com.hch.platform.pcore.common.persistence.dialect;
 
 /**
  * 类似hibernate的Dialect,但只精简出分页部分

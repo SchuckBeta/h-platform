@@ -2,13 +2,7 @@
  *
  */
 
-package com.oseasy.initiate.common.persistence.interceptor;
-
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.persistence.dialect.Dialect;
-import com.oseasy.initiate.common.utils.Reflections;
-import com.oseasy.initiate.common.utils.StringUtil;
+package com.hch.platform.pcore.common.persistence.interceptor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,6 +25,12 @@ import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.persistence.dialect.Dialect;
+import com.hch.platform.putil.common.utils.Reflections;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 
 /**

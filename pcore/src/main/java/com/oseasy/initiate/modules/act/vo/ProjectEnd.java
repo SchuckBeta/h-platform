@@ -1,15 +1,15 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.modules.act.vo
+ * @Package com.hch.platform.pcore.modules.act.vo
  * @Description [[_ProjectEnd_]]文件
  * @date 2017年6月8日 下午9:03:52
  *
  */
 
-package com.oseasy.initiate.modules.act.vo;
+package com.hch.platform.pcore.modules.act.vo;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 项目开始结束类型枚举.

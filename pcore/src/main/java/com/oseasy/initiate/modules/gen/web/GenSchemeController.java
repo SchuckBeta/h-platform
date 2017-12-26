@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.gen.web;
+package com.hch.platform.pcore.modules.gen.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.gen.entity.GenScheme;
-import com.oseasy.initiate.modules.gen.service.GenSchemeService;
-import com.oseasy.initiate.modules.gen.service.GenTableService;
-import com.oseasy.initiate.modules.gen.util.GenUtils;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.gen.entity.GenScheme;
+import com.hch.platform.pcore.modules.gen.service.GenSchemeService;
+import com.hch.platform.pcore.modules.gen.service.GenTableService;
+import com.hch.platform.pcore.modules.gen.util.GenUtils;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 生成方案Controller
@@ -52,7 +52,7 @@ public class GenSchemeController extends BaseController {
 	@RequiresPermissions("gen:genScheme:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(GenScheme genScheme, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (!user.getAdmin()) {
 			genScheme.setCreateBy(user);
 		}
@@ -66,7 +66,7 @@ public class GenSchemeController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(GenScheme genScheme, Model model) {
 		if (StringUtil.isBlank(genScheme.getPackageName())) {
-			genScheme.setPackageName("com.oseasy.initiate.modules");
+			genScheme.setPackageName("com.hch.platform.pcore.modules");
 		}
 //		if (StringUtil.isBlank(genScheme.getFunctionAuthor())) {
 //			genScheme.setFunctionAuthor(UserUtils.getUser().getName());

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.similarity;
+package com.hch.platform.pcore.test.similarity;
 
 import java.text.NumberFormat;
 import java.util.Locale;

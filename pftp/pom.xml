@@ -12,15 +12,48 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>pftp</name>
   <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+  <inceptionYear>2017</inceptionYear>
+
+	<!-- 项目属性 -->
+	<properties>
+		<platform.version>0.0.1-SNAPSHOT</platform.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- platform -->
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>h-platform</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>pconfig</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>putil</artifactId>
+			    <version>${platform.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- 依赖项定义 -->
+	<dependencies>
+		<!-- platform -->
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>h-platform</artifactId>
+		</dependency>
+			<dependency>
+			    <groupId>com.hch.platform</groupId>
+			    <artifactId>pconfig</artifactId>
+			</dependency>
+		<dependency>
+		    <groupId>com.hch.platform</groupId>
+		    <artifactId>putil</artifactId>
+		</dependency>
   </dependencies>
 </project>

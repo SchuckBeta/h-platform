@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import java.util.Date;
 
@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 评论Entity
@@ -27,7 +27,7 @@ public class Comment extends DataEntity<Comment> {
 	private String name; 	// 评论姓名
 	private String ip; 		// 评论IP
 	private Date createDate;// 评论时间
-	private User auditUser; // 审核人
+	private AbsUser auditUser; // 审核人
 	private Date auditDate;	// 审核时间
 	private String delFlag;	// 删除标记删除标记（0：正常；1：删除；2：审核）
 
@@ -93,11 +93,11 @@ public class Comment extends DataEntity<Comment> {
 		this.name = name;
 	}
 
-	public User getAuditUser() {
+	public AbsUser getAuditUser() {
 		return auditUser;
 	}
 
-	public void setAuditUser(User auditUser) {
+	public void setAuditUser(AbsUser auditUser) {
 		this.auditUser = auditUser;
 	}
 

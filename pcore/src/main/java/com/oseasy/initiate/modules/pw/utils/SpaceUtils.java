@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.pw.utils;
+package com.hch.platform.pcore.modules.pw.utils;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.pw.entity.PwCategory;
-import com.oseasy.initiate.modules.pw.service.PwCategoryService;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.enums.EuserType;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.pw.entity.PwCategory;
+import com.hch.platform.pcore.modules.pw.service.PwCategoryService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.enums.EuserType;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class SpaceUtils {
     }
 
     public static boolean isUserInfoComplete(){
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         if (user != null) {
             if(StringUtils.isBlank(user.getIdNumber())){
                 return false;

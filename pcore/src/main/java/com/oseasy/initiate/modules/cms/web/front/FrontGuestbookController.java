@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.web.front;
+package com.hch.platform.pcore.modules.cms.web.front;
 
 import java.util.Date;
 
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.entity.Guestbook;
-import com.oseasy.initiate.modules.cms.entity.Site;
-import com.oseasy.initiate.modules.cms.service.GuestbookService;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.entity.Guestbook;
+import com.hch.platform.pcore.modules.cms.entity.Site;
+import com.hch.platform.pcore.modules.cms.service.GuestbookService;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
 
 /**
  * 留言板Controller

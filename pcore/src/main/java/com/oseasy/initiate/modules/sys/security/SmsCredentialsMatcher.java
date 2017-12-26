@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

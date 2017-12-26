@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.web.front;
+package com.hch.platform.pcore.modules.cms.web.front;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,43 +24,43 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.security.shiro.session.SessionDAO;
-import com.oseasy.initiate.common.servlet.ValidateCodeServlet;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.CookieUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.entity.Article;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.entity.Comment;
-import com.oseasy.initiate.modules.cms.entity.Link;
-import com.oseasy.initiate.modules.cms.entity.Site;
-import com.oseasy.initiate.modules.cms.service.ArticleDataService;
-import com.oseasy.initiate.modules.cms.service.ArticleService;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
-import com.oseasy.initiate.modules.cms.service.CmsIndexResourceService;
-import com.oseasy.initiate.modules.cms.service.CommentService;
-import com.oseasy.initiate.modules.cms.service.LinkService;
-import com.oseasy.initiate.modules.cms.service.SiteService;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
-import com.oseasy.initiate.modules.course.entity.Course;
-import com.oseasy.initiate.modules.course.service.CourseService;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifySent;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.security.AdminFormAuthenticationFilter;
-import com.oseasy.initiate.modules.sys.security.SystemAuthorizingRealm.Principal;
-import com.oseasy.initiate.modules.sys.service.BackTeacherExpansionService;
-import com.oseasy.initiate.modules.sys.service.TeacherKeywordService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.security.shiro.session.SessionDAO;
+import com.hch.platform.pcore.common.servlet.ValidateCodeServlet;
+import com.hch.platform.pcore.common.utils.CookieUtils;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.sms.SMSUtilAlidayu;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.entity.Article;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.entity.Comment;
+import com.hch.platform.pcore.modules.cms.entity.Link;
+import com.hch.platform.pcore.modules.cms.entity.Site;
+import com.hch.platform.pcore.modules.cms.service.ArticleDataService;
+import com.hch.platform.pcore.modules.cms.service.ArticleService;
+import com.hch.platform.pcore.modules.cms.service.CategoryService;
+import com.hch.platform.pcore.modules.cms.service.CmsIndexResourceService;
+import com.hch.platform.pcore.modules.cms.service.CommentService;
+import com.hch.platform.pcore.modules.cms.service.LinkService;
+import com.hch.platform.pcore.modules.cms.service.SiteService;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
+import com.hch.platform.pcore.modules.course.entity.Course;
+import com.hch.platform.pcore.modules.course.service.CourseService;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifySent;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.security.AdminFormAuthenticationFilter;
+import com.hch.platform.pcore.modules.sys.security.SystemAuthorizingRealm.Principal;
+import com.hch.platform.pcore.modules.sys.service.BackTeacherExpansionService;
+import com.hch.platform.pcore.modules.sys.service.TeacherKeywordService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 网站Controller
@@ -228,7 +228,7 @@ public class FrontController extends BaseController{
 		if (logger.isDebugEnabled()) {
 			logger.debug("show index, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotEmpty(user.getName())) {
 			model.addAttribute("user", user);
 		}

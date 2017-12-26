@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,18 +19,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.config.SysJkey;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.pw.entity.PwEnter;
-import com.oseasy.initiate.modules.pw.service.PwEnterService;
-import com.oseasy.initiate.modules.pw.vo.PwEnterStatus;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.config.SysJkey;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.pw.entity.PwEnter;
+import com.hch.platform.pcore.modules.pw.service.PwEnterService;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterStatus;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 入驻申报Controller.

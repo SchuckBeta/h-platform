@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.promodel.service;
+package com.hch.platform.pcore.modules.promodel.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.promodel.entity.ActYwAuditInfo;
-import com.oseasy.initiate.modules.promodel.dao.ActYwAuditInfoDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.promodel.entity.ActYwAuditInfo;
+import com.hch.platform.pcore.modules.promodel.dao.ActYwAuditInfoDao;
 
 /**
  * 自定义审核信息Service.

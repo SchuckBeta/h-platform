@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -11,32 +11,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.impdata.dao.ProjectHsErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.ProjectHsError;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.impdata.dao.ProjectHsErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.ProjectHsError;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectNodeVo;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 /**
  * 导入项目错误数据表（华师）Service.
@@ -103,9 +103,9 @@ public class ProjectHsErrorService extends CrudService<ProjectHsErrorDao, Projec
 		}
 		List<String> ret=new ArrayList<String>();
 		for(int i=0;i<lno.size();i++){
-			User u=userService.getByNo(lno.get(i));
+			AbsUser u=userService.getByNo(lno.get(i));
 			if(u==null){
-				u=new User();
+				u=new AbsUser();
 				BackTeacherExpansion tea=new BackTeacherExpansion();
 				tea.setTeachertype("1");
 				u.setName(lname.get(i));
@@ -125,9 +125,9 @@ public class ProjectHsErrorService extends CrudService<ProjectHsErrorDao, Projec
 		if(list!=null&&list.size()>0){
 			List<String> ret=new ArrayList<String>();
 			for(String[] ss:list){
-				User u=userService.getByNo(ss[1]);
+				AbsUser u=userService.getByNo(ss[1]);
 				if(u==null){
-					u=new User();
+					u=new AbsUser();
 					StudentExpansion leaderStu=new StudentExpansion();
 					u.setName(ss[0]);
 					u.setNo(ss[1]);
@@ -144,9 +144,9 @@ public class ProjectHsErrorService extends CrudService<ProjectHsErrorDao, Projec
 	@Transactional(readOnly = false)
 	public void saveProject(ProjectHsError pe) {
 		//负责人
-		User leader=userService.getByNo(pe.getNo());
+		AbsUser leader=userService.getByNo(pe.getNo());
 		if(leader==null){
-			leader=new User();
+			leader=new AbsUser();
 			StudentExpansion leaderStu=new StudentExpansion();
 			leader.setOffice(new Office(pe.getOffice()));
 			if(StringUtil.isNotEmpty(pe.getProfes())){
@@ -280,7 +280,7 @@ public class ProjectHsErrorService extends CrudService<ProjectHsErrorDao, Projec
 	}
 	@Transactional(readOnly = false)
 	public void insert(ProjectHsError projectError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			projectError.setUpdateBy(user);
 			projectError.setCreateBy(user);

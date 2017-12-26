@@ -1,22 +1,22 @@
-package com.oseasy.initiate.modules.sco.web;
+package com.hch.platform.pcore.modules.sco.web;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
 
-import com.oseasy.initiate.modules.sco.entity.ScoApply;
-import com.oseasy.initiate.modules.sco.entity.ScoAuditing;
-import com.oseasy.initiate.modules.sco.entity.ScoCourse;
-import com.oseasy.initiate.modules.sco.service.ScoApplyService;
-import com.oseasy.initiate.modules.sco.service.ScoAuditingService;
-import com.oseasy.initiate.modules.sco.service.ScoCourseService;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sco.entity.ScoApply;
+import com.hch.platform.pcore.modules.sco.entity.ScoAuditing;
+import com.hch.platform.pcore.modules.sco.entity.ScoCourse;
+import com.hch.platform.pcore.modules.sco.service.ScoApplyService;
+import com.hch.platform.pcore.modules.sco.service.ScoAuditingService;
+import com.hch.platform.pcore.modules.sco.service.ScoCourseService;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,7 +78,7 @@ public class ScoApplyFrontController extends BaseController {
 	//申请认定课程  编辑认定课程 跳转页面
 	@RequestMapping(value = "scoApplyForm")
 	public String scoApplyForm(ScoApply scoApply, Model model) {
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
         Date date =new Date();
 		StudentExpansion studentExpansion=studentExpansionService.getByUserId(user.getId());
 		model.addAttribute("user", user);
@@ -175,7 +175,7 @@ public class ScoApplyFrontController extends BaseController {
 	//查看详情
 	@RequestMapping(value = "view")
 	public String view(ScoApply scoApply, Model model) {
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
 
 		StudentExpansion studentExpansion=studentExpansionService.getByUserId(user.getId());
 		model.addAttribute("user", user);

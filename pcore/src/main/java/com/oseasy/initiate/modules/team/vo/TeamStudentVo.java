@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.team.vo;
+package com.hch.platform.pcore.modules.team.vo;
 
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 public class TeamStudentVo {
   private String name;    // name

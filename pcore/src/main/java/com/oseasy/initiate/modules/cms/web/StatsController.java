@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.web;
+package com.hch.platform.pcore.modules.cms.web;
 
 import java.util.List;
 import java.util.Map;
@@ -13,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.service.StatsService;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.service.StatsService;
 
 /**
  * 统计Controller

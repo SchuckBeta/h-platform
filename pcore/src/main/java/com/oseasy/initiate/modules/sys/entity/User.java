@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -18,15 +18,15 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.Collections3;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.excel.annotation.ExcelField;
-import com.oseasy.initiate.common.utils.excel.fieldtype.RoleListType;
-import com.oseasy.initiate.modules.sys.enums.EuserType;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.utils.Collections3;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.excel.annotation.ExcelField;
+import com.hch.platform.pcore.common.utils.excel.fieldtype.RoleListType;
+import com.hch.platform.pcore.modules.sys.enums.EuserType;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 /**
  * 用户Entity

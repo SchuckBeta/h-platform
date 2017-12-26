@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/oseasy/initiate">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.team.service;
+package com.hch.platform.pcore.modules.team.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,29 +13,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
-import com.oseasy.initiate.common.utils.sms.impl.SendParam;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.sms.SMSUtilAlidayu;
+import com.hch.platform.pcore.common.utils.sms.impl.SendParam;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sysconfig.utils.SysConfigUtil;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 import net.sf.json.JSONObject;
 
@@ -86,7 +86,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			int ress=0;
 			if (userList.size()>0) {
 				for (String user1 : userList) {
-					User user=userDao.get(user1);
+					AbsUser user=userDao.get(user1);
 					//插入申请记录
 					JSONObject res= pullIn(user,teamId);
 					if("1".equals(res.getString("ret"))){
@@ -135,7 +135,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 				List<SendParam> sps=new ArrayList<SendParam>();
 				for (String user1 : userList) {
 					if (StringUtil.isNotBlank(user1)) {
-						User user=userDao.get(user1);
+						AbsUser user=userDao.get(user1);
 						if (user!=null) {
 							//不需要回复 直接拉入团队
 							//是否直接加入团队 1是有限制 0是无限制
@@ -151,7 +151,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 								int res= inseTeamUser(user,teamId,"2");
 								if (res==3) {
 									repTeamstate(team);
-									User teamUser=userDao.get(team.getCreateBy().getId());
+									AbsUser teamUser=userDao.get(team.getCreateBy().getId());
 									SendParam parm = new SendParam(teamUser.getName(),team.getName(),user.getMobile());
 									sps.add(parm);
 									ress++;
@@ -200,8 +200,8 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 				List<SendParam> sps=new ArrayList<SendParam>();
 				for (String user1 : userList) {
 					if (StringUtil.isNotBlank(user1)) {
-	        			User user=userDao.get(user1);
-						User teamUser=team.getCreateBy();
+	        			AbsUser user=userDao.get(user1);
+						AbsUser teamUser=team.getCreateBy();
 	        			if (user!=null) {
 	        				int res= inseTeamUser(user,teamId,"2");
 	        				if (res==3) {
@@ -285,7 +285,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 		 dao.updateByUserId(teamUserRelation);
 	 }
 
-	public TeamUserRelation getByUser(User user) {
+	public TeamUserRelation getByUser(AbsUser user) {
 		return teamUserRelationDao.getByUser(user);
 	}
 
@@ -297,7 +297,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 }
 	 public TeamUserRelation findUserHasJoinTeam(String userid, String teamid) {
 		 TeamUserRelation teamUserRelation=new TeamUserRelation();
-		 teamUserRelation.setUser(new User(userid));
+		 teamUserRelation.setUser(new AbsUser(userid));
 		 teamUserRelation.setTeamId(teamid);
 		 return teamUserRelationDao.findUserHasJoinTeam(teamUserRelation);
 	 }
@@ -311,10 +311,10 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
  	 * @return >0成功  1加入其他团队2已经申请过 3插入成功
 	 */
 	@Transactional(readOnly = false)
-	public int inseTeamUser(User applyUser,String teamId,String appType ) {
+	public int inseTeamUser(AbsUser applyUser,String teamId,String appType ) {
 		try {
 			TeamUserRelation teamUserRelation=new TeamUserRelation();
-			User user=new User();
+			AbsUser user=new AbsUser();
 			user.setId(applyUser.getId());
 			teamUserRelation.setUser(user);
 			teamUserRelation.setTeamId(teamId);
@@ -362,7 +362,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			return 0;
 		}
 	}
-	private boolean checkTeamNum(String tid,User user){
+	private boolean checkTeamNum(String tid,AbsUser user){
 		Team teamNums=teamDao.findTeamJoinInNums(tid);
 		if("1".equals(user.getUserType())&&teamNums.getUserCount()>=teamNums.getMemberNum()){
 			return false;
@@ -390,12 +390,12 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
  	 * @return >0成功   1已加入其他团队 2从已申请变更加入3新增插入
 	 */
 	@Transactional(readOnly = false)
-	public JSONObject pullIn(User applyUser,String teamId) {
+	public JSONObject pullIn(AbsUser applyUser,String teamId) {
 		JSONObject js=new JSONObject();
 		js.put("ret", "0");
 		try {
 			TeamUserRelation teamUserRelation=new TeamUserRelation();
-			User user=new User();
+			AbsUser user=new AbsUser();
 			user.setId(applyUser.getId());
 			teamUserRelation.setUser(user);
 			teamUserRelation.setTeamId(teamId);
@@ -484,9 +484,9 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 * @param teamId 邀请Id
 	 */
 	@Transactional(readOnly = false)
-	public int inseOaNotify(User TeamSponsor,String inseTeamId,String teamId) {
+	public int inseOaNotify(AbsUser TeamSponsor,String inseTeamId,String teamId) {
 		try {
-			User inseTeamUser= userService.findUserById(inseTeamId);
+			AbsUser inseTeamUser= userService.findUserById(inseTeamId);
 			Team team=new Team();
 			team.setSponsor(TeamSponsor.getId());
 			//List<Team> teamlist= teamDao.findList(team);
@@ -506,7 +506,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 * @return >0成功
 	 */
 	@Transactional(readOnly = false)
-	public int inseOaNo(Team team,User TeamSponsor,User inseTeamUser) {
+	public int inseOaNo(Team team,AbsUser TeamSponsor,AbsUser inseTeamUser) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();
@@ -548,11 +548,11 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 * @return >0成功
 	 */
 	@Transactional(readOnly = false)
-	public int inseRelOaNo(Team team,User TeamSponsor,List<String> inseTeamUser) {
+	public int inseRelOaNo(Team team,AbsUser TeamSponsor,List<String> inseTeamUser) {
 		try {
 			OaNotify oaNotify=new OaNotify();
 			oaNotify.setTitle(team.getName()+(team.getName()!=null&&team.getName().endsWith("团队")?"":"团队")+"创建成功");
-			User  userTmp = systemService.getUser(team.getSponsor());
+			AbsUser  userTmp = systemService.getUser(team.getSponsor());
 			oaNotify.setContent(userTmp.getName()+"的团队已发布。");
 			oaNotify.setType("7");
 			oaNotify.setsId(team.getId());
@@ -568,7 +568,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 			for (String userId : inseTeamUser) {
 				if (!userId.equals(team.getSponsor())) {
 				OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
-				User user=new User();
+				AbsUser user=new AbsUser();
 				user.setId(userId);
 				oaNotifyRecord.setUser(user);
 				oaNotifyRecord.setOaNotify(oaNotify);
@@ -627,16 +627,16 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 		if (officeList!=null&&officeList.size()>0) {
 			userList = new ArrayList<String>();
 			for (String officeId : officeList) {
-				User user=new User();
+				AbsUser user=new AbsUser();
 				Office office=new Office();
 				office.setId(officeId);
 				user.setOffice(office);
 				if (userType!=null) {
 					user.setUserType(userType);
 				}
-				List<User> userList1= userDao.findList(user);
+				List<AbsUser> userList1= userDao.findList(user);
 				if (userList1!=null&&userList1.size()>0) {
-					for (User user2 : userList1) {
+					for (AbsUser user2 : userList1) {
 
 						if (user2!=null&&StringUtils.isNotBlank(user2.getId())) {
 							if (!userListAll.contains(user2.getId())) {
@@ -666,7 +666,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	}
 	
 	@Transactional(readOnly = false)
-	public int insertDeleteOaNo(Team team,User TeamSponsor,User delTeamUser) {
+	public int insertDeleteOaNo(Team team,AbsUser TeamSponsor,AbsUser delTeamUser) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();
@@ -707,7 +707,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 */
 
 	@Transactional(readOnly = false)
-	public int inseAgreeOaNo(Team team,String type,User user,User sentuser) {
+	public int inseAgreeOaNo(Team team,String type,AbsUser user,AbsUser sentuser) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();
@@ -756,7 +756,7 @@ public class TeamUserRelationService extends CrudService<TeamUserRelationDao, Te
 	 */
 
 	@Transactional(readOnly = false)
-	public int inseRefuseOaNo(Team team,String type,User user,User sentuser) {
+	public int inseRefuseOaNo(Team team,String type,AbsUser user,AbsUser sentuser) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();

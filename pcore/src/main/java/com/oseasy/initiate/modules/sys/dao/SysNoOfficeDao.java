@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.sys.dao;
+package com.hch.platform.pcore.modules.sys.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.SysNo;
-import com.oseasy.initiate.modules.sys.entity.SysNoOffice;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.SysNo;
+import com.hch.platform.pcore.modules.sys.entity.SysNoOffice;
 
 /**
  * 系统机构编号DAO接口.

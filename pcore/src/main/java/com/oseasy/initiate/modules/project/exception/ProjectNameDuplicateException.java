@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.exception;
+package com.hch.platform.pcore.modules.project.exception;
 
 public class ProjectNameDuplicateException extends Exception {    //或者继承任何标准异常类
     /**

@@ -12,9 +12,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 
-import com.hch.platform.pcore.common.config.Global;
+import com.hch.platform.pconfig.common.Global;
+
 /**
 
  * @version 2013-8-5

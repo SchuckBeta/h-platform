@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.dao;
+package com.hch.platform.pcore.modules.project.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.auditstandard.vo.AsdVo;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareListVo;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.team.entity.Team;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.auditstandard.vo.AsdVo;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareListVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.team.entity.Team;
 
 /**
  * 项目申报DAO接口

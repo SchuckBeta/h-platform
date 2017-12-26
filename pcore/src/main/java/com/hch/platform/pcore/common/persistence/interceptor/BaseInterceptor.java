@@ -2,7 +2,7 @@
  *
  */
 
-package com.oseasy.initiate.common.persistence.interceptor;
+package com.hch.platform.pcore.common.persistence.interceptor;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -13,19 +13,19 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.persistence.dialect.Dialect;
-import com.oseasy.initiate.common.persistence.dialect.db.DB2Dialect;
-import com.oseasy.initiate.common.persistence.dialect.db.DerbyDialect;
-import com.oseasy.initiate.common.persistence.dialect.db.H2Dialect;
-import com.oseasy.initiate.common.persistence.dialect.db.HSQLDialect;
-import com.oseasy.initiate.common.persistence.dialect.db.MySQLDialect;
-import com.oseasy.initiate.common.persistence.dialect.db.OracleDialect;
-import com.oseasy.initiate.common.persistence.dialect.db.PostgreSQLDialect;
-import com.oseasy.initiate.common.persistence.dialect.db.SQLServer2005Dialect;
-import com.oseasy.initiate.common.persistence.dialect.db.SybaseDialect;
-import com.oseasy.initiate.common.utils.Reflections;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.persistence.dialect.Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.DB2Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.DerbyDialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.H2Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.HSQLDialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.MySQLDialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.OracleDialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.PostgreSQLDialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.SQLServer2005Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.db.SybaseDialect;
+import com.hch.platform.putil.common.utils.Reflections;
 
 
 

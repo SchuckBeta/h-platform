@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.oseasy.initiate.modules.sys.tool.SysNodeFresult;
-import com.oseasy.initiate.modules.sys.tool.SysNodeFresultTool;
-import com.oseasy.initiate.modules.sys.tool.SysNodeFresultVo;
+import com.hch.platform.pcore.modules.sys.tool.SysNodeFresult;
+import com.hch.platform.pcore.modules.sys.tool.SysNodeFresultTool;
+import com.hch.platform.pcore.modules.sys.tool.SysNodeFresultVo;
 
 public class SysNodeFresultToolTest {
   @Test

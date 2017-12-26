@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.websocket;
+package com.hch.platform.pcore.modules.websocket;
 
 public class WsMsgBtn {
 	/**

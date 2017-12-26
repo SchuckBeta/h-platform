@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.annotation.common.properties;
+package com.hch.platform.pcore.common.supcan.annotation.common.properties;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
 import java.util.Date;
 
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.DateUtil.Dtype;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.DateUtil.Dtype;
 
 public enum DtypeTerm {
   YEAR_10(3653, Dtype.YEAR, 10, "十年"),

@@ -1,14 +1,14 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.dao;
+package com.hch.platform.pcore.modules.cms.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.common.persistence.TreeDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.cms.entity.Category;
+import com.hch.platform.pcore.common.persistence.TreeDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.cms.entity.Category;
 
 /**
  * 栏目DAO接口

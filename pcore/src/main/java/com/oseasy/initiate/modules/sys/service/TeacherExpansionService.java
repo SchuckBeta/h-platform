@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
-import com.oseasy.initiate.modules.sys.dao.TeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.TeacherExpansion;
+import com.hch.platform.pcore.modules.sys.dao.TeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.TeacherExpansion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

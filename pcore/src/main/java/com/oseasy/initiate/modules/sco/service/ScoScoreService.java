@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.sco.service;
+package com.hch.platform.pcore.modules.sco.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.sco.dao.ScoScoreDao;
-import com.oseasy.initiate.modules.sco.entity.ScoScore;
-import com.oseasy.initiate.modules.sco.vo.ScoScoreVo;
-import com.oseasy.initiate.modules.sco.vo.ScoType;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.sco.dao.ScoScoreDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoScore;
+import com.hch.platform.pcore.modules.sco.vo.ScoScoreVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoType;
 
 /**
  * 学分汇总Service.

@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sco.entity;
+package com.hch.platform.pcore.modules.sco.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.ActEntity;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.common.persistence.ActEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;

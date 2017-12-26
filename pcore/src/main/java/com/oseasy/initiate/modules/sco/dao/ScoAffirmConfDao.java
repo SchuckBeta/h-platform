@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sco.dao;
+package com.hch.platform.pcore.modules.sco.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -6,10 +6,10 @@ import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmConf;
-import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmConf;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
 
 /**
  * 学分认定配置DAO接口.

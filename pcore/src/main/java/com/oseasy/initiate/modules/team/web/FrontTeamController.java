@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.team.web;
+package com.hch.platform.pcore.modules.team.web;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -18,34 +18,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
-import com.oseasy.initiate.modules.sysconfig.vo.ConfRange;
-import com.oseasy.initiate.modules.sysconfig.vo.PersonNumConf;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
-import com.oseasy.initiate.modules.sysconfig.vo.TeamConf;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamDetails;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
-import com.oseasy.initiate.modules.team.vo.TeamStudentVo;
-import com.oseasy.initiate.modules.team.vo.TeamTeacherVo;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.OfficeService;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sysconfig.utils.SysConfigUtil;
+import com.hch.platform.pcore.modules.sysconfig.vo.ConfRange;
+import com.hch.platform.pcore.modules.sysconfig.vo.PersonNumConf;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.modules.sysconfig.vo.TeamConf;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamDetails;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pcore.modules.team.vo.TeamStudentVo;
+import com.hch.platform.pcore.modules.team.vo.TeamTeacherVo;
 
 import net.sf.json.JSONObject;
 
@@ -133,7 +133,7 @@ public class FrontTeamController extends BaseController {
 	@RequestMapping(value = "hiddenDelete")
 	@ResponseBody
 	public String hiddenDelete(String teamId, RedirectAttributes redirectAttributes) {
-		User curUser = UserUtils.getUser();// 获取当前用户的信息
+		AbsUser curUser = UserUtils.getUser();// 获取当前用户的信息
 		return teamService.hiddenDelete(teamId,curUser);
 	}
 
@@ -151,16 +151,16 @@ public class FrontTeamController extends BaseController {
 	public String buildTeam(Team team, Model model) {
 		model.addAttribute("team", team);
 		// 找到导师List
-		User master = new User();
+		AbsUser master = new AbsUser();
 		master.setUserType("2");
-		List<User> masterList = userService.findByType(master);
+		List<AbsUser> masterList = userService.findByType(master);
 		model.addAttribute("masterList", masterList);
 
 		// 找到学生List
-		User stu = new User();
+		AbsUser stu = new AbsUser();
 		stu.setUserType("1");
 		stu.setId(UserUtils.getUser().getId());
-		List<User> studentList = userService.findByType(stu);
+		List<AbsUser> studentList = userService.findByType(stu);
 		model.addAttribute("studentList", studentList);
 
 		return "modules/team/buildTeam";
@@ -187,7 +187,7 @@ public class FrontTeamController extends BaseController {
 	public JSONObject checkTeamCreateCdn() {
 		JSONObject js =new JSONObject();
 		js.put("ret", 0);
-		User curUser = UserUtils.getUser();
+		AbsUser curUser = UserUtils.getUser();
 		if (StringUtil.isEmpty(curUser.getId())) {
 			js.put("msg", "会话已失效，请重新登录");
 			return js;
@@ -275,7 +275,7 @@ public class FrontTeamController extends BaseController {
 			model.addAttribute("p7", p7);
 			model.addAttribute("p8", p8);
 			model.addAttribute("p9", p9);
-			User curUser = UserUtils.getUser();
+			AbsUser curUser = UserUtils.getUser();
 			if (StringUtil.isNotEmpty(curUser.getUserType()) && curUser.getUserType().equals("2")) {
 				redirectAttributes.addFlashAttribute("message", "导师暂时无法创建团队!");
 				redirectAttributes.addFlashAttribute("opType", "1");
@@ -396,7 +396,7 @@ public class FrontTeamController extends BaseController {
 	}
 
 	private String toTeamListPage(Team team,HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		team.setUser(user);
 		if (user != null) {
 			model.addAttribute("curUserId", user.getId());
@@ -406,7 +406,7 @@ public class FrontTeamController extends BaseController {
 		Page<Team> page = teamService.findPage(new Page<Team>(request, response), team);
 
 		model.addAttribute("page", page);
-		User curUser = UserUtils.getUser();
+		AbsUser curUser = UserUtils.getUser();
 		if (curUser != null && curUser.getUserType() != null) {
 			model.addAttribute("userType", curUser.getUserType());
 		}
@@ -440,7 +440,7 @@ public class FrontTeamController extends BaseController {
 			model.addAttribute("hasJoin", false);
 		}
 
-		User user = systemService.getUser(teamDetails.getSponsor());
+		AbsUser user = systemService.getUser(teamDetails.getSponsor());
 		teamDetails.setLeaderid(teamDetails.getSponsor());
 		teamDetails.setSponsor(user.getName());
 		Office officeTeam = officeService.get(teamDetails.getLocalCollege());
@@ -496,7 +496,7 @@ public class FrontTeamController extends BaseController {
 	}
 
 	@RequestMapping(value = { "index" })
-	public String index(User user, Model model) {
+	public String index(AbsUser user, Model model) {
 		return "modules/sys/userIndex";
 
 	}
@@ -537,7 +537,7 @@ public class FrontTeamController extends BaseController {
 	public String checkInfo(String userId, String teamId, TeamUserRelation teamUserRelation,
 			RedirectAttributes redirectAttributes) {
 		teamUserRelation.setTeamId(teamId);
-		User user = new User();
+		AbsUser user = new AbsUser();
 		user.setId(userId);
 		teamUserRelation.setUser(user);
 		teamService.acceptJoinTeam(teamUserRelation);

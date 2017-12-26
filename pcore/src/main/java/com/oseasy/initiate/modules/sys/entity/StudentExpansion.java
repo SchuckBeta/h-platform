@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.team.entity.Team;
 import org.hibernate.validator.constraints.Length;
 
 import java.text.SimpleDateFormat;
@@ -14,8 +14,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 学生扩展信息表Entity
@@ -25,7 +25,7 @@ import com.oseasy.initiate.common.utils.StringUtil;
 public class StudentExpansion extends DataEntity<StudentExpansion> {
 
 	private static final long serialVersionUID = 1L;
-	private User user;		// 人员基本信息ID
+	private AbsUser user;		// 人员基本信息ID
 	private String projectExperience;		// 项目经历
 	private String contestExperience;		// 大赛经历
 	private String award;		// 获奖作品
@@ -222,11 +222,11 @@ public class StudentExpansion extends DataEntity<StudentExpansion> {
 		super(id);
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

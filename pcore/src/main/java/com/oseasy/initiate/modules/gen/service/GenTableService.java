@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.gen.service;
+package com.hch.platform.pcore.modules.gen.service;
 
 import java.util.List;
 
@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.gen.dao.GenDataBaseDictDao;
-import com.oseasy.initiate.modules.gen.dao.GenTableColumnDao;
-import com.oseasy.initiate.modules.gen.dao.GenTableDao;
-import com.oseasy.initiate.modules.gen.entity.GenTable;
-import com.oseasy.initiate.modules.gen.entity.GenTableColumn;
-import com.oseasy.initiate.modules.gen.util.GenUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.gen.dao.GenDataBaseDictDao;
+import com.hch.platform.pcore.modules.gen.dao.GenTableColumnDao;
+import com.hch.platform.pcore.modules.gen.dao.GenTableDao;
+import com.hch.platform.pcore.modules.gen.entity.GenTable;
+import com.hch.platform.pcore.modules.gen.entity.GenTableColumn;
+import com.hch.platform.pcore.modules.gen.util.GenUtils;
 
 /**
  * 业务表Service

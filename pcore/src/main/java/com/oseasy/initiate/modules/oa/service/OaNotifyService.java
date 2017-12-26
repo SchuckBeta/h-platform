@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.oa.service;
+package com.hch.platform.pcore.modules.oa.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,33 +15,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.interactive.entity.SysViews;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyDao;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyKeywordDao;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyRecordDao;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyKeyword;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.oa.entity.OaNotifySent;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.websocket.WebSockectUtil;
-import com.oseasy.initiate.modules.websocket.WsMsg;
-import com.oseasy.initiate.modules.websocket.WsMsgBtn;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.interactive.entity.SysViews;
+import com.hch.platform.pcore.modules.oa.dao.OaNotifyDao;
+import com.hch.platform.pcore.modules.oa.dao.OaNotifyKeywordDao;
+import com.hch.platform.pcore.modules.oa.dao.OaNotifyRecordDao;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyKeyword;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifySent;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.websocket.WebSockectUtil;
+import com.hch.platform.pcore.modules.websocket.WsMsg;
+import com.hch.platform.pcore.modules.websocket.WsMsgBtn;
 
 /**
  * 通知通告Service
@@ -115,7 +115,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	 * @param sid 关联大赛或者项目的id
 	 * @return
 	 */
-	public int sendOaNotifyByType(User apply_User,User rec_User,String title,String content, String type, String sid) {
+	public int sendOaNotifyByType(AbsUser apply_User,AbsUser rec_User,String title,String content, String type, String sid) {
 		try {
 			OaNotify oaNotify=new OaNotify();
 			oaNotify.setTitle(title);
@@ -240,8 +240,8 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 		String officeIds=oaNotify.getOaNotifyRecordIds();
 		List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();
 		for (String id : StringUtil.split(officeIds, ",")) {
-			List<User> list = systemService.findUserByOfficeId(id);
-			for(User user:list) {
+			List<AbsUser> list = systemService.findUserByOfficeId(id);
+			for(AbsUser user:list) {
 				if (user.getUserType().equals("1")) {
 					OaNotifyRecord entity = new OaNotifyRecord();
 					entity.setId(IdGen.uuid());
@@ -358,8 +358,8 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 			String officeIds=oaNotify.getOaNotifyRecordIds();
 			List<OaNotifyRecord> oaNotifyRecordList = Lists.newArrayList();
 			for (String id : StringUtil.split(officeIds, ",")) {
-				List<User> list = systemService.findUserByOfficeId(id);
-				for(User user:list) {
+				List<AbsUser> list = systemService.findUserByOfficeId(id);
+				for(AbsUser user:list) {
 					OaNotifyRecord entity = new OaNotifyRecord();
 					entity.setId(IdGen.uuid());
 					entity.setOaNotify(oaNotify);
@@ -398,7 +398,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 	public List<OaNotifySent> unRead(OaNotify oaNotify) {
 		List<OaNotifySent> list1 =null;
 		try {
-		User acceptUser = UserUtils.getUser();
+		AbsUser acceptUser = UserUtils.getUser();
 		oaNotify.setIsSelf(true);
 		oaNotify.setReadFlag("0");
 		oaNotify.setCurrentUser(acceptUser);
@@ -408,7 +408,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 		for (OaNotify oaNotify2 : list) {
 			OaNotifySent oaNotifySent = new OaNotifySent();
 			String userId = oaNotify2.getCreateBy().getId();
-			User sentUser = userService.findUserById(userId);
+			AbsUser sentUser = userService.findUserById(userId);
 			TeamUserRelation teamUserRelation = new TeamUserRelation();
 			teamUserRelation.setCreateBy(sentUser);
 			teamUserRelation.setUser(acceptUser);
@@ -449,7 +449,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 
 	@Transactional(readOnly = false)
 	public void deleteRec(OaNotify oaNotify) {
-		User currUser = UserUtils.getUser();
+		AbsUser currUser = UserUtils.getUser();
 		OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 		oaNotifyRecord.setOaNotify(oaNotify);
 		oaNotifyRecord.setUser(currUser);
@@ -461,7 +461,7 @@ public class OaNotifyService extends CrudService<OaNotifyDao, OaNotify> {
 
 		OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 		oaNotifyRecord.setOaNotify(oaNotify);
-		User recUser = userService.findUserById(oaNotify.getUserId());
+		AbsUser recUser = userService.findUserById(oaNotify.getUserId());
 		oaNotifyRecord.setUser(recUser);
 		oaNotifyRecord=oaNotifyRecordDao.getMine(oaNotifyRecord);
 		oaNotifyRecordDao.delete(oaNotifyRecord);

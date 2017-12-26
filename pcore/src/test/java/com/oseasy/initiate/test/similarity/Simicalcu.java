@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.similarity;
+package com.hch.platform.pcore.test.similarity;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

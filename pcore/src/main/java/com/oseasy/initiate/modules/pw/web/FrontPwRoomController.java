@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.pw.entity.PwRoom;
-import com.oseasy.initiate.modules.pw.entity.PwSpaceRoom;
-import com.oseasy.initiate.modules.pw.service.PwRoomService;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.pw.entity.PwRoom;
+import com.hch.platform.pcore.modules.pw.entity.PwSpaceRoom;
+import com.hch.platform.pcore.modules.pw.service.PwRoomService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.sys.entity.SysCertificateRel;
-import com.oseasy.initiate.modules.sys.dao.SysCertificateRelDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificateRel;
+import com.hch.platform.pcore.modules.sys.dao.SysCertificateRelDao;
 
 /**
  * 系统证书资源关联Service.

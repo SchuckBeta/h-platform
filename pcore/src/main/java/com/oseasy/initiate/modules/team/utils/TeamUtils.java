@@ -1,10 +1,10 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.team.utils;
+package com.hch.platform.pcore.modules.team.utils;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 /**
  * 内容管理工具类

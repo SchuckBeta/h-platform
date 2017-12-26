@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.act.rest.servlet;
+package com.hch.platform.pcore.modules.act.rest.servlet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;

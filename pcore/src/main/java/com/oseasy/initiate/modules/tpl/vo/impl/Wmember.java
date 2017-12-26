@@ -1,12 +1,12 @@
-package com.oseasy.initiate.modules.tpl.vo.impl;
+package com.hch.platform.pcore.modules.tpl.vo.impl;
 
 import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 public class Wmember implements Serializable{
   private static final long serialVersionUID = 1L;
@@ -64,7 +64,7 @@ public class Wmember implements Serializable{
 
   public static Wmember init(StudentExpansion student) {
     Wmember wme = new Wmember();
-    User su = student.getUser();
+    AbsUser su = student.getUser();
     if(su != null){
       wme.setCollege((su.getOffice() == null) ? "" :StringUtil.getStr(su.getOffice().getName()));
       //wme.setCollege((su.getSubject() == null) ? "" :StringUtil.getStr(su.getSubject().getName()));

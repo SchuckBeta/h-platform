@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.task;
+package com.hch.platform.pcore.modules.task;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;

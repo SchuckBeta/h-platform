@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.oa.entity;
+package com.hch.platform.pcore.modules.oa.entity;
 
-import com.oseasy.initiate.common.persistence.ActEntity;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.ActEntity;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 审批Entity
@@ -15,7 +15,7 @@ import com.oseasy.initiate.modules.sys.entity.User;
 public class TestAudit extends ActEntity<TestAudit> {
 	
 	private static final long serialVersionUID = 1L;
-	private User 	user;	//	归属用户
+	private AbsUser 	user;	//	归属用户
 	private Office 	office;	//	归属部门
 	private String 	post;	//	岗位
 	private String 	age;	//	性别
@@ -153,11 +153,11 @@ public class TestAudit extends ActEntity<TestAudit> {
 		this.mainLeadText = mainLeadText;
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

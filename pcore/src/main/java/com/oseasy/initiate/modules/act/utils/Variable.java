@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.utils;
+package com.hch.platform.pcore.modules.act.utils;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import org.apache.commons.beanutils.ConvertUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 流程变量对象

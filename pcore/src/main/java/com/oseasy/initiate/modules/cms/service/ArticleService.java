@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.service;
+package com.hch.platform.pcore.modules.cms.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,18 +14,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.cms.dao.ArticleDao;
-import com.oseasy.initiate.modules.cms.dao.ArticleDataDao;
-import com.oseasy.initiate.modules.cms.dao.CategoryDao;
-import com.oseasy.initiate.modules.cms.entity.Article;
-import com.oseasy.initiate.modules.cms.entity.ArticleData;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.cms.dao.ArticleDao;
+import com.hch.platform.pcore.modules.cms.dao.ArticleDataDao;
+import com.hch.platform.pcore.modules.cms.dao.CategoryDao;
+import com.hch.platform.pcore.modules.cms.entity.Article;
+import com.hch.platform.pcore.modules.cms.entity.ArticleData;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 文章Service

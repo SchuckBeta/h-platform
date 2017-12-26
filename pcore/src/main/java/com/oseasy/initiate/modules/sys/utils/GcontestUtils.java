@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.sys.utils;
+package com.hch.platform.pcore.modules.sys.utils;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ProjectActTaskService;
-import com.oseasy.initiate.modules.gcontest.service.GContestService;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.proproject.dao.ProProjectDao;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ProjectActTaskService;
+import com.hch.platform.pcore.modules.gcontest.service.GContestService;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.proproject.dao.ProProjectDao;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class GcontestUtils {
     //获得专家审核的待办任务个数
     public static long collegeExportCount(){
         Map<String,Object> param =new HashMap<String,Object>();
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         param.put("auditUserName", user.getLoginName());
         String userType=user.getUserType();
         if (userType.equals("4")) {
@@ -52,7 +52,7 @@ public class GcontestUtils {
     //获得网评审核待办任务个数
     public static long  schoolActAuditList(){
         Map<String,Object> param =new HashMap<String,Object>();
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         param.put("auditState", "5");
         int todoCount=gContestService.todoCount(param);
         return todoCount;
@@ -61,7 +61,7 @@ public class GcontestUtils {
     //获得学校路演审核待办任务个数
     public static long  schoolEndAuditList(){
         Map<String,Object> param =new HashMap<String,Object>();
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         param.put("auditState", "6");
         int todoCount=gContestService.todoCount(param);
         return todoCount;

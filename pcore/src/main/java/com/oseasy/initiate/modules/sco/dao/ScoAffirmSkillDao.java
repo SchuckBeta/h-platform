@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.sco.dao;
+package com.hch.platform.pcore.modules.sco.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmSkill;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmSkill;
 
 /**
  * 技能学分认定DAO接口.

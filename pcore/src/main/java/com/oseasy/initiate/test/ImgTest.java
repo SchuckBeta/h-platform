@@ -1,6 +1,6 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
-import com.oseasy.initiate.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.IdGen;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;

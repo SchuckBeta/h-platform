@@ -1,8 +1,8 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.act.dao.ActDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.sys.service.UserService;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.runtime.ProcessInstance;

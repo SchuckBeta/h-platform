@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.treelist.cols;
+package com.hch.platform.pcore.common.supcan.treelist.cols;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupGroup;
-import com.oseasy.initiate.common.utils.ObjectUtil;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupGroup;
+import com.hch.platform.putil.common.utils.ObjectUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;

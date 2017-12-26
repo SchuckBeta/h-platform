@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import java.util.List;
 
 import org.springframework.data.annotation.Transient;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 入驻场地分配Entity.

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.enums;
+package com.hch.platform.pcore.modules.project.enums;
 
 public enum ProjectFinalResultEnum {
 	 S0("0","合格")

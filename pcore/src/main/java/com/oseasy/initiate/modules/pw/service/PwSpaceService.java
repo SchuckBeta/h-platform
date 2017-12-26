@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
-import com.oseasy.initiate.common.service.TreeService;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.pw.dao.PwSpaceDao;
-import com.oseasy.initiate.modules.pw.entity.PwEnterRoom;
-import com.oseasy.initiate.modules.pw.entity.PwRoom;
-import com.oseasy.initiate.modules.pw.entity.PwSpace;
-import com.oseasy.initiate.modules.pw.vo.PwSpaceType;
+import com.hch.platform.pcore.common.service.TreeService;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.pw.dao.PwSpaceDao;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterRoom;
+import com.hch.platform.pcore.modules.pw.entity.PwRoom;
+import com.hch.platform.pcore.modules.pw.entity.PwSpace;
+import com.hch.platform.pcore.modules.pw.vo.PwSpaceType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

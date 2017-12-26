@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.TreeEntity;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
-import com.oseasy.initiate.modules.sys.entity.Office;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.TreeEntity;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
+import com.hch.platform.pcore.modules.sys.entity.Office;
 
 /**
  * 栏目Entity

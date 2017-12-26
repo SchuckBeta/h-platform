@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/oseasy/initiate">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.team.web;
+package com.hch.platform.pcore.modules.team.web;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONObject;
 
@@ -63,7 +63,7 @@ public class TeamUserRelationController extends BaseController {
 							  HttpServletRequest request,
 							  HttpServletResponse response,
 							  RedirectAttributes redirectAttributes,Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		teamUserRelation.setUser(user);
 		//改变teamUserRelation 的state状态 改变team 的state状态
 		teamUserRelationService.updateStateInTeam(teamUserRelation);
@@ -126,7 +126,7 @@ public class TeamUserRelationController extends BaseController {
 			
 			//插入发布通知
 			if (userList.size()>0) {
-				User teamUser=  UserUtils.getUser();
+				AbsUser teamUser=  UserUtils.getUser();
 				Team team = teamService.get(teamId);
 				teamUserRelationService.inseRelOaNo(team, teamUser, userList);
 			}

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sco.web;
+package com.hch.platform.pcore.modules.sco.web;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmConf;
-import com.oseasy.initiate.modules.sco.service.ScoAffirmConfService;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowType;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmConf;
+import com.hch.platform.pcore.modules.sco.service.ScoAffirmConfService;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 import net.sf.json.JSONObject;
 

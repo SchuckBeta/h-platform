@@ -1,13 +1,13 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.modules.act.vo
+ * @Package com.hch.platform.pcore.modules.act.vo
  * @Description [[_ProcessMapVo_]]文件
  * @date 2017年6月9日 上午10:25:53
  *
  */
 
-package com.oseasy.initiate.modules.act.vo;
+package com.hch.platform.pcore.modules.act.vo;
 
 import java.util.List;
 

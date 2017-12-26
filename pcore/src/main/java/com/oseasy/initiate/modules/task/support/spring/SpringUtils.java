@@ -1,5 +1,5 @@
 
-package com.oseasy.initiate.modules.task.support.spring;
+package com.hch.platform.pcore.modules.task.support.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

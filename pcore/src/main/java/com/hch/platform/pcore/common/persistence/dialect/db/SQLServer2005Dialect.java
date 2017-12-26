@@ -1,11 +1,11 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.persistence.dialect.db;
+package com.hch.platform.pcore.common.persistence.dialect.db;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.oseasy.initiate.common.persistence.dialect.Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.Dialect;
 
 /**
  * Sql 2005的方言实现

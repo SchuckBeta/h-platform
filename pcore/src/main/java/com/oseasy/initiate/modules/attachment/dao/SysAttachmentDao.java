@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.attachment.dao;
+package com.hch.platform.pcore.modules.attachment.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
 
 /**
  * 附件信息表DAO接口

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.web;
+package com.hch.platform.pcore.modules.impdata.web;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,41 +42,41 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.impdata.entity.ImpInfo;
-import com.oseasy.initiate.modules.impdata.enums.BackUserColEnum;
-import com.oseasy.initiate.modules.impdata.enums.GcontestColEnum;
-import com.oseasy.initiate.modules.impdata.enums.OfficeColEnum;
-import com.oseasy.initiate.modules.impdata.enums.ProjectColEnum;
-import com.oseasy.initiate.modules.impdata.enums.ProjectHsColEnum;
-import com.oseasy.initiate.modules.impdata.enums.ProjectMdApprovalColEnum;
-import com.oseasy.initiate.modules.impdata.enums.ProjectMdCloseColEnum;
-import com.oseasy.initiate.modules.impdata.enums.ProjectMdMidColEnum;
-import com.oseasy.initiate.modules.impdata.enums.StudentColEnum;
-import com.oseasy.initiate.modules.impdata.enums.TeacherColEnum;
-import com.oseasy.initiate.modules.impdata.exception.ImpDataException;
-import com.oseasy.initiate.modules.impdata.service.BackUserErrorService;
-import com.oseasy.initiate.modules.impdata.service.GcontestErrorService;
-import com.oseasy.initiate.modules.impdata.service.ImpDataService;
-import com.oseasy.initiate.modules.impdata.service.ImpInfoErrmsgService;
-import com.oseasy.initiate.modules.impdata.service.ImpInfoService;
-import com.oseasy.initiate.modules.impdata.service.OfficeErrorService;
-import com.oseasy.initiate.modules.impdata.service.ProMdApprovalErrorService;
-import com.oseasy.initiate.modules.impdata.service.ProMdCloseErrorService;
-import com.oseasy.initiate.modules.impdata.service.ProMdMidErrorService;
-import com.oseasy.initiate.modules.impdata.service.ProjectErrorService;
-import com.oseasy.initiate.modules.impdata.service.ProjectHsErrorService;
-import com.oseasy.initiate.modules.impdata.service.StudentErrorService;
-import com.oseasy.initiate.modules.impdata.service.TeacherErrorService;
-import com.oseasy.initiate.modules.proprojectmd.service.ImpExpService;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.impdata.entity.ImpInfo;
+import com.hch.platform.pcore.modules.impdata.enums.BackUserColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.GcontestColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.OfficeColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.ProjectColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.ProjectHsColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.ProjectMdApprovalColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.ProjectMdCloseColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.ProjectMdMidColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.StudentColEnum;
+import com.hch.platform.pcore.modules.impdata.enums.TeacherColEnum;
+import com.hch.platform.pcore.modules.impdata.exception.ImpDataException;
+import com.hch.platform.pcore.modules.impdata.service.BackUserErrorService;
+import com.hch.platform.pcore.modules.impdata.service.GcontestErrorService;
+import com.hch.platform.pcore.modules.impdata.service.ImpDataService;
+import com.hch.platform.pcore.modules.impdata.service.ImpInfoErrmsgService;
+import com.hch.platform.pcore.modules.impdata.service.ImpInfoService;
+import com.hch.platform.pcore.modules.impdata.service.OfficeErrorService;
+import com.hch.platform.pcore.modules.impdata.service.ProMdApprovalErrorService;
+import com.hch.platform.pcore.modules.impdata.service.ProMdCloseErrorService;
+import com.hch.platform.pcore.modules.impdata.service.ProMdMidErrorService;
+import com.hch.platform.pcore.modules.impdata.service.ProjectErrorService;
+import com.hch.platform.pcore.modules.impdata.service.ProjectHsErrorService;
+import com.hch.platform.pcore.modules.impdata.service.StudentErrorService;
+import com.hch.platform.pcore.modules.impdata.service.TeacherErrorService;
+import com.hch.platform.pcore.modules.proprojectmd.service.ImpExpService;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -131,7 +131,7 @@ public class ImpDataController extends BaseController {
 	@RequestMapping(value = { "list", "" })
 	public String list(ImpInfo impInfo, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Map<String, Object> param = new HashMap<String, Object>();
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		param.put("userid", user.getId());
 		Page<Map<String, String>> page = impInfoService.getList(new Page<Map<String, String>>(request, response),
 				param);

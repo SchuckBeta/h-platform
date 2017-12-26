@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.dao;
+package com.hch.platform.pcore.modules.cms.dao;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.cms.entity.Link;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.cms.entity.Link;
 
 /**
  * 链接DAO接口

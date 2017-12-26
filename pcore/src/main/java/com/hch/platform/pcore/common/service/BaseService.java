@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.common.service;
+package com.hch.platform.pcore.common.service;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.BaseEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.BaseEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * Service基类
@@ -34,7 +34,7 @@ public abstract class BaseService {
 	 * @param userAlias 用户表别名，多个用“,”逗号隔开，传递空，忽略此参数
 	 * @return 标准连接条件对象
 	 */
-	public static String dataScopeFilter(User user, String officeAlias, String userAlias) {
+	public static String dataScopeFilter(AbsUser user, String officeAlias, String userAlias) {
 
 		StringBuilder sqlString = new StringBuilder();
 
@@ -114,7 +114,7 @@ public abstract class BaseService {
 	 */
 	public static void dataScopeFilter(BaseEntity<?> entity, String sqlMapKey, String officeWheres, String userWheres) {
 
-		User user = entity.getCurrentUser();
+		AbsUser user = entity.getCurrentUser();
 
 		// 如果是超级管理员，则不过滤数据
 		if (user.getAdmin()) {

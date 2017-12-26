@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 系统机构编号Entity.

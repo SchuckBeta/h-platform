@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -17,9 +17,9 @@ import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 表单验证（包含验证码）过滤类
@@ -143,7 +143,7 @@ public class FrontFormAuthenticationFilter extends FormAuthenticationFilter {
 				url=rurl;
 			}
 		}
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if("1".equals(user.getPassc())){//需要修改密码
 			url="/f/sys/frontStudentExpansion/frontUserPassword";
 		}else if(UserUtils.checkInfoPerfect(user)){

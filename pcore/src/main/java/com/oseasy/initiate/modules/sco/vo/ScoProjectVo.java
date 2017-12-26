@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.sco.vo;
+package com.hch.platform.pcore.modules.sco.vo;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class ScoProjectVo extends DataEntity<ScoProjectVo> {
 
     private String ratioResult;  //配比
 
-    private User user;  //查询条件 用户
+    private AbsUser user;  //查询条件 用户
     private Office office;  //查询条件 学院
     private String userId;  //查询条件 userId
     private Date beginDate;  //开始时间
@@ -56,11 +56,11 @@ public class ScoProjectVo extends DataEntity<ScoProjectVo> {
         this.userNum = userNum;
     }
 
-    public User getUser() {
+    public AbsUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbsUser user) {
         this.user = user;
     }
 

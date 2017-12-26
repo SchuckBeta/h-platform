@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.act.web;
+package com.hch.platform.pcore.modules.act.web;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,11 +31,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.service.ActProcessService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.service.ActProcessService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 流程定义相关Controller

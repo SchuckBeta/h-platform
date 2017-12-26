@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.analysis.web;
+package com.hch.platform.pcore.modules.analysis.web;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.analysis.service.TeamAnalysisService;
-import com.oseasy.initiate.modules.analysis.vo.AnnerVo;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.analysis.service.TeamAnalysisService;
+import com.hch.platform.pcore.modules.analysis.vo.AnnerVo;
 
 import net.sf.json.JSONObject;
 

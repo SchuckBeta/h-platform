@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.act.service.creator;
+package com.hch.platform.pcore.modules.act.service.creator;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Assert;
 import org.springframework.beans.BeanUtils;
 
-import com.oseasy.initiate.modules.act.utils.ProcessDefUtils;
+import com.hch.platform.pcore.modules.act.utils.ProcessDefUtils;
 
 public abstract class RuntimeActivityCreatorSupport {
 	private static int SEQUNCE_NUMBER = 0;

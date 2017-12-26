@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.entity;
+package com.hch.platform.pcore.modules.project.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -9,13 +9,13 @@ import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.ActEntity;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowProjectType;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.ActEntity;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowProjectType;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 /**
  * 项目申报Entity

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.excellent.web;
+package com.hch.platform.pcore.modules.excellent.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentKeyword;
-import com.oseasy.initiate.modules.excellent.service.ExcellentKeywordService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentKeyword;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentKeywordService;
 
 /**
  * 优秀展示关键词Controller.

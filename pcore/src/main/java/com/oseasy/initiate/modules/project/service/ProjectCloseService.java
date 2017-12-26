@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.project.service;
+package com.hch.platform.pcore.modules.project.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.project.dao.*;
-import com.oseasy.initiate.modules.project.entity.*;
+import com.hch.platform.pcore.modules.project.dao.*;
+import com.hch.platform.pcore.modules.project.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
 
 /**
  * project_closeService

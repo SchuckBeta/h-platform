@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.freeform;
+package com.hch.platform.pcore.common.supcan.freeform;
 
-import com.oseasy.initiate.common.supcan.common.Common;
-import com.oseasy.initiate.common.supcan.common.properties.Properties;
+import com.hch.platform.pcore.common.supcan.common.Common;
+import com.hch.platform.pcore.common.supcan.common.properties.Properties;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**

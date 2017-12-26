@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sco.entity;
+package com.hch.platform.pcore.modules.sco.entity;
 
 import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.validation.constraints.NotNull;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 课程学分认定标准Entity.

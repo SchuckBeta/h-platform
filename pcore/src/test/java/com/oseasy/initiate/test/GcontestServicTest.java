@@ -1,17 +1,17 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.service.GAuditInfoService;
-import com.oseasy.initiate.modules.gcontest.service.GContestService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareVo;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.gcontest.entity.GAuditInfo;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.gcontest.service.GAuditInfoService;
+import com.hch.platform.pcore.modules.gcontest.service.GContestService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareVo;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -64,7 +64,7 @@ public class GcontestServicTest {
     	GContest gContest=new GContest();
     	gContest.setId("dfd0f79e1be74f0aacd6fe9faebad34b");
     	gContest=gcontestService.get(gContest);
-        User uesr=userService.findUserById(gContest.getDeclareId());
+        AbsUser uesr=userService.findUserById(gContest.getDeclareId());
         //jsondata 生产
     	JSONObject obj = new JSONObject();
 		//项目基础信息表头

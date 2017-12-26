@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.security.shiro.cache;
+package com.hch.platform.pcore.common.security.shiro.cache;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Sets;
-import com.oseasy.initiate.common.web.Servlets;
+import com.hch.platform.pcore.common.web.Servlets;
 
 /**
  * 自定义授权缓存管理类

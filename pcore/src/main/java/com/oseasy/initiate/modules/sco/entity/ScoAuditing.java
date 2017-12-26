@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sco.entity;
+package com.hch.platform.pcore.modules.sco.entity;
 
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 学分记录审核表Entity.
@@ -14,7 +14,7 @@ import com.oseasy.initiate.common.persistence.DataEntity;
 public class ScoAuditing extends DataEntity<ScoAuditing> {
 
 	private static final long serialVersionUID = 1L;
-	private User user;		// 审核人ID
+	private AbsUser user;		// 审核人ID
 	private String type;		// 学分类型：1课程学分/2技能学分
 	private String applyId;		// 学分申请ID
 	private String procInsId;		// 流程实例ID
@@ -30,11 +30,11 @@ public class ScoAuditing extends DataEntity<ScoAuditing> {
 	}
 
 	@NotNull(message="审核人ID不能为空")
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

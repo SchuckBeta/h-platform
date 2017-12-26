@@ -1,20 +1,20 @@
-package com.oseasy.initiate.modules.sco.service;
+package com.hch.platform.pcore.modules.sco.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sco.vo.ScoCourseVo;
-import com.oseasy.initiate.modules.sco.vo.ScoProjectVo;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.sco.vo.ScoTeamRatioVo;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sco.vo.ScoCourseVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoProjectVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoTeamRatioVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmDao;
 
 /**
  * 创新、创业、素质学分认定表Service.
@@ -94,7 +94,7 @@ public class ScoAffirmService extends CrudService<ScoAffirmDao, ScoAffirm> {
 		return page;
 	}
 	//后台查询创业学分列表
-	public Page<ScoProjectVo> findScoProjectCreateVoPage(Page<com.oseasy.initiate.modules.sco.vo.ScoProjectVo> page, com.oseasy.initiate.modules.sco.vo.ScoProjectVo scoProjectVo) {
+	public Page<ScoProjectVo> findScoProjectCreateVoPage(Page<com.hch.platform.pcore.modules.sco.vo.ScoProjectVo> page, com.hch.platform.pcore.modules.sco.vo.ScoProjectVo scoProjectVo) {
 		scoProjectVo.setPage(page);
 		List<ScoProjectVo> scoProjectVoList=dao.findScoProjectCreateVoPage(scoProjectVo);
 		if(scoProjectVoList.size()>0){
@@ -113,7 +113,7 @@ public class ScoAffirmService extends CrudService<ScoAffirmDao, ScoAffirm> {
 		return page;
 	}
 	//后台查询创业学分列表
-	public Page<ScoProjectVo> findScoProjectStartVoPage(Page<com.oseasy.initiate.modules.sco.vo.ScoProjectVo> page, com.oseasy.initiate.modules.sco.vo.ScoProjectVo scoProjectVo) {
+	public Page<ScoProjectVo> findScoProjectStartVoPage(Page<com.hch.platform.pcore.modules.sco.vo.ScoProjectVo> page, com.hch.platform.pcore.modules.sco.vo.ScoProjectVo scoProjectVo) {
 
 		scoProjectVo.setPage(page);
 		List<ScoProjectVo> scoProjectVoList=dao.findScoProjectStartVoPage(scoProjectVo);

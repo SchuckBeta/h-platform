@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.gen.entity;
+package com.hch.platform.pcore.modules.gen.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
 
 /**
  * 生成方案Entity

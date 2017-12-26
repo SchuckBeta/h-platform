@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.common;
+package com.hch.platform.pcore.common.supcan.common;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.supcan.common.fonts.Font;
-import com.oseasy.initiate.common.supcan.common.properties.Properties;
-import com.oseasy.initiate.common.utils.IdGen;
+import com.hch.platform.pcore.common.supcan.common.fonts.Font;
+import com.hch.platform.pcore.common.supcan.common.properties.Properties;
+import com.hch.platform.putil.common.utils.IdGen;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**

@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.promodel.dao;
+package com.hch.platform.pcore.modules.promodel.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
 
 /**
  * proModelDAO接口.

@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.treelist.cols;
+package com.hch.platform.pcore.common.supcan.treelist.cols;
 
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupCol;
-import com.oseasy.initiate.common.utils.ObjectUtil;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupCol;
+import com.hch.platform.putil.common.utils.ObjectUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;

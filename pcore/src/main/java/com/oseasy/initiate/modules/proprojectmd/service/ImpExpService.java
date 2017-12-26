@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.proprojectmd.service;
+package com.hch.platform.pcore.modules.proprojectmd.service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,15 +27,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.ftp.vo.FileVo;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.impdata.dao.ImpInfoDao;
+import com.hch.platform.pcore.common.ftp.vo.FileVo;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.impdata.dao.ImpInfoDao;
 @Service
 @Transactional(readOnly = true)
 public class ImpExpService {

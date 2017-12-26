@@ -1,7 +1,7 @@
 /**
  * There are <a href="https://github.com/oseasy/initiate">JeeSite</a> code generation
  */
-package com.oseasy.initiate.modules.oa.service;
+package com.hch.platform.pcore.modules.oa.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.Collections3;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.utils.ActUtils;
-import com.oseasy.initiate.modules.oa.dao.LeaveDao;
-import com.oseasy.initiate.modules.oa.entity.Leave;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.pcore.common.utils.Collections3;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.utils.ActUtils;
+import com.hch.platform.pcore.modules.oa.dao.LeaveDao;
+import com.hch.platform.pcore.modules.oa.entity.Leave;
 
 /**
  * 请假Service

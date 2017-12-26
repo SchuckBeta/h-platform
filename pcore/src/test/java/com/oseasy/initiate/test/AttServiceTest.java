@@ -1,12 +1,12 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareVo;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareVo;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

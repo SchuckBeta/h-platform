@@ -1,13 +1,13 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/oseasy/initiate">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.team.dao;
+package com.hch.platform.pcore.modules.team.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public interface TeamUserRelationDao extends CrudDao<TeamUserRelation> {
     public TeamUserRelation findUserInfo(TeamUserRelation teamUserRelation); 
     public void updateByUserId(TeamUserRelation teamUserRelation);
 
-    public TeamUserRelation getByUser(User user);
+    public TeamUserRelation getByUser(AbsUser user);
     
     public TeamUserRelation getByTeamUserRelation(TeamUserRelation teamUserRelation);
 

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.service;
+package com.hch.platform.pcore.modules.project.service;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -19,74 +19,74 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FloatUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.dao.ActYwDao;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.auditstandard.dao.AuditStandardDetailDao;
-import com.oseasy.initiate.modules.auditstandard.dao.AuditStandardDetailInsDao;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetailIns;
-import com.oseasy.initiate.modules.auditstandard.vo.AsdVo;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.project.dao.ProMidDao;
-import com.oseasy.initiate.modules.project.dao.ProjectCloseDao;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.dao.ProjectPlanDao;
-import com.oseasy.initiate.modules.project.dao.weekly.ProjectWeeklyDao;
-import com.oseasy.initiate.modules.project.entity.ProMid;
-import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
-import com.oseasy.initiate.modules.project.entity.ProjectClose;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.entity.ProjectPlan;
-import com.oseasy.initiate.modules.project.enums.ProjectFinalResultEnum;
-import com.oseasy.initiate.modules.project.enums.ProjectMidResultEnum;
-import com.oseasy.initiate.modules.project.enums.ProjectStatusEnum;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareListVo;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareVo;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
-import com.oseasy.initiate.modules.promodel.dao.ProModelDao;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.promodel.service.ProModelService;
-import com.oseasy.initiate.modules.proprojectmd.dao.ProModelMdDao;
-import com.oseasy.initiate.modules.proprojectmd.entity.ProModelMd;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAllotRatioDao;
-import com.oseasy.initiate.modules.sco.dao.ScoScoreDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sco.entity.ScoScore;
-import com.oseasy.initiate.modules.sco.vo.ScoAffrimCriterionVo;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamUserHistoryDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
-import com.oseasy.initiate.modules.team.vo.TeamStudentVo;
-import com.oseasy.initiate.modules.team.vo.TeamTeacherVo;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.utils.FloatUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.dao.ActDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.dao.ActYwDao;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.service.ActYwGnodeService;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.auditstandard.dao.AuditStandardDetailDao;
+import com.hch.platform.pcore.modules.auditstandard.dao.AuditStandardDetailInsDao;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardDetailIns;
+import com.hch.platform.pcore.modules.auditstandard.vo.AsdVo;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.project.dao.ProMidDao;
+import com.hch.platform.pcore.modules.project.dao.ProjectCloseDao;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.dao.ProjectPlanDao;
+import com.hch.platform.pcore.modules.project.dao.weekly.ProjectWeeklyDao;
+import com.hch.platform.pcore.modules.project.entity.ProMid;
+import com.hch.platform.pcore.modules.project.entity.ProjectAuditInfo;
+import com.hch.platform.pcore.modules.project.entity.ProjectClose;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectPlan;
+import com.hch.platform.pcore.modules.project.enums.ProjectFinalResultEnum;
+import com.hch.platform.pcore.modules.project.enums.ProjectMidResultEnum;
+import com.hch.platform.pcore.modules.project.enums.ProjectStatusEnum;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareListVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectNodeVo;
+import com.hch.platform.pcore.modules.promodel.dao.ProModelDao;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.promodel.service.ProModelService;
+import com.hch.platform.pcore.modules.proprojectmd.dao.ProModelMdDao;
+import com.hch.platform.pcore.modules.proprojectmd.entity.ProModelMd;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmCriterionDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAllotRatioDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoScoreDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sco.entity.ScoScore;
+import com.hch.platform.pcore.modules.sco.vo.ScoAffrimCriterionVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamUserHistoryDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.modules.team.vo.TeamStudentVo;
+import com.hch.platform.pcore.modules.team.vo.TeamTeacherVo;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -309,7 +309,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 
 	// 查找申报过项目的时间轴数据
 	private JSONObject getProActTimeIndexData(ActYw actYw, Map<String, String> lastpro) throws ParseException {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		JSONObject data = new JSONObject();
 		JSONArray contents = new JSONArray();
 		JSONArray files = new JSONArray();
@@ -669,7 +669,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 
 	// 查找有申报过的大创项目的初始化时间轴数据
 	private JSONObject getProDcTimeIndexData(ActYw actYw, Map<String, String> umap) throws ParseException {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		JSONObject data = new JSONObject();
 		JSONArray contents = new JSONArray();
 		JSONArray files = new JSONArray();
@@ -964,7 +964,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 		return data;
 	}
 
-	private void fillReports(String pid, JSONArray files, User user, String pptype) {
+	private void fillReports(String pid, JSONArray files, AbsUser user, String pptype) {
 		Map<String, JSONArray> ret = new LinkedHashMap<String, JSONArray>();
 		fillWeeklys(ret, pid, user, pptype);// 周报
 		if (ret.size() > 0) {
@@ -977,7 +977,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 		}
 	}
 
-	private void fillWeeklys(Map<String, JSONArray> ret, String pid, User user, String pptype) {
+	private void fillWeeklys(Map<String, JSONArray> ret, String pid, AbsUser user, String pptype) {
 		List<Map<String, String>> wlist = projectWeeklyDao.getInfoByProjectId(pid);
 		if (wlist != null) {
 			for (Map<String, String> map : wlist) {
@@ -1345,7 +1345,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 	 */
 	@Transactional(readOnly = false)
 	public void startPojectProcess(ProjectDeclare projectDeclare) {
-		User user = userDao.get(projectDeclare.getCreateBy().getId());
+		AbsUser user = userDao.get(projectDeclare.getCreateBy().getId());
 		identityService.setAuthenticatedUserId(user.getLoginName());
 		String procDefKey = "state_project_audit";
 		String businessTable = "project_declare";
@@ -1410,8 +1410,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			projectDeclare.setApprovalDate(new Date());
 			updateStatus(projectDeclare);
 			// 给项目负责人发送消息 你的项目审核未通过（不合格项目）
-			User apply_User = UserUtils.getUser();
-			User rec_User = new User();
+			AbsUser apply_User = UserUtils.getUser();
+			AbsUser rec_User = new AbsUser();
 			rec_User.setId(projectDeclare.getLeader());
 			oaNotifyService.sendOaNotifyByType(apply_User, rec_User, "项目审核通知",
 					"你的" + DictUtils.getDictLabel("1", "project_style", "") + projectDeclare.getName() + "审核未通过（不合格项目）",
@@ -1426,8 +1426,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			projectDeclare.setNumber(number);
 			dao.updateNumber(projectDeclare);
 			// 给项目负责人发送消息 学院已对你的项目评级（C级项目）；
-			User apply_User = UserUtils.getUser();
-			User rec_User = new User();
+			AbsUser apply_User = UserUtils.getUser();
+			AbsUser rec_User = new AbsUser();
 			rec_User.setId(projectDeclare.getLeader());
 			oaNotifyService.sendOaNotifyByType(apply_User, rec_User, "项目审核通知",
 					"学院已对你的" + DictUtils.getDictLabel("1", "project_style", "") + projectDeclare.getName() + "评级（C级项目）",
@@ -1440,8 +1440,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			projectDeclare.setStatus("2"); // 待学校立项审核
 			updateStatus(projectDeclare);
 			// 给项目负责人发送消息 学院已提交项目到校级（校级评级项目）；
-			User apply_User = UserUtils.getUser();
-			User rec_User = new User();
+			AbsUser apply_User = UserUtils.getUser();
+			AbsUser rec_User = new AbsUser();
 			rec_User.setId(projectDeclare.getLeader());
 			oaNotifyService.sendOaNotifyByType(apply_User,
 					rec_User, "项目审核通知", "学院已提交你的" + DictUtils.getDictLabel("1", "project_style", "")
@@ -1483,8 +1483,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			number = "A+" + projectDeclare.getNumber();
 			projectDeclare.setNumber(number);
 			// 给项目负责人发送消息 学校已对你的项目评级（A+级、A级或B级项目）
-			User apply_User = UserUtils.getUser();
-			User rec_User = new User();
+			AbsUser apply_User = UserUtils.getUser();
+			AbsUser rec_User = new AbsUser();
 			rec_User.setId(projectDeclare.getLeader());
 			oaNotifyService.sendOaNotifyByType(apply_User,
 					rec_User, "项目审核通知", "学校已对你的" + DictUtils.getDictLabel("1", "project_style", "")
@@ -1495,8 +1495,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			number = "A" + projectDeclare.getNumber();
 			projectDeclare.setNumber(number);
 			// 给项目负责人发送消息 学校已对你的项目评级（A+级、A级或B级项目）
-			User apply_User = UserUtils.getUser();
-			User rec_User = new User();
+			AbsUser apply_User = UserUtils.getUser();
+			AbsUser rec_User = new AbsUser();
 			rec_User.setId(projectDeclare.getLeader());
 			oaNotifyService.sendOaNotifyByType(apply_User, rec_User, "项目审核通知",
 					"学校已对你的" + DictUtils.getDictLabel("1", "project_style", "") + projectDeclare.getName() + "评级（A级项目）",
@@ -1506,8 +1506,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			number = "B" + projectDeclare.getNumber();
 			projectDeclare.setNumber(number);
 			// 给项目负责人发送消息 学校已对你的项目评级（A+级、A级或B级项目）
-			User apply_User = UserUtils.getUser();
-			User rec_User = new User();
+			AbsUser apply_User = UserUtils.getUser();
+			AbsUser rec_User = new AbsUser();
 			rec_User.setId(projectDeclare.getLeader());
 			oaNotifyService.sendOaNotifyByType(apply_User, rec_User, "项目审核通知",
 					"学校已对你的" + DictUtils.getDictLabel("1", "project_style", "") + projectDeclare.getName() + "评级（B级项目）",
@@ -1674,8 +1674,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 	// 如果不整改 保存中期审核评级、执行工作流、更改主表状态
 	@Transactional(readOnly = false)
 	public void secCheckSave(ProjectDeclare projectDeclare) {
-		User send_User = UserUtils.getUser();
-		User rec_User = UserUtils.get(projectDeclare.getLeader());
+		AbsUser send_User = UserUtils.getUser();
+		AbsUser rec_User = UserUtils.get(projectDeclare.getLeader());
 		if ("4".equals(projectDeclare.getPass())) { // pass==4表示需要整改
 			// 删除中期评分的信息
 			// 处理评分 评分保存到子表中 project_audit_info
@@ -1896,8 +1896,8 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 	// 结果评定 执行工作流 保存子表 修改主表状态
 	@Transactional(readOnly = false)
 	public void secAssessSave(ProjectDeclare projectDeclare) {
-		User send_User = UserUtils.getUser();
-		User rec_User = UserUtils.get(projectDeclare.getLeader());
+		AbsUser send_User = UserUtils.getUser();
+		AbsUser rec_User = UserUtils.get(projectDeclare.getLeader());
 		// 执行工作流
 		taskService.complete(projectDeclare.getAct().getTaskId());
 
@@ -2103,7 +2103,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 			if (!hasConfig) { // 如果后台没有配比规则、则所有成员一样的分数
 				for (Map<String, String> teamUser : studentList) {
 					ScoScore scoScore = new ScoScore();
-					User user = new User();
+					AbsUser user = new AbsUser();
 					user.setId(teamUser.get("userId"));
 					scoScore.setUser(user);
 					if (StringUtil.equals(pro.getType(), "1") || StringUtil.equals(pro.getType(), "2")) { // 保存创新学分
@@ -2131,7 +2131,7 @@ public class ProjectDeclareService extends CrudService<ProjectDeclareDao, Projec
 
 				for (Map<String, String> teamUser : studentList) {
 					ScoScore scoScore = new ScoScore();
-					User user = new User();
+					AbsUser user = new AbsUser();
 					user.setId(teamUser.get("userId"));
 					scoScore.setUser(user);
 					String number = String.valueOf(teamUser.get("weightVal"));

@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.gcontest.enums;
+package com.hch.platform.pcore.modules.gcontest.enums;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.gcontest.vo.GContestNodeVo;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestNodeVo;
 
 public enum GContestStatusEnum {
 	 S0("0", GContestNodeVo.G_START_ID, GContestNodeVo.GN_START_ID,"未提交")

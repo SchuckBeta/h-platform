@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.service;
+package com.hch.platform.pcore.test.service;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.test.dao.TestDataChildDao;
-import com.oseasy.initiate.test.dao.TestDataMainDao;
-import com.oseasy.initiate.test.entity.TestDataChild;
-import com.oseasy.initiate.test.entity.TestDataMain;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.test.dao.TestDataChildDao;
+import com.hch.platform.pcore.test.dao.TestDataMainDao;
+import com.hch.platform.pcore.test.entity.TestDataChild;
+import com.hch.platform.pcore.test.entity.TestDataMain;
 
 /**
  * 主子表生成Service

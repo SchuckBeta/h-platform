@@ -1,7 +1,7 @@
 /**
  * There are <a href="https://github.com/oseasy/initiate">JeeSite</a> code generation
  */
-package com.oseasy.initiate.modules.oa.entity;
+package com.hch.platform.pcore.modules.oa.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -15,10 +15,10 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 /**
  * 请假Entity
@@ -124,11 +124,11 @@ public class Leave extends DataEntity<Leave> {
 		this.realityEndTime = realityEndTime;
 	}
 	
-	public User getUser() {
+	public AbsUser getUser() {
 		return createBy;
 	}
 	
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.createBy = user;
 	}
 

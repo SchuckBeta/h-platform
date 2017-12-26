@@ -33,7 +33,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.hch.platform.pcore.common.utils.SpringContextHolder;
-import com.hch.platform.pcore.common.utils.license.License;
+import com.hch.platform.putil.common.utils.license.License;
 import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
 import com.hch.platform.pcore.modules.authorize.service.SysLicenseService;
 

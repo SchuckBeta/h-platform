@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.tpl.vo.impl;
+package com.hch.platform.pcore.modules.tpl.vo.impl;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.proprojectmd.entity.ProModelMd;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.tpl.vo.WproType;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.modules.proprojectmd.entity.ProModelMd;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.tpl.vo.WproType;
 
 public class Wpro implements Serializable{
   private static final long serialVersionUID = 1L;

@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.entity;
+package com.hch.platform.pcore.test.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 主子表生成Entity

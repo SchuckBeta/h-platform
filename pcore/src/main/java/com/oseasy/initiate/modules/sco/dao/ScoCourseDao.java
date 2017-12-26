@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sco.dao;
+package com.hch.platform.pcore.modules.sco.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sco.entity.ScoCourse;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoCourse;
 
-import com.oseasy.initiate.modules.sco.vo.ScoCourseVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoCourseVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

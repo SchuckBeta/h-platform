@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.task;
+package com.hch.platform.pcore.modules.task;
 
-import com.oseasy.initiate.modules.task.TaskUtils;
-import com.oseasy.initiate.modules.task.entity.TaskScheduleJob;
+import com.hch.platform.pcore.modules.task.TaskUtils;
+import com.hch.platform.pcore.modules.task.entity.TaskScheduleJob;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

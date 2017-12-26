@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.oa.entity;
+package com.hch.platform.pcore.modules.oa.entity;
 
 public class OaNotifySent {
 	private String sentName;   //邀请人

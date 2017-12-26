@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.interactive.service;
+package com.hch.platform.pcore.modules.interactive.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.modules.course.dao.CourseDao;
-import com.oseasy.initiate.modules.excellent.dao.ExcellentShowDao;
-import com.oseasy.initiate.modules.interactive.dao.SysViewsDao;
-import com.oseasy.initiate.modules.interactive.entity.SysViews;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.modules.course.dao.CourseDao;
+import com.hch.platform.pcore.modules.excellent.dao.ExcellentShowDao;
+import com.hch.platform.pcore.modules.interactive.dao.SysViewsDao;
+import com.hch.platform.pcore.modules.interactive.entity.SysViews;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 浏览表Service.

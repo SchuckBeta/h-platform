@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.annotation.treelist;
+package com.hch.platform.pcore.common.supcan.annotation.treelist;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -9,9 +9,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.oseasy.initiate.common.supcan.annotation.common.fonts.SupFont;
-import com.oseasy.initiate.common.supcan.annotation.common.properties.SupProperties;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupGroup;
+import com.hch.platform.pcore.common.supcan.annotation.common.fonts.SupFont;
+import com.hch.platform.pcore.common.supcan.annotation.common.properties.SupProperties;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupGroup;
 
 /**
  * 硕正TreeList注解

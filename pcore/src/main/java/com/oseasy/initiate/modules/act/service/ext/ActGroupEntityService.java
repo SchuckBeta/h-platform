@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.service.ext;
+package com.hch.platform.pcore.modules.act.service.ext;
 
 import java.util.List;
 import java.util.Map;
@@ -15,11 +15,11 @@ import org.activiti.engine.impl.persistence.entity.GroupEntityManager;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.act.utils.ActUtils;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.act.utils.ActUtils;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
 
 /**
  * Activiti Group Entity Service
@@ -80,7 +80,7 @@ public class ActGroupEntityService extends GroupEntityManager {
 	public List<Group> findGroupsByUser(String userId) {
 //		return getDbSqlSession().selectList("selectGroupsByUserId", userId);
 		List<Group> list = Lists.newArrayList();
-		User user = getSystemService().getUserByLoginName(userId);
+		AbsUser user = getSystemService().getUserByLoginName(userId);
 		if (user != null && user.getRoleList() != null) {
 			for (Role role : user.getRoleList()) {
 				list.add(ActUtils.toActivitiGroup(role));

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.List;
 import java.util.Map;
@@ -8,22 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.modules.impdata.dao.BackUserErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.GcontestErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.ImpInfoDao;
-import com.oseasy.initiate.modules.impdata.dao.ImpInfoErrmsgDao;
-import com.oseasy.initiate.modules.impdata.dao.OfficeErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.ProMdApprovalErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.ProMdCloseErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.ProMdMidErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.ProjectErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.ProjectHsErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.StudentErrorDao;
-import com.oseasy.initiate.modules.impdata.dao.TeacherErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.ImpInfo;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.modules.impdata.dao.BackUserErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.GcontestErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.ImpInfoDao;
+import com.hch.platform.pcore.modules.impdata.dao.ImpInfoErrmsgDao;
+import com.hch.platform.pcore.modules.impdata.dao.OfficeErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.ProMdApprovalErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.ProMdCloseErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.ProMdMidErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.ProjectErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.ProjectHsErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.StudentErrorDao;
+import com.hch.platform.pcore.modules.impdata.dao.TeacherErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.ImpInfo;
 
 /**
  * 导入数据信息表Service

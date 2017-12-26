@@ -1,12 +1,12 @@
-package com.oseasy.initiate.modules.sys.dao;
+package com.hch.platform.pcore.modules.sys.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.SysCertificate;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificate;
 
 /**
  * 系统证书表DAO接口.

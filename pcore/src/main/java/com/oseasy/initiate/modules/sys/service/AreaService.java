@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.service.TreeService;
-import com.oseasy.initiate.modules.sys.dao.AreaDao;
-import com.oseasy.initiate.modules.sys.entity.Area;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.service.TreeService;
+import com.hch.platform.pcore.modules.sys.dao.AreaDao;
+import com.hch.platform.pcore.modules.sys.entity.Area;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 区域Service

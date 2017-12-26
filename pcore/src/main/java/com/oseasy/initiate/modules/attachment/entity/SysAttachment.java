@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.attachment.entity;
+package com.hch.platform.pcore.modules.attachment.entity;
 
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
 
 /**
  * 附件信息表Entity

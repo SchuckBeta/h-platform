@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.analysis.vo;
+package com.hch.platform.pcore.modules.analysis.vo;
 
 /**
  * Created by zhangzheng on 2017/5/10.

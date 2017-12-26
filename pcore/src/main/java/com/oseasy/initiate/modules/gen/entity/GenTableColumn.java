@@ -1,15 +1,15 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.gen.entity;
+package com.hch.platform.pcore.modules.gen.entity;
 
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 业务表字段Entity

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.oa.service;
+package com.hch.platform.pcore.modules.oa.service;
 
 import java.util.Map;
 
@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.act.utils.ActUtils;
-import com.oseasy.initiate.modules.oa.dao.TestAuditDao;
-import com.oseasy.initiate.modules.oa.entity.TestAudit;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.act.utils.ActUtils;
+import com.hch.platform.pcore.modules.oa.dao.TestAuditDao;
+import com.hch.platform.pcore.modules.oa.entity.TestAudit;
 
 /**
  * 审批Service

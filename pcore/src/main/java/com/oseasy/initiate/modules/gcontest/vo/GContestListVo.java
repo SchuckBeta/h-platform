@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.gcontest.vo;
+package com.hch.platform.pcore.modules.gcontest.vo;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.gcontest.enums.GContestStatusEnum;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.gcontest.enums.GContestStatusEnum;
 
 /**
  * 项目申报Vo

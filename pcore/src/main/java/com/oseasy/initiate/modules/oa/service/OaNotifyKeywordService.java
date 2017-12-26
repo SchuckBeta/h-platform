@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.oa.service;
+package com.hch.platform.pcore.modules.oa.service;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyKeywordDao;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyKeyword;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.oa.dao.OaNotifyKeywordDao;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyKeyword;
 
 /**
  * 通知通告关键词Service.

@@ -2,11 +2,7 @@
  *
  */
 
-package com.oseasy.initiate.common.persistence;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.CookieUtils;
+package com.hch.platform.pcore.common.persistence;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.CookieUtils;
 
 
 /**

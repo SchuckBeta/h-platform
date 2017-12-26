@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.sco.service;
+package com.hch.platform.pcore.modules.sco.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.sco.vo.ScoAffrimCriterionVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoAffrimCriterionVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmCriterion;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmCriterionDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmCriterion;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

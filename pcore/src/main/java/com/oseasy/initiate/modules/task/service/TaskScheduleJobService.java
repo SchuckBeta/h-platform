@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.task.service;
+package com.hch.platform.pcore.modules.task.service;
 
-import com.oseasy.initiate.modules.task.QuartzJobFactory;
-import com.oseasy.initiate.modules.task.QuartzJobFactoryDisallowConcurrentExecution;
-import com.oseasy.initiate.modules.task.QuartzJobParamFactory;
-import com.oseasy.initiate.modules.task.dao.TaskScheduleJobDao;
-import com.oseasy.initiate.modules.task.entity.TaskScheduleJob;
+import com.hch.platform.pcore.modules.task.QuartzJobFactory;
+import com.hch.platform.pcore.modules.task.QuartzJobFactoryDisallowConcurrentExecution;
+import com.hch.platform.pcore.modules.task.QuartzJobParamFactory;
+import com.hch.platform.pcore.modules.task.dao.TaskScheduleJobDao;
+import com.hch.platform.pcore.modules.task.entity.TaskScheduleJob;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.quartz.*;

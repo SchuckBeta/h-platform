@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.impdata.dao.TeacherErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.TeacherError;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.dao.RoleDao;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.modules.impdata.dao.TeacherErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.TeacherError;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.dao.RoleDao;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 导入导师错误数据表Service
@@ -67,7 +67,7 @@ public class TeacherErrorService extends CrudService<TeacherErrorDao, TeacherErr
 	}
 	@Transactional(readOnly = false)
 	public void insert(TeacherError teacherError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			teacherError.setUpdateBy(user);
 			teacherError.setCreateBy(user);
@@ -78,8 +78,8 @@ public class TeacherErrorService extends CrudService<TeacherErrorDao, TeacherErr
 	}
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void saveTeacher(BackTeacherExpansion tc) {
-		User nuser=tc.getUser();
-		User user = UserUtils.getUser();
+		AbsUser nuser=tc.getUser();
+		AbsUser user = UserUtils.getUser();
 		nuser.setPassword(SystemService.entryptPassword("123456"));
 		List<Role> roleList=new ArrayList<Role>();
 		roleList.add(roleDao.get(SysIds.SYS_ROLE_USER.getId()));

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 文章Entity

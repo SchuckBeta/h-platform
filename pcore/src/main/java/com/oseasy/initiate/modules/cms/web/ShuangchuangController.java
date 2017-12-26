@@ -1,19 +1,19 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.web;
+package com.hch.platform.pcore.modules.cms.web;
 
-import com.oseasy.initiate.common.mapper.JsonMapper;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.entity.Article;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.entity.Site;
-import com.oseasy.initiate.modules.cms.service.*;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
-import com.oseasy.initiate.modules.cms.utils.TplUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.mapper.JsonMapper;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.entity.Article;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.entity.Site;
+import com.hch.platform.pcore.modules.cms.service.*;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
+import com.hch.platform.pcore.modules.cms.utils.TplUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

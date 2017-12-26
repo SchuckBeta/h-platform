@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
 import java.util.List;
 
@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.pw.dao.PwEnterDao;
-import com.oseasy.initiate.modules.pw.dao.PwEnterDetailDao;
-import com.oseasy.initiate.modules.pw.dao.PwEnterRoomDao;
-import com.oseasy.initiate.modules.pw.entity.PwEnter;
-import com.oseasy.initiate.modules.pw.entity.PwEnterDetail;
-import com.oseasy.initiate.modules.pw.entity.PwEnterRoom;
-import com.oseasy.initiate.modules.pw.vo.PwEnterShStatus;
-import com.oseasy.initiate.modules.pw.vo.PwEnterStatus;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.pw.dao.PwEnterDao;
+import com.hch.platform.pcore.modules.pw.dao.PwEnterDetailDao;
+import com.hch.platform.pcore.modules.pw.dao.PwEnterRoomDao;
+import com.hch.platform.pcore.modules.pw.entity.PwEnter;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterDetail;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterRoom;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterShStatus;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterStatus;
 
 /**
  * 入驻场地分配Service.

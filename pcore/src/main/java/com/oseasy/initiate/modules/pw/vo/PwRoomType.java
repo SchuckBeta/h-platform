@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
 public enum PwRoomType {
 

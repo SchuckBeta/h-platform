@@ -1,7 +1,7 @@
 /**
 \ * 
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import java.util.Date;
 
@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 链接Entity
@@ -27,7 +27,7 @@ public class Link extends DataEntity<Link> {
 	private String href;	// 链接地址
 	private Integer weight;	// 权重，越大越靠前
 	private Date weightDate;// 权重期限，超过期限，将weight设置为0
-	private User user;		//关联用户
+	private AbsUser user;		//关联用户
 
 	public Link() {
 		super();
@@ -105,11 +105,11 @@ public class Link extends DataEntity<Link> {
 		this.weightDate = weightDate;
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 	

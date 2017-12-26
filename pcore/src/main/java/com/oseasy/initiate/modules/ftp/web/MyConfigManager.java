@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.ftp.web;
+package com.hch.platform.pcore.modules.ftp.web;
 
 import com.baidu.ueditor.ConfigManager;
 import org.json.JSONArray;

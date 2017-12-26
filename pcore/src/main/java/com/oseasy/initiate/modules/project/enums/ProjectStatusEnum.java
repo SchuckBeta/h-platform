@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.project.enums;
+package com.hch.platform.pcore.modules.project.enums;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.project.vo.ProjectNodeVo;
 
 public enum ProjectStatusEnum {
 	 S0("0", ProjectNodeVo.P_START_ID, ProjectNodeVo.PN_START_ID, "未提交")

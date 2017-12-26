@@ -1,12 +1,12 @@
-package com.oseasy.initiate.modules.sco.vo;
+package com.hch.platform.pcore.modules.sco.vo;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sco.entity.ScoApply;
-import com.oseasy.initiate.modules.sco.entity.ScoCourse;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sco.entity.ScoApply;
+import com.hch.platform.pcore.modules.sco.entity.ScoCourse;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * Created by zhangzheng on 2017/7/19.
@@ -19,7 +19,7 @@ public class ScoCourseVo extends DataEntity<ScoCourseVo> {
     private float standard ;  //学分认定标准 根据项目项目级别和项目结果查询sco_affirm_criterion表得到
     private float percent;    //学分占比  根据团队人员关系表查询得到
     private String scoreType;  //学分类型（创新学分或者创业学分） 根据项目类型得到
-    private User user;  //查询条件 用户
+    private AbsUser user;  //查询条件 用户
     private Office office;  //查询条件 学院
     private ScoApply scoApply;  //查询条件 审核
     private String keyWord;  //关键字
@@ -40,11 +40,11 @@ public class ScoCourseVo extends DataEntity<ScoCourseVo> {
         this.scoCourse = scoCourse;
     }
 
-    public User getUser() {
+    public AbsUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbsUser user) {
         this.user = user;
     }
 

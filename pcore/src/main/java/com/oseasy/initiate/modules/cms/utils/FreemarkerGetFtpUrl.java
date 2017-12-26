@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.cms.utils;
+package com.hch.platform.pcore.modules.cms.utils;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;

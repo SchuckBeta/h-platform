@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,49 +12,49 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.mapper.JsonMapper;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.json.JsonAliUtils;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwApply;
-import com.oseasy.initiate.modules.actyw.service.ActYwApplyService;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowYwId;
-import com.oseasy.initiate.modules.actyw.vo.ActYwApplyVo;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.ftp.service.UeditorUploadService;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.oa.vo.OaNotifySendType;
-import com.oseasy.initiate.modules.oa.vo.OaNotifyTypeStatus;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.pw.dao.PwEnterDao;
-import com.oseasy.initiate.modules.pw.entity.PwEnter;
-import com.oseasy.initiate.modules.pw.entity.PwEnterDetail;
-import com.oseasy.initiate.modules.pw.entity.PwEnterRel;
-import com.oseasy.initiate.modules.pw.entity.PwEnterRoom;
-import com.oseasy.initiate.modules.pw.exception.AuditFailException;
-import com.oseasy.initiate.modules.pw.exception.EnterException;
-import com.oseasy.initiate.modules.pw.exception.NoTeamException;
-import com.oseasy.initiate.modules.pw.vo.DtypeTerm;
-import com.oseasy.initiate.modules.pw.vo.PwEnterExpireVo;
-import com.oseasy.initiate.modules.pw.vo.PwEnterShStatus;
-import com.oseasy.initiate.modules.pw.vo.PwEnterStatus;
-import com.oseasy.initiate.modules.pw.vo.PwEnterType;
-import com.oseasy.initiate.modules.pw.vo.PwEnterVo;
-import com.oseasy.initiate.modules.pw.vo.SvalPw;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.tool.SysNoType;
-import com.oseasy.initiate.modules.sys.tool.SysNodeTool;
-import com.oseasy.initiate.modules.team.entity.Team;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.mapper.JsonMapper;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.json.JsonAliUtils;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwApply;
+import com.hch.platform.pcore.modules.actyw.service.ActYwApplyService;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowType;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowYwId;
+import com.hch.platform.pcore.modules.actyw.vo.ActYwApplyVo;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.ftp.service.UeditorUploadService;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.oa.vo.OaNotifySendType;
+import com.hch.platform.pcore.modules.oa.vo.OaNotifyTypeStatus;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.pw.dao.PwEnterDao;
+import com.hch.platform.pcore.modules.pw.entity.PwEnter;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterDetail;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterRel;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterRoom;
+import com.hch.platform.pcore.modules.pw.exception.AuditFailException;
+import com.hch.platform.pcore.modules.pw.exception.EnterException;
+import com.hch.platform.pcore.modules.pw.exception.NoTeamException;
+import com.hch.platform.pcore.modules.pw.vo.DtypeTerm;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterExpireVo;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterShStatus;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterStatus;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterType;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterVo;
+import com.hch.platform.pcore.modules.pw.vo.SvalPw;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.tool.SysNoType;
+import com.hch.platform.pcore.modules.sys.tool.SysNodeTool;
+import com.hch.platform.pcore.modules.team.entity.Team;
 
 import net.sf.json.JSONObject;
 
@@ -686,7 +686,7 @@ public class PwEnterService extends CrudService<PwEnterDao, PwEnter> {
    * @param user 发送用户
    */
   @Transactional(readOnly = false)
-  public ActYwRstatus<PwEnter> sendMsg(String id, User user, String type) {
+  public ActYwRstatus<PwEnter> sendMsg(String id, AbsUser user, String type) {
     if(StringUtil.isEmpty(id)){
       return new ActYwRstatus<PwEnter>(false, "发送参数不能为空！");
     }
@@ -712,7 +712,7 @@ public class PwEnterService extends CrudService<PwEnterDao, PwEnter> {
    * @param user 发送用户
    */
   @Transactional(readOnly = false)
-  public ActYwRstatus<PwEnter> sendOaNotify(PwEnter pwEnter, User user, OaNotify.Type_Enum type, String title, String content) {
+  public ActYwRstatus<PwEnter> sendOaNotify(PwEnter pwEnter, AbsUser user, OaNotify.Type_Enum type, String title, String content) {
     if((pwEnter == null)){
       return new ActYwRstatus<PwEnter>(false, "发送入驻参数不正确！");
     }

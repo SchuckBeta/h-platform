@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 import java.util.Date;
 import java.util.List;

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.utils;
+package com.hch.platform.pcore.modules.cms.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,32 +21,32 @@ import org.springframework.core.io.Resource;
 import org.springframework.ui.Model;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysCacheKeys;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.mapper.JaxbMapper;
-import com.oseasy.initiate.common.mapper.JsonMapper;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.FreeMarkers;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.cms.entity.Article;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.entity.CmsIndexRegion;
-import com.oseasy.initiate.modules.cms.entity.CmsIndexResource;
-import com.oseasy.initiate.modules.cms.entity.CmsTemplate;
-import com.oseasy.initiate.modules.cms.entity.Link;
-import com.oseasy.initiate.modules.cms.entity.Site;
-import com.oseasy.initiate.modules.cms.enums.ResTemplateEnum;
-import com.oseasy.initiate.modules.cms.service.ArticleService;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
-import com.oseasy.initiate.modules.cms.service.CmsIndexResourceService;
-import com.oseasy.initiate.modules.cms.service.LinkService;
-import com.oseasy.initiate.modules.cms.service.SiteService;
-import com.oseasy.initiate.modules.excellent.enums.ExcTemplateEnum;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysCacheKeys;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.mapper.JaxbMapper;
+import com.hch.platform.pcore.common.mapper.JsonMapper;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.FreeMarkers;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.cms.entity.Article;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.entity.CmsIndexRegion;
+import com.hch.platform.pcore.modules.cms.entity.CmsIndexResource;
+import com.hch.platform.pcore.modules.cms.entity.CmsTemplate;
+import com.hch.platform.pcore.modules.cms.entity.Link;
+import com.hch.platform.pcore.modules.cms.entity.Site;
+import com.hch.platform.pcore.modules.cms.enums.ResTemplateEnum;
+import com.hch.platform.pcore.modules.cms.service.ArticleService;
+import com.hch.platform.pcore.modules.cms.service.CategoryService;
+import com.hch.platform.pcore.modules.cms.service.CmsIndexResourceService;
+import com.hch.platform.pcore.modules.cms.service.LinkService;
+import com.hch.platform.pcore.modules.cms.service.SiteService;
+import com.hch.platform.pcore.modules.excellent.enums.ExcTemplateEnum;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 

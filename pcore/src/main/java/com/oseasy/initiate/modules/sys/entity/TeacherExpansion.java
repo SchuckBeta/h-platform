@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 /**
  * 用户Entity 导师拓展表

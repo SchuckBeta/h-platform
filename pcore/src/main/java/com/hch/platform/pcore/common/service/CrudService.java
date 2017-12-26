@@ -1,16 +1,16 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.service;
+package com.hch.platform.pcore.common.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.persistence.Page;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.Page;
 
 /**
  * Service基类

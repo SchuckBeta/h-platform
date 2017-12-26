@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.project.service;
+package com.hch.platform.pcore.modules.project.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.project.entity.ProSituation;
-import com.oseasy.initiate.modules.project.dao.ProSituationDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.project.entity.ProSituation;
+import com.hch.platform.pcore.modules.project.dao.ProSituationDao;
 
 /**
  * 国创项目完成情况表单Service

@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.service;
+package com.hch.platform.pcore.modules.cms.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.cms.dao.ArticleDataDao;
-import com.oseasy.initiate.modules.cms.entity.ArticleData;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.cms.dao.ArticleDataDao;
+import com.hch.platform.pcore.modules.cms.entity.ArticleData;
 
 /**
  * 站点Service

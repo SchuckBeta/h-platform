@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.tpl.vo.impl;
+package com.hch.platform.pcore.modules.tpl.vo.impl;
 
 import java.io.Serializable;
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.team.entity.Team;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.team.entity.Team;
 
 public class Wteam implements Serializable{
   private static final long serialVersionUID = 1L;
@@ -99,7 +99,7 @@ public class Wteam implements Serializable{
     this.tm = tm;
   }
 
-  public static Wteam init(User deuser, Team team, List<BackTeacherExpansion> xyteachers, List<BackTeacherExpansion> qyteachers, List<StudentExpansion> students) {
+  public static Wteam init(AbsUser deuser, Team team, List<BackTeacherExpansion> xyteachers, List<BackTeacherExpansion> qyteachers, List<StudentExpansion> students) {
     Wteam wte = new Wteam();
     wte.setTe(Wteacher.init(xyteachers));
     wte.setTeo(Wteacher.init(qyteachers));

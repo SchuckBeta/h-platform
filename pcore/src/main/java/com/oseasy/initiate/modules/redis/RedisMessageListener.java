@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.redis;
+package com.hch.platform.pcore.modules.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
@@ -6,8 +6,8 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.websocket.WebSockectUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.websocket.WebSockectUtil;
 
 import net.sf.json.JSONObject;
 @Service

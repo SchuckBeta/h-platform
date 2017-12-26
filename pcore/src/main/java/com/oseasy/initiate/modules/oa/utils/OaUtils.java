@@ -1,19 +1,19 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.oa.utils;
+package com.hch.platform.pcore.modules.oa.utils;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.SysCacheKeys;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.oa.vo.OaNotifySendType;
-import com.oseasy.initiate.modules.oa.vo.OaNotifyType;
+import com.hch.platform.pcore.common.config.SysCacheKeys;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.oa.vo.OaNotifySendType;
+import com.hch.platform.pcore.modules.oa.vo.OaNotifyType;
 
 /**
  * 内容管理工具类

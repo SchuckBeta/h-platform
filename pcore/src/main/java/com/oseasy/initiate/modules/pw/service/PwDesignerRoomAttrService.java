@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.pw.entity.PwDesignerRoomAttr;
-import com.oseasy.initiate.modules.pw.dao.PwDesignerRoomAttrDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.pw.entity.PwDesignerRoomAttr;
+import com.hch.platform.pcore.modules.pw.dao.PwDesignerRoomAttrDao;
 
 /**
  * 房间属性表Service.

@@ -1,9 +1,9 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.persistence.dialect.db;
+package com.hch.platform.pcore.common.persistence.dialect.db;
 
-import com.oseasy.initiate.common.persistence.dialect.Dialect;
+import com.hch.platform.pcore.common.persistence.dialect.Dialect;
 
 /**
  * A dialect compatible with the H2 database.

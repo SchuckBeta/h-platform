@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sco.dao;
+package com.hch.platform.pcore.modules.sco.dao;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmCriterionCouse;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmCriterionCouse;
 
 /**
  * 课程学分认定标准DAO接口.

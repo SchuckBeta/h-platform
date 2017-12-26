@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.service.TreeService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.pw.dao.PwCategoryDao;
-import com.oseasy.initiate.modules.pw.entity.PwCategory;
-import com.oseasy.initiate.modules.pw.entity.PwFassets;
-import com.oseasy.initiate.modules.pw.entity.PwFassetsnoRule;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.service.TreeService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.pw.dao.PwCategoryDao;
+import com.hch.platform.pcore.modules.pw.entity.PwCategory;
+import com.hch.platform.pcore.modules.pw.entity.PwFassets;
+import com.hch.platform.pcore.modules.pw.entity.PwFassetsnoRule;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

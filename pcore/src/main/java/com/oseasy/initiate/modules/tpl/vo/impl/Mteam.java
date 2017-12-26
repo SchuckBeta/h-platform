@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.tpl.vo.impl;
+package com.hch.platform.pcore.modules.tpl.vo.impl;
 
-import com.oseasy.initiate.modules.tpl.vo.IMparam;
+import com.hch.platform.pcore.modules.tpl.vo.IMparam;
 
 import java.io.Serializable;
 

@@ -1,15 +1,15 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
-import com.oseasy.initiate.modules.sys.entity.TeacherExpansion;
-import com.oseasy.initiate.modules.sys.service.TeacherExpansionService;
+import com.hch.platform.pcore.modules.sys.entity.TeacherExpansion;
+import com.hch.platform.pcore.modules.sys.service.TeacherExpansionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.oseasy.initiate.modules.cms.service.DemoService;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.cms.service.DemoService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public class DemoServiceTest {
     TeacherExpansionService teacherExpansionService;
     @Test
     public void saveTest() {
-        User user = new User();
+        AbsUser user = new AbsUser();
         user.setName("zy1");
         service.find(user);
 

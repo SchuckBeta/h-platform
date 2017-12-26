@@ -1,24 +1,24 @@
-package com.oseasy.initiate.modules.sco.web;
+package com.hch.platform.pcore.modules.sco.web;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmCriterionCouse;
-import com.oseasy.initiate.modules.sco.entity.ScoApply;
-import com.oseasy.initiate.modules.sco.entity.ScoAuditing;
-import com.oseasy.initiate.modules.sco.entity.ScoCourse;
-import com.oseasy.initiate.modules.sco.service.ScoAffirmCriterionCouseService;
-import com.oseasy.initiate.modules.sco.service.ScoApplyService;
-import com.oseasy.initiate.modules.sco.service.ScoAuditingService;
-import com.oseasy.initiate.modules.sco.service.ScoCourseService;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmCriterionCouse;
+import com.hch.platform.pcore.modules.sco.entity.ScoApply;
+import com.hch.platform.pcore.modules.sco.entity.ScoAuditing;
+import com.hch.platform.pcore.modules.sco.entity.ScoCourse;
+import com.hch.platform.pcore.modules.sco.service.ScoAffirmCriterionCouseService;
+import com.hch.platform.pcore.modules.sco.service.ScoApplyService;
+import com.hch.platform.pcore.modules.sco.service.ScoAuditingService;
+import com.hch.platform.pcore.modules.sco.service.ScoCourseService;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,7 +82,7 @@ public class ScoApplybackController extends BaseController {
 	//申请认定课程
 	@RequestMapping(value = "scoApplyForm")
 	public String scoApplyForm(ScoApply scoApply, Model model) {
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
         Date date =new Date();
 		StudentExpansion studentExpansion=studentExpansionService.getByUserId(user.getId());
 		model.addAttribute("user", user);
@@ -141,7 +141,7 @@ public class ScoApplybackController extends BaseController {
 	public String view(ScoApply scoApply, Model model) {
 		String userId= scoApply.getUserId();
 		if(userId!=null){
-			User user = systemService.getUser(userId);
+			AbsUser user = systemService.getUser(userId);
 			StudentExpansion studentExpansion=studentExpansionService.getByUserId(scoApply.getUserId());
 			model.addAttribute("user", user);
 			model.addAttribute("studentExpansion", studentExpansion);
@@ -169,7 +169,7 @@ public class ScoApplybackController extends BaseController {
 	public String auditView(ScoApply scoApply, Model model) {
 		String userId= scoApply.getUserId();
 		if(userId!=null){
-			User user = systemService.getUser(userId);
+			AbsUser user = systemService.getUser(userId);
 			StudentExpansion studentExpansion=studentExpansionService.getByUserId(scoApply.getUserId());
 			model.addAttribute("user", user);
 			model.addAttribute("studentExpansion", studentExpansion);

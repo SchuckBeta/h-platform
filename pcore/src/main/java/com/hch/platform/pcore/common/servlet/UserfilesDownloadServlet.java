@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.servlet;
+package com.hch.platform.pcore.common.servlet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.util.UriUtils;
 
-import com.oseasy.initiate.common.config.Global;
+import com.hch.platform.pconfig.common.Global;
 
 /**
  * 查看CK上传的图片

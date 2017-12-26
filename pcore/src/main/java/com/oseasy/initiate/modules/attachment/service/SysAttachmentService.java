@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.attachment.service;
+package com.hch.platform.pcore.modules.attachment.service;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -20,25 +20,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.ftp.VsftpUtils;
-import com.oseasy.initiate.common.ftp.exceptions.FtpException;
-import com.oseasy.initiate.common.ftp.vo.FileVo;
-import com.oseasy.initiate.common.ftp.vo.VsFile;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.attachment.dao.SysAttachmentDao;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.exception.FileDealException;
-import com.oseasy.initiate.modules.ftp.service.UeditorUploadService;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.ftp.VsftpUtils;
+import com.hch.platform.pcore.common.ftp.exceptions.FtpException;
+import com.hch.platform.pcore.common.ftp.vo.FileVo;
+import com.hch.platform.pcore.common.ftp.vo.VsFile;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.attachment.dao.SysAttachmentDao;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.exception.FileDealException;
+import com.hch.platform.pcore.modules.ftp.service.UeditorUploadService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 附件信息表Service
@@ -366,7 +366,7 @@ public class SysAttachmentService extends CrudService<SysAttachmentDao, SysAttac
 		}
 		List<SysAttachment> sysAtts = dao.findListInIds(psysAtt);
 		for (SysAttachment sysAtt : sysAtts) {
-			User cuser = sysAtt.getCreateBy();
+			AbsUser cuser = sysAtt.getCreateBy();
 			if ((cuser != null) && (cuser.getOffice() != null)) {
 				VsFile vsFile = new VsFile();
 				vsFile.setRemotePath(sysAtt.getRemotePath());

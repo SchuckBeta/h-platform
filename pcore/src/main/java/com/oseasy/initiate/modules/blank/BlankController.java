@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.blank;
+package com.hch.platform.pcore.modules.blank;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.modules.act.entity.Act;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.modules.act.entity.Act;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.tpl.vo;
+package com.hch.platform.pcore.modules.tpl.vo;
 /**
  * Word 模板支持版本.
  * @author chenhao

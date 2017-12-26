@@ -1,17 +1,17 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.pw.entity.PwAppointment;
-import com.oseasy.initiate.modules.pw.service.PwAppointmentService;
-import com.oseasy.initiate.modules.pw.utils.CommonUtils;
-import com.oseasy.initiate.modules.pw.vo.*;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.pw.entity.PwAppointment;
+import com.hch.platform.pcore.modules.pw.service.PwAppointmentService;
+import com.hch.platform.pcore.modules.pw.utils.CommonUtils;
+import com.hch.platform.pcore.modules.pw.vo.*;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +61,7 @@ public class FrontPwAppointmentController extends BaseController {
 
     @RequestMapping(value = "myList")
     public String myList(PwAppointment pwAppointment, HttpServletRequest request, HttpServletResponse response, Model model) {
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         pwAppointment.setUser(user);
         //pwAppointment.setApplyUserId("1");
         Page<PwAppointment> page = pwAppointmentService.findMyPwAppointmentList(new Page<PwAppointment>(request, response), pwAppointment);

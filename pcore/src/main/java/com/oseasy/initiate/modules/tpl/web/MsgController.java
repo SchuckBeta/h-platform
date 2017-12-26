@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.tpl.web;
+package com.hch.platform.pcore.modules.tpl.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.tpl.service.MsgService;
-import com.oseasy.initiate.modules.tpl.vo.IMparam;
-import com.oseasy.initiate.modules.tpl.vo.MsgType;
-import com.oseasy.initiate.modules.tpl.vo.impl.Mteam;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.tpl.service.MsgService;
+import com.hch.platform.pcore.modules.tpl.vo.IMparam;
+import com.hch.platform.pcore.modules.tpl.vo.MsgType;
+import com.hch.platform.pcore.modules.tpl.vo.impl.Mteam;
 
 @Controller
 @RequestMapping(value = "${adminPath}/msg")

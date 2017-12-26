@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.sco.entity;
+package com.hch.platform.pcore.modules.sco.entity;
 
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 学分汇总Entity.
@@ -13,7 +13,7 @@ import com.oseasy.initiate.common.persistence.DataEntity;
 public class ScoScore extends DataEntity<ScoScore> {
 
 	private static final long serialVersionUID = 1L;
-	private User user;		// 用户ID
+	private AbsUser user;		// 用户ID
 	private String courseId;		// 课程ID
 	private Double courseScore;		// 课程学分
 	private String businessProId;		// 创新项目ID
@@ -34,11 +34,11 @@ public class ScoScore extends DataEntity<ScoScore> {
 		super(id);
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

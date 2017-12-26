@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.vo;
+package com.hch.platform.pcore.modules.project.vo;
 
 /**
  * Created by zhangzheng on 2017/8/4.

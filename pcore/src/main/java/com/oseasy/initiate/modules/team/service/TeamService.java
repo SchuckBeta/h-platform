@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.team.service;
+package com.hch.platform.pcore.modules.team.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,35 +10,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
-import com.oseasy.initiate.common.utils.sms.impl.SendParam;
-import com.oseasy.initiate.modules.oa.dao.OaNotifyDao;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.sysconfig.service.SysConfigService;
-import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
-import com.oseasy.initiate.modules.sysconfig.vo.TeamConf;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamDetails;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.sms.SMSUtilAlidayu;
+import com.hch.platform.pcore.common.utils.sms.impl.SendParam;
+import com.hch.platform.pcore.modules.oa.dao.OaNotifyDao;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.OfficeService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sysconfig.service.SysConfigService;
+import com.hch.platform.pcore.modules.sysconfig.utils.SysConfigUtil;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.modules.sysconfig.vo.TeamConf;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamDetails;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 import net.sf.json.JSONObject;
 
@@ -69,12 +69,12 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	@Transactional(readOnly = false)
 	public JSONObject refuseInviationByNotify(String oaNotifyId) {
 		JSONObject js=new JSONObject();
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		js.put("ret", "0");
 		OaNotify oaNotify = oaNotifyService.get(oaNotifyId);
 		oaNotifyService.updateReadOperateFlag(oaNotify);
 		String type = oaNotify.getType();
-		User sentUser = oaNotify.getCreateBy();
+		AbsUser sentUser = oaNotify.getCreateBy();
 		TeamUserRelation teamUserRelation = new TeamUserRelation();
 		Team team = get(oaNotify.getsId());
 		teamUserRelation.setTeamId(oaNotify.getsId());
@@ -97,7 +97,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	@Transactional(readOnly = false)
 	public JSONObject acceptInviationByNotify(String oaNotifyId) {
 		JSONObject js=new JSONObject();
-		User acceptUser = UserUtils.getUser();
+		AbsUser acceptUser = UserUtils.getUser();
 		js.put("ret", "0");
 		if (StringUtil.isEmpty(UserUtils.getUser().getId())) {
 			js.put("msg", "会话已失效，请重新登录");
@@ -114,7 +114,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 		}
 		String type = oaNotify.getType();
 		oaNotifyService.updateReadOperateFlag(oaNotify);
-		User sentuser = oaNotify.getCreateBy();
+		AbsUser sentuser = oaNotify.getCreateBy();
 		TeamUserRelation teamUserRelation = new TeamUserRelation();
 		teamUserRelation.setTeamId(oaNotify.getsId());
 		if ("5".equals(type)) {
@@ -290,7 +290,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 					tt.setCheckJoinTUR(false);
 				}
 				if (StringUtil.isNotBlank(tt.getSponsor())) {
-					User usertmp = userService.findUserById(tt.getSponsor());
+					AbsUser usertmp = userService.findUserById(tt.getSponsor());
 					if (usertmp != null) {
 						tt.setSponsorId(tt.getSponsor());
 						tt.setSponsor(usertmp.getName());
@@ -348,7 +348,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 		return page;
 	}
 	@Transactional(readOnly = false)
-	public String hiddenDelete(String teamId,User curUser) {
+	public String hiddenDelete(String teamId,AbsUser curUser) {
 		String resStr = "1";
 		if (curUser == null) {
 			resStr = "请先登录！";
@@ -393,7 +393,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	}
 	@Transactional(readOnly = false)
 	public String applyJoin(String teamId){
-		User curUser = UserUtils.getUser();// 获取当前用户的信息
+		AbsUser curUser = UserUtils.getUser();// 获取当前用户的信息
 		String resStr = "";
 		if (curUser == null) {
 			resStr = "请先登录！";
@@ -422,12 +422,12 @@ public class TeamService extends CrudService<TeamDao, Team> {
 					resStr = "申请失败,"+res.getString("msg");
 				}
 			} else {
-				User team_User = userDao.get(team.getSponsor());
+				AbsUser team_User = userDao.get(team.getSponsor());
 				int res = teamUserRelationService.inseTeamUser(curUser, teamId, "1");
 				if (res == 3) {
 					teamUserRelationService.repTeamstate(team);
 					final Team finalTeam = team;
-					final User final_User = team_User;
+					final AbsUser final_User = team_User;
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -461,9 +461,9 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	public void deleteTeamUserInfo(TeamUserRelation tur){
 		String userId=tur.getUser().getId();
 		String teamId=tur.getTeamId();
-		User curUser = UserUtils.getUser();// 获取当前用户的信息
+		AbsUser curUser = UserUtils.getUser();// 获取当前用户的信息
 		Team team = dao.get(teamId);
-		User delUser = userService.findUserById(userId);
+		AbsUser delUser = userService.findUserById(userId);
 		teamUserRelationService.deleteTeamUserInfo(userId,teamId);
 		/*对于还未在团队中的，不想看到的，删除处理*/
 		hiddenDeleteWithNotify(teamId, delUser.getId());
@@ -480,7 +480,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	public JSONObject refuseInviation(String turId,String teamId){
 		
 		JSONObject js=new JSONObject();
-		User cuser = UserUtils.getUser();
+		AbsUser cuser = UserUtils.getUser();
 		js.put("ret", "0");
 		TeamUserRelation teamUserRelation = teamUserRelationService.get(turId);
 		if(teamUserRelation==null){
@@ -502,7 +502,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	}
 	@Transactional(readOnly = false)
 	public JSONObject acceptInviation(String userId,String teamId){
-		User user = userService.findUserById(userId);
+		AbsUser user = userService.findUserById(userId);
 		TeamUserRelation teamUserRelation = new TeamUserRelation();
 		teamUserRelation.setTeamId(teamId);
 		teamUserRelation.setUser(user);
@@ -511,7 +511,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 		JSONObject t = acceptJoinTeam(teamUserRelation);
 		if ("1".equals(t.getString("ret"))) {
 			Team team = dao.get(teamId);
-			User acceptUser = UserUtils.getUser();
+			AbsUser acceptUser = UserUtils.getUser();
 			teamUserRelationService.inseAgreeOaNo(team, "5", acceptUser, user);
 			if(oaNotify!=null){
 				oaNotify.setType("10");
@@ -521,7 +521,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 		return t;
 	}
 	@Transactional(readOnly = false)
-	public void saveTeam(Team team,User curUser) {
+	public void saveTeam(Team team,AbsUser curUser) {
 		if(StringUtil.isEmpty(team.getNumber())){
 			team.setNumber(IdUtils.getTeamNumberByDb());
 		}
@@ -638,7 +638,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 	 * @return >0 成功
 	 */
 	@Transactional(readOnly = false)
-	public int sendOaNotify(User apply_User,User team_User,Team team) {
+	public int sendOaNotify(AbsUser apply_User,AbsUser team_User,Team team) {
 		try {
 			OaNotifyRecord oaNotifyRecord=new OaNotifyRecord();
 			OaNotify oaNotify=new OaNotify();
@@ -726,7 +726,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 			teamUserRelationService.updateStateInTeam(teamUserRelation);
 			return js;
 		}
-		User tems=UserUtils.get(teamUserRelation.getUser().getId());
+		AbsUser tems=UserUtils.get(teamUserRelation.getUser().getId());
 		if(tems==null||"1".equals(tems.getDelFlag())){
 			js.put("msg", "该用户已被删除，加入失败");
 			teamUserRelation.setState("5");
@@ -842,7 +842,7 @@ public class TeamService extends CrudService<TeamDao, Team> {
 		return dao.findTeamByTeamId(id, usertype);
 	}
 
-	public Long countBuildByUserId(User curUser) {
+	public Long countBuildByUserId(AbsUser curUser) {
 		return dao.countBuildByUserId(curUser);
 	}
 

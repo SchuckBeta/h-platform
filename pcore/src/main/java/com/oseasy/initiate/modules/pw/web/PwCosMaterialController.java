@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
 import java.util.List;
 
@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.pw.entity.PwCategory;
-import com.oseasy.initiate.modules.pw.entity.PwCosMaterial;
-import com.oseasy.initiate.modules.pw.service.PwCosMaterialService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.pw.entity.PwCategory;
+import com.hch.platform.pcore.modules.pw.entity.PwCosMaterial;
+import com.hch.platform.pcore.modules.pw.service.PwCosMaterialService;
 
 /**
  * 耗材Controller.

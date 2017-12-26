@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,15 +15,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.security.MyUsernamePasswordToken;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.common.utils.sms.SMSUtilAlidayu;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.security.MyUsernamePasswordToken;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
 
 /**
  * 注册Controller
@@ -50,7 +50,7 @@ public class RegisterController extends BaseController {
 	@RequestMapping(value = "/validatePhone")
 	public Boolean validatePhone(HttpServletRequest request) {
 		String mobile =  request.getParameter("mobile");
-		User user = new User();
+		AbsUser user = new AbsUser();
 		user.setMobile(mobile);
 		user.setDelFlag("0");
 		user = userService.getByMobile(user);
@@ -97,12 +97,12 @@ public class RegisterController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/saveRegister")
-	public String register(User user,Model model,HttpServletRequest request, HttpServletResponse response) {
+	public String register(AbsUser user,Model model,HttpServletRequest request, HttpServletResponse response) {
 		String pw = user.getPassword();
 		String mobile = user.getMobile();
 		String password = user.getPassword();
 		password = SystemService.entryptPassword(password);
-		user = new User();
+		user = new AbsUser();
 		user.setMobile(mobile);
 		user.setPassword(password);
 		user.setLoginName(mobile);

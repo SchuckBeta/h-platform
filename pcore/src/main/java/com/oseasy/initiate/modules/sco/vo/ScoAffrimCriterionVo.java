@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sco.vo;
+package com.hch.platform.pcore.modules.sco.vo;
 
 /**
  * Created by zhangzheng on 2017/7/24.

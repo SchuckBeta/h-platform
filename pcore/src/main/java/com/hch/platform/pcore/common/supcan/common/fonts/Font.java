@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.supcan.common.fonts;
+package com.hch.platform.pcore.common.supcan.common.fonts;
 
-import com.oseasy.initiate.common.supcan.annotation.common.fonts.SupFont;
-import com.oseasy.initiate.common.utils.ObjectUtil;
+import com.hch.platform.pcore.common.supcan.annotation.common.fonts.SupFont;
+import com.hch.platform.putil.common.utils.ObjectUtil;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 

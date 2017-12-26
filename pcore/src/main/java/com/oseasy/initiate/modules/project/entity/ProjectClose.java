@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.project.entity;
+package com.hch.platform.pcore.modules.project.entity;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * project_closeEntity

@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.excellent.entity;
+package com.hch.platform.pcore.modules.excellent.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 优秀展示关键词Entity.

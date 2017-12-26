@@ -1,7 +1,7 @@
 /**
   * Copyright 2017 bejson.com 
   */
-package com.oseasy.initiate.modules.sysconfig.vo;
+package com.hch.platform.pcore.modules.sysconfig.vo;
 
 /**
  * Auto-generated: 2017-11-07 16:22:10

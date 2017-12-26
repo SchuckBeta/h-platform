@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.utils;
+package com.hch.platform.pcore.modules.sys.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.mapper.JsonMapper;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.sco.service.ScoAffirmConfService;
-import com.oseasy.initiate.modules.sys.dao.DictDao;
-import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.hch.platform.pcore.common.mapper.JsonMapper;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.modules.sco.service.ScoAffirmConfService;
+import com.hch.platform.pcore.modules.sys.dao.DictDao;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
 
 /**
  * 字典工具类

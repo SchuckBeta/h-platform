@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.pw.dao.PwFassetsUhistoryDao;
-import com.oseasy.initiate.modules.pw.entity.PwFassetsUhistory;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.pw.dao.PwFassetsUhistoryDao;
+import com.hch.platform.pcore.modules.pw.entity.PwFassetsUhistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

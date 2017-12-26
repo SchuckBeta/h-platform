@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.modules.sys.dao.SysStudentExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.UserInfo;
+import com.hch.platform.pcore.modules.sys.dao.SysStudentExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.UserInfo;
 
 /**
  * 学生扩展信息表Service

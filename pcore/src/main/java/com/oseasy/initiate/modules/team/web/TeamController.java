@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.team.web;
+package com.hch.platform.pcore.modules.team.web;
 
 import java.util.List;
 
@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
-import com.oseasy.initiate.modules.sysconfig.vo.TeamConf;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamDetails;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.vo.TeamStudentVo;
-import com.oseasy.initiate.modules.team.vo.TeamTeacherVo;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.OfficeService;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sysconfig.utils.SysConfigUtil;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.modules.sysconfig.vo.TeamConf;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamDetails;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.vo.TeamStudentVo;
+import com.hch.platform.pcore.modules.team.vo.TeamTeacherVo;
 
 import net.sf.json.JSONObject;
 
@@ -170,7 +170,7 @@ public class TeamController extends BaseController {
 		String masterType = "2";
 		List<TeamDetails> teamTeacherInfo = teamService.findTeamInfo(id, masterType);// 查询导师list
 		TeamDetails teamDetails = teamService.findTeamDetails(id);// 查询团队详情
-		User user = systemService.getUser(teamDetails.getSponsor());
+		AbsUser user = systemService.getUser(teamDetails.getSponsor());
 		if (user != null) {
 
 			if (StringUtil.isNotEmpty(user.getName())) {
@@ -193,7 +193,7 @@ public class TeamController extends BaseController {
 		String masterType = "2";
 		List<TeamDetails> teamTeacherInfo = teamService.findTeamInfo(id, masterType);// 查询导师list
 		TeamDetails teamDetails = teamService.findTeamDetails(id);// 查询团队详情
-		User user = systemService.getUser(teamDetails.getSponsor());
+		AbsUser user = systemService.getUser(teamDetails.getSponsor());
 		if (user != null) {
 
 			if (StringUtil.isNotEmpty(user.getName())) {

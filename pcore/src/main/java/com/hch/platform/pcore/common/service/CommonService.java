@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.service;
+package com.hch.platform.pcore.common.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,33 +15,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.dao.ActYwDao;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.gcontest.dao.GContestDao;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.promodel.dao.ProModelDao;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
-import com.oseasy.initiate.modules.sysconfig.vo.ConfRange;
-import com.oseasy.initiate.modules.sysconfig.vo.PersonNumConf;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserHistoryDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.dao.ActYwDao;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.gcontest.dao.GContestDao;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.promodel.dao.ProModelDao;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sysconfig.utils.SysConfigUtil;
+import com.hch.platform.pcore.modules.sysconfig.vo.ConfRange;
+import com.hch.platform.pcore.modules.sysconfig.vo.PersonNumConf;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserHistoryDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 import net.sf.json.JSONObject;
 
@@ -123,7 +123,7 @@ public  class CommonService {
 	public void disposeTeamUserHistoryForModify(List<TeamUserHistory> stus,List<TeamUserHistory> teas,String actywId,String teamId,String proId) {
 		if(checkTeamHaveChange(stus, teas, teamId)){
 			Date now=new Date();
-			User cuser=UserUtils.getUser();
+			AbsUser cuser=UserUtils.getUser();
 			if(stus==null||stus.size()==0){
 				throw new RuntimeException("TeamUserHistory不能为空");
 			}
@@ -195,7 +195,7 @@ public  class CommonService {
 				}
 				for(TeamUserHistory tuh:stus){
 					tuh.setId(IdGen.uuid());
-					tuh.setUser(new User(tuh.getUserId()));
+					tuh.setUser(new AbsUser(tuh.getUserId()));
 					tuh.setTeamId(teamId);
 					tuh.setCreateBy(cuser);
 					tuh.setUpdateBy(cuser);
@@ -212,7 +212,7 @@ public  class CommonService {
 				if(teas!=null&&teas.size()>0){
 					for(TeamUserHistory tuh:teas){
 						tuh.setId(IdGen.uuid());
-						tuh.setUser(new User(tuh.getUserId()));
+						tuh.setUser(new AbsUser(tuh.getUserId()));
 						tuh.setTeamId(teamId);
 						tuh.setCreateBy(cuser);
 						tuh.setUpdateBy(cuser);
@@ -251,7 +251,7 @@ public  class CommonService {
 					teamDao.insert(t);
 					for(TeamUserHistory tuh:stus){
 						tuh.setId(IdGen.uuid());
-						tuh.setUser(new User(tuh.getUserId()));
+						tuh.setUser(new AbsUser(tuh.getUserId()));
 						tuh.setTeamId(t.getId());
 						tuh.setCreateBy(cuser);
 						tuh.setUpdateBy(cuser);
@@ -268,7 +268,7 @@ public  class CommonService {
 					if(teas!=null&&teas.size()>0){
 						for(TeamUserHistory tuh:teas){
 							tuh.setId(IdGen.uuid());
-							tuh.setUser(new User(tuh.getUserId()));
+							tuh.setUser(new AbsUser(tuh.getUserId()));
 							tuh.setTeamId(t.getId());
 							tuh.setCreateBy(cuser);
 							tuh.setUpdateBy(cuser);
@@ -327,7 +327,7 @@ public  class CommonService {
 					teamDao.updateAllInfo(t);
 					for(TeamUserHistory tuh:stus){
 						tuh.setId(IdGen.uuid());
-						tuh.setUser(new User(tuh.getUserId()));
+						tuh.setUser(new AbsUser(tuh.getUserId()));
 						tuh.setTeamId(teamId);
 						tuh.setCreateBy(cuser);
 						tuh.setUpdateBy(cuser);
@@ -344,7 +344,7 @@ public  class CommonService {
 					if(teas!=null&&teas.size()>0){
 						for(TeamUserHistory tuh:teas){
 							tuh.setId(IdGen.uuid());
-							tuh.setUser(new User(tuh.getUserId()));
+							tuh.setUser(new AbsUser(tuh.getUserId()));
 							tuh.setTeamId(teamId);
 							tuh.setCreateBy(cuser);
 							tuh.setUpdateBy(cuser);
@@ -698,7 +698,7 @@ public  class CommonService {
     	Date now =new Date();
     	JSONObject js=new JSONObject();
     	js.put("ret", 0);
-    	User user = UserUtils.getUser();
+    	AbsUser user = UserUtils.getUser();
     	if (StringUtil.isEmpty(user.getId())) {
     		js.put("ret", 1);
 			return js;
@@ -788,7 +788,7 @@ public  class CommonService {
 	    	Date now =new Date();
 	    	JSONObject js=new JSONObject();
 	    	js.put("ret", 0);
-	    	User user = UserUtils.getUser();
+	    	AbsUser user = UserUtils.getUser();
 	    	if (StringUtil.isEmpty(user.getId())) {
 	    		js.put("ret", 1);
 				return js;
@@ -898,7 +898,7 @@ public  class CommonService {
 	}
 	private void disposeTeamUserHistory(List<TeamUserHistory> tuhs,String actywId,String teamId,String proId,String finish) {
 		Date now=new Date();
-		User cuser=UserUtils.getUser();
+		AbsUser cuser=UserUtils.getUser();
 		if(tuhs==null||tuhs.size()==0){
 			throw new RuntimeException("TeamUserHistory不能为空");
 		}
@@ -920,7 +920,7 @@ public  class CommonService {
 		String proSubType=proProject.getType();
 		for(TeamUserHistory tuh:tuhs){
 			tuh.setId(IdGen.uuid());
-			tuh.setUser(new User(tuh.getUserId()));
+			tuh.setUser(new AbsUser(tuh.getUserId()));
 			tuh.setTeamId(teamId);
 			tuh.setCreateBy(cuser);
 			tuh.setUpdateBy(cuser);
@@ -938,7 +938,7 @@ public  class CommonService {
 		if(tuhs_teas!=null&&tuhs_teas.size()>0){
 			for(TeamUserHistory tuh:tuhs_teas){
 				tuh.setId(IdGen.uuid());
-				tuh.setUser(new User(tuh.getUserId()));
+				tuh.setUser(new AbsUser(tuh.getUserId()));
 				tuh.setTeamId(teamId);
 				tuh.setCreateBy(cuser);
 				tuh.setUpdateBy(cuser);
@@ -959,7 +959,7 @@ public  class CommonService {
 	@Transactional(readOnly = false)
 	public void copyTeamUserHistoryFromTUR(String actywId,String teamId,String proId,String finish) {
 		Date now=new Date();
-		User cuser=UserUtils.getUser();
+		AbsUser cuser=UserUtils.getUser();
 		if(StringUtil.isEmpty(actywId)||StringUtil.isEmpty(teamId)||StringUtil.isEmpty(proId)){
 			throw new RuntimeException("参数不能为空");
 		}
@@ -1045,7 +1045,7 @@ public  class CommonService {
     	Date now =new Date();
     	JSONObject js=new JSONObject();
     	js.put("ret", 0);
-    	User user = UserUtils.getUser();
+    	AbsUser user = UserUtils.getUser();
 		if ("2".equals(user.getUserType())) {
 			js.put("msg", "保存失败，导师不能申报项目");
 			return js;
@@ -1104,7 +1104,7 @@ public  class CommonService {
     	Date now =new Date();
     	JSONObject js=new JSONObject();
     	js.put("ret", 0);
-    	User user = UserUtils.getUser();
+    	AbsUser user = UserUtils.getUser();
 		if ("2".equals(user.getUserType())) {
 			js.put("msg", "提交失败，导师不能申报项目");
 			return js;
@@ -1166,7 +1166,7 @@ public  class CommonService {
 		Date now =new Date();
 		JSONObject js=new JSONObject();
 		js.put("ret", 0);
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if ("2".equals(user.getUserType())) {
 			js.put("msg", "保存失败，导师不能申报大赛");
 			return js;
@@ -1219,7 +1219,7 @@ public  class CommonService {
 			Date now =new Date();
 			JSONObject js=new JSONObject();
 			js.put("ret", 0);
-			User user = UserUtils.getUser();
+			AbsUser user = UserUtils.getUser();
 			if ("2".equals(user.getUserType())) {
 				js.put("msg", "保存失败，导师不能申报大赛");
 				return js;

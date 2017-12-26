@@ -1,29 +1,11 @@
-package com.oseasy.initiate.common.servlet;
+package com.hch.platform.pcore.common.servlet;
 
-import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.image.impl.WaterImage;
-import com.oseasy.initiate.common.utils.image.impl.WaterParam;
-import com.oseasy.initiate.common.utils.image.impl.WaterSrc;
-import com.oseasy.initiate.common.utils.image.impl.WaterText;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Random;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 生成随机验证码

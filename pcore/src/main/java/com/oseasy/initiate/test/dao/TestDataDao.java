@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.dao;
+package com.hch.platform.pcore.test.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.test.entity.TestData;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.test.entity.TestData;
 
 /**
  * 单表生成DAO接口

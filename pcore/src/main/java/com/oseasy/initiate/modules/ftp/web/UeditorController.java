@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.ftp.web;
+package com.hch.platform.pcore.modules.ftp.web;
 
 import com.baidu.ueditor.ActionEnter;
-import com.oseasy.initiate.common.web.BaseController;
+import com.hch.platform.pcore.common.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

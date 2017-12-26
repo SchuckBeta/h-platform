@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import java.util.Date;
 
@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 留言Entity
@@ -30,7 +30,7 @@ public class Guestbook extends DataEntity<Guestbook> {
 	private String workunit;// 单位
 	private String ip; 		// 留言IP
 	private Date createDate;// 留言时间
-	private User reUser; 		// 回复人
+	private AbsUser reUser; 		// 回复人
 	private Date reDate;	// 回复时间
 	private String reContent;// 回复内容
 	private String delFlag;	// 删除标记删除标记（0：正常；1：删除；2：审核）
@@ -121,11 +121,11 @@ public class Guestbook extends DataEntity<Guestbook> {
 		this.createDate = createDate;
 	}
 
-	public User getReUser() {
+	public AbsUser getReUser() {
 		return reUser;
 	}
 
-	public void setReUser(User reUser) {
+	public void setReUser(AbsUser reUser) {
 		this.reUser = reUser;
 	}
 

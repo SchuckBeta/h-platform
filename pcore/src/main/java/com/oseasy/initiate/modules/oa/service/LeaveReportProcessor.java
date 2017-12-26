@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.oa.service;
+package com.hch.platform.pcore.modules.oa.service;
 
 import java.util.Date;
 
@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.modules.oa.dao.LeaveDao;
-import com.oseasy.initiate.modules.oa.entity.Leave;
+import com.hch.platform.pcore.modules.oa.dao.LeaveDao;
+import com.hch.platform.pcore.modules.oa.entity.Leave;
 
 /**
  * 销假后处理器

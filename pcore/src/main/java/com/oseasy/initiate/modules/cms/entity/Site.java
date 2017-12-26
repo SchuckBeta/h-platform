@@ -1,16 +1,16 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 站点Entity

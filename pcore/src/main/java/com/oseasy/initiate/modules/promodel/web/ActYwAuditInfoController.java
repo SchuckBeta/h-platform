@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.promodel.web;
+package com.hch.platform.pcore.modules.promodel.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.promodel.entity.ActYwAuditInfo;
-import com.oseasy.initiate.modules.promodel.service.ActYwAuditInfoService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.promodel.entity.ActYwAuditInfo;
+import com.hch.platform.pcore.modules.promodel.service.ActYwAuditInfoService;
 
 /**
  * 自定义审核信息Controller.

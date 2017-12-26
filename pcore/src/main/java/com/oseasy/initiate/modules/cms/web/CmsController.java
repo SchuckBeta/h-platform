@@ -1,22 +1,22 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.web;
+package com.hch.platform.pcore.modules.cms.web;
 
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.modules.actyw.entity.*;
-import com.oseasy.initiate.modules.actyw.service.ActYwGtimeService;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.promodel.service.ProModelService;
-import com.oseasy.initiate.modules.proprojectmd.entity.ProModelMd;
-import com.oseasy.initiate.modules.proprojectmd.service.ProModelMdService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.modules.actyw.entity.*;
+import com.hch.platform.pcore.modules.actyw.service.ActYwGtimeService;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowType;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.promodel.service.ProModelService;
+import com.hch.platform.pcore.modules.proprojectmd.entity.ProModelMd;
+import com.hch.platform.pcore.modules.proprojectmd.service.ProModelMdService;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +25,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.service.ActYwFormService;
-import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.actyw.tool.process.ActYwTool;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowProjectType;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.service.ActYwFormService;
+import com.hch.platform.pcore.modules.actyw.service.ActYwGnodeService;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.actyw.tool.process.ActYwTool;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowProjectType;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,13 +44,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.service.CategoryService;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 内容管理Controller

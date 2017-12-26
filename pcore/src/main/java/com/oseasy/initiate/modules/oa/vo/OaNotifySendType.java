@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.oa.vo;
+package com.hch.platform.pcore.modules.oa.vo;
 
 /**
  *通知发送类型

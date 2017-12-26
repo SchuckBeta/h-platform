@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.gcontest.vo;
+package com.hch.platform.pcore.modules.gcontest.vo;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.actyw.dao.ActYwGnodeDao;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.StenType;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.actyw.dao.ActYwGnodeDao;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.StenType;
 
 /**
  * Created by zhangzheng on 2017/8/4.

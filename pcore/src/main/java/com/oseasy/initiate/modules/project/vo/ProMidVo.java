@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.project.vo;
+package com.hch.platform.pcore.modules.project.vo;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.project.entity.ProMid;
-import com.oseasy.initiate.modules.project.entity.ProProgress;
-import com.oseasy.initiate.modules.project.entity.ProSituation;
+import com.hch.platform.pcore.modules.project.entity.ProMid;
+import com.hch.platform.pcore.modules.project.entity.ProProgress;
+import com.hch.platform.pcore.modules.project.entity.ProSituation;
 
 /**
  * 项目申报Vo

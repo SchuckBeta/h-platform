@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sco.service;
+package com.hch.platform.pcore.modules.sco.service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmConfDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionCouseDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAllotRatioDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmConf;
-import com.oseasy.initiate.modules.sys.entity.Dict;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmConfDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmCriterionCouseDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmCriterionDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAllotRatioDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmConf;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
 
 /**
  * 学分认定配置Service.

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sco.web;
+package com.hch.platform.pcore.modules.sco.web;
 
 import java.util.List;
 import java.util.Set;
@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirmCriterion;
-import com.oseasy.initiate.modules.sco.service.ScoAffirmConfService;
-import com.oseasy.initiate.modules.sco.service.ScoAffirmCriterionService;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.service.DictService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirmCriterion;
+import com.hch.platform.pcore.modules.sco.service.ScoAffirmConfService;
+import com.hch.platform.pcore.modules.sco.service.ScoAffirmCriterionService;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.service.DictService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 /**
  * 学分认定标准Controller.

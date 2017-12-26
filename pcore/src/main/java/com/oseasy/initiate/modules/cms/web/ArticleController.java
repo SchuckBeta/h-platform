@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.cms.web;
+package com.hch.platform.pcore.modules.cms.web;
 
 import java.util.List;
 
@@ -18,21 +18,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.mapper.JsonMapper;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.cms.entity.Article;
-import com.oseasy.initiate.modules.cms.entity.Category;
-import com.oseasy.initiate.modules.cms.entity.Site;
-import com.oseasy.initiate.modules.cms.service.ArticleDataService;
-import com.oseasy.initiate.modules.cms.service.ArticleService;
-import com.oseasy.initiate.modules.cms.service.CategoryService;
-import com.oseasy.initiate.modules.cms.service.FileTplService;
-import com.oseasy.initiate.modules.cms.service.SiteService;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
-import com.oseasy.initiate.modules.cms.utils.TplUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.mapper.JsonMapper;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.cms.entity.Article;
+import com.hch.platform.pcore.modules.cms.entity.Category;
+import com.hch.platform.pcore.modules.cms.entity.Site;
+import com.hch.platform.pcore.modules.cms.service.ArticleDataService;
+import com.hch.platform.pcore.modules.cms.service.ArticleService;
+import com.hch.platform.pcore.modules.cms.service.CategoryService;
+import com.hch.platform.pcore.modules.cms.service.FileTplService;
+import com.hch.platform.pcore.modules.cms.service.SiteService;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
+import com.hch.platform.pcore.modules.cms.utils.TplUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 文章Controller

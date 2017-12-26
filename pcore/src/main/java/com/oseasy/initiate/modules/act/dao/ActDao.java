@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.dao;
+package com.hch.platform.pcore.modules.act.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.act.entity.Act;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
 
 /**
  * 审批DAO接口

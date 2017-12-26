@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.excellent.dao;
+package com.hch.platform.pcore.modules.excellent.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.cms.vo.ExcellentGcontestVo;
-import com.oseasy.initiate.modules.cms.vo.ExcellentProjectVo;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.cms.vo.ExcellentGcontestVo;
+import com.hch.platform.pcore.modules.cms.vo.ExcellentProjectVo;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
 
 /**
  * 优秀展示DAO接口.

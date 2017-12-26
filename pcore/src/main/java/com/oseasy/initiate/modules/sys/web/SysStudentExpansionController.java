@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.entity.UserInfo;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysStudentExpansionService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 学生扩展信息表Controller
@@ -80,7 +80,7 @@ public class SysStudentExpansionController extends BaseController {
 	
 	@RequestMapping(value = "findUserInfo")
 	public String findUserInfo(Model model) {
-		User user=UserUtils.getUser();//获取当前登录的用户信息
+		AbsUser user=UserUtils.getUser();//获取当前登录的用户信息
 		UserInfo userInfo=sysStudentExpansionService.findUserInfo(user.getId());
 		model.addAttribute("userInfo", userInfo);
 		return "modules/sys/displayUserInfo";

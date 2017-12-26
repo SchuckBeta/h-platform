@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.utils;
+package com.hch.platform.pcore.modules.pw.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

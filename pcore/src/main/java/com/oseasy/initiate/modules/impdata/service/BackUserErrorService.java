@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.Date;
 import java.util.List;
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.impdata.dao.BackUserErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.BackUserError;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.modules.impdata.dao.BackUserErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.BackUserError;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 后台用户导入Service
@@ -56,7 +56,7 @@ public class BackUserErrorService extends CrudService<BackUserErrorDao, BackUser
 	}
 	@Transactional(readOnly = false)
 	public void insert(BackUserError backUserError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			backUserError.setUpdateBy(user);
 			backUserError.setCreateBy(user);
@@ -66,8 +66,8 @@ public class BackUserErrorService extends CrudService<BackUserErrorDao, BackUser
 		dao.insert(backUserError);
 	}
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
-	public void saveBackUser(User nuser) {
-		User user = UserUtils.getUser();
+	public void saveBackUser(AbsUser nuser) {
+		AbsUser user = UserUtils.getUser();
 		nuser.setPassword(SystemService.entryptPassword("123456"));
 		nuser.setId(IdGen.uuid());
 		if (StringUtils.isNotBlank(user.getId())) {

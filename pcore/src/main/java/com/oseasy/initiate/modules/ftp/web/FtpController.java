@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.ftp.web;
+package com.hch.platform.pcore.modules.ftp.web;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,8 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.ftp.service.FtpService;
 
 import net.sf.json.JSONObject;
 
@@ -55,7 +55,7 @@ public class FtpController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value="/uploadPhoto")
-	public boolean uploadFTP(HttpServletRequest request,User user) {
+	public boolean uploadFTP(HttpServletRequest request,AbsUser user) {
 		String arrUrl = request.getParameter("arrUrl");
 		if (user!=null) {
 			user.setPhoto(arrUrl);

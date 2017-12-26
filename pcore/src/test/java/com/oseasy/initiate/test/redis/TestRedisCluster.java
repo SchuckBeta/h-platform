@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.redis;
+package com.hch.platform.pcore.test.redis;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

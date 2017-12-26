@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.web;
+package com.hch.platform.pcore.modules.project.web;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
+import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,35 +22,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectAnnounceService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.service.ProjectPlanService;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareListVo;
-import com.oseasy.initiate.modules.project.vo.ProjectDeclareVo;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.sco.service.ScoAllotRatioService;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectAnnounceService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.service.ProjectPlanService;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareListVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectDeclareVo;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.sco.service.ScoAllotRatioService;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysStudentExpansionService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -98,7 +98,7 @@ public class ProjectDeclareController extends BaseController {
 
 	@RequestMapping(value = {"${frontPath}/project/projectDeclare/list"})
 	public String list(HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		ProjectDeclareListVo vo=new ProjectDeclareListVo();
 		vo.setUserid(user.getId());
 		Page<ProjectDeclareListVo> page = projectDeclareService.getMyProjectListPlus(new Page<ProjectDeclareListVo>(request, response), vo);
@@ -263,7 +263,7 @@ public class ProjectDeclareController extends BaseController {
 
 	@RequestMapping(value = {"${frontPath}/project/projectDeclare/curProject"})
 	public String curProject(ProjectDeclare projectDeclare, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		model.addAttribute("user", user);
 		List<Map<String, String>> list=projectDeclareService.getCurProProject();
 		if(list!=null&&list.size()>0){
@@ -276,7 +276,7 @@ public class ProjectDeclareController extends BaseController {
 	public JSONArray getTimeIndexSecondTabs(HttpServletRequest request) {
 		String pptype=request.getParameter("pptype");
 		String actywId=request.getParameter("actywId");
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if(StringUtil.isNotEmpty(user.getId())&&StringUtil.isNotEmpty(pptype)&&StringUtil.isNotEmpty(actywId)){
 			List<Map<String, String>> list=projectDeclareService.getTimeIndexSecondTabs(pptype,actywId,user.getId());
 			if(list!=null&&list.size()>0){
@@ -297,7 +297,7 @@ public class ProjectDeclareController extends BaseController {
 	}
 	@RequestMapping(value = "${frontPath}/project/projectDeclare/form")
 	public String form(ProjectDeclare projectDeclare, Model model,HttpServletRequest request) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if(StringUtil.isNotEmpty(projectDeclare.getId())){
 			if(StringUtil.isEmpty(projectDeclare.getLeader())
 					||StringUtil.isEmpty(user.getId())||!user.getId().equals(projectDeclare.getLeader())){
@@ -323,8 +323,8 @@ public class ProjectDeclareController extends BaseController {
 		model.addAttribute("project_extend", DictUtils.getDictList("project_extend"));
 		model.addAttribute("sysdate", DateUtil.formatDate((projectDeclare.getCreateDate()==null?new Date():projectDeclare.getCreateDate()),"yyyy-MM-dd"));
 		model.addAttribute("project_source", DictUtils.getDictList("project_source"));
-		User leader = (projectDeclare.getLeader()==null?UserUtils.getUser():UserUtils.get(projectDeclare.getLeader()));
-		User creater =(projectDeclare.getCreateBy()==null?UserUtils.getUser():UserUtils.get(projectDeclare.getCreateBy().getId()));
+		AbsUser leader = (projectDeclare.getLeader()==null?UserUtils.getUser():UserUtils.get(projectDeclare.getLeader()));
+		AbsUser creater =(projectDeclare.getCreateBy()==null?UserUtils.getUser():UserUtils.get(projectDeclare.getCreateBy().getId()));
 		model.addAttribute("teams", projectDeclareService.findTeams(leader.getId(),projectDeclare.getTeamId()));
 		model.addAttribute("user", user);
 		model.addAttribute("creater", creater);
@@ -353,9 +353,9 @@ public class ProjectDeclareController extends BaseController {
 		model.addAttribute("sysdate", DateUtil.formatDate((projectDeclare.getCreateDate()==null?new Date():projectDeclare.getCreateDate()),"yyyy-MM-dd"));
 		model.addAttribute("project_source", DictUtils.getDictList("project_source"));
 
-		User user = UserUtils.getUser();
-		User leader = UserUtils.get(projectDeclare.getLeader());
-		User creater = UserUtils.get(projectDeclare.getCreateBy().getId());
+		AbsUser user = UserUtils.getUser();
+		AbsUser leader = UserUtils.get(projectDeclare.getLeader());
+		AbsUser creater = UserUtils.get(projectDeclare.getCreateBy().getId());
 		model.addAttribute("teams", projectDeclareService.findTeams(leader.getId(),projectDeclare.getTeamId()));
 		model.addAttribute("user", user);
 		model.addAttribute("creater", creater);
@@ -392,7 +392,7 @@ public class ProjectDeclareController extends BaseController {
 	@ResponseBody
 	public JSONObject save(ProjectDeclareVo vo, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		JSONObject js=new JSONObject();
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		ProjectDeclare pd=vo.getProjectDeclare();
 		js=commonService.checkProjectApplyOnSave(pd.getId(), pd.getActywId(),pd.getType(), pd.getTeamId());
 		if("0".equals(js.getString("ret"))){
@@ -414,7 +414,7 @@ public class ProjectDeclareController extends BaseController {
 	@ResponseBody
 	public JSONObject submit(ProjectDeclareVo vo, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		JSONObject js=new JSONObject();
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		ProjectDeclare pd=vo.getProjectDeclare();
 		js=commonService.checkProjectApplyOnSubmit(pd.getId(), pd.getActywId(),pd.getType(), pd.getTeamId());
 		if("0".equals(js.getString("ret"))){

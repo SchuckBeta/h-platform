@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.attachment.exception;
+package com.hch.platform.pcore.modules.attachment.exception;
 
 /**
  * 附件处理异常.

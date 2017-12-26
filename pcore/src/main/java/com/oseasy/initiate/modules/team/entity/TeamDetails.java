@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.team.entity;
+package com.hch.platform.pcore.modules.team.entity;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 public class TeamDetails extends Team{
 	/**

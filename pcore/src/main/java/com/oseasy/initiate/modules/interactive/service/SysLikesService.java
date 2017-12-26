@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.interactive.service;
+package com.hch.platform.pcore.modules.interactive.service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,20 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.course.dao.CourseDao;
-import com.oseasy.initiate.modules.excellent.dao.ExcellentShowDao;
-import com.oseasy.initiate.modules.interactive.dao.SysCommentDao;
-import com.oseasy.initiate.modules.interactive.dao.SysLikesDao;
-import com.oseasy.initiate.modules.interactive.entity.SysLikes;
-import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.course.dao.CourseDao;
+import com.hch.platform.pcore.modules.excellent.dao.ExcellentShowDao;
+import com.hch.platform.pcore.modules.interactive.dao.SysCommentDao;
+import com.hch.platform.pcore.modules.interactive.dao.SysLikesDao;
+import com.hch.platform.pcore.modules.interactive.entity.SysLikes;
+import com.hch.platform.pcore.modules.interactive.util.InteractiveUtil;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -178,7 +178,7 @@ public class SysLikesService extends CrudService<SysLikesDao, SysLikes> {
 		JSONObject js= new JSONObject();
 		js.put("ret", "1");
 		js.put("msg", "点赞成功");
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		String foreignId=param.getString("foreignId");
 		String userid=user.getId();
 		if(StringUtil.isEmpty(userid)){
@@ -212,7 +212,7 @@ public class SysLikesService extends CrudService<SysLikesDao, SysLikes> {
 		JSONObject js= new JSONObject();
 		js.put("ret", "1");
 		js.put("msg", "点赞成功");
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		String foreignId=param.getString("foreignId");
 		String foreignType=param.getString("foreignType");
 		String token=param.getString("token");

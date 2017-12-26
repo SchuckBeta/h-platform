@@ -1,22 +1,22 @@
-package com.oseasy.initiate.modules.interactive.util;
+package com.hch.platform.pcore.modules.interactive.util;
 
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.interactive.entity.SysViews;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.modules.interactive.entity.SysViews;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * Created by zhangzheng on 2017/7/5.
  */
 public class InteractiveUtil {
     public static void updateViews(String foreignId,HttpServletRequest request,String queue){
-    	User user= UserUtils.getUser();
+    	AbsUser user= UserUtils.getUser();
         SysViews sc=new SysViews();
         sc.setId(IdGen.uuid());
         sc.setCreateDate(new Date());

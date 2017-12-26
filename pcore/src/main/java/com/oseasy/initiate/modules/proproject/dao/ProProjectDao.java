@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.proproject.dao;
+package com.hch.platform.pcore.modules.proproject.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
 
 /**
  * 创建项目DAO接口.

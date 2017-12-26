@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -14,7 +14,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 表单验证（包含验证码）过滤类

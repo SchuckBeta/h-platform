@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.oa.web;
+package com.hch.platform.pcore.modules.oa.web;
 
 import java.text.SimpleDateFormat;
 
@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.service.OaNotifyKeywordService;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.interactive.util.InteractiveUtil;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyKeywordService;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -92,7 +92,7 @@ public class FrontOaNotifyController extends BaseController {
 	 */
 	@RequestMapping(value = "indexMyNoticeList")
 	public String indexMyNoticeList(OaNotify oaNotify, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User currUser = UserUtils.getUser();
+		AbsUser currUser = UserUtils.getUser();
 		//logger.info("curre========="+currUser.getId());
 		if (currUser!=null&&currUser.getId()!=null) {
 			oaNotify.setUserId(String.valueOf(currUser.getId()));
@@ -112,7 +112,7 @@ public class FrontOaNotifyController extends BaseController {
 	 */
 	@RequestMapping(value = "indexMySendNoticeList")
 	public String indexMySendNoticeList(OaNotify oaNotify, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User currUser = UserUtils.getUser();
+		AbsUser currUser = UserUtils.getUser();
 		//logger.info("curre========="+currUser.getId());
 		if (currUser!=null&&currUser.getId()!=null) {
 			oaNotify.setUserId(String.valueOf(currUser.getId()));

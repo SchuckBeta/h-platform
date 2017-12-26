@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2005-2012 springside.org.cn
  */
-package com.oseasy.initiate.common.mapper;
+package com.hch.platform.pcore.common.mapper;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -20,9 +20,10 @@ import javax.xml.namespace.QName;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.util.Assert;
 
-import com.oseasy.initiate.common.utils.Exceptions;
-import com.oseasy.initiate.common.utils.Reflections;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.Exceptions;
+import com.hch.platform.putil.common.utils.Reflections;
+import com.hch.platform.putil.common.utils.StringUtil;
+
 
 /**
  * 使用Jaxb2.0实现XML<->Java Object的Mapper.

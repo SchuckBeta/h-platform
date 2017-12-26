@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.utils;
+package com.hch.platform.pcore.modules.act.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.annotation.FieldName;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.Encodes;
-import com.oseasy.initiate.common.utils.ObjectUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.annotation.FieldName;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.Encodes;
+import com.hch.platform.putil.common.utils.ObjectUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 流程工具
@@ -161,7 +161,7 @@ public class ActUtils {
 		return types.get(type) == null ? type : types.get(type);
 	}
 
-	public static UserEntity toActivitiUser(User user) {
+	public static UserEntity toActivitiUser(AbsUser user) {
 		if (user == null) {
 			return null;
 		}
@@ -188,7 +188,7 @@ public class ActUtils {
 	}
 	
 	public static void main(String[] args) {
-		 User user = new User();
+		 AbsUser user = new AbsUser();
 		 System.out.println(getMobileEntity(user, "@"));
 	}
 }

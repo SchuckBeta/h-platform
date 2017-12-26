@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.tools;
+package com.hch.platform.pcore.tools;
 
 import java.io.BufferedReader;
 import java.io.File;

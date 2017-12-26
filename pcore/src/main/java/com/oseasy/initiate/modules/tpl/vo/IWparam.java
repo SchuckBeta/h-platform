@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.tpl.vo;
+package com.hch.platform.pcore.modules.tpl.vo;
 
 import java.util.Date;
 

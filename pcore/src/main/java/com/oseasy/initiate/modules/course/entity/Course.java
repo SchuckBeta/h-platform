@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.course.entity;
+package com.hch.platform.pcore.modules.course.entity;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.common.utils.Collections3;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.common.utils.Collections3;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 课程主表Entity.

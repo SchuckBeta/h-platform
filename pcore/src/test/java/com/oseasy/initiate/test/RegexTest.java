@@ -1,11 +1,11 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.oseasy.initiate.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
 
 public class RegexTest {
 	public static void main(String[] args) {

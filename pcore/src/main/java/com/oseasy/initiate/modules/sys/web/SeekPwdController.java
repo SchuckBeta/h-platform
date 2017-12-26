@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.sms.SMSUtilAlidayu;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SeekPwdService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.pcore.common.utils.sms.SMSUtilAlidayu;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SeekPwdService;
 
 @Controller
 public class SeekPwdController extends BaseController {
@@ -34,7 +34,7 @@ public class SeekPwdController extends BaseController {
 		String flag = "3";
 		if (StringUtil.isNotBlank(valiCode)) {
 			if (valiCode.equalsIgnoreCase(validateCode)) {
-				User exitUser = seekPwdService.findUserByPhone(phoneMailNumber);
+				AbsUser exitUser = seekPwdService.findUserByPhone(phoneMailNumber);
 				if (exitUser != null) {
 					request.getSession().removeAttribute("validateCode");
 					flag = "1";

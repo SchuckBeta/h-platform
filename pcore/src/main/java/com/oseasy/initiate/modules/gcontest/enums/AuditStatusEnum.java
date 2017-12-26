@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.gcontest.enums;
+package com.hch.platform.pcore.modules.gcontest.enums;
 
 public enum AuditStatusEnum {
 	 S1("1","网评学院专家打分")

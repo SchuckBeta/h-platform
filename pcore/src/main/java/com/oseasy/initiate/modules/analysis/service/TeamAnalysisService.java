@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.analysis.service;
+package com.hch.platform.pcore.modules.analysis.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.analysis.dao.TeamAnalysisDao;
-import com.oseasy.initiate.modules.analysis.vo.AnnerVo;
-import com.oseasy.initiate.modules.analysis.vo.AxisVo;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.analysis.dao.TeamAnalysisDao;
+import com.hch.platform.pcore.modules.analysis.vo.AnnerVo;
+import com.hch.platform.pcore.modules.analysis.vo.AxisVo;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

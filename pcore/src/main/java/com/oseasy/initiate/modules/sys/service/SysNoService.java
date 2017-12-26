@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.dao.SysNoDao;
-import com.oseasy.initiate.modules.sys.entity.SysNo;
-import com.oseasy.initiate.modules.sys.tool.SysNoType;
-import com.oseasy.initiate.modules.sys.tool.SysNodeTool;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.dao.SysNoDao;
+import com.hch.platform.pcore.modules.sys.entity.SysNo;
+import com.hch.platform.pcore.modules.sys.tool.SysNoType;
+import com.hch.platform.pcore.modules.sys.tool.SysNodeTool;
 
 /**
  * 系统全局编号Service.

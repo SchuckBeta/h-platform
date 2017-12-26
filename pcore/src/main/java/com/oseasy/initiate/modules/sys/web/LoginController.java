@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.security.shiro.session.SessionDAO;
-import com.oseasy.initiate.common.servlet.ValidateCodeServlet;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.CookieUtils;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.security.AdminFormAuthenticationFilter;
-import com.oseasy.initiate.modules.sys.security.SystemAuthorizingRealm.Principal;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.security.shiro.session.SessionDAO;
+import com.hch.platform.pcore.common.servlet.ValidateCodeServlet;
+import com.hch.platform.pcore.common.utils.CookieUtils;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.security.AdminFormAuthenticationFilter;
+import com.hch.platform.pcore.modules.sys.security.SystemAuthorizingRealm.Principal;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 登录Controller
@@ -175,8 +175,8 @@ public class LoginController extends BaseController{
 
 //		System.out.println("==========================a");
 //		try {
-//			byte[] bytes = com.oseasy.initiate.common.utils.FileUtils.readFileToByteArray(
-//					com.oseasy.initiate.common.utils.FileUtils.getFile("c:\\sxt.dmp"));
+//			byte[] bytes = com.hch.platform.putil.common.utils.FileUtils.readFileToByteArray(
+//					com.hch.platform.putil.common.utils.FileUtils.getFile("c:\\sxt.dmp"));
 //			UserUtils.getSession().setAttribute("kkk", bytes);
 //			UserUtils.getSession().setAttribute("kkk2", bytes);
 //		} catch (Exception e) {

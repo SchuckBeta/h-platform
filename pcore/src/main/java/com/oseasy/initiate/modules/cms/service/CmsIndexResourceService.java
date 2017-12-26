@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.cms.service;
+package com.hch.platform.pcore.modules.cms.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.cms.entity.CmsIndexResource;
-import com.oseasy.initiate.modules.cms.dao.CmsIndexResourceDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.cms.entity.CmsIndexResource;
+import com.hch.platform.pcore.modules.cms.dao.CmsIndexResourceDao;
 
 /**
  * 首页资源Service

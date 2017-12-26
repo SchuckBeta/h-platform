@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.exception;
+package com.hch.platform.pcore.modules.pw.exception;
 
 public class AuditFailException extends RuntimeException {
 

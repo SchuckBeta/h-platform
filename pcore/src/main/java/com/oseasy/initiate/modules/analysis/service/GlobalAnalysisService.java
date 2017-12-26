@@ -1,18 +1,18 @@
-package com.oseasy.initiate.modules.analysis.service;
+package com.hch.platform.pcore.modules.analysis.service;
 import java.text.DecimalFormat;
 import java.util.*;
 
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowPtype;
-import com.oseasy.initiate.modules.analysis.vo.BarVo;
-import com.oseasy.initiate.modules.analysis.vo.EchartVo;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowPtype;
+import com.hch.platform.pcore.modules.analysis.vo.BarVo;
+import com.hch.platform.pcore.modules.analysis.vo.EchartVo;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.modules.analysis.dao.GlobalAnalysisDao;
+import com.hch.platform.pcore.modules.analysis.dao.GlobalAnalysisDao;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

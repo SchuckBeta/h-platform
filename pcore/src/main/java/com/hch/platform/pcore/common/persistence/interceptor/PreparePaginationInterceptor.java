@@ -1,7 +1,10 @@
 /**
  *
  */
-package com.oseasy.initiate.common.persistence.interceptor;
+package com.hch.platform.pcore.common.persistence.interceptor;
+
+import java.sql.Connection;
+import java.util.Properties;
 
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
@@ -13,11 +16,8 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.Reflections;
-
-import java.sql.Connection;
-import java.util.Properties;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.Reflections;
 
 /**
  * Mybatis数据库分页插件，拦截StatementHandler的prepare方法

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.utils;
+package com.hch.platform.pcore.modules.act.utils;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.commons.lang3.ObjectUtils;
 
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
 
 /**
  * 流程定义缓存

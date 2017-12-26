@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.attachment.enums;
+package com.hch.platform.pcore.modules.attachment.enums;
 
 /*文件来源对应sys_attachment表type字段*/
 public enum FileTypeEnum implements StringEnum<FileTypeEnum>{

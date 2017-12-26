@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.impdata.entity;
+package com.hch.platform.pcore.modules.impdata.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 导入学生错误数据表Entity

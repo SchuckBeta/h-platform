@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.sysconfig.service;
+package com.hch.platform.pcore.modules.sysconfig.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.sysconfig.dao.SysConfigDao;
-import com.oseasy.initiate.modules.sysconfig.entity.SysConfig;
-import com.oseasy.initiate.modules.sysconfig.utils.SysConfigUtil;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.sysconfig.dao.SysConfigDao;
+import com.hch.platform.pcore.modules.sysconfig.entity.SysConfig;
+import com.hch.platform.pcore.modules.sysconfig.utils.SysConfigUtil;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
 
 import net.sf.json.JSONObject;
 

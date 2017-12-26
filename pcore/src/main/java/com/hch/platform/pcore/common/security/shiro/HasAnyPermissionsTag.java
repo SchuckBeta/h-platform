@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.security.shiro;
+package com.hch.platform.pcore.common.security.shiro;
 
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.tags.PermissionTag;

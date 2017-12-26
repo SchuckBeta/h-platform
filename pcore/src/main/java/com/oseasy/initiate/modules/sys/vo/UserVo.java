@@ -1,14 +1,14 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.vo;
+package com.hch.platform.pcore.modules.sys.vo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 用户Entity

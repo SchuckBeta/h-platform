@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/oseasy/initiate">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.team.web;
+package com.hch.platform.pcore.modules.team.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONObject;
 
@@ -70,7 +70,7 @@ public class TeamUserRelationFrontController extends BaseController {
 							  HttpServletRequest request,
 							  HttpServletResponse response,
 							  RedirectAttributes redirectAttributes,Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		teamUserRelation.setUser(user);
 		//改变teamUserRelation 的state状态 改变team 的state状态
 		teamUserRelationService.updateStateInTeam(teamUserRelation);
@@ -127,10 +127,10 @@ public class TeamUserRelationFrontController extends BaseController {
 					proSbff.append(",");
 				}
 				userIds = proSbff.substring(0,proSbff.lastIndexOf(","));
-				List<User> userListTmp = systemService.findUserByProfessionId(userIds);
+				List<AbsUser> userListTmp = systemService.findUserByProfessionId(userIds);
 				if (userListTmp!=null&&userListTmp.size()>0) {
 					StringBuffer userIdsBuff = new StringBuffer();
-					for (User us:userListTmp) {
+					for (AbsUser us:userListTmp) {
 						if (us.getUserType()!=null&&us.getUserType().equals("1")) {
 							userIdsBuff.append(us.getId());
 							userIdsBuff.append(",");
@@ -141,16 +141,16 @@ public class TeamUserRelationFrontController extends BaseController {
 			}
 			//查询所有用户
 			List<String> userList=teamUserRelationService.findAllUserId(null,offices,userIds);
-			User userParam = new User();
+			AbsUser userParam = new AbsUser();
 			userParam.setUserType("2");
 			userParam.setTeacherType("2");
-			List<User> entTeacherList = userDao.findListTree(userParam);
+			List<AbsUser> entTeacherList = userDao.findListTree(userParam);
 
 				if (entTeacherList!=null&&entTeacherList.size()>0) {
 					if (userList==null) {
 						userList = new ArrayList<String>();
 					}
-						for(User et:entTeacherList) {
+						for(AbsUser et:entTeacherList) {
 							userList.add(et.getId());
 						}
 				}
@@ -169,7 +169,7 @@ public class TeamUserRelationFrontController extends BaseController {
 			
 			//插入发布通知
 			if (userList!=null&&userList.size()>0) {
-				User teamUser=  UserUtils.getUser();
+				AbsUser teamUser=  UserUtils.getUser();
 				Team team = teamService.get(teamId);
 				teamUserRelationService.inseRelOaNo(team, teamUser, userList);
 			}

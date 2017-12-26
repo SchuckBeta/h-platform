@@ -1,6 +1,6 @@
-package com.oseasy.initiate.test.sco;
+package com.hch.platform.pcore.test.sco;
 
-import com.oseasy.initiate.modules.sco.vo.IScoScore;
+import com.hch.platform.pcore.modules.sco.vo.IScoScore;
 
 public class IScoScoreImpl implements IScoScore<IScoScoreImpl> {
   private String id;

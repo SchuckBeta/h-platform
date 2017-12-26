@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.promodel.web;
+package com.hch.platform.pcore.modules.promodel.web;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.UUID;
@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import net.sf.json.JSON;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -38,7 +38,7 @@ public class SystemLogAspect {
     private  static  final Logger logger = LoggerFactory.getLogger(SystemLogAspect. class);
 
     //Controller层切点
-    @Pointcut("execution (* com.oseasy.initiate.modules.cms.web..*.*(..))")
+    @Pointcut("execution (* com.hch.platform.pcore.modules.cms.web..*.*(..))")
     public  void controllerAspect() {
     }
 
@@ -89,7 +89,7 @@ public class SystemLogAspect {
        // User user = (User) session.getAttribute("user");
         //请求的IP
         //String ip = request.getRemoteAddr();
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
         String ip = "127.0.0.1";
         try {
             String targetName = joinPoint.getTarget().getClass().getName();
@@ -155,7 +155,7 @@ public class SystemLogAspect {
         //获取请求ip
         String ip = request.getRemoteAddr(); */
         //获取用户请求方法的参数并序列化为JSON格式字符串
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
         String ip = "127.0.0.1";
         String params = "";
          if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {

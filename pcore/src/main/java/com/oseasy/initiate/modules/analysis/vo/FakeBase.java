@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.analysis.vo;
+package com.hch.platform.pcore.modules.analysis.vo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

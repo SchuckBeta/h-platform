@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.team.entity;
+package com.hch.platform.pcore.modules.team.entity;
 
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.SysTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.SysTeacherExpansion;
 import org.hibernate.validator.constraints.Length;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 团队人员关系表Entity
@@ -16,7 +16,7 @@ public class TeamUserRelation extends DataEntity<TeamUserRelation> {
 	
 	private static final long serialVersionUID = 1L;
 	private String userType;		// 成员类型（1学生2导师）
-	private User user;		// user_id
+	private AbsUser user;		// user_id
 	private String teamId;		// team_id
 	private String state;  //加入状态(0已加入，1申请加入，2负责人发邀请,3不同意，4忽略,5加入失败）
     
@@ -86,11 +86,11 @@ public class TeamUserRelation extends DataEntity<TeamUserRelation> {
 		this.userType = userType;
 	}
 	
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 	

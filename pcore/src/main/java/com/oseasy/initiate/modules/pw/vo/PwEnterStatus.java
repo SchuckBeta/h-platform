@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 入驻类型.

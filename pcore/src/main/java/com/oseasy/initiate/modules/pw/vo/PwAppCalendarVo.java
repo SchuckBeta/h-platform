@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.poi.hssf.model.ConvertAnchor;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.modules.pw.entity.PwAppointment;
+import com.hch.platform.pcore.modules.pw.entity.PwAppointment;
 
 /**
  * 预定日历Vo.

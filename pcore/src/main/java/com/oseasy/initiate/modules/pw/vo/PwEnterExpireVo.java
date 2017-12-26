@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.pw.entity.PwEnter;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.pw.entity.PwEnter;
 
 public class PwEnterExpireVo {
   private Integer totalNum; //总记录数

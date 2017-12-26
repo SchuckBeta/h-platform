@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.project.vo;
+package com.hch.platform.pcore.modules.project.vo;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,13 +25,13 @@ public class ProjectExpVo {
     private String leaderId;
     private String userType;
 
-	private List<User> userList = Lists.newArrayList();;
+	private List<AbsUser> userList = Lists.newArrayList();;
 
-	public List<User> getUserList() {
+	public List<AbsUser> getUserList() {
 		return userList;
 	}
 
-	public void setUserList(List<User> userList) {
+	public void setUserList(List<AbsUser> userList) {
 		this.userList = userList;
 	}
 

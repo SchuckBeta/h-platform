@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.auditstandard.web;
+package com.hch.platform.pcore.modules.auditstandard.web;
 
 import java.util.Date;
 import java.util.List;
@@ -12,17 +12,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.auditstandard.service.AuditStandardFlowService;
-import com.oseasy.initiate.modules.auditstandard.vo.AsdVo;
-import com.oseasy.initiate.modules.auditstandard.vo.AsdYwGnode;
-import com.oseasy.initiate.modules.gcontest.service.GContestService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.auditstandard.service.AuditStandardFlowService;
+import com.hch.platform.pcore.modules.auditstandard.vo.AsdVo;
+import com.hch.platform.pcore.modules.auditstandard.vo.AsdYwGnode;
+import com.hch.platform.pcore.modules.gcontest.service.GContestService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 
 @Controller
 @RequestMapping(value = "${adminPath}/auditstandard/index")

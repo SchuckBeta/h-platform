@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.course.dao;
+package com.hch.platform.pcore.modules.course.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.course.entity.CourseCategory;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.course.entity.CourseCategory;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.tpl.web;
+package com.hch.platform.pcore.modules.tpl.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.tpl.service.TplService;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.tpl.service.TplService;
 
 @Controller
 public class TplController extends BaseController {

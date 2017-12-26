@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -9,11 +9,11 @@ import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.entity.ActYwApply;
-import com.oseasy.initiate.modules.pw.vo.PwEnterStatus;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwApply;
+import com.hch.platform.pcore.modules.pw.vo.PwEnterStatus;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 入驻申报Entity.
@@ -24,7 +24,7 @@ public class PwEnter extends DataEntity<PwEnter> {
 	private static final long serialVersionUID = 1L;
   public static final String STATUS = "status";
 	private String no;		// 申请编号
-	private User applicant;		// 申请人
+	private AbsUser applicant;		// 申请人
 	private String status;		// 状态:pw_enter_status/PwEnterStatus
 	private String isTemp;		// 状态:是否临时数据
 	private Integer term;		// 期限,单位
@@ -150,11 +150,11 @@ public class PwEnter extends DataEntity<PwEnter> {
 		this.no = no;
 	}
 
-	public User getApplicant() {
+	public AbsUser getApplicant() {
     return applicant;
   }
 
-  public void setApplicant(User applicant) {
+  public void setApplicant(AbsUser applicant) {
     this.applicant = applicant;
   }
 

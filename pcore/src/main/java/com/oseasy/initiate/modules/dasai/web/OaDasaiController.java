@@ -1,18 +1,18 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.dasai.web;
+package com.hch.platform.pcore.modules.dasai.web;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.dasai.entity.OaDasai;
-import com.oseasy.initiate.modules.dasai.service.OaDasaiService;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.dasai.entity.OaDasai;
+import com.hch.platform.pcore.modules.dasai.service.OaDasaiService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +57,7 @@ public class OaDasaiController extends BaseController {
 	@RequestMapping(value = "auditingList")
 	public String audingList(OaDasai oaDasai, HttpServletRequest request, HttpServletResponse response, Model model) {
 		oaDasai.setState("1");
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
 		oaDasai.setCreateBy(user);
 		Page<OaDasai> page = oaDasaiService.findPage(new Page<OaDasai>(request, response), oaDasai);
 		List<OaDasai> list=page.getList();
@@ -73,7 +73,7 @@ public class OaDasaiController extends BaseController {
 	@RequestMapping(value = "auditedList")
 	public String auditedList(OaDasai oaDasai, HttpServletRequest request, HttpServletResponse response, Model model) {
 		oaDasai.setState("2");
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
 		oaDasai.setCreateBy(user);
 		Page<OaDasai> page = oaDasaiService.findPage(new Page<OaDasai>(request, response), oaDasai);
 		model.addAttribute("page", page);

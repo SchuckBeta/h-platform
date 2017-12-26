@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 import java.util.Collection;
 import java.util.Map;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -12,9 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 文章Entity
@@ -45,7 +45,7 @@ public class Article extends DataEntity<Article> {
 	private Date beginDate;	// 开始时间
 	private Date endDate;	// 结束时间
 	
-	private User user;
+	private AbsUser user;
     
 	public Article() {
 		super();
@@ -215,11 +215,11 @@ public class Article extends DataEntity<Article> {
 		return list;
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

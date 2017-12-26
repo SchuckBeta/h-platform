@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.gcontest.service;
+package com.hch.platform.pcore.modules.gcontest.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.project.entity.ProjectAuditInfo;
+import com.hch.platform.pcore.modules.project.entity.ProjectAuditInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.FloatUtils;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.dao.GAuditInfoDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FloatUtils;
+import com.hch.platform.pcore.modules.gcontest.entity.GAuditInfo;
+import com.hch.platform.pcore.modules.gcontest.dao.GAuditInfoDao;
 
 /**
  * 大赛信息Service

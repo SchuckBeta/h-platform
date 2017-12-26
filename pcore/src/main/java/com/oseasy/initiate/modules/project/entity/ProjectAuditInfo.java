@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.project.entity;
+package com.hch.platform.pcore.modules.project.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 项目审核信息Entity

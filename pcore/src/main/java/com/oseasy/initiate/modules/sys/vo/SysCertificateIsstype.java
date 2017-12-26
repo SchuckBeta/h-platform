@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.vo;
+package com.hch.platform.pcore.modules.sys.vo;
 
 public enum SysCertificateIsstype {
   SCI_NSY("1", "拟授予")

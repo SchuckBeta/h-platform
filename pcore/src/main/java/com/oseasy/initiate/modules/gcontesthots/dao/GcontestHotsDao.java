@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.gcontesthots.dao;
+package com.hch.platform.pcore.modules.gcontesthots.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.gcontesthots.entity.GcontestHots;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.gcontesthots.entity.GcontestHots;
 
 /**
  * 大赛热点DAO接口.

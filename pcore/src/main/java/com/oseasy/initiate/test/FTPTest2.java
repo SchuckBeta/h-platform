@@ -1,9 +1,9 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.oseasy.initiate.common.utils.Ftp;
+import com.hch.platform.pcore.common.utils.Ftp;
 
 public class FTPTest2 {
 

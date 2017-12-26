@@ -1,12 +1,12 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.oa.entity;
+package com.hch.platform.pcore.modules.oa.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class OaNotifyRecord extends DataEntity<OaNotifyRecord> {
 	
 	private static final long serialVersionUID = 1L;
 	private OaNotify oaNotify;		// 通知通告ID
-	private User user;		// 接受人
+	private AbsUser user;		// 接受人
 	private String readFlag;		// 阅读标记（0：未读；1：已读）
 	private Date readDate;		// 阅读时间
 	private String operateFlag;  //操作标记（0：未操作；1：已操作）
@@ -62,11 +62,11 @@ public class OaNotifyRecord extends DataEntity<OaNotifyRecord> {
 		this.oaNotify = oaNotify;
 	}
 	
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 	

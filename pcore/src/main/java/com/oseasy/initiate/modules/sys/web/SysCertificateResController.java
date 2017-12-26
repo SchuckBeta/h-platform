@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.List;
 import java.util.Map;
@@ -18,15 +18,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.image.WaterRelType;
-import com.oseasy.initiate.common.utils.image.WaterResFileType;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.SysCertificateRes;
-import com.oseasy.initiate.modules.sys.service.SysCertificateResService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.image.WaterRelType;
+import com.hch.platform.pcore.common.utils.image.WaterResFileType;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificateRes;
+import com.hch.platform.pcore.modules.sys.service.SysCertificateResService;
 
 /**
  * 系统证书资源Controller.

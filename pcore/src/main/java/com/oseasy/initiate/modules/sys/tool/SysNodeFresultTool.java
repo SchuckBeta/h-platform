@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.sys.tool;
+package com.hch.platform.pcore.modules.sys.tool;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FreeMarkers;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.utils.FreeMarkers;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 public class SysNodeFresultTool {
 

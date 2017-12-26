@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,49 +29,49 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.impdata.dao.ImpInfoDao;
-import com.oseasy.initiate.modules.impdata.entity.BackUserError;
-import com.oseasy.initiate.modules.impdata.entity.GcontestError;
-import com.oseasy.initiate.modules.impdata.entity.ImpInfo;
-import com.oseasy.initiate.modules.impdata.entity.ImpInfoErrmsg;
-import com.oseasy.initiate.modules.impdata.entity.OfficeError;
-import com.oseasy.initiate.modules.impdata.entity.ProMdApprovalError;
-import com.oseasy.initiate.modules.impdata.entity.ProMdCloseError;
-import com.oseasy.initiate.modules.impdata.entity.ProMdMidError;
-import com.oseasy.initiate.modules.impdata.entity.ProjectError;
-import com.oseasy.initiate.modules.impdata.entity.ProjectHsError;
-import com.oseasy.initiate.modules.impdata.entity.StudentError;
-import com.oseasy.initiate.modules.impdata.entity.TeacherError;
-import com.oseasy.initiate.modules.impdata.exception.ImpDataException;
-import com.oseasy.initiate.modules.impdata.web.ImpDataController;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.promodel.dao.ProModelDao;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.proprojectmd.service.ImpExpService;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.OfficeUtils;
-import com.oseasy.initiate.modules.sys.utils.RegexUtils;
-import com.oseasy.initiate.modules.sys.utils.ThreadPoolUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.impdata.dao.ImpInfoDao;
+import com.hch.platform.pcore.modules.impdata.entity.BackUserError;
+import com.hch.platform.pcore.modules.impdata.entity.GcontestError;
+import com.hch.platform.pcore.modules.impdata.entity.ImpInfo;
+import com.hch.platform.pcore.modules.impdata.entity.ImpInfoErrmsg;
+import com.hch.platform.pcore.modules.impdata.entity.OfficeError;
+import com.hch.platform.pcore.modules.impdata.entity.ProMdApprovalError;
+import com.hch.platform.pcore.modules.impdata.entity.ProMdCloseError;
+import com.hch.platform.pcore.modules.impdata.entity.ProMdMidError;
+import com.hch.platform.pcore.modules.impdata.entity.ProjectError;
+import com.hch.platform.pcore.modules.impdata.entity.ProjectHsError;
+import com.hch.platform.pcore.modules.impdata.entity.StudentError;
+import com.hch.platform.pcore.modules.impdata.entity.TeacherError;
+import com.hch.platform.pcore.modules.impdata.exception.ImpDataException;
+import com.hch.platform.pcore.modules.impdata.web.ImpDataController;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.promodel.dao.ProModelDao;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.proprojectmd.service.ImpExpService;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.OfficeService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.OfficeUtils;
+import com.hch.platform.pcore.modules.sys.utils.RegexUtils;
+import com.hch.platform.pcore.modules.sys.utils.ThreadPoolUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -1139,7 +1139,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 		//转换、校验所有字段并塞入要用到的各种对象。最后根据校验的结果判断要保存什么对象
 		for (int i = ImpDataController.descHeadRow+1; i < sheet.getLastRowNum() + 1; i++) {
 			StudentExpansion st=new StudentExpansion();
-			User user=new User();
+			AbsUser user=new AbsUser();
 			int tag=0;//有几个错误字段
 			StudentError se=new StudentError();
 			se.setImpId(ii.getId());
@@ -1656,7 +1656,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 		//转换、校验所有字段并塞入要用到的各种对象。最后根据校验的结果判断要保存什么对象
 		for (int i = ImpDataController.descHeadRow+1; i < sheet.getLastRowNum() + 1; i++) {
 			BackTeacherExpansion tc=new BackTeacherExpansion();
-			User user=new User();
+			AbsUser user=new AbsUser();
 			int tag=0;//有几个错误字段
 			TeacherError te=new TeacherError();
 			te.setImpId(ii.getId());
@@ -2239,7 +2239,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 		int success=0;//成功数
 		//转换、校验所有字段并塞入要用到的各种对象。最后根据校验的结果判断要保存什么对象
 		for (int i = ImpDataController.descHeadRow+1; i < sheet.getLastRowNum() + 1; i++) {
-			User user=new User();
+			AbsUser user=new AbsUser();
 			int tag=0;//有几个错误字段
 			BackUserError se=new BackUserError();
 			se.setImpId(ii.getId());
@@ -2729,7 +2729,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 		int success=0;//成功数
 		//转换、校验所有字段并塞入要用到的各种对象。最后根据校验的结果判断要保存什么对象
 		for (int i = ImpDataController.descHeadRow+1; i < sheet.getLastRowNum() + 1; i++) {
-			List<User> leader=null;
+			List<AbsUser> leader=null;
 			int tag=0;//有几个错误字段
 			ProjectError se=new ProjectError();
 			ProjectError validinfo=new ProjectError();//用于保存处理之后的信息，以免再次查找数据库.
@@ -2952,7 +2952,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 								iie.setErrmsg("格式有误");
 								break;
 							}else{
-								List<User> mlist=userService.getStuByCdn(info[1], info[0]);
+								List<AbsUser> mlist=userService.getStuByCdn(info[1], info[0]);
 								if (mlist==null||mlist.isEmpty()) {
 									tag++;
 									iie.setErrmsg(info[0]+"/"+info[1]+",系统中未找到该项目成员，请确认姓名和学号无误或先在系统中录入该项目成员");
@@ -2996,7 +2996,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 						for(String meb:mebs) {
 							String[] info=meb.split("/");
 							if (info.length==1) {
-								List<User> mlist=userService.getTeaByCdn(null, info[0]);
+								List<AbsUser> mlist=userService.getTeaByCdn(null, info[0]);
 								if (mlist==null||mlist.isEmpty()) {
 									tag++;
 									iie.setErrmsg(info[0]+"，系统中未找到该导师，请确认姓名无误或先在系统中录入该导师");
@@ -3014,7 +3014,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 									temlist.add(mlist.get(0).getId());
 								}
 							}else if (info.length==2) {
-								List<User> mlist=userService.getTeaByCdn(info[1], info[0]);
+								List<AbsUser> mlist=userService.getTeaByCdn(info[1], info[0]);
 								if (mlist==null||mlist.isEmpty()) {
 									tag++;
 									iie.setErrmsg(info[0]+"/"+info[1]+"，系统中未找到该导师，请确认姓名、工号无误或先在系统中录入该导师");
@@ -3262,7 +3262,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 						tag++;
 						iie.setErrmsg("格式有误");
 					}else{
-						User u=userService.getByNo(val.split("/")[1]);
+						AbsUser u=userService.getByNo(val.split("/")[1]);
 						if(u!=null&&!"1".equals(u.getUserType())){
 							tag++;
 							iie.setErrmsg("找到该学号人员，但不是学生");
@@ -3323,9 +3323,9 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 							tag++;
 							iie.setErrmsg("手机号格式不正确");
 						}else{
-							User u=new User();
+							AbsUser u=new AbsUser();
 							u.setMobile(val);
-							User temu=userService.getByMobile(u);
+							AbsUser temu=userService.getByMobile(u);
 							if(temu!=null&&phe.getLeader()!=null&&phe.getLeader().split("/").length==2&&!phe.getLeader().split("/")[1].equals(temu.getNo())){
 								tag++;
 								iie.setErrmsg("手机号已存在");
@@ -3595,7 +3595,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 						iie.setErrmsg("最多100个字符");
 						phe.setNo(null);
 					}else{
-						User u=userService.getByNo(val);
+						AbsUser u=userService.getByNo(val);
 						if(u!=null&&!"1".equals(u.getUserType())){
 							tag++;
 							iie.setErrmsg("找到该学号人员，但不是学生");
@@ -3619,9 +3619,9 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 							tag++;
 							iie.setErrmsg("手机号格式不正确");
 						}else{
-							User u=new User();
+							AbsUser u=new AbsUser();
 							u.setMobile(val);
-							User temu=userService.getByMobile(u);
+							AbsUser temu=userService.getByMobile(u);
 							if(temu!=null&&phe.getNo()!=null&&!phe.getNo().equals(temu.getNo())){
 								tag++;
 								iie.setErrmsg("手机号已存在");
@@ -3897,7 +3897,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 			Map<String,String> map=new HashMap<String,String>();
 			StringBuffer sb=new StringBuffer();
 			for(int i=0;i<lname.size();i++){
-				User u=userService.getByNo(lno.get(i));
+				AbsUser u=userService.getByNo(lno.get(i));
 				if(u!=null&&!"2".equals(u.getUserType())){
 					sb.append(lname.get(i)).append(lno.get(i)).append("找到该工号人员，但不是导师;");
 				}else if(u!=null&&!lname.get(i).equals(u.getName())){
@@ -3934,7 +3934,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 				}else if(map.get(tea[1])!=null){
 					return tea[1]+"校内导师工号重复";
 				}else{
-					User u=userService.getByNo(tea[1]);
+					AbsUser u=userService.getByNo(tea[1]);
 					if(u!=null&&!"2".equals(u.getUserType())){
 						sb.append(tea[0]).append(tea[1]).append("找到该工号人员，但不是校内导师;");
 					}if(u!=null&&"2".equals(u.getUserType())&&backTeacherExpansionDao.findTeacherByUserIdAndType(u.getId(), "1")==null){
@@ -3989,7 +3989,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 				}else if(steas.get(tea[1])!=null){
 					return tea[1]+"企业导师工号和校内导师工号重复";
 				}else{
-					User u=userService.getByNo(tea[1]);
+					AbsUser u=userService.getByNo(tea[1]);
 					if(u!=null&&!"2".equals(u.getUserType())){
 						sb.append(tea[0]).append(tea[1]).append("找到该工号人员，但不是企业导师;");
 					}if(u!=null&&"2".equals(u.getUserType())&&backTeacherExpansionDao.findTeacherByUserIdAndType(u.getId(), "2")==null){
@@ -4024,7 +4024,7 @@ public class ImpDataService extends CrudService<ImpInfoDao, ImpInfo> {
 				}else if(mem[1].equals(leaderno)){
 					return "成员学号和负责人学号重复";
 				}else{
-					User u=userService.getByNo(mem[1]);
+					AbsUser u=userService.getByNo(mem[1]);
 					if(u!=null&&!"1".equals(u.getUserType())){
 						sb.append(mem[0]).append(mem[1]).append("找到该学号人员，但不是学生;");
 					}else if(u!=null&&!mem[0].equals(u.getName())){

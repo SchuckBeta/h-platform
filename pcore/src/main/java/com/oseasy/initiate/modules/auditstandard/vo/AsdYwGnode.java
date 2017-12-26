@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.auditstandard.vo;
+package com.hch.platform.pcore.modules.auditstandard.vo;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
 
 /**
  * 项目流程节点与标准关联对象.

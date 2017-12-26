@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.impdata.dao;
+package com.hch.platform.pcore.modules.impdata.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.impdata.entity.OfficeError;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.impdata.entity.OfficeError;
 
 /**
  * 机构导入错误信息表DAO接口

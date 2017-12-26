@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2005-2012 springside.org.cn
  */
-package com.oseasy.initiate.common.security;
+package com.hch.platform.pcore.common.security;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 
 import org.apache.commons.lang3.Validate;
 
-import com.oseasy.initiate.common.utils.Exceptions;
+import com.hch.platform.putil.common.utils.Exceptions;
 
 /**
  * 支持SHA-1/MD5消息摘要的工具类.

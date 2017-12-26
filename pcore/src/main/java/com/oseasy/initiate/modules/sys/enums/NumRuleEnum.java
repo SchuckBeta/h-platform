@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.enums;
+package com.hch.platform.pcore.modules.sys.enums;
 
 public enum NumRuleEnum {
 	 PROJECT("1","event_projectnum_reset","seq_project_declare_num")

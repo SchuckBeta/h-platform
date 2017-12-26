@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.servlet;
+package com.hch.platform.pcore.common.servlet;
 
 import java.awt.Color;
 import java.awt.Font;

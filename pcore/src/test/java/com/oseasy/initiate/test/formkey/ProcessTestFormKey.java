@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.formkey;
+package com.hch.platform.pcore.test.formkey;
 
 import java.util.HashMap;
 import java.util.Map;

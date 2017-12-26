@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.enums;
+package com.hch.platform.pcore.modules.impdata.enums;
 
 public enum ProjectMdApprovalColEnum {
 		S1("1","pro_category")

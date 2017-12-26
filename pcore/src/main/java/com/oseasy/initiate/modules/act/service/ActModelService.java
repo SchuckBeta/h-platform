@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.act.service;
+package com.hch.platform.pcore.modules.act.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,13 +31,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.vo.ActRstatus;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.actyw.tool.process.ActYwResult;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.vo.ActRstatus;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.actyw.tool.process.ActYwResult;
 
 /**
  * 流程模型相关Controller

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.test;
+package com.hch.platform.pcore.common.test;
 
 import javax.sql.DataSource;
 

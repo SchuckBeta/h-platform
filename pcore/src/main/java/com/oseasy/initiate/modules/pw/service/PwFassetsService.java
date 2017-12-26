@@ -1,20 +1,20 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.pw.dao.PwFassetsDao;
-import com.oseasy.initiate.modules.pw.entity.PwFassets;
-import com.oseasy.initiate.modules.pw.entity.PwFassetsUhistory;
-import com.oseasy.initiate.modules.pw.entity.PwRoom;
-import com.oseasy.initiate.modules.pw.utils.FassetsUtils;
-import com.oseasy.initiate.modules.pw.vo.PwFassetsAssign;
-import com.oseasy.initiate.modules.pw.vo.PwFassetsBatch;
-import com.oseasy.initiate.modules.pw.vo.PwFassetsStatus;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.pw.dao.PwFassetsDao;
+import com.hch.platform.pcore.modules.pw.entity.PwFassets;
+import com.hch.platform.pcore.modules.pw.entity.PwFassetsUhistory;
+import com.hch.platform.pcore.modules.pw.entity.PwRoom;
+import com.hch.platform.pcore.modules.pw.utils.FassetsUtils;
+import com.hch.platform.pcore.modules.pw.vo.PwFassetsAssign;
+import com.hch.platform.pcore.modules.pw.vo.PwFassetsBatch;
+import com.hch.platform.pcore.modules.pw.vo.PwFassetsStatus;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -290,7 +290,7 @@ public class PwFassetsService extends CrudService<PwFassetsDao, PwFassets> {
             if (StringUtils.isBlank(pwFassets.getStatus())) {
                 pwFassets.setStatus(PwFassetsStatus.UNUSED.getValue());
             }
-            User user = UserUtils.getUser();
+            AbsUser user = UserUtils.getUser();
             if (StringUtils.isNotBlank(user.getId())) {
                 pwFassets.setCreateBy(user);
                 pwFassets.setUpdateBy(user);

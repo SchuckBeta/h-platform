@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.interactive.web;
+package com.hch.platform.pcore.modules.interactive.web;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.interactive.service.SysLikesService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.interactive.service.SysLikesService;
 
 import net.sf.json.JSONObject;
 

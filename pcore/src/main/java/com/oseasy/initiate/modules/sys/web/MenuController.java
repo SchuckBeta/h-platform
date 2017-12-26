@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.List;
 import java.util.Map;
@@ -21,16 +21,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIdx;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.sys.entity.Menu;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIdx;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
+import com.hch.platform.pcore.modules.ftp.service.FtpService;
+import com.hch.platform.pcore.modules.sys.entity.Menu;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 菜单Controller

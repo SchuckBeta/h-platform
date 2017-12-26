@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 系统证书表Entity.

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.cms.enums;
+package com.hch.platform.pcore.modules.cms.enums;
 
 public enum ResTemplateEnum {
 	 R1("1","首页Banner","home-banner.xml")

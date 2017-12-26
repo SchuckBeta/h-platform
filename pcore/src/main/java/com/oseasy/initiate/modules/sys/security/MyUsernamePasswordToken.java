@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 /**
  * 用户和密码（包含验证码）令牌类

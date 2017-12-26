@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.auditstandard.vo;
+package com.hch.platform.pcore.modules.auditstandard.vo;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
 
 public class AsdVo {
 	

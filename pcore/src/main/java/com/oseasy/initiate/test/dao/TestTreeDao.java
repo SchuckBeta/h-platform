@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.dao;
+package com.hch.platform.pcore.test.dao;
 
-import com.oseasy.initiate.common.persistence.TreeDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.test.entity.TestTree;
+import com.hch.platform.pcore.common.persistence.TreeDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.test.entity.TestTree;
 
 /**
  * 树结构生成DAO接口

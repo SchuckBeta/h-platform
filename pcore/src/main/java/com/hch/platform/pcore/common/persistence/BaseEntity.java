@@ -2,16 +2,16 @@
  *
  */
 
-package com.oseasy.initiate.common.persistence;
+package com.hch.platform.pcore.common.persistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.supcan.annotation.treelist.SupTreeList;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupCol;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.SupTreeList;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupCol;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -39,7 +39,7 @@ public abstract class BaseEntity<T> implements Serializable {
   /**
    * 当前用户.
    */
-  protected User currentUser;
+  protected AbsUser currentUser;
 
   /**
    * 当前实体分页对象.
@@ -82,14 +82,14 @@ public abstract class BaseEntity<T> implements Serializable {
    */
   @JsonIgnore
   @XmlTransient
-  public User getCurrentUser() {
+  public AbsUser getCurrentUser() {
     if (currentUser == null||StringUtil.isEmpty(currentUser.getId())) {
       currentUser = UserUtils.getUser();
     }
     return currentUser;
   }
 
-  public void setCurrentUser(User currentUser) {
+  public void setCurrentUser(AbsUser currentUser) {
     this.currentUser = currentUser;
   }
 

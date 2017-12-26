@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.proprojectmd.web;
+package com.hch.platform.pcore.modules.proprojectmd.web;
 
 import java.util.List;
 
@@ -16,25 +16,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.promodel.service.ProModelService;
-import com.oseasy.initiate.modules.proprojectmd.entity.ProModelMd;
-import com.oseasy.initiate.modules.proprojectmd.service.ProModelMdService;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.service.BackTeacherExpansionService;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.tpl.service.WordService;
-import com.oseasy.initiate.modules.tpl.vo.IWparam;
-import com.oseasy.initiate.modules.tpl.vo.Rstatus;
-import com.oseasy.initiate.modules.tpl.vo.WproType;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.promodel.service.ProModelService;
+import com.hch.platform.pcore.modules.proprojectmd.entity.ProModelMd;
+import com.hch.platform.pcore.modules.proprojectmd.service.ProModelMdService;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.service.BackTeacherExpansionService;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.tpl.service.WordService;
+import com.hch.platform.pcore.modules.tpl.vo.IWparam;
+import com.hch.platform.pcore.modules.tpl.vo.Rstatus;
+import com.hch.platform.pcore.modules.tpl.vo.WproType;
 
 import net.sf.json.JSONObject;
 

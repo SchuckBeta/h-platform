@@ -1,7 +1,7 @@
 /**
   * Copyright 2017 bejson.com 
   */
-package com.oseasy.initiate.modules.sysconfig.vo;
+package com.hch.platform.pcore.modules.sysconfig.vo;
 import java.util.List;
 
 /**

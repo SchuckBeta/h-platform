@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.promodel.service;
+package com.hch.platform.pcore.modules.promodel.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowProjectType;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.promodel.entity.ProCloseSubmit;
-import com.oseasy.initiate.modules.promodel.entity.ProMidSubmit;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowProjectType;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowType;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.promodel.entity.ProCloseSubmit;
+import com.hch.platform.pcore.modules.promodel.entity.ProMidSubmit;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -20,44 +20,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.FloatUtils;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.actyw.tool.process.ActYwTool;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.promodel.dao.ProModelDao;
-import com.oseasy.initiate.modules.promodel.entity.ActYwAuditInfo;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.proproject.entity.ProProject;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmCriterionDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAffirmDao;
-import com.oseasy.initiate.modules.sco.dao.ScoAllotRatioDao;
-import com.oseasy.initiate.modules.sco.dao.ScoScoreDao;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sco.entity.ScoScore;
-import com.oseasy.initiate.modules.sco.vo.ScoAffrimCriterionVo;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FloatUtils;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.dao.ActDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.actyw.tool.process.ActYwTool;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.promodel.dao.ProModelDao;
+import com.hch.platform.pcore.modules.promodel.entity.ActYwAuditInfo;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.proproject.entity.ProProject;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmCriterionDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAffirmDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoAllotRatioDao;
+import com.hch.platform.pcore.modules.sco.dao.ScoScoreDao;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sco.entity.ScoScore;
+import com.hch.platform.pcore.modules.sco.vo.ScoAffrimCriterionVo;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
 
 import net.sf.json.JSONObject;
 
@@ -144,7 +144,7 @@ public class ProModelService extends CrudService<ProModelDao, ProModel> {
 
 	@Transactional(readOnly = false)
 	public JSONObject submit(ProModel proModel,JSONObject js) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		ActYw actYw=actYwService.get(proModel.getActYwId());
 		List<String> roles=new ArrayList<String>();
 		//proModel.setCompetitionNumber(IdUtils.getGContestNumberByDb());
@@ -233,7 +233,7 @@ public class ProModelService extends CrudService<ProModelDao, ProModel> {
 
 	@Transactional(readOnly = false)
 	public String submitMid(ProModel proModel) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		ActYw actYw=actYwService.get(proModel.getActYwId());
 		if(actYw!=null){
 			String key= ActYw.getPkey(actYw.getGroup(),actYw.getProProject());
@@ -285,7 +285,7 @@ public class ProModelService extends CrudService<ProModelDao, ProModel> {
 
 	@Transactional(readOnly = false)
 	public String submitClose(ProModel proModel) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		ActYw actYw=actYwService.get(proModel.getActYwId());
 		if(actYw!=null){
 			String key=actYw.getPkey(actYw.getGroup(),actYw.getProProject());
@@ -410,15 +410,15 @@ public class ProModelService extends CrudService<ProModelDao, ProModel> {
 				//更改完成后团队历史表中的状态
 				teamUserHistoryService.updateFinishAsClose(proModel.getId());
 
-				User apply_User=UserUtils.getUser();
-				User rec_User=new User();
+				AbsUser apply_User=UserUtils.getUser();
+				AbsUser rec_User=new AbsUser();
 				rec_User.setId(proModel.getDeclareId());
 				oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
 					typeName+" "+proModel.getpName()+"项目，"+actYwGnode.getName()+"审核不合格", OaNotify.Type_Enum.TYPE14.getValue(),proModel.getId());
 			}else {
 				if(proModel.getGrade()!=null && proModel.getGrade().equals("1")){
-					User apply_User=UserUtils.getUser();
-					User rec_User=new User();
+					AbsUser apply_User=UserUtils.getUser();
+					AbsUser rec_User=new AbsUser();
 					rec_User.setId(proModel.getDeclareId());
 					oaNotifyService.sendOaNotifyByType(apply_User,rec_User,"学校管理员审核",
 					typeName+" "+proModel.getpName()+"项目，"+actYwGnode.getName()+"审核合格", OaNotify.Type_Enum.TYPE14.getValue(),proModel.getId());
@@ -478,7 +478,7 @@ public class ProModelService extends CrudService<ProModelDao, ProModel> {
 			if(!hasConfig){ //如果后台没有配比规则、则所有成员一样的分数
 				for(Map<String,String> teamUser:studentList ){
 					ScoScore scoScore = new ScoScore();
-					User user =new User();
+					AbsUser user =new AbsUser();
 					user.setId(teamUser.get("userId"));
 					scoScore.setUser(user);
 					float score = criterionResult.getScore();
@@ -496,7 +496,7 @@ public class ProModelService extends CrudService<ProModelDao, ProModel> {
 				int weigthTotal = teamUserHistoryService.getWeightTotalByTeamId(proModel.getTeamId(),proModel.getId());
 				for(Map<String,String> teamUser:studentList ){
 					ScoScore scoScore = new ScoScore();
-					User user =new User();
+					AbsUser user =new AbsUser();
 					user.setId(teamUser.get("userId"));
 					scoScore.setUser(user);
 					String number=String.valueOf(teamUser.get("weightVal"));

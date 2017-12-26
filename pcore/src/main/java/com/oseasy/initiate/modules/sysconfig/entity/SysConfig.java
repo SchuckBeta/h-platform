@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.sysconfig.entity;
+package com.hch.platform.pcore.modules.sysconfig.entity;
 
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 系统配置Entity.

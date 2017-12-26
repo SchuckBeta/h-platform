@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.team.entity;
+package com.hch.platform.pcore.modules.team.entity;
 
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 团队管理Entity
@@ -47,7 +47,7 @@ public class Team extends DataEntity<Team> {
     private String startTime;
     private String endTime;
     private boolean isSelf; //是否对自己发布的团队
-    private User user;
+    private AbsUser user;
     private String oaNotifyType; 
     
     private String sponsorId;//团队负责人id，用于页面传递负责人id
@@ -125,7 +125,7 @@ public class Team extends DataEntity<Team> {
 		this.sponsorId = sponsorId;
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
@@ -133,7 +133,7 @@ public class Team extends DataEntity<Team> {
 		return oaNotifyType;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

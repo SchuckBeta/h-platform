@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
 import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Process;

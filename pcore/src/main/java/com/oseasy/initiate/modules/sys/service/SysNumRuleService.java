@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.sys.dao.SysNumRuleDao;
-import com.oseasy.initiate.modules.sys.entity.SysNumRule;
-import com.oseasy.initiate.modules.sys.enums.NumRuleEnum;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.sys.dao.SysNumRuleDao;
+import com.hch.platform.pcore.modules.sys.entity.SysNumRule;
+import com.hch.platform.pcore.modules.sys.enums.NumRuleEnum;
 
 /**
  * 编号规则Service

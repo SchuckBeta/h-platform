@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.project.vo;
+package com.hch.platform.pcore.modules.project.vo;
 
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.entity.ProjectPlan;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectPlan;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
 
 /**
  * 项目申报Vo

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.gcontesthots.service;
+package com.hch.platform.pcore.modules.gcontesthots.service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,19 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.gcontesthots.dao.GcontestHotsDao;
-import com.oseasy.initiate.modules.gcontesthots.dao.GcontestHotsKeywordDao;
-import com.oseasy.initiate.modules.gcontesthots.entity.GcontestHots;
-import com.oseasy.initiate.modules.gcontesthots.entity.GcontestHotsKeyword;
-import com.oseasy.initiate.modules.interactive.entity.SysViews;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.gcontesthots.dao.GcontestHotsDao;
+import com.hch.platform.pcore.modules.gcontesthots.dao.GcontestHotsKeywordDao;
+import com.hch.platform.pcore.modules.gcontesthots.entity.GcontestHots;
+import com.hch.platform.pcore.modules.gcontesthots.entity.GcontestHotsKeyword;
+import com.hch.platform.pcore.modules.interactive.entity.SysViews;
 
 /**
  * 大赛热点Service.

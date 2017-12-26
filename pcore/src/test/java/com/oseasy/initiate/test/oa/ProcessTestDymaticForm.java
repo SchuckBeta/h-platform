@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.oa;
+package com.hch.platform.pcore.test.oa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

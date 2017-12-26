@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,23 +18,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.ftp.service.FtpService;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 import net.sf.json.JSONObject;
 
@@ -84,7 +84,7 @@ public class StudentExpansionController extends BaseController {
 	@RequiresPermissions("sys:studentExpansion:view")
 	@RequestMapping(value = "form")
 	public String form(StudentExpansion studentExpansion, Model model,HttpServletRequest request) {
-		User user=null;
+		AbsUser user=null;
 		if (studentExpansion.getUser()!=null) {
 			user = studentExpansion.getUser();
 			if (user!=null) {
@@ -133,7 +133,7 @@ public class StudentExpansionController extends BaseController {
 		studentExpansionService.delete(studentExpansion);
 		addMessage(redirectAttributes, "删除学生扩展信息表成功");
 		//删除用户表
-		User user= UserUtils.get(studentExpansion.getUser().getId());
+		AbsUser user= UserUtils.get(studentExpansion.getUser().getId());
 		userService.delete(user);
 		return "redirect:" + Global.getAdminPath() + "/sys/studentExpansion/?repage";
 	}
@@ -155,7 +155,7 @@ public class StudentExpansionController extends BaseController {
 			}else{
 				successCount++;
 				studentExpansionService.delete(studentExpansion);
-				User user= UserUtils.get(studentExpansion.getUser().getId());
+				AbsUser user= UserUtils.get(studentExpansion.getUser().getId());
 				userService.delete(user);
 			}
 		}
@@ -199,7 +199,7 @@ public class StudentExpansionController extends BaseController {
 		FTPClient ftpClient=ftpUtil.getftpClient();*/
 		//ftpUtil.remove(ftpClient, fileName.substring(0,fileName.lastIndexOf("/")+1), fileName.substring(fileName.lastIndexOf("/")+1));
 		JSONObject obj = new JSONObject();
-		User user = userService.findUserById(userId);
+		AbsUser user = userService.findUserById(userId);
 		user.setPhoto("");
 		userService.updateUser(user);
 		if (ftpdel) {

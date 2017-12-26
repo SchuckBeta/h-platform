@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -25,7 +25,7 @@ public class PwAppointment extends DataEntity<PwAppointment> {
     private String year;        // 预约日期(年)
     private String month;        // 预约日期(月)
     private String day;        // 预约日期(日)
-    private User user;        // 预约申请人
+    private AbsUser user;        // 预约申请人
     private Date startDate;        // 预约开始时间
     private Date endDate;        // 预约结束时间
 
@@ -132,11 +132,11 @@ public class PwAppointment extends DataEntity<PwAppointment> {
         this.endDate = endDate;
     }
 
-    public User getUser() {
+    public AbsUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbsUser user) {
         this.user = user;
     }
 

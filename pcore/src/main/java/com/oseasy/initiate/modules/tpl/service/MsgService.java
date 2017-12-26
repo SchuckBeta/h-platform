@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.tpl.service;
+package com.hch.platform.pcore.modules.tpl.service;
 
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.FreeMarkers;
-import com.oseasy.initiate.common.utils.ObjectUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.file.FileType;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowProjectType;
-import com.oseasy.initiate.modules.tpl.vo.IMparam;
-import com.oseasy.initiate.modules.tpl.vo.IWparam;
-import com.oseasy.initiate.modules.tpl.vo.MsgType;
-import com.oseasy.initiate.modules.tpl.vo.Wversion;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.pcore.common.utils.FreeMarkers;
+import com.hch.platform.putil.common.utils.ObjectUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.file.FileType;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowProjectType;
+import com.hch.platform.pcore.modules.tpl.vo.IMparam;
+import com.hch.platform.pcore.modules.tpl.vo.IWparam;
+import com.hch.platform.pcore.modules.tpl.vo.MsgType;
+import com.hch.platform.pcore.modules.tpl.vo.Wversion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,15 +1,15 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.dao;
+package com.hch.platform.pcore.modules.sys.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.TreeDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.Office;
+import com.hch.platform.pcore.common.persistence.TreeDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.Office;
 
 /**
  * 机构DAO接口

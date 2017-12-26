@@ -1,25 +1,25 @@
-package com.oseasy.initiate.modules.course.service;
+package com.hch.platform.pcore.modules.course.service;
 
 import java.util.Date;
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.course.dao.CourseCategoryDao;
-import com.oseasy.initiate.modules.course.dao.CourseTeacherDao;
-import com.oseasy.initiate.modules.course.entity.CourseCategory;
-import com.oseasy.initiate.modules.course.entity.CourseTeacher;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.course.dao.CourseCategoryDao;
+import com.hch.platform.pcore.modules.course.dao.CourseTeacherDao;
+import com.hch.platform.pcore.modules.course.entity.CourseCategory;
+import com.hch.platform.pcore.modules.course.entity.CourseTeacher;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.course.entity.Course;
-import com.oseasy.initiate.modules.course.dao.CourseDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.course.entity.Course;
+import com.hch.platform.pcore.modules.course.dao.CourseDao;
 
 /**
  * 课程主表Service.

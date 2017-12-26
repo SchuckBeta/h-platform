@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.Log;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.LogService;
-import com.oseasy.initiate.modules.sys.service.UserService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.Log;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.LogService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
 
 /**
  * 日志Controller
@@ -52,7 +52,7 @@ public class LogController extends BaseController {
 	@RequestMapping(value = "/validatePhone")
 	public Boolean validatePhone(HttpServletRequest request) {
 		String mobile =  request.getParameter("mobile");
-		User user = new User();
+		AbsUser user = new AbsUser();
 		user.setMobile(mobile);
 		user.setDelFlag("0");
 		user = userService.getByMobile(user);

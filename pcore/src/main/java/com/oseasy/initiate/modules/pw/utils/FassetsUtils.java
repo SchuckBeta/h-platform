@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.pw.utils;
+package com.hch.platform.pcore.modules.pw.utils;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.pw.dao.PwFassetsnoRuleDao;
-import com.oseasy.initiate.modules.pw.entity.PwCategory;
-import com.oseasy.initiate.modules.pw.entity.PwFassetsnoRule;
-import com.oseasy.initiate.modules.pw.service.PwCategoryService;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.pw.dao.PwFassetsnoRuleDao;
+import com.hch.platform.pcore.modules.pw.entity.PwCategory;
+import com.hch.platform.pcore.modules.pw.entity.PwFassetsnoRule;
+import com.hch.platform.pcore.modules.pw.service.PwCategoryService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;

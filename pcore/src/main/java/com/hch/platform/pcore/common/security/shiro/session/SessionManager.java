@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.security.shiro.session;
+package com.hch.platform.pcore.common.security.shiro.session;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 自定义WEB会话管理类

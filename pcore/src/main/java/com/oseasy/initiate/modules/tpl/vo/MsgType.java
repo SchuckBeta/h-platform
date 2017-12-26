@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.tpl.vo;
+package com.hch.platform.pcore.modules.tpl.vo;
 
 /**
  * Created by Administrator on 2017/9/27 0027.

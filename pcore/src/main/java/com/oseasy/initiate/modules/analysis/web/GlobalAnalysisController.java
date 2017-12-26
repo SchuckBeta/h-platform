@@ -1,20 +1,20 @@
-package com.oseasy.initiate.modules.analysis.web;
+package com.hch.platform.pcore.modules.analysis.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.analysis.vo.BarVo;
-import com.oseasy.initiate.modules.analysis.vo.EchartVo;
-import com.oseasy.initiate.modules.analysis.vo.FakeBase;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.analysis.vo.BarVo;
+import com.hch.platform.pcore.modules.analysis.vo.EchartVo;
+import com.hch.platform.pcore.modules.analysis.vo.FakeBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.analysis.service.GlobalAnalysisService;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.analysis.service.GlobalAnalysisService;
 
 import net.sf.json.JSONObject;
 

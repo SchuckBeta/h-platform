@@ -1,11 +1,11 @@
 /**
  * There are <a href="https://github.com/oseasy/initiate">JeeSite</a> code generation
  */
-package com.oseasy.initiate.modules.oa.dao;
+package com.hch.platform.pcore.modules.oa.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.oa.entity.Leave;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.oa.entity.Leave;
 
 /**
  * 请假DAO接口

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.act.web;
+package com.hch.platform.pcore.modules.act.web;
 
 import java.util.List;
 
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.service.ActModelService;
-import com.oseasy.initiate.modules.act.vo.ActRstatus;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.service.ActModelService;
+import com.hch.platform.pcore.modules.act.vo.ActRstatus;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
 
 /**
  * 流程模型相关Controller

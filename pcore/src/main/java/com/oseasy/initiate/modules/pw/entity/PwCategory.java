@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.oseasy.initiate.common.persistence.TreeEntity;
+import com.hch.platform.pcore.common.persistence.TreeEntity;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Transient;
 

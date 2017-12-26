@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.ftp;
+package com.hch.platform.pcore.test.ftp;
 
 import java.io.File;
 import java.io.FileInputStream;

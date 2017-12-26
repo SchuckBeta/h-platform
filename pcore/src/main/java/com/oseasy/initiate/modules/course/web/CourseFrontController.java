@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.course.web;
+package com.hch.platform.pcore.modules.course.web;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -8,10 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.course.entity.Course;
-import com.oseasy.initiate.modules.course.entity.CourseCategory;
-import com.oseasy.initiate.modules.course.entity.CourseTeacher;
-import com.oseasy.initiate.modules.course.service.CourseCategoryService;
-import com.oseasy.initiate.modules.course.service.CourseService;
-import com.oseasy.initiate.modules.course.service.CourseTeacherService;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.course.entity.Course;
+import com.hch.platform.pcore.modules.course.entity.CourseCategory;
+import com.hch.platform.pcore.modules.course.entity.CourseTeacher;
+import com.hch.platform.pcore.modules.course.service.CourseCategoryService;
+import com.hch.platform.pcore.modules.course.service.CourseService;
+import com.hch.platform.pcore.modules.course.service.CourseTeacherService;
+import com.hch.platform.pcore.modules.ftp.service.FtpService;
+import com.hch.platform.pcore.modules.interactive.util.InteractiveUtil;
 
 /**
  * Created by zhangzheng on 2017/6/29.

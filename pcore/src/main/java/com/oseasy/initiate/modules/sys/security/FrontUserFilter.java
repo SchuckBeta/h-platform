@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.security;
+package com.hch.platform.pcore.modules.sys.security;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one

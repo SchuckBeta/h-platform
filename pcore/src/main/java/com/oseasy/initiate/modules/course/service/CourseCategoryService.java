@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.course.service;
+package com.hch.platform.pcore.modules.course.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.course.entity.CourseCategory;
-import com.oseasy.initiate.modules.course.dao.CourseCategoryDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.course.entity.CourseCategory;
+import com.hch.platform.pcore.modules.course.dao.CourseCategoryDao;
 
 /**
  * 课程分类Service.

@@ -1,18 +1,18 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.gen.service;
+package com.hch.platform.pcore.modules.gen.service;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.gen.dao.GenTemplateDao;
-import com.oseasy.initiate.modules.gen.entity.GenTemplate;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.gen.dao.GenTemplateDao;
+import com.hch.platform.pcore.modules.gen.entity.GenTemplate;
 
 /**
  * 代码模板Service

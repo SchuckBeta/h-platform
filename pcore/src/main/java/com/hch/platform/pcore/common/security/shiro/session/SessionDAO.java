@@ -1,4 +1,4 @@
-package com.oseasy.initiate.common.security.shiro.session;
+package com.hch.platform.pcore.common.security.shiro.session;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.gcontest.entity;
+package com.hch.platform.pcore.modules.gcontest.entity;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.ActEntity;
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.common.persistence.ActEntity;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
 
 /**
  * 大赛信息Entity

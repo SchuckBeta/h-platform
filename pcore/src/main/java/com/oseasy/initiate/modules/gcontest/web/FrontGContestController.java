@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.gcontest.web;
+package com.hch.platform.pcore.modules.gcontest.web;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.modules.authorize.service.AuthorizeService;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,37 +20,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.ftp.service.FtpService;
-import com.oseasy.initiate.modules.gcontest.entity.GAuditInfo;
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.gcontest.entity.GContestAward;
-import com.oseasy.initiate.modules.gcontest.service.GAuditInfoService;
-import com.oseasy.initiate.modules.gcontest.service.GContestAwardService;
-import com.oseasy.initiate.modules.gcontest.service.GContestService;
-import com.oseasy.initiate.modules.gcontest.vo.GContestListVo;
-import com.oseasy.initiate.modules.gcontest.vo.GContestVo;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.service.ProjectDeclareService;
-import com.oseasy.initiate.modules.sco.service.ScoAllotRatioService;
-import com.oseasy.initiate.modules.sco.vo.ScoRatioVo;
-import com.oseasy.initiate.modules.sys.entity.SysStudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SysStudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
-import com.oseasy.initiate.modules.team.service.TeamService;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.ftp.service.FtpService;
+import com.hch.platform.pcore.modules.gcontest.entity.GAuditInfo;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.gcontest.entity.GContestAward;
+import com.hch.platform.pcore.modules.gcontest.service.GAuditInfoService;
+import com.hch.platform.pcore.modules.gcontest.service.GContestAwardService;
+import com.hch.platform.pcore.modules.gcontest.service.GContestService;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestListVo;
+import com.hch.platform.pcore.modules.gcontest.vo.GContestVo;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.service.ProjectDeclareService;
+import com.hch.platform.pcore.modules.sco.service.ScoAllotRatioService;
+import com.hch.platform.pcore.modules.sco.vo.ScoRatioVo;
+import com.hch.platform.pcore.modules.sys.entity.SysStudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SysStudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.modules.team.service.TeamService;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
 
 import net.sf.json.JSONObject;
 
@@ -110,7 +110,7 @@ public class FrontGContestController extends BaseController {
 		/*Page<GContest> page = gContestService.findPage(new Page<GContest>(request, response), gContest);
 		model.addAttribute("page", page);*/
 		Map<String,Object> param =new HashMap<String,Object>();
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		param.put("userid", user.getId());
 		GContestListVo vo=new GContestListVo();
 		vo.setUserid(user.getId());
@@ -138,7 +138,7 @@ public class FrontGContestController extends BaseController {
 
 	@RequestMapping(value = "form")
 	public String form(GContest gContest, Model model,HttpServletRequest request) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
         model.addAttribute("user", user);
 		model.addAttribute("studentExpansion", sysStudentExpansionService.getByUserId(user.getId()));
 
@@ -214,7 +214,7 @@ public class FrontGContestController extends BaseController {
 	}
 	@RequestMapping(value = "viewForm")
 	public String viewForm(GContest gContest, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(gContest.getId())) {
 			gContest = gContestService.get(gContest.getId());
 			user=userService.findUserById(gContest.getDeclareId());
@@ -291,7 +291,7 @@ public class FrontGContestController extends BaseController {
 			return js;
 		}
 
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		gContest.setCreateBy(user);
 		gContestService.save(gContest);
 		js.put("id", gContest.getId());
@@ -344,7 +344,7 @@ public class FrontGContestController extends BaseController {
 
 	@RequestMapping(value = {"viewList"})
 	public String viewList(GContest gContest, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		//得到有项目的大赛类型
 		List<Map<String,String>> gcNameList=gContestService.getInGcontestNameList(user.getId());
 		model.addAttribute("gcNameList", gcNameList);
@@ -360,7 +360,7 @@ public class FrontGContestController extends BaseController {
 	public JSONObject viewLit(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		JSONObject js=new JSONObject();
 		GContest gContest=new GContest();
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
         List<GContest> glist=gContestService.getGcontestInfo(user.getId());
         if (glist.size()>0) {
         	gContest=glist.get(0);

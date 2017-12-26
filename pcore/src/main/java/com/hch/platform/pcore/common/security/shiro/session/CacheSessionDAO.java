@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.security.shiro.session;
+package com.hch.platform.pcore.common.security.shiro.session;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -18,10 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Sets;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.Servlets;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.Servlets;
 
 /**
  * 系统安全认证实现类

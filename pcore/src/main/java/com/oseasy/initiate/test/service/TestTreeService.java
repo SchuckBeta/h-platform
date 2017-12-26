@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.service;
+package com.hch.platform.pcore.test.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.service.TreeService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.test.dao.TestTreeDao;
-import com.oseasy.initiate.test.entity.TestTree;
+import com.hch.platform.pcore.common.service.TreeService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.test.dao.TestTreeDao;
+import com.hch.platform.pcore.test.entity.TestTree;
 
 /**
  * 树结构生成Service

@@ -1,13 +1,13 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.act.entity;
+package com.hch.platform.pcore.modules.act.entity;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -16,10 +16,10 @@ import org.activiti.engine.task.Task;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oseasy.initiate.common.persistence.BaseEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.TimeUtils;
-import com.oseasy.initiate.modules.act.utils.Variable;
+import com.hch.platform.pcore.common.persistence.BaseEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.TimeUtils;
+import com.hch.platform.pcore.modules.act.utils.Variable;
 
 /**
  * 工作流Entity

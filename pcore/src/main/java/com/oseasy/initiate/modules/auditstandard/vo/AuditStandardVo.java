@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.auditstandard.vo;
+package com.hch.platform.pcore.modules.auditstandard.vo;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 评审标准Entity.

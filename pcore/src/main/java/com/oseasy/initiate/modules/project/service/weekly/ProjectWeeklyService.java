@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.project.service.weekly;
+package com.hch.platform.pcore.modules.project.service.weekly;
 
 import java.util.Date;
 import java.util.List;
@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.project.dao.weekly.ProjectWeeklyDao;
-import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
-import com.oseasy.initiate.modules.project.vo.ProjectWeeklyVo;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.project.dao.weekly.ProjectWeeklyDao;
+import com.hch.platform.pcore.modules.project.entity.weekly.ProjectWeekly;
+import com.hch.platform.pcore.modules.project.vo.ProjectWeeklyVo;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 项目周报Service
@@ -53,7 +53,7 @@ public class ProjectWeeklyService extends CrudService<ProjectWeeklyDao, ProjectW
 	@Transactional(readOnly = false)
 	public void saveVo(ProjectWeeklyVo vo) {
 		vo.getProjectWeekly().setSuggestDate(new Date());
-		User u=UserUtils.getUser();
+		AbsUser u=UserUtils.getUser();
 		vo.getProjectWeekly().setUpdateBy(u);
 		vo.getProjectWeekly().setUpdateDate(new Date());
 		dao.saveSuggest(vo.getProjectWeekly());

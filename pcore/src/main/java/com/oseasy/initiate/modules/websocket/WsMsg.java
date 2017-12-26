@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.websocket;
+package com.hch.platform.pcore.modules.websocket;
 
 import java.util.ArrayList;
 import java.util.List;

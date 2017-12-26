@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.impdata.entity.StudentError;
-import com.oseasy.initiate.modules.sys.dao.RoleDao;
-import com.oseasy.initiate.modules.sys.dao.StudentExpansionDao;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.impdata.dao.StudentErrorDao;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.modules.impdata.entity.StudentError;
+import com.hch.platform.pcore.modules.sys.dao.RoleDao;
+import com.hch.platform.pcore.modules.sys.dao.StudentExpansionDao;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.impdata.dao.StudentErrorDao;
 
 /**
  * 导入学生错误数据表Service
@@ -61,7 +61,7 @@ public class StudentErrorService extends CrudService<StudentErrorDao, StudentErr
 	}
 	@Transactional(readOnly = false)
 	public void insert(StudentError studentError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			studentError.setUpdateBy(user);
 			studentError.setCreateBy(user);
@@ -76,8 +76,8 @@ public class StudentErrorService extends CrudService<StudentErrorDao, StudentErr
 	}
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void saveStudent(StudentExpansion st) {
-		User nuser=st.getUser();
-		User user = UserUtils.getUser();
+		AbsUser nuser=st.getUser();
+		AbsUser user = UserUtils.getUser();
 		nuser.setPassword(SystemService.entryptPassword("123456"));
 		List<Role> roleList=new ArrayList<Role>();
 		roleList.add(roleDao.get(SysIds.SYS_ROLE_USER.getId()));

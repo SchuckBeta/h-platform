@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.gcontest.vo;
+package com.hch.platform.pcore.modules.gcontest.vo;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.entity.ProjectPlan;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.entity.ProjectPlan;
 
 /**
  * 项目申报Vo

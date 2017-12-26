@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.websocket;
+package com.hch.platform.pcore.modules.websocket;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +8,8 @@ import javax.websocket.Session;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 import net.sf.json.JSONObject;
 

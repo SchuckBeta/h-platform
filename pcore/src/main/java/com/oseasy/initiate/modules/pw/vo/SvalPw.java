@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
-import com.oseasy.initiate.common.config.Global;
+import com.hch.platform.pconfig.common.Global;
 
 /**
  * 创业基地模块系统配置常量类.

@@ -1,19 +1,19 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.modules.act.utils
+ * @Package com.hch.platform.pcore.modules.act.utils
  * @Description [[_ProcessMapUtil_]]文件
  * @date 2017年6月9日 上午11:38:56
  *
  */
 
-package com.oseasy.initiate.modules.act.utils;
+package com.hch.platform.pcore.modules.act.utils;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.act.vo.ProcessMapVo;
-import com.oseasy.initiate.modules.act.vo.ProjectEnd;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.act.vo.ProcessMapVo;
+import com.hch.platform.pcore.modules.act.vo.ProjectEnd;
 
 import java.util.ArrayList;
 import java.util.List;

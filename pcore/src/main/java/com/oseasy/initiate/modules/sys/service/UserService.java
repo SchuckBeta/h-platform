@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.modules.sys.dao.UserDao;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.sys.vo.UserVo;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.modules.sys.dao.UserDao;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.sys.vo.UserVo;
 
 /**
  * Created by zhangzheng on 2017/2/23.
@@ -33,48 +33,48 @@ public class UserService {
 		page.setList(userDao.findListByVo(userVo));
 		return page;
 	}
-    public List<User> getTeaByCdn(String no,String name) {
+    public List<AbsUser> getTeaByCdn(String no,String name) {
         return userDao.getTeaByCdn( no, name);
     }
-    public User getByNo(String no) {
+    public AbsUser getByNo(String no) {
         return userDao.getByNo(no);
     }
-    public List<User> getStuByCdn(String no,String name) {
+    public List<AbsUser> getStuByCdn(String no,String name) {
         return userDao.getStuByCdn( no, name);
     }
-    public List<User> findListByRoleName(String ename) {
+    public List<AbsUser> findListByRoleName(String ename) {
         return userDao.findListByRoleName(ename);
     }
 
-    public List<User> findListByRoleName(String enname,String userId) {
+    public List<AbsUser> findListByRoleName(String enname,String userId) {
         return userDao.findListByRoleNameAndOffice(enname,userId);
     }
 
-    public List<User> findListByUserId(String userid) {
+    public List<AbsUser> findListByUserId(String userid) {
         return userDao.findListByRoleName(userid);
     }
 
-    public List<User> findByType(User user) {
+    public List<AbsUser> findByType(AbsUser user) {
         return userDao.findByType(user);
     }
 
-    public User findUserById(String id) {
+    public AbsUser findUserById(String id) {
            return userDao.get(id);
        }
 
     public List<String> getRolesByName(String roleName) {
-        List<User> users=findListByRoleName(roleName);
+        List<AbsUser> users=findListByRoleName(roleName);
         List<String> roles=new ArrayList<String>();
-        for (User user:users) {
+        for (AbsUser user:users) {
             roles.add(user.getLoginName());
         }
         return roles;
     }
 
     public List<String> getRolesByName(String roleName,String userId) {
-        List<User> users=findListByRoleName(roleName,userId);
+        List<AbsUser> users=findListByRoleName(roleName,userId);
         List<String> roles=new ArrayList<String>();
-        for (User user:users) {
+        for (AbsUser user:users) {
             roles.add(user.getLoginName());
         }
         return roles;
@@ -82,9 +82,9 @@ public class UserService {
 
     //根据学生id找到对应学院的教学秘书
     public List<String> getCollegeSecs(String userid) {
-        List<User> users= userDao.getCollegeSecs(userid);
+        List<AbsUser> users= userDao.getCollegeSecs(userid);
         List<String> list=new ArrayList<String>();
-        for (User user:users) {
+        for (AbsUser user:users) {
             list.add(user.getLoginName());
         }
         return list;
@@ -92,23 +92,23 @@ public class UserService {
 
     //根据学生id找到院级专家
     public  List<String> getCollegeExperts(String userid) {
-        List<User> users= userDao.getCollegeExperts(userid);
+        List<AbsUser> users= userDao.getCollegeExperts(userid);
         List<String> list=new ArrayList<String>();
-        for (User user:users) {
+        for (AbsUser user:users) {
             list.add(user.getLoginName());
         }
         return list;
     }
 
     //找到院级专家
-    public List<User> getCollegeExpertUsers(String userid) {
-        List<User> users= userDao.getCollegeExperts(userid);
+    public List<AbsUser> getCollegeExpertUsers(String userid) {
+        List<AbsUser> users= userDao.getCollegeExperts(userid);
         return users;
     }
 
     //根据学生id找到对应学院的教学秘书
-    public User getCollegeSecUsers(String userid) {
-        List<User> users= userDao.getCollegeSecs(userid);
+    public AbsUser getCollegeSecUsers(String userid) {
+        List<AbsUser> users= userDao.getCollegeSecs(userid);
         if (users.size()>0) {
         	return users.get(0);
         }
@@ -116,8 +116,8 @@ public class UserService {
     }
 
     //找到学校管理员
-    public User getSchoolSecUsers() {
-        List<User> users= userDao.getSchoolSecs();
+    public AbsUser getSchoolSecUsers() {
+        List<AbsUser> users= userDao.getSchoolSecs();
         if (users.size()>0) {
         	return users.get(0);
         }
@@ -125,24 +125,24 @@ public class UserService {
     }
 
     //找到院级专家
-    public List<User> getSchoolExpertUsers() {
-        List<User> users= userDao.getSchoolExperts();
+    public List<AbsUser> getSchoolExpertUsers() {
+        List<AbsUser> users= userDao.getSchoolExperts();
         return users;
     }
 
 
     //找到学校管理员
     public  List<String> getSchoolSecs() {
-        List<User> users= userDao.getSchoolSecs();
+        List<AbsUser> users= userDao.getSchoolSecs();
         List<String> list=new ArrayList<String>();
-        for (User user:users) {
+        for (AbsUser user:users) {
             list.add(user.getLoginName());
         }
         return list;
     }
 
-    public User getSchoolSecUser() {
-        List<User> users= userDao.getSchoolSecs();
+    public AbsUser getSchoolSecUser() {
+        List<AbsUser> users= userDao.getSchoolSecs();
         if (users.size()>0) {
             return users.get(0);
         }
@@ -151,65 +151,65 @@ public class UserService {
 
     //找到校级专家
     public  List<String> getSchoolExperts() {
-        List<User> users= userDao.getSchoolExperts();
+        List<AbsUser> users= userDao.getSchoolExperts();
         List<String> list=new ArrayList<String>();
-        for (User user:users) {
+        for (AbsUser user:users) {
             list.add(user.getLoginName());
         }
         return list;
     }
 
     //根据手机号查找用户
-    public User getByMobile(User User) {
+    public AbsUser getByMobile(AbsUser User) {
 		return userDao.getByMobile(User);
 
     }
     //根据手机号查找用户排除自己
-    public User getByMobileWithId(User User) {
+    public AbsUser getByMobileWithId(AbsUser User) {
 		return userDao.getByMobileWithId(User);
 
     }
     @Transactional(readOnly = false)
-    public void updateMobile(User user) {
+    public void updateMobile(AbsUser user) {
         userDao.updateMobile(user);
         UserUtils.clearCache(user);
     }
 
     @Transactional(readOnly = false)
-    public int saveUser(User user) {
+    public int saveUser(AbsUser user) {
 		return userDao.insert(user);
 
     }
     @Transactional(readOnly = false)
-    public void updateUser(User user) {
+    public void updateUser(AbsUser user) {
     	userDao.update(user);
     	UserUtils.clearCache(user);
     }
 
     @Transactional(readOnly = false)
-    public void updateUserPhoto(User user) {
+    public void updateUserPhoto(AbsUser user) {
         userDao.updateUserPhoto(user);
         UserUtils.clearCache(user);
     }
 
     @Transactional(readOnly = false)
-    public void delete(User user) {
+    public void delete(AbsUser user) {
         userDao.delete(user);
         UserUtils.clearCache(user);
     }
 
-	public User findUserByLoginName(String loginName) {
+	public AbsUser findUserByLoginName(String loginName) {
 		return userDao.findUserByLoginName(loginName);
 	}
 
 	public List<GContestUndergo> findContestByUserId(String userId) {
 		return userDao.findContestByUserId(userId);
 	}
-	public User getUserByName(String name) {
+	public AbsUser getUserByName(String name) {
 		return userDao.getUserByName(name);
 	}
 
-    public User getByLoginNameOrNo(String loginNameOrNo,String id) {
+    public AbsUser getByLoginNameOrNo(String loginNameOrNo,String id) {
         return userDao.getByLoginNameOrNo(loginNameOrNo,id);
     }
 

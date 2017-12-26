@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.cms.web.back;
+package com.hch.platform.pcore.modules.cms.web.back;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.web.BaseController;
+import com.hch.platform.pcore.common.web.BaseController;
 
 /**
  * 后台静态页面路径

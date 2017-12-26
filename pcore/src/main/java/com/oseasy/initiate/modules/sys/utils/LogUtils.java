@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.utils;
+package com.hch.platform.pcore.modules.sys.utils;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -14,16 +14,16 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.Exceptions;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.dao.LogDao;
-import com.oseasy.initiate.modules.sys.dao.MenuDao;
-import com.oseasy.initiate.modules.sys.entity.Log;
-import com.oseasy.initiate.modules.sys.entity.Menu;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.Exceptions;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.dao.LogDao;
+import com.hch.platform.pcore.modules.sys.dao.MenuDao;
+import com.hch.platform.pcore.modules.sys.entity.Log;
+import com.hch.platform.pcore.modules.sys.entity.Menu;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 字典工具类
@@ -48,7 +48,7 @@ public class LogUtils {
 	 * 保存日志
 	 */
 	public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (user != null && user.getId() != null) {
 			Log log = new Log();
 			log.setTitle(title);

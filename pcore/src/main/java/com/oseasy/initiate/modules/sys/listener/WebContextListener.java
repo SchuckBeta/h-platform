@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.sys.listener;
+package com.hch.platform.pcore.modules.sys.listener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
 import org.springframework.web.context.WebApplicationContext;
 
-import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
 
 public class WebContextListener extends org.springframework.web.context.ContextLoaderListener {
 	

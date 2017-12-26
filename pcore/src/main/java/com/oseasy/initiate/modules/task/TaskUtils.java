@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.task;
+package com.hch.platform.pcore.modules.task;
 
-import com.oseasy.initiate.modules.task.entity.TaskScheduleJob;
-import com.oseasy.initiate.modules.task.support.spring.SpringUtils;
+import com.hch.platform.pcore.modules.task.entity.TaskScheduleJob;
+import com.hch.platform.pcore.modules.task.support.spring.SpringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 

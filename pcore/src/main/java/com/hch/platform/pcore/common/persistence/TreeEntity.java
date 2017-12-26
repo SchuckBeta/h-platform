@@ -1,15 +1,15 @@
 /**
  *
  */
-package com.oseasy.initiate.common.persistence;
+package com.hch.platform.pcore.common.persistence;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.oseasy.initiate.common.utils.Reflections;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.Reflections;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 数据Entity类

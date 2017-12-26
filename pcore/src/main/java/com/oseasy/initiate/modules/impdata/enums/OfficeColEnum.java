@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.enums;
+package com.hch.platform.pcore.modules.impdata.enums;
 
 public enum OfficeColEnum {
 		 S0("0","office")

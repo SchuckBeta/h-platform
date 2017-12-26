@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.service;
+package com.hch.platform.pcore.common.service;
 
 /**
  * Service层公用的Exception, 从由Spring管理事务的函数中抛出时会触发事务回滚.

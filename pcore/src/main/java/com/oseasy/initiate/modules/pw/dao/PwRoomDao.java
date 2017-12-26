@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.pw.dao;
+package com.hch.platform.pcore.modules.pw.dao;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.pw.entity.PwRoom;
-import com.oseasy.initiate.modules.pw.entity.PwSpaceRoom;
-import com.oseasy.initiate.modules.pw.vo.PwAppointmentVo;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.pw.entity.PwRoom;
+import com.hch.platform.pcore.modules.pw.entity.PwSpaceRoom;
+import com.hch.platform.pcore.modules.pw.vo.PwAppointmentVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

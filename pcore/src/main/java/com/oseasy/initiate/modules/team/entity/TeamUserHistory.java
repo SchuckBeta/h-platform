@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.team.entity;
+package com.hch.platform.pcore.modules.team.entity;
 
 import org.hibernate.validator.constraints.Length;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 团队历史纪录Entity.
@@ -15,7 +15,7 @@ public class TeamUserHistory extends DataEntity<TeamUserHistory> {
 
 	private static final long serialVersionUID = 1L;
 	private String utype;		// 成员类型：1、学生，2、导师
-	private User user;		// 用户ID
+	private AbsUser user;		// 用户ID
 	private String teamId;		// 团队ID
 	private String state;		// 状态
 	private String weightVal;		// 根据学分配比 由leader分配。
@@ -59,11 +59,11 @@ public class TeamUserHistory extends DataEntity<TeamUserHistory> {
 		this.utype = utype;
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.auditstandard.entity;
+package com.hch.platform.pcore.modules.auditstandard.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 评审标准、流程关系表Entity.

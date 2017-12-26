@@ -1,8 +1,8 @@
-package com.oseasy.initiate.common.xstream;
+package com.hch.platform.pcore.common.xstream;
 
 import java.util.Date;
 
-import com.oseasy.initiate.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.DateUtil;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;

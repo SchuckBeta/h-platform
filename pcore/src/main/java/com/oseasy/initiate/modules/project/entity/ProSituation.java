@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.project.entity;
+package com.hch.platform.pcore.modules.project.entity;
 
 import org.hibernate.validator.constraints.Length;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 国创项目完成情况表单Entity
@@ -15,7 +15,7 @@ public class ProSituation extends DataEntity<ProSituation> {
 	private static final long serialVersionUID = 1L;
 	private String fId;		// 中期检查表单id、结项表单id
 	private String type;		// 1-中期检查表单,2-结项表单
-	private User user;		// 成员id
+	private AbsUser user;		// 成员id
 	private String division;		// 项目分工
 	private String situation;		// 完成情况
 	
@@ -44,11 +44,11 @@ public class ProSituation extends DataEntity<ProSituation> {
 		this.type = type;
 	}
 	
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 	

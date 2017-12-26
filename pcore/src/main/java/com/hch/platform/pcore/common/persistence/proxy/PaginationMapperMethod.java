@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.persistence.proxy;
+package com.hch.platform.pcore.common.persistence.proxy;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.binding.BindingException;
@@ -11,7 +11,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
-import com.oseasy.initiate.common.persistence.Page;
+import com.hch.platform.pcore.common.persistence.Page;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

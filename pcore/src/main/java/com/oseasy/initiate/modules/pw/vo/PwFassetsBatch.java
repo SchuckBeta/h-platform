@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
-import com.oseasy.initiate.modules.pw.entity.PwFassets;
+import com.hch.platform.pcore.modules.pw.entity.PwFassets;
 
 /**
  * 批量添加固定资产

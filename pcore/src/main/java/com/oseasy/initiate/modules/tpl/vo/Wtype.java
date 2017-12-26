@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.tpl.vo;
+package com.hch.platform.pcore.modules.tpl.vo;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.ObjectUtil;
+import com.hch.platform.putil.common.utils.ObjectUtil;
 
 import net.sf.json.JSONArray;
 

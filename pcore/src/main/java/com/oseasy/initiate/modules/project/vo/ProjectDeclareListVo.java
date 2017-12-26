@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.project.vo;
+package com.hch.platform.pcore.modules.project.vo;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.project.enums.ProjectFinalResultEnum;
-import com.oseasy.initiate.modules.project.enums.ProjectStatusEnum;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.project.enums.ProjectFinalResultEnum;
+import com.hch.platform.pcore.modules.project.enums.ProjectStatusEnum;
 
 /**
  * 项目申报Vo

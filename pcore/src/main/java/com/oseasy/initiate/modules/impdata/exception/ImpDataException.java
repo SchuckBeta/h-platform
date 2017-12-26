@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.exception;
+package com.hch.platform.pcore.modules.impdata.exception;
 
 public class ImpDataException extends Exception {    //或者继承任何标准异常类
     /**

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.act.service.ext;
+package com.hch.platform.pcore.modules.act.service.ext;
 
 import java.util.List;
 import java.util.Map;
@@ -17,10 +17,10 @@ import org.activiti.engine.impl.persistence.entity.UserEntityManager;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.act.utils.ActUtils;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.service.SystemService;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.act.utils.ActUtils;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
 
 /**
  * Activiti User Entity Service
@@ -72,7 +72,7 @@ public class ActUserEntityService extends UserEntityManager {
 //		}
 		User user = findUserById(userId);
 		if (user != null) {
-			getSystemService().deleteUser(new com.oseasy.initiate.modules.sys.entity.User(user.getId()));
+			getSystemService().deleteUser(new com.hch.platform.pcore.modules.sys.entity.AbsUser(user.getId()));
 		}
 	}
 
@@ -89,7 +89,7 @@ public class ActUserEntityService extends UserEntityManager {
 	public List<Group> findGroupsByUser(String userId) {
 //		return getDbSqlSession().selectList("selectGroupsByUserId", userId);
 		List<Group> list = Lists.newArrayList();
-		for (Role role : getSystemService().findRole(new Role(new com.oseasy.initiate.modules.sys.entity.User(null, userId)))) {
+		for (Role role : getSystemService().findRole(new Role(new com.hch.platform.pcore.modules.sys.entity.AbsUser(null, userId)))) {
 			list.add(ActUtils.toActivitiGroup(role));
 		}
 		return list;

@@ -1,11 +1,11 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.proprojectmd.utils;
+package com.hch.platform.pcore.modules.proprojectmd.utils;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.modules.proprojectmd.entity.ProModelMd;
-import com.oseasy.initiate.modules.proprojectmd.service.ProModelMdService;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.modules.proprojectmd.entity.ProModelMd;
+import com.hch.platform.pcore.modules.proprojectmd.service.ProModelMdService;
 
 /**
  * 内容管理工具类

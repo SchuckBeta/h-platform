@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.oseasy.initiate.modules.act.rest.diagram.services;
+package com.hch.platform.pcore.modules.act.rest.diagram.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;

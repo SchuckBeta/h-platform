@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.web.BaseController;
+import com.hch.platform.pcore.common.web.BaseController;
 
 /**
  * 标签Controller

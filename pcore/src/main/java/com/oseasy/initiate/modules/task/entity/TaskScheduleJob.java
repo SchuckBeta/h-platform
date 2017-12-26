@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.task.entity;
+package com.hch.platform.pcore.modules.task.entity;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 import java.util.Date;
 

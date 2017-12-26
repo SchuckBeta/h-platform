@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.List;
 import java.util.Map;
@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.impdata.entity.ImpInfoErrmsg;
-import com.oseasy.initiate.modules.impdata.dao.ImpInfoErrmsgDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.impdata.entity.ImpInfoErrmsg;
+import com.hch.platform.pcore.modules.impdata.dao.ImpInfoErrmsgDao;
 
 /**
  * 导入数据错误信息表Service

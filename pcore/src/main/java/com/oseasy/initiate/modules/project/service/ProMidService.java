@@ -1,19 +1,19 @@
-package com.oseasy.initiate.modules.project.service;
+package com.hch.platform.pcore.modules.project.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.project.dao.ProProgressDao;
-import com.oseasy.initiate.modules.project.dao.ProSituationDao;
-import com.oseasy.initiate.modules.project.entity.ProProgress;
-import com.oseasy.initiate.modules.project.entity.ProSituation;
+import com.hch.platform.pcore.modules.project.dao.ProProgressDao;
+import com.hch.platform.pcore.modules.project.dao.ProSituationDao;
+import com.hch.platform.pcore.modules.project.entity.ProProgress;
+import com.hch.platform.pcore.modules.project.entity.ProSituation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.project.entity.ProMid;
-import com.oseasy.initiate.modules.project.dao.ProMidDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.project.entity.ProMid;
+import com.hch.platform.pcore.modules.project.dao.ProMidDao;
 
 /**
  * 国创项目中期检查表单Service

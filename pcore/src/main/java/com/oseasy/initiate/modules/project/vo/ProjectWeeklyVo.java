@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.project.vo;
+package com.hch.platform.pcore.modules.project.vo;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.project.entity.weekly.ProjectWeekly;
 
 /**
  * 项目周报Vo

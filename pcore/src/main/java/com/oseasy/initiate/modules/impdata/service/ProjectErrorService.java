@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -11,30 +11,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CommonService;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.IdUtils;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.excellent.service.ExcellentShowService;
-import com.oseasy.initiate.modules.impdata.dao.ProjectErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.ProjectError;
-import com.oseasy.initiate.modules.project.dao.ProjectDeclareDao;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.project.vo.ProjectNodeVo;
-import com.oseasy.initiate.modules.sys.dao.BackTeacherExpansionDao;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.dao.TeamUserRelationDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CommonService;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.common.utils.IdUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.excellent.service.ExcellentShowService;
+import com.hch.platform.pcore.modules.impdata.dao.ProjectErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.ProjectError;
+import com.hch.platform.pcore.modules.project.dao.ProjectDeclareDao;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.project.vo.ProjectNodeVo;
+import com.hch.platform.pcore.modules.sys.dao.BackTeacherExpansionDao;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.dao.TeamUserRelationDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 /**
  * 导入项目错误数据表Service
@@ -82,7 +82,7 @@ public class ProjectErrorService extends CrudService<ProjectErrorDao, ProjectErr
 	}
 	@Transactional(readOnly = false)
 	public void insert(ProjectError projectError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			projectError.setUpdateBy(user);
 			projectError.setCreateBy(user);
@@ -93,7 +93,7 @@ public class ProjectErrorService extends CrudService<ProjectErrorDao, ProjectErr
 	}
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class)
 	public void saveProject(ProjectError pe) throws ParseException{
-		User leader=UserUtils.get(pe.getLeaderNo());
+		AbsUser leader=UserUtils.get(pe.getLeaderNo());
 		/*保存团队信息*/
 		Team team=new Team();
 		team.setId(IdGen.uuid());
@@ -144,7 +144,7 @@ public class ProjectErrorService extends CrudService<ProjectErrorDao, ProjectErr
 			member_num=member_num+mebids.length;
 		}
 		team.setMemberNum(member_num);
-		User user = UserUtils.get(pe.getLeaderNo());
+		AbsUser user = UserUtils.get(pe.getLeaderNo());
 		
 		team.setUpdateBy(user);
 		team.setCreateBy(user);

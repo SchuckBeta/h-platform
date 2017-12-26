@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.act.service;
+package com.hch.platform.pcore.modules.act.service;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.utils.ProcessDefCache;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.sys.utils.ProjectUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.utils.ProcessDefCache;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.sys.utils.ProjectUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.activiti.engine.*;
 
 import org.activiti.engine.history.HistoricTaskInstance;

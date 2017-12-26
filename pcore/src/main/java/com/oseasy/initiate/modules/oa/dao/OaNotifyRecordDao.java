@@ -1,16 +1,16 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.oa.dao;
+package com.hch.platform.pcore.modules.oa.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
 
 /**
  * 通知通告记录DAO接口

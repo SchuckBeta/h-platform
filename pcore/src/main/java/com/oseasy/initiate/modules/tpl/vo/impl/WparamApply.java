@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.tpl.vo.impl;
+package com.hch.platform.pcore.modules.tpl.vo.impl;
 
 import java.io.Serializable;
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.json.JsonAliUtils;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.proprojectmd.entity.ProModelMd;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.tpl.vo.IWparam;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.pcore.common.utils.json.JsonAliUtils;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.proprojectmd.entity.ProModelMd;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.tpl.vo.IWparam;
 
 public class WparamApply implements IWparam, Serializable{
   private static final long serialVersionUID = 1L;

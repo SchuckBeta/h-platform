@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.cms.utils;
+package com.hch.platform.pcore.modules.cms.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * User: songlai

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.cms.utils;
+package com.hch.platform.pcore.modules.cms.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

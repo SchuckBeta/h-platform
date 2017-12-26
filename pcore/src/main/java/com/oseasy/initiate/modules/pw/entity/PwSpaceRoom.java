@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 public class PwSpaceRoom {
 

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test;
+package com.hch.platform.pcore.test;
 
 import org.activiti.engine.*;
 import org.activiti.spring.ProcessEngineFactoryBean;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.UserService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,9 +65,9 @@ public class StartScoreProcessTest {
     }
 
     public List<String> getTeachers() {
-        List<User> ts=userService.findListByRoleName("teachers");
+        List<AbsUser> ts=userService.findListByRoleName("teachers");
         List<String> teachers=new ArrayList<String>();
-        for (User user:ts) {
+        for (AbsUser user:ts) {
             teachers.add(user.getLoginName());
         }
         return teachers;

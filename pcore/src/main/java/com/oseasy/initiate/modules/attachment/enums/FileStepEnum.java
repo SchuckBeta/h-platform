@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.attachment.enums;
+package com.hch.platform.pcore.modules.attachment.enums;
 
 import java.util.List;
 

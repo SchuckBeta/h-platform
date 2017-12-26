@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.auditstandard.dao;
+package com.hch.platform.pcore.modules.auditstandard.dao;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetail;
-import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardDetail;
+import com.hch.platform.pcore.modules.project.vo.ProjectStandardDetailVo;
 import org.apache.ibatis.annotations.Param;
 
 /**

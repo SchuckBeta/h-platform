@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.act.utils;
+package com.hch.platform.pcore.modules.act.utils;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

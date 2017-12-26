@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.proprojectmd.entity;
+package com.hch.platform.pcore.modules.proprojectmd.entity;
 
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * proProjectMdEntity.

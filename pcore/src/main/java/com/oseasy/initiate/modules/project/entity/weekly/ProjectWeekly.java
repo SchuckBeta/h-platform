@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.project.entity.weekly;
+package com.hch.platform.pcore.modules.project.entity.weekly;
 
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 项目周报Entity

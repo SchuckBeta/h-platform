@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.oseasy.initiate.modules.act.rest.editor.model;
+package com.hch.platform.pcore.modules.act.rest.editor.model;
 
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.ActivitiException;

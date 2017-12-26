@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.ftp;
+package com.hch.platform.pcore.test.ftp;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.oseasy.initiate.common.ftp.VsftpUtils;
+import com.hch.platform.pcore.common.ftp.VsftpUtils;
 
 /**
  * TODO 测试vsftp

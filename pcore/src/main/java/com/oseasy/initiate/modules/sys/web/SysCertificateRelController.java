@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.List;
 import java.util.Map;
@@ -18,19 +18,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.image.WaterRelType;
-import com.oseasy.initiate.common.utils.image.WaterResType;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.SysCertificate;
-import com.oseasy.initiate.modules.sys.entity.SysCertificateRel;
-import com.oseasy.initiate.modules.sys.entity.SysCertificateRes;
-import com.oseasy.initiate.modules.sys.service.SysCertificateRelService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.vo.SysSval.SysCertSval;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.image.WaterRelType;
+import com.hch.platform.pcore.common.utils.image.WaterResType;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificate;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificateRel;
+import com.hch.platform.pcore.modules.sys.entity.SysCertificateRes;
+import com.hch.platform.pcore.modules.sys.service.SysCertificateRelService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.vo.SysSval.SysCertSval;
 
 /**
  * 系统证书资源关联Controller.

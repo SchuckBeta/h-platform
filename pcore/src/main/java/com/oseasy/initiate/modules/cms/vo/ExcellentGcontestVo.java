@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.cms.vo;
+package com.hch.platform.pcore.modules.cms.vo;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 public class ExcellentGcontestVo extends DataEntity<ExcellentGcontestVo>{
 	/**

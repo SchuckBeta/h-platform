@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.sys.interceptor;
+package com.hch.platform.pcore.modules.sys.interceptor;
 
 import java.text.SimpleDateFormat;
 
@@ -12,9 +12,9 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.modules.sys.utils.LogUtils;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.modules.sys.utils.LogUtils;
 
 /**
  * 日志拦截器

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.common.persistence.proxy;
+package com.hch.platform.pcore.common.persistence.proxy;
 
 import org.apache.ibatis.binding.MapperRegistry;
 import org.apache.ibatis.session.Configuration;

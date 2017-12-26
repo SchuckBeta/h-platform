@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.act.service;
+package com.hch.platform.pcore.modules.act.service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.FlowNode;
@@ -69,33 +69,33 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.BaseService;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.act.dao.ActDao;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.cmd.CreateAndTakeTransitionCmd;
-import com.oseasy.initiate.modules.act.service.cmd.JumpTaskCmd;
-import com.oseasy.initiate.modules.act.service.creator.ChainedActivitiesCreator;
-import com.oseasy.initiate.modules.act.service.creator.MultiInstanceActivityCreator;
-import com.oseasy.initiate.modules.act.service.creator.RuntimeActivityDefinitionEntityIntepreter;
-import com.oseasy.initiate.modules.act.service.creator.SimpleRuntimeActivityDefinitionEntity;
-import com.oseasy.initiate.modules.act.utils.ActUtils;
-import com.oseasy.initiate.modules.act.utils.ProcessDefCache;
-import com.oseasy.initiate.modules.act.utils.ProcessDefUtils;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.entity.ActYwNode;
-import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.actyw.tool.process.ActYwTool;
-import com.oseasy.initiate.modules.promodel.entity.ProModel;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.BaseService;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.act.dao.ActDao;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.cmd.CreateAndTakeTransitionCmd;
+import com.hch.platform.pcore.modules.act.service.cmd.JumpTaskCmd;
+import com.hch.platform.pcore.modules.act.service.creator.ChainedActivitiesCreator;
+import com.hch.platform.pcore.modules.act.service.creator.MultiInstanceActivityCreator;
+import com.hch.platform.pcore.modules.act.service.creator.RuntimeActivityDefinitionEntityIntepreter;
+import com.hch.platform.pcore.modules.act.service.creator.SimpleRuntimeActivityDefinitionEntity;
+import com.hch.platform.pcore.modules.act.utils.ActUtils;
+import com.hch.platform.pcore.modules.act.utils.ProcessDefCache;
+import com.hch.platform.pcore.modules.act.utils.ProcessDefUtils;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwNode;
+import com.hch.platform.pcore.modules.actyw.service.ActYwGnodeService;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.actyw.tool.process.ActYwTool;
+import com.hch.platform.pcore.modules.promodel.entity.ProModel;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 流程定义相关Service
@@ -887,7 +887,7 @@ public class ActTaskService extends BaseService {
 //					List<HistoricIdentityLink> il = historyService.getHistoricIdentityLinksForProcessInstance(procInsId);
 					if (il.size() > 0) {
 						if (StringUtil.isNotBlank(il.get(0).getStartUserId())) {
-							User user = UserUtils.getByLoginName(il.get(0).getStartUserId());
+							AbsUser user = UserUtils.getByLoginName(il.get(0).getStartUserId());
 							if (user != null) {
 								e.setAssignee(histIns.getAssignee());
 								e.setAssigneeName(user.getName());
@@ -897,7 +897,7 @@ public class ActTaskService extends BaseService {
 				}
 				// 获取任务执行人名称
 				if (StringUtil.isNotEmpty(histIns.getAssignee())) {
-					User user = UserUtils.getByLoginName(histIns.getAssignee());
+					AbsUser user = UserUtils.getByLoginName(histIns.getAssignee());
 					if (user != null) {
 						e.setAssignee(histIns.getAssignee());
 						e.setAssigneeName(user.getName());

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.tool;
+package com.hch.platform.pcore.modules.sys.tool;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -7,11 +7,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.SysNo;
-import com.oseasy.initiate.modules.sys.entity.SysNoOffice;
-import com.oseasy.initiate.modules.sys.service.SysNoService;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.SysNo;
+import com.hch.platform.pcore.modules.sys.entity.SysNoOffice;
+import com.hch.platform.pcore.modules.sys.service.SysNoService;
 
 public class SysNodeTool {
   private static final String SNO_MAX = "max";

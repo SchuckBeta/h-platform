@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.act.service.cmd;
+package com.hch.platform.pcore.modules.act.service.cmd;
 
 import java.io.ByteArrayInputStream;
 

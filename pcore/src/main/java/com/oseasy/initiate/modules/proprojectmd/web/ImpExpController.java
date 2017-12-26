@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.proprojectmd.web;
+package com.hch.platform.pcore.modules.proprojectmd.web;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.proprojectmd.service.ImpExpService;
-import com.oseasy.initiate.modules.proprojectmd.service.ProModelMdService;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.proprojectmd.service.ImpExpService;
+import com.hch.platform.pcore.modules.proprojectmd.service.ProModelMdService;
 
 import net.sf.json.JSONObject;
 

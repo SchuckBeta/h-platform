@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.excellent.service;
+package com.hch.platform.pcore.modules.excellent.service;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,25 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.service.ActYwService;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
-import com.oseasy.initiate.modules.attachment.enums.FileStepEnum;
-import com.oseasy.initiate.modules.attachment.enums.FileTypeEnum;
-import com.oseasy.initiate.modules.attachment.service.SysAttachmentService;
-import com.oseasy.initiate.modules.cms.utils.CmsUtils;
-import com.oseasy.initiate.modules.cms.vo.ExcellentGcontestVo;
-import com.oseasy.initiate.modules.cms.vo.ExcellentProjectVo;
-import com.oseasy.initiate.modules.excellent.dao.ExcellentKeywordDao;
-import com.oseasy.initiate.modules.excellent.dao.ExcellentShowDao;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentKeyword;
-import com.oseasy.initiate.modules.excellent.entity.ExcellentShow;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.service.ActYwService;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.modules.attachment.enums.FileStepEnum;
+import com.hch.platform.pcore.modules.attachment.enums.FileTypeEnum;
+import com.hch.platform.pcore.modules.attachment.service.SysAttachmentService;
+import com.hch.platform.pcore.modules.cms.utils.CmsUtils;
+import com.hch.platform.pcore.modules.cms.vo.ExcellentGcontestVo;
+import com.hch.platform.pcore.modules.cms.vo.ExcellentProjectVo;
+import com.hch.platform.pcore.modules.excellent.dao.ExcellentKeywordDao;
+import com.hch.platform.pcore.modules.excellent.dao.ExcellentShowDao;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentKeyword;
+import com.hch.platform.pcore.modules.excellent.entity.ExcellentShow;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
 
 import net.sf.json.JSONObject;
 

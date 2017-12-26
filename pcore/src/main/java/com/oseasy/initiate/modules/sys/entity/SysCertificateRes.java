@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sys.entity;
+package com.hch.platform.pcore.modules.sys.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.AttachMentEntity;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.attachment.entity.SysAttachment;
+import com.hch.platform.pcore.common.persistence.AttachMentEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.attachment.entity.SysAttachment;
 
 /**
  * 系统证书资源Entity.

@@ -1,18 +1,18 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.pw.entity.PwAppointment;
-import com.oseasy.initiate.modules.pw.service.PwAppointmentRuleService;
-import com.oseasy.initiate.modules.pw.service.PwAppointmentService;
-import com.oseasy.initiate.modules.pw.utils.CommonUtils;
-import com.oseasy.initiate.modules.pw.vo.*;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.pw.entity.PwAppointment;
+import com.hch.platform.pcore.modules.pw.service.PwAppointmentRuleService;
+import com.hch.platform.pcore.modules.pw.service.PwAppointmentService;
+import com.hch.platform.pcore.modules.pw.utils.CommonUtils;
+import com.hch.platform.pcore.modules.pw.vo.*;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +143,7 @@ public class PwAppointmentController extends BaseController {
     public String mouthViewDay(PwAppointmentVo pwAppointmentVo, Model model, HttpServletRequest request) {
         beforeDaySearch(pwAppointmentVo);
         Map<String, Object> map = pwAppointmentService.weekAndDaySearch(pwAppointmentVo);
-        User currentUser = UserUtils.getUser();
+        AbsUser currentUser = UserUtils.getUser();
         model.addAttribute("isAdmin", pwAppointmentService.isAdmin(currentUser));
         model.addAttribute("list", map.get("list"));
         model.addAttribute("rooms", map.get("rooms"));
@@ -174,7 +174,7 @@ public class PwAppointmentController extends BaseController {
     public String viewWeek(PwAppointmentVo pwAppointmentVo, Model model) {
         beforeWeekSearch(pwAppointmentVo);
         Map<String, Object> map = pwAppointmentService.weekAndDaySearch(pwAppointmentVo);
-        User currentUser = UserUtils.getUser();
+        AbsUser currentUser = UserUtils.getUser();
         model.addAttribute("isAdmin", pwAppointmentService.isAdmin(currentUser));
         model.addAttribute("list", map.get("list"));
         model.addAttribute("rooms", map.get("rooms"));
@@ -252,7 +252,7 @@ public class PwAppointmentController extends BaseController {
     public Map viewWeekSearch(PwAppointmentVo pwAppointmentVo) {
         beforeWeekSearch(pwAppointmentVo);
         Map<String, Object> map = pwAppointmentService.weekAndDaySearch(pwAppointmentVo);
-        User currentUser = UserUtils.getUser();
+        AbsUser currentUser = UserUtils.getUser();
         map.put("isAdmin", pwAppointmentService.isAdmin(currentUser));
         return map;
     }
@@ -282,7 +282,7 @@ public class PwAppointmentController extends BaseController {
     public String viewDay(PwAppointmentVo pwAppointmentVo, Model model) {
         beforeDaySearch(pwAppointmentVo);
         Map<String, Object> map = pwAppointmentService.weekAndDaySearch(pwAppointmentVo);
-        User currentUser = UserUtils.getUser();
+        AbsUser currentUser = UserUtils.getUser();
         model.addAttribute("isAdmin", pwAppointmentService.isAdmin(currentUser));
         model.addAttribute("list", map.get("list"));
         model.addAttribute("rooms", map.get("rooms"));
@@ -326,7 +326,7 @@ public class PwAppointmentController extends BaseController {
     public Map viewDaySearch(PwAppointmentVo pwAppointmentVo) {
         beforeDaySearch(pwAppointmentVo);
         Map<String, Object> map = pwAppointmentService.weekAndDaySearch(pwAppointmentVo);
-        User currentUser = UserUtils.getUser();
+        AbsUser currentUser = UserUtils.getUser();
         map.put("isAdmin", pwAppointmentService.isAdmin(currentUser));
         return map;
     }

@@ -1,13 +1,13 @@
-package com.oseasy.initiate.modules.interactive.dao;
+package com.hch.platform.pcore.modules.interactive.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.interactive.entity.SysComment;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.interactive.entity.SysComment;
 
 /**
  * 评论表DAO接口.

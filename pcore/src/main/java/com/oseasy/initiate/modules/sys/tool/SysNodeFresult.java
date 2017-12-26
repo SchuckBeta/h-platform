@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.sys.tool;
+package com.hch.platform.pcore.modules.sys.tool;
 
 public class SysNodeFresult {
   public static final Integer FP_MAXNO = 5;

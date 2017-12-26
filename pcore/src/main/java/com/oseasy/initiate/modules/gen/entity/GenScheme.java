@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.gen.entity;
+package com.hch.platform.pcore.modules.gen.entity;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 
 /**
  * 生成方案Entity

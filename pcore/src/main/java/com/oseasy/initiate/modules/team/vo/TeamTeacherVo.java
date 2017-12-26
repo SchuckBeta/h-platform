@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.team.vo;
+package com.hch.platform.pcore.modules.team.vo;
 
 import java.util.List;
 import java.util.Map;

@@ -1,12 +1,12 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.pw.entity.PwCompany;
-import com.oseasy.initiate.modules.pw.entity.PwEnter;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.pw.entity.PwCompany;
+import com.hch.platform.pcore.modules.pw.entity.PwEnter;
 
 /**
  * 预定日历Vo.

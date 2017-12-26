@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.pool;
+package com.hch.platform.pcore.test.pool;
 
 
 import org.apache.commons.pool.PoolableObjectFactory;

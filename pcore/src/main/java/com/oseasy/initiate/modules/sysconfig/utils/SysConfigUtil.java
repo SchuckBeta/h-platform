@@ -1,20 +1,20 @@
-package com.oseasy.initiate.modules.sysconfig.utils;
+package com.hch.platform.pcore.modules.sysconfig.utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sysconfig.dao.SysConfigDao;
-import com.oseasy.initiate.modules.sysconfig.entity.SysConfig;
-import com.oseasy.initiate.modules.sysconfig.vo.GconSubTypeConf;
-import com.oseasy.initiate.modules.sysconfig.vo.LowTypeConf;
-import com.oseasy.initiate.modules.sysconfig.vo.PersonNumConf;
-import com.oseasy.initiate.modules.sysconfig.vo.ProSubTypeConf;
-import com.oseasy.initiate.modules.sysconfig.vo.SysConfigVo;
+import com.hch.platform.pcore.common.utils.SpringContextHolder;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sysconfig.dao.SysConfigDao;
+import com.hch.platform.pcore.modules.sysconfig.entity.SysConfig;
+import com.hch.platform.pcore.modules.sysconfig.vo.GconSubTypeConf;
+import com.hch.platform.pcore.modules.sysconfig.vo.LowTypeConf;
+import com.hch.platform.pcore.modules.sysconfig.vo.PersonNumConf;
+import com.hch.platform.pcore.modules.sysconfig.vo.ProSubTypeConf;
+import com.hch.platform.pcore.modules.sysconfig.vo.SysConfigVo;
 
 import net.sf.json.JSONObject;
 

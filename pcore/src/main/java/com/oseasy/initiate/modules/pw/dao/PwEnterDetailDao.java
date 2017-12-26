@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.pw.dao;
+package com.hch.platform.pcore.modules.pw.dao;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.pw.entity.PwEnterDetail;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.pw.entity.PwEnterDetail;
 
 /**
  * 入驻申报详情DAO接口.

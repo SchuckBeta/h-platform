@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.common.persistence;
+package com.hch.platform.pcore.common.persistence;
 
 /**
  * DAO支持类实现

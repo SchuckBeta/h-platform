@@ -1,13 +1,13 @@
 /**
  * 源代码版权归[[os-easy]]公司所有.
  * @Project: ROOT
- * @Package com.oseasy.initiate.test.act
+ * @Package com.hch.platform.pcore.test.act
  * @Description [[_TestActTaskService_]]文件
  * @date 2017年6月7日 上午11:40:01
  *
  */
 
-package com.oseasy.initiate.test.act;
+package com.hch.platform.pcore.test.act;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;

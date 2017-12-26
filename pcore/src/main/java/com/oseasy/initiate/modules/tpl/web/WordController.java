@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.tpl.web;
+package com.hch.platform.pcore.modules.tpl.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.file.FileType;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.tpl.service.WordService;
-import com.oseasy.initiate.modules.tpl.vo.IWparam;
-import com.oseasy.initiate.modules.tpl.vo.WtplType;
-import com.oseasy.initiate.modules.tpl.vo.Wtype;
-import com.oseasy.initiate.modules.tpl.vo.impl.WparamApply;
-import com.oseasy.initiate.modules.tpl.vo.impl.WparamReport;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.file.FileType;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.tpl.service.WordService;
+import com.hch.platform.pcore.modules.tpl.vo.IWparam;
+import com.hch.platform.pcore.modules.tpl.vo.WtplType;
+import com.hch.platform.pcore.modules.tpl.vo.Wtype;
+import com.hch.platform.pcore.modules.tpl.vo.impl.WparamApply;
+import com.hch.platform.pcore.modules.tpl.vo.impl.WparamReport;
 
 @Controller
 @RequestMapping(value = "${adminPath}/word")

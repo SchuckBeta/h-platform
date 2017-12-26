@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.project.dao.weekly;
+package com.hch.platform.pcore.modules.project.dao.weekly;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.project.entity.weekly.ProjectWeekly;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.project.entity.weekly.ProjectWeekly;
 
 /**
  * 项目周报DAO接口

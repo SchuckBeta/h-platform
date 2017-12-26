@@ -1,7 +1,9 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.persistence.interceptor;
+package com.hch.platform.pcore.common.persistence.interceptor;
+
+import java.util.Properties;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -15,11 +17,9 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.Reflections;
-import com.oseasy.initiate.common.utils.StringUtil;
-
-import java.util.Properties;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.Reflections;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 数据库分页插件，只拦截查询语句.
@@ -36,7 +36,7 @@ public class PaginationInterceptor extends BaseInterceptor {
     public Object intercept(Invocation invocation) throws Throwable {
 
         final MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
-        
+
 //        //拦截需要分页的SQL
 ////        if (mappedStatement.getId().matches(_SQL_PATTERN)) {
 //        if (StringUtils.indexOfIgnoreCase(mappedStatement.getId(), _SQL_PATTERN) != -1) {
@@ -57,7 +57,7 @@ public class PaginationInterceptor extends BaseInterceptor {
                     return null;
                 }
                 String originalSql = boundSql.getSql().trim();
-            	
+
                 //得到总记录数
                 page.setCount(SQLHelper.getCount(originalSql, null, mappedStatement, parameterObject, boundSql, log));
 

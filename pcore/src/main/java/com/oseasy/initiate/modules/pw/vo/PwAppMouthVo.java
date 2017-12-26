@@ -1,9 +1,9 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.pw.entity.PwRoom;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.pw.entity.PwRoom;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
@@ -20,7 +20,7 @@ public class PwAppMouthVo extends DataEntity<PwAppMouthVo> {
     private PwRoom pwRoom;        // 房间
     private String applyId;        // 申报编号
 
-    private User user;        // 预约申请人
+    private AbsUser user;        // 预约申请人
     private Date startDate;        // 预约开始时间
     private Date endDate;        // 预约结束时间
     private String status;        // 预约状态
@@ -110,11 +110,11 @@ public class PwAppMouthVo extends DataEntity<PwAppMouthVo> {
         this.endDate = endDate;
     }
 
-    public User getUser() {
+    public AbsUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbsUser user) {
         this.user = user;
     }
 

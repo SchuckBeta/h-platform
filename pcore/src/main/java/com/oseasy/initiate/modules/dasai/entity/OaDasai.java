@@ -1,9 +1,9 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.dasai.entity;
+package com.hch.platform.pcore.modules.dasai.entity;
 
-import com.oseasy.initiate.common.persistence.ActEntity;
+import com.hch.platform.pcore.common.persistence.ActEntity;
 import org.hibernate.validator.constraints.Length;
 
 /**

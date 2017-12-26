@@ -1,7 +1,7 @@
-package com.oseasy.initiate.modules.pw.entity;
+package com.hch.platform.pcore.modules.pw.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.oseasy.initiate.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.DataEntity;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;

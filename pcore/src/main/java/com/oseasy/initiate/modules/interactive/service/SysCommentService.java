@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.interactive.service;
+package com.hch.platform.pcore.modules.interactive.service;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -13,21 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.CacheUtils;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.course.dao.CourseDao;
-import com.oseasy.initiate.modules.excellent.dao.ExcellentShowDao;
-import com.oseasy.initiate.modules.interactive.dao.SysCommentDao;
-import com.oseasy.initiate.modules.interactive.dao.SysLikesDao;
-import com.oseasy.initiate.modules.interactive.entity.SysComment;
-import com.oseasy.initiate.modules.interactive.entity.SysLikes;
-import com.oseasy.initiate.modules.interactive.util.InteractiveUtil;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.pcore.common.utils.cache.CacheUtils;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.course.dao.CourseDao;
+import com.hch.platform.pcore.modules.excellent.dao.ExcellentShowDao;
+import com.hch.platform.pcore.modules.interactive.dao.SysCommentDao;
+import com.hch.platform.pcore.modules.interactive.dao.SysLikesDao;
+import com.hch.platform.pcore.modules.interactive.entity.SysComment;
+import com.hch.platform.pcore.modules.interactive.entity.SysLikes;
+import com.hch.platform.pcore.modules.interactive.util.InteractiveUtil;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 import net.sf.json.JSONObject;
 
@@ -52,7 +52,7 @@ public class SysCommentService extends CrudService<SysCommentDao, SysComment> {
 		Map<String,Object> map=new HashMap<String,Object>();
 		String foreignId=request.getParameter("foreignId");
 		if(StringUtil.isNotEmpty(foreignId)){
-			User user=UserUtils.getUser();
+			AbsUser user=UserUtils.getUser();
 			String token=request.getParameter("token");
 			String userid=user.getId();
 			if(StringUtil.isEmpty(userid)){
@@ -188,7 +188,7 @@ public class SysCommentService extends CrudService<SysCommentDao, SysComment> {
 		JSONObject js= new JSONObject();
 		js.put("ret", "1");
 		js.put("msg", "评论成功");
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if(user==null||StringUtil.isEmpty(user.getId())){
 			js.put("ret", "0");
 			js.put("msg", "请先登录再进行评论");

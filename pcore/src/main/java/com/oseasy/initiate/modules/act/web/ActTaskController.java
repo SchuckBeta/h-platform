@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.act.web;
+package com.hch.platform.pcore.modules.act.web;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,11 +11,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.actyw.entity.ActYwForm;
-import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
-import com.oseasy.initiate.modules.actyw.service.ActYwFormService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwForm;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwGnode;
+import com.hch.platform.pcore.modules.actyw.service.ActYwFormService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.impl.RepositoryServiceImpl;
@@ -33,14 +33,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.act.entity.Act;
-import com.oseasy.initiate.modules.act.service.ActTaskService;
-import com.oseasy.initiate.modules.act.utils.ActUtils;
-import com.oseasy.initiate.modules.act.utils.ProcessMapUtil;
-import com.oseasy.initiate.modules.act.vo.ProcessMapVo;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.act.entity.Act;
+import com.hch.platform.pcore.modules.act.service.ActTaskService;
+import com.hch.platform.pcore.modules.act.utils.ActUtils;
+import com.hch.platform.pcore.modules.act.utils.ProcessMapUtil;
+import com.hch.platform.pcore.modules.act.vo.ProcessMapVo;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 流程个人任务相关Controller
@@ -213,7 +213,7 @@ public class ActTaskController extends BaseController {
 	 * @param //vars 任务流程变量，如下
 	 * 		vars.keys=flag,pass
 	 * 		vars.values=1,true
-	 * 		vars.types=S,B  @see com.oseasy.initiate.modules.act.utils.PropertyType
+	 * 		vars.types=S,B  @see com.hch.platform.pcore.modules.act.utils.PropertyType
 	 */
 	@RequestMapping(value = "complete")
 	@ResponseBody

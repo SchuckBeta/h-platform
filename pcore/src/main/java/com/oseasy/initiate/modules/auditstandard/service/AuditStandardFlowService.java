@@ -1,16 +1,16 @@
-package com.oseasy.initiate.modules.auditstandard.service;
+package com.hch.platform.pcore.modules.auditstandard.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.auditstandard.dao.AuditStandardFlowDao;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardFlow;
-import com.oseasy.initiate.modules.auditstandard.vo.AsdYwGnode;
-import com.oseasy.initiate.modules.auditstandard.vo.AuditStandardVo;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.auditstandard.dao.AuditStandardFlowDao;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardFlow;
+import com.hch.platform.pcore.modules.auditstandard.vo.AsdYwGnode;
+import com.hch.platform.pcore.modules.auditstandard.vo.AuditStandardVo;
 
 /**
  * 评审标准、流程关系表Service.

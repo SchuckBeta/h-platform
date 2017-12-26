@@ -1,10 +1,10 @@
-package com.oseasy.initiate.modules.sco.vo;
+package com.hch.platform.pcore.modules.sco.vo;
 
-import com.oseasy.initiate.modules.gcontest.entity.GContest;
-import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.gcontest.entity.GContest;
+import com.hch.platform.pcore.modules.project.entity.ProjectDeclare;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 /**
  * Created by zhangzheng on 2017/7/21.
@@ -23,7 +23,7 @@ public class ScoTeamRatioVo {
     private TeamUserRelation teamUserRelation;		// 团队关系
     private ScoAffirm scoAffirm ;  //评分信息（认定时间、认定学分）
     private String ratio;		// 分配比例
-    private User user;		// 用户
+    private AbsUser user;		// 用户
     private ProjectDeclare projectDeclare;  //项目信息
     private GContest GContest;   //大赛信息
 
@@ -54,7 +54,7 @@ public class ScoTeamRatioVo {
         return GContest;
     }
 
-    public void setGContest(com.oseasy.initiate.modules.gcontest.entity.GContest GContest) {
+    public void setGContest(com.hch.platform.pcore.modules.gcontest.entity.GContest GContest) {
         this.GContest = GContest;
     }
 
@@ -99,11 +99,11 @@ public class ScoTeamRatioVo {
         this.ratio = ratio;
     }
 
-    public User getUser() {
+    public AbsUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbsUser user) {
         this.user = user;
     }
 }

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.ftp.service;
+package com.hch.platform.pcore.modules.ftp.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FtpUtil;
-import com.oseasy.initiate.common.utils.IdGen;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.common.utils.FtpUtil;
+import com.hch.platform.putil.common.utils.IdGen;
 
 import net.sf.json.JSONObject;
 

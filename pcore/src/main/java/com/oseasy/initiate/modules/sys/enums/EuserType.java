@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.sys.enums;
+package com.hch.platform.pcore.modules.sys.enums;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 用户类型枚举.

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oseasy.initiate.modules.test.entity;
+package com.hch.platform.pcore.modules.test.entity;
 
 import java.util.Date;
 
@@ -10,11 +10,11 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.supcan.annotation.treelist.SupTreeList;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupCol;
-import com.oseasy.initiate.common.supcan.annotation.treelist.cols.SupGroup;
-import com.oseasy.initiate.modules.sys.entity.Office;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.SupTreeList;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupCol;
+import com.hch.platform.pcore.common.supcan.annotation.treelist.cols.SupGroup;
+import com.hch.platform.pcore.modules.sys.entity.Office;
 
 /**
  * 测试Entity

@@ -1,14 +1,14 @@
-package com.oseasy.initiate.modules.team.service;
+package com.hch.platform.pcore.modules.team.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.team.dao.TeamUserHistoryDao;
-import com.oseasy.initiate.modules.team.entity.TeamUserHistory;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.team.dao.TeamUserHistoryDao;
+import com.hch.platform.pcore.modules.team.entity.TeamUserHistory;
 
 
 /**

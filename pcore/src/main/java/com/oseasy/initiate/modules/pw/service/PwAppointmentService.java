@@ -1,33 +1,33 @@
-package com.oseasy.initiate.modules.pw.service;
+package com.hch.platform.pcore.modules.pw.service;
 
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.modules.actyw.entity.ActYw;
-import com.oseasy.initiate.modules.actyw.entity.ActYwApply;
-import com.oseasy.initiate.modules.actyw.exception.ApplyException;
-import com.oseasy.initiate.modules.actyw.service.ActYwApplyService;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
-import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowYwId;
-import com.oseasy.initiate.modules.actyw.vo.ActYwApplyVo;
-import com.oseasy.initiate.modules.oa.entity.OaNotify;
-import com.oseasy.initiate.modules.oa.entity.OaNotifyRecord;
-import com.oseasy.initiate.modules.oa.service.OaNotifyService;
-import com.oseasy.initiate.modules.oa.vo.OaNotifySendType;
-import com.oseasy.initiate.modules.oa.vo.OaNotifyTypeStatus;
-import com.oseasy.initiate.modules.pw.dao.PwAppointmentDao;
-import com.oseasy.initiate.modules.pw.entity.PwAppointment;
-import com.oseasy.initiate.modules.pw.entity.PwAppointmentRule;
-import com.oseasy.initiate.modules.pw.entity.PwRoom;
-import com.oseasy.initiate.modules.pw.entity.PwSpace;
-import com.oseasy.initiate.modules.pw.utils.CommonUtils;
-import com.oseasy.initiate.modules.pw.vo.*;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.enums.EuserType;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.IdGen;
+import com.hch.platform.pcore.modules.actyw.entity.ActYw;
+import com.hch.platform.pcore.modules.actyw.entity.ActYwApply;
+import com.hch.platform.pcore.modules.actyw.exception.ApplyException;
+import com.hch.platform.pcore.modules.actyw.service.ActYwApplyService;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowType;
+import com.hch.platform.pcore.modules.actyw.tool.process.vo.FlowYwId;
+import com.hch.platform.pcore.modules.actyw.vo.ActYwApplyVo;
+import com.hch.platform.pcore.modules.oa.entity.OaNotify;
+import com.hch.platform.pcore.modules.oa.entity.OaNotifyRecord;
+import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
+import com.hch.platform.pcore.modules.oa.vo.OaNotifySendType;
+import com.hch.platform.pcore.modules.oa.vo.OaNotifyTypeStatus;
+import com.hch.platform.pcore.modules.pw.dao.PwAppointmentDao;
+import com.hch.platform.pcore.modules.pw.entity.PwAppointment;
+import com.hch.platform.pcore.modules.pw.entity.PwAppointmentRule;
+import com.hch.platform.pcore.modules.pw.entity.PwRoom;
+import com.hch.platform.pcore.modules.pw.entity.PwSpace;
+import com.hch.platform.pcore.modules.pw.utils.CommonUtils;
+import com.hch.platform.pcore.modules.pw.vo.*;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.enums.EuserType;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -88,7 +88,7 @@ public class PwAppointmentService extends CrudService<PwAppointmentDao, PwAppoin
      */
     @Transactional(readOnly = false)
     public String add(PwAppointment pwAppointment) {
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         validate(pwAppointment, user);
         pwAppointment.setUser(user);
         pwAppointment.setId(IdGen.uuid());
@@ -107,7 +107,7 @@ public class PwAppointmentService extends CrudService<PwAppointmentDao, PwAppoin
         return pwAppointment.getId();
     }
 
-    private void validate(PwAppointment pwAppointment, User user) {
+    private void validate(PwAppointment pwAppointment, AbsUser user) {
         if (pwAppointment.getPwRoom() == null || StringUtils.isBlank(pwAppointment.getPwRoom().getId())
                 || pwRoomService.get(pwAppointment.getPwRoom().getId()) == null) {
             throw new RuntimeException("未找到房间信息");
@@ -284,7 +284,7 @@ public class PwAppointmentService extends CrudService<PwAppointmentDao, PwAppoin
     @Transactional(readOnly = false)
     public String cancel(PwAppointment pwAppointment) {
         PwAppointment newPwAppointment = get(pwAppointment.getId());
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         if (!user.getId().equals(newPwAppointment.getUser().getId()) && !isAdmin(user)) {
             throw new RuntimeException("当前用户没有权限取消该预约");
         }
@@ -341,7 +341,7 @@ public class PwAppointmentService extends CrudService<PwAppointmentDao, PwAppoin
      * @param user
      */
     @Transactional(readOnly = false)
-    public void sendOaNotify(PwAppointment pwAppointment, User user) {
+    public void sendOaNotify(PwAppointment pwAppointment, AbsUser user) {
         OaNotifyRecord oaNotifyRecord = new OaNotifyRecord();
         OaNotify oaNotify = new OaNotify();
         oaNotify.setTitle("预约通知");
@@ -401,7 +401,7 @@ public class PwAppointmentService extends CrudService<PwAppointmentDao, PwAppoin
      * @param user
      * @return
      */
-    public boolean isAdmin(User user) {
+    public boolean isAdmin(AbsUser user) {
         return !(EuserType.UT_C_TEACHER.getType().equals(user.getUserType())
                 || EuserType.UT_C_STUDENT.getType().equals(user.getUserType()));
     }

@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.cms.entity;
+package com.hch.platform.pcore.modules.cms.entity;
 
 import org.apache.commons.io.FileUtils;
 

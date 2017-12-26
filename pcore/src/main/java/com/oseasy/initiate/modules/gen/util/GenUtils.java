@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.gen.util;
+package com.hch.platform.pcore.modules.gen.util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,22 +19,22 @@ import org.springframework.core.io.Resource;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.mapper.JaxbMapper;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.FreeMarkers;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.gen.entity.GenCategory;
-import com.oseasy.initiate.modules.gen.entity.GenConfig;
-import com.oseasy.initiate.modules.gen.entity.GenScheme;
-import com.oseasy.initiate.modules.gen.entity.GenTable;
-import com.oseasy.initiate.modules.gen.entity.GenTableColumn;
-import com.oseasy.initiate.modules.gen.entity.GenTemplate;
-import com.oseasy.initiate.modules.sys.entity.Area;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.mapper.JaxbMapper;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.FileUtil;
+import com.hch.platform.pcore.common.utils.FreeMarkers;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.gen.entity.GenCategory;
+import com.hch.platform.pcore.modules.gen.entity.GenConfig;
+import com.hch.platform.pcore.modules.gen.entity.GenScheme;
+import com.hch.platform.pcore.modules.gen.entity.GenTable;
+import com.hch.platform.pcore.modules.gen.entity.GenTableColumn;
+import com.hch.platform.pcore.modules.gen.entity.GenTemplate;
+import com.hch.platform.pcore.modules.sys.entity.Area;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 代码生成工具类.
@@ -130,7 +130,7 @@ public class GenUtils {
 
 			// 用户
 			if (StringUtil.startsWithIgnoreCase(column.getName(), "user_id")) {
-				column.setJavaType(User.class.getName());
+				column.setJavaType(AbsUser.class.getName());
 				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
 				column.setShowType("userselect");
 			}
@@ -149,7 +149,7 @@ public class GenUtils {
 			// 创建者、更新者
 			else if (StringUtil.startsWithIgnoreCase(column.getName(), "create_by")
 					|| StringUtil.startsWithIgnoreCase(column.getName(), "update_by")) {
-				column.setJavaType(User.class.getName());
+				column.setJavaType(AbsUser.class.getName());
 				column.setJavaField(column.getJavaField() + ".id");
 			}
 			// 创建时间、更新时间

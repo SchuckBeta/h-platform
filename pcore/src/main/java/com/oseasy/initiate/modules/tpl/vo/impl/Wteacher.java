@@ -1,12 +1,12 @@
-package com.oseasy.initiate.modules.tpl.vo.impl;
+package com.hch.platform.pcore.modules.tpl.vo.impl;
 
 import java.io.Serializable;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 public class Wteacher implements Serializable{
   private static final long serialVersionUID = 1L;
@@ -73,7 +73,7 @@ public class Wteacher implements Serializable{
   public static Wteacher init(BackTeacherExpansion teacher) {
     Wteacher wte = new Wteacher();
     wte.setTitle(StringUtil.getStr(teacher.getTechnicalTitle()));
-    User tu = teacher.getUser();
+    AbsUser tu = teacher.getUser();
     if(tu != null){
       wte.setEdu(StringUtil.getStr(tu.getEducation()));
       wte.setEmail(StringUtil.getStr(tu.getEmail()));

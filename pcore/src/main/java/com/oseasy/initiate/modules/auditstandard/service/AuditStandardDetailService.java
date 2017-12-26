@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.auditstandard.service;
+package com.hch.platform.pcore.modules.auditstandard.service;
 
 import java.util.List;
 
-import com.oseasy.initiate.modules.project.vo.ProjectStandardDetailVo;
+import com.hch.platform.pcore.modules.project.vo.ProjectStandardDetailVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.auditstandard.entity.AuditStandardDetail;
-import com.oseasy.initiate.modules.auditstandard.dao.AuditStandardDetailDao;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.auditstandard.entity.AuditStandardDetail;
+import com.hch.platform.pcore.modules.auditstandard.dao.AuditStandardDetailDao;
 
 /**
  * 评审标准详情Service.

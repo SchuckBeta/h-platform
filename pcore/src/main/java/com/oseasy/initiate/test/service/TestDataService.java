@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.service;
+package com.hch.platform.pcore.test.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.test.dao.TestDataDao;
-import com.oseasy.initiate.test.entity.TestData;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.test.dao.TestDataDao;
+import com.hch.platform.pcore.test.entity.TestData;
 
 /**
  * 单表生成Service

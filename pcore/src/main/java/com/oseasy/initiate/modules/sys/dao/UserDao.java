@@ -1,18 +1,18 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.dao;
+package com.hch.platform.pcore.modules.sys.dao;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.vo.UserVo;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.vo.UserVo;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 
 /**
  * 用户DAO接口
@@ -20,141 +20,141 @@ import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
  * @version 2014-05-16
  */
 @MyBatisDao
-public interface UserDao extends CrudDao<User> {
+public interface UserDao extends CrudDao<AbsUser> {
 	public List<UserVo> findListByVo(UserVo vo);
 	public List<UserVo> getTeaInfo(@Param("idsArr")String[] idsArr);
 	public List<UserVo> getStudentInfo(@Param("idsArr")String[] idsArr);
 	public void updateLikes(@Param("param") Map<String,Integer> param);
 	//批量更新浏览量
     public void updateViews(@Param("param") Map<String,Integer> param);
-	public User getByMobile(User user);
-	public User getByMobileWithId(User user);
-	public void updateMobile(User user);
+	public AbsUser getByMobile(AbsUser user);
+	public AbsUser getByMobileWithId(AbsUser user);
+	public void updateMobile(AbsUser user);
 
 	public  String getTeacherTypeByUserId(@Param("userId") String userId);
 	/**
 	 * 根据登录名称查询用户
 	 * @return
 	 */
-	public User getByLoginName(User user);
+	public AbsUser getByLoginName(AbsUser user);
 
 	/**
 	 * 根据登录名或者学号查询用户
 	 * @param loginNameOrNo 录名或者学号
 	 * @return User
      */
-	public User getByLoginNameOrNo(@Param("loginNameOrNo")String  loginNameOrNo,@Param("id")String  id);
-	public User getByLoginNameAndNo(@Param("loginName")String  loginName,@Param("no")String no);
+	public AbsUser getByLoginNameOrNo(@Param("loginNameOrNo")String  loginNameOrNo,@Param("id")String  id);
+	public AbsUser getByLoginNameAndNo(@Param("loginName")String  loginName,@Param("no")String no);
 
 	/**
 	 * 通过OfficeId获取用户列表，仅返回用户id和name（树查询用户时用）
 	 * @param user
 	 * @return
 	 */
-	public List<User> findUserByOfficeId(User user);
+	public List<AbsUser> findUserByOfficeId(AbsUser user);
 
 	/**
 	 * 通过professionalId获取用户列表，仅返回用户id和name（树查询用户时用）
 	 * @param user
 	 * @return
 	 */
-	public List<User> findUserByProfessionId(User user);
+	public List<AbsUser> findUserByProfessionId(AbsUser user);
 
 	/**
 	 * 查询全部用户数目
 	 * @return
 	 */
-	public long findAllCount(User user);
+	public long findAllCount(AbsUser user);
 
 	/**
 	 * 更新用户密码
 	 * @param user
 	 * @return
 	 */
-	public int updatePasswordById(User user);
+	public int updatePasswordById(AbsUser user);
 
 	/**
 	 * 更新用户照片
 	 * @param user
 	 * @return
 	 */
-	public int updateUserPhoto(User user);
+	public int updateUserPhoto(AbsUser user);
 	/**
 	 * 更新登录信息，如：登录IP、登录时间
 	 * @param user
 	 * @return
 	 */
-	public int updateLoginInfo(User user);
+	public int updateLoginInfo(AbsUser user);
 
 	/**
 	 * 删除用户角色关联数据
 	 * @param user
 	 * @return
 	 */
-	public int deleteUserRole(User user);
+	public int deleteUserRole(AbsUser user);
 
 	/**
 	 * 插入用户角色关联数据
 	 * @param user
 	 * @return
 	 */
-	public int insertUserRole(User user);
+	public int insertUserRole(AbsUser user);
 
 	/**
 	 * 更新用户信息
 	 * @param user
 	 * @return
 	 */
-	public int updateUserInfo(User user);
+	public int updateUserInfo(AbsUser user);
 
-	public List<User> findListByRoleName(String enname);
-	public List<User> getCollegeSecs(String id);
-	public List<User> getCollegeExperts(String id);
-	public List<User> getSchoolSecs();
-	public List<User> getSchoolExperts();
+	public List<AbsUser> findListByRoleName(String enname);
+	public List<AbsUser> getCollegeSecs(String id);
+	public List<AbsUser> getCollegeExperts(String id);
+	public List<AbsUser> getSchoolSecs();
+	public List<AbsUser> getSchoolExperts();
 
-	public List<User> findByType(User user);
+	public List<AbsUser> findByType(AbsUser user);
 
-	public int insert(User user);
+	public int insert(AbsUser user);
 
-	public void updateUserByPhone(User user);
+	public void updateUserByPhone(AbsUser user);
 
-	public User findUserByLoginName(String loginName);
+	public AbsUser findUserByLoginName(String loginName);
 
 
 	public List<GContestUndergo> findContestByUserId(String userId);//根据userid获取大赛经历
 
 
-	public User getUserByName(String name);
+	public AbsUser getUserByName(String name);
 
-	public List<User> findListTree(User user);
+	public List<AbsUser> findListTree(AbsUser user);
 
 	/**
 	 * 查询学生.
    * @param user 用户
    * @return List
 	 */
-	public List<User> findListTreeByStudent(User user);
+	public List<AbsUser> findListTreeByStudent(AbsUser user);
 
   /**
    * 查询导师.
    * @param user 用户
    * @return List
    */
-	public List<User> findListTreeByTeacher(User user);
+	public List<AbsUser> findListTreeByTeacher(AbsUser user);
 
   /**
    * 查询用户（基本信息）.
    * @param user 用户
    * @return List
    */
-	public List<User> findListTreeByUser(User user);
-	public List<User> getStuByCdn(@Param("no") String no,@Param("name") String name);
-	public List<User> getTeaByCdn(@Param("no") String no,@Param("name") String name);
-	public User getByNo(@Param("no")String no);
+	public List<AbsUser> findListTreeByUser(AbsUser user);
+	public List<AbsUser> getStuByCdn(@Param("no") String no,@Param("name") String name);
+	public List<AbsUser> getTeaByCdn(@Param("no") String no,@Param("name") String name);
+	public AbsUser getByNo(@Param("no")String no);
 	List<String> findListByRoleId(String roleId);
 
-	List<User> findListByRoleNameAndOffice(@Param("enname") String enname, @Param("userId") String userId);
+	List<AbsUser> findListByRoleNameAndOffice(@Param("enname") String enname, @Param("userId") String userId);
 	/**
 	 * 查询所有需要修复的学生.
 	 */

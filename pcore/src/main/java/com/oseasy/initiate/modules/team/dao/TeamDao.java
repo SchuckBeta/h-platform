@@ -1,21 +1,21 @@
 /**
  * Copyright &copy; 2012-2016 <a href="https://github.com/oseasy/initiate">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.team.dao;
+package com.hch.platform.pcore.modules.team.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import com.oseasy.initiate.modules.project.vo.ProjectExpVo;
-import com.oseasy.initiate.modules.sys.entity.GContestUndergo;
+import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
+import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 import org.apache.ibatis.annotations.Param;
 
-import com.oseasy.initiate.common.persistence.CrudDao;
-import com.oseasy.initiate.common.persistence.annotation.MyBatisDao;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamDetails;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.common.persistence.CrudDao;
+import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamDetails;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
 
 /**
  * 团队信息表DAO接口
@@ -74,7 +74,7 @@ public interface TeamDao extends CrudDao<Team> {
 	 * @param curUser
 	 * @return
 	 */
-	public Long countBuildByUserId(User curUser);
+	public Long countBuildByUserId(AbsUser curUser);
 	public int findStuNumByTeamId(String teamId);
 	public int findTe1NumByTeamId(String teamId);
 	public int findTe2NumByTeamId(String teamId);

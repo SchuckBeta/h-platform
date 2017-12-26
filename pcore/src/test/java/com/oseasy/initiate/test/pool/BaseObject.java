@@ -1,4 +1,4 @@
-package com.oseasy.initiate.test.pool;
+package com.hch.platform.pcore.test.pool;
 
 /**
  * Created by victor on 2017/7/20.

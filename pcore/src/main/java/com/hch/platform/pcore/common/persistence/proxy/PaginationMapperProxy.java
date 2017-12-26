@@ -1,20 +1,20 @@
 /**
- * 
+ *
  */
-package com.oseasy.initiate.common.persistence.proxy;
-
-import org.apache.ibatis.binding.BindingException;
-import org.apache.ibatis.binding.MapperMethod;
-import org.apache.ibatis.session.SqlSession;
-
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.Reflections;
+package com.hch.platform.pcore.common.persistence.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.ibatis.binding.BindingException;
+import org.apache.ibatis.binding.MapperMethod;
+import org.apache.ibatis.session.SqlSession;
+
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.Reflections;
 
 /**
  * <p>

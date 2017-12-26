@@ -1,4 +1,4 @@
-package com.oseasy.initiate.modules.impdata.service;
+package com.hch.platform.pcore.modules.impdata.service;
 
 import java.util.Date;
 import java.util.List;
@@ -8,12 +8,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.modules.impdata.dao.OfficeErrorDao;
-import com.oseasy.initiate.modules.impdata.entity.OfficeError;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.pcore.modules.impdata.dao.OfficeErrorDao;
+import com.hch.platform.pcore.modules.impdata.entity.OfficeError;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 机构导入错误信息表Service
@@ -50,7 +50,7 @@ public class OfficeErrorService extends CrudService<OfficeErrorDao, OfficeError>
 	}
 	@Transactional(readOnly = false)
 	public void insert(OfficeError officeError) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())) {
 			officeError.setUpdateBy(user);
 			officeError.setCreateBy(user);

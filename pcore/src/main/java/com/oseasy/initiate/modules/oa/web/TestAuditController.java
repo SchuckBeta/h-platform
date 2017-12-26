@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.oa.web;
+package com.hch.platform.pcore.modules.oa.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.oa.entity.TestAudit;
-import com.oseasy.initiate.modules.oa.service.TestAuditService;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.oa.entity.TestAudit;
+import com.hch.platform.pcore.modules.oa.service.TestAuditService;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 审批Controller
@@ -53,7 +53,7 @@ public class TestAuditController extends BaseController {
 	@RequiresPermissions("oa:testAudit:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(TestAudit testAudit, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (!user.getAdmin()) {
 			testAudit.setCreateBy(user);
 		}

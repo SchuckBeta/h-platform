@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.oseasy.initiate.modules.sys.web;
+package com.hch.platform.pcore.modules.sys.web;
 
 import java.util.List;
 import java.util.Map;
@@ -23,32 +23,32 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.utils.excel.ExportExcel;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;
-import com.oseasy.initiate.modules.sys.entity.BackTeacherExpansion;
-import com.oseasy.initiate.modules.sys.entity.Dict;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.Role;
-import com.oseasy.initiate.modules.sys.entity.StudentExpansion;
-import com.oseasy.initiate.modules.sys.entity.User;
-import com.oseasy.initiate.modules.sys.service.BackTeacherExpansionService;
-import com.oseasy.initiate.modules.sys.service.OfficeService;
-import com.oseasy.initiate.modules.sys.service.StudentExpansionService;
-import com.oseasy.initiate.modules.sys.service.SystemService;
-import com.oseasy.initiate.modules.sys.service.UserService;
-import com.oseasy.initiate.modules.sys.utils.DictUtils;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
-import com.oseasy.initiate.modules.team.dao.TeamDao;
-import com.oseasy.initiate.modules.team.entity.Team;
-import com.oseasy.initiate.modules.team.entity.TeamUserRelation;
-import com.oseasy.initiate.modules.team.service.TeamUserHistoryService;
-import com.oseasy.initiate.modules.team.service.TeamUserRelationService;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.utils.excel.ExportExcel;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.actyw.tool.process.cmd.ActYwRstatus;
+import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
+import com.hch.platform.pcore.modules.sys.entity.Dict;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
+import com.hch.platform.pcore.modules.sys.service.BackTeacherExpansionService;
+import com.hch.platform.pcore.modules.sys.service.OfficeService;
+import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
+import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.UserService;
+import com.hch.platform.pcore.modules.sys.utils.DictUtils;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.modules.team.dao.TeamDao;
+import com.hch.platform.pcore.modules.team.entity.Team;
+import com.hch.platform.pcore.modules.team.entity.TeamUserRelation;
+import com.hch.platform.pcore.modules.team.service.TeamUserHistoryService;
+import com.hch.platform.pcore.modules.team.service.TeamUserRelationService;
 
 /**
  * 用户Controller
@@ -78,22 +78,22 @@ public class UserController extends BaseController {
 	private TeamDao teamDao;
 
 	@ModelAttribute
-	public User get(@RequestParam(required = false) String id) {
+	public AbsUser get(@RequestParam(required = false) String id) {
 		if (StringUtil.isNotBlank(id)) {
-			User user = systemService.getUser(id);
+			AbsUser user = systemService.getUser(id);
 			if ("2".equals(user.getUserType())) {
 				String teacherType = systemService.getTeacherTypeByUserId(id);
 				user.setTeacherType(teacherType);
 			}
 			return user;
 		} else {
-			return new User();
+			return new AbsUser();
 		}
 	}
 
 	// @RequiresPermissions("sys:user:view")
 	@RequestMapping(value = { "index" })
-	public String index(User user, Model model) {
+	public String index(AbsUser user, Model model) {
 
 		return "modules/sys/userIndex";
 
@@ -101,12 +101,12 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = { "list", "" })
-	public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+	public String list(AbsUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<AbsUser> page = systemService.findUser(new Page<AbsUser>(request, response), user);
 		if (page != null) {
-			List<User> userList = page.getList();
+			List<AbsUser> userList = page.getList();
 			if (userList != null && userList.size() > 0) {
-				for (User usertmp : userList) {
+				for (AbsUser usertmp : userList) {
 					List<Role> roleList = systemService.findListByUserId(usertmp.getId());
 					usertmp.setRoleList(roleList);
 				}
@@ -124,12 +124,12 @@ public class UserController extends BaseController {
 
 	// @RequiresPermissions("sys:user:view")
 	@RequestMapping("userListTree")
-	public String userListTree(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+	public String userListTree(AbsUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<AbsUser> page = systemService.findUser(new Page<AbsUser>(request, response), user);
 		if (page != null) {
-			List<User> userList = page.getList();
+			List<AbsUser> userList = page.getList();
 			if (userList != null && userList.size() > 0) {
-				for (User usertmp : userList) {
+				for (AbsUser usertmp : userList) {
 					List<Role> roleList = systemService.findListByUserId(usertmp.getId());
 					usertmp.setRoleList(roleList);
 				}
@@ -146,7 +146,7 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping("backUserListTree")
-	public String backUserListTree(User user, String grade, String professionId, String allTeacher,
+	public String backUserListTree(AbsUser user, String grade, String professionId, String allTeacher,
 			HttpServletRequest request, HttpServletResponse response, Model model) {
 		String userType = request.getParameter("userType");
 		String teacherType = request.getParameter("teacherType");
@@ -171,16 +171,16 @@ public class UserController extends BaseController {
 			user.setProfessional(professionId);
 		}
 
-		Page<User> page = null;
+		Page<AbsUser> page = null;
 		if (StringUtil.isNotEmpty(userType)) {
 			user.setUserType(userType);
 
 			if ((userType).equals("1")) {
-				page = systemService.findListTreeByStudent(new Page<User>(request, response), user);
+				page = systemService.findListTreeByStudent(new Page<AbsUser>(request, response), user);
 			} else if ((userType).equals("2")) {
-				page = systemService.findListTreeByTeacher(new Page<User>(request, response), user);
+				page = systemService.findListTreeByTeacher(new Page<AbsUser>(request, response), user);
 			} else {
-				page = systemService.findListTreeByUser(new Page<User>(request, response), user);
+				page = systemService.findListTreeByUser(new Page<AbsUser>(request, response), user);
 			}
 		}
 
@@ -191,12 +191,12 @@ public class UserController extends BaseController {
 
 	// @RequiresPermissions("sys:user:view")
 	@RequestMapping("userQyListTree")
-	public String userQyListTree(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+	public String userQyListTree(AbsUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<AbsUser> page = systemService.findUser(new Page<AbsUser>(request, response), user);
 		if (page != null) {
-			List<User> userList = page.getList();
+			List<AbsUser> userList = page.getList();
 			if (userList != null && userList.size() > 0) {
-				for (User usertmp : userList) {
+				for (AbsUser usertmp : userList) {
 					List<Role> roleList = systemService.findListByUserId(usertmp.getId());
 					usertmp.setRoleList(roleList);
 				}
@@ -212,14 +212,14 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = { "listData" })
-	public Page<User> listData(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+	public Page<AbsUser> listData(AbsUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<AbsUser> page = systemService.findUser(new Page<AbsUser>(request, response), user);
 		return page;
 	}
 
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = "form")
-	public String form(User user, Model model) {
+	public String form(AbsUser user, Model model) {
 		if (user.getCompany() == null || user.getCompany().getId() == null) {
 			user.setCompany(UserUtils.getUser().getCompany());
 		}
@@ -234,7 +234,7 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
-	public String save(User user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	public String save(AbsUser user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		if (Global.isDemoMode()) {
 			addMessage(redirectAttributes, "演示模式，不允许操作！");
 			return "redirect:" + adminPath + "/sys/user/list?repage";
@@ -255,7 +255,7 @@ public class UserController extends BaseController {
 		}
 		if (StringUtil.isNotEmpty(user.getId())) {// 修改时有加入的团队
 			List<Team> tel = teamDao.findTeamListByUserId(user.getId());
-			User old = UserUtils.get(user.getId());
+			AbsUser old = UserUtils.get(user.getId());
 			if (old != null && StringUtil.isNotEmpty(old.getId())) {
 				if (tel != null && tel.size() > 0 && old.getUserType() != null
 						&& !old.getUserType().equals(user.getUserType())) {// 用户类型变化了
@@ -265,7 +265,7 @@ public class UserController extends BaseController {
 			}
 		}
 		if (StringUtil.isNotEmpty(user.getId()) && teamUserHistoryService.getBuildingCountByUserId(user.getId()) > 0) {// 修改时有正在进行的项目大赛
-			User old = UserUtils.get(user.getId());
+			AbsUser old = UserUtils.get(user.getId());
 			if (old != null && StringUtil.isNotEmpty(old.getId())) {
 				if (old.getUserType() != null && !old.getUserType().equals(user.getUserType())) {// 用户类型变化了
 					addMessage(model, "保存失败，该用户有正在进行的项目或大赛，不能修改用户类型");
@@ -310,10 +310,10 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "delete")
-	public String delete(User user, RedirectAttributes redirectAttributes) {
+	public String delete(AbsUser user, RedirectAttributes redirectAttributes) {
 		if (UserUtils.getUser().getId().equals(user.getId())) {
 			addMessage(redirectAttributes, "删除用户失败, 不允许删除当前用户");
-		} else if (User.getAdmin(user.getId())) {
+		} else if (AbsUser.getAdmin(user.getId())) {
 			addMessage(redirectAttributes, "删除用户失败, 不允许删除超级管理员用户");
 		} else {
 			// 删除对应的学生信息
@@ -360,12 +360,12 @@ public class UserController extends BaseController {
 	 */
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = "export", method = RequestMethod.POST)
-	public String exportFile(User user, HttpServletRequest request, HttpServletResponse response,
+	public String exportFile(AbsUser user, HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
 		try {
 			String fileName = "用户数据" + DateUtil.getDate("yyyyMMddHHmmss") + ".xlsx";
-			Page<User> page = systemService.findUser(new Page<User>(request, response, -1), user);
-			new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
+			Page<AbsUser> page = systemService.findUser(new Page<AbsUser>(request, response, -1), user);
+			new ExportExcel("用户数据", AbsUser.class).setDataList(page.getList()).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出用户失败！失败信息：" + e.getMessage());
@@ -421,9 +421,9 @@ public class UserController extends BaseController {
 	public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
 			String fileName = "用户数据导入模板.xlsx";
-			List<User> list = Lists.newArrayList();
+			List<AbsUser> list = Lists.newArrayList();
 			list.add(UserUtils.getUser());
-			new ExportExcel("用户数据", User.class, 2).setDataList(list).write(response, fileName).dispose();
+			new ExportExcel("用户数据", AbsUser.class, 2).setDataList(list).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
@@ -457,8 +457,8 @@ public class UserController extends BaseController {
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "info")
-	public String info(User user, HttpServletResponse response, Model model) {
-		User currentUser = UserUtils.getUser();
+	public String info(AbsUser user, HttpServletResponse response, Model model) {
+		AbsUser currentUser = UserUtils.getUser();
 		if (StringUtil.isNotBlank(user.getName())) {
 			if (Global.isDemoMode()) {
 				model.addAttribute("message", "演示模式，不允许操作！");
@@ -485,7 +485,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "infoData")
-	public User infoData() {
+	public AbsUser infoData() {
 		return UserUtils.getUser();
 	}
 
@@ -500,7 +500,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("user")
 	@RequestMapping(value = "modifyPwd")
 	public String modifyPwd(String oldPassword, String newPassword, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(oldPassword) && StringUtil.isNotBlank(newPassword)) {
 			if (Global.isDemoMode()) {
 				model.addAttribute("message", "演示模式，不允许操作！");
@@ -523,9 +523,9 @@ public class UserController extends BaseController {
 	public List<Map<String, Object>> treeData(@RequestParam(required = false) String officeId,
 			HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<User> list = systemService.findUserByOfficeId(officeId);
+		List<AbsUser> list = systemService.findUserByOfficeId(officeId);
 		for (int i = 0; i < list.size(); i++) {
-			User e = list.get(i);
+			AbsUser e = list.get(i);
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("id", "u_" + e.getId());
 			map.put("pId", officeId);
@@ -562,7 +562,7 @@ public class UserController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "uploadPhoto")
-	public boolean uploadFTP(HttpServletRequest request, User user) {
+	public boolean uploadFTP(HttpServletRequest request, AbsUser user) {
 		String arrUrl = request.getParameter("arrUrl");
 		if (user != null) {
 			user.setPhoto(arrUrl);

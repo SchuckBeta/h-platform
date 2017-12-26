@@ -1,11 +1,11 @@
-package com.oseasy.initiate.modules.sco.web;
+package com.hch.platform.pcore.modules.sco.web;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.sco.entity.ScoAffirm;
-import com.oseasy.initiate.modules.sco.service.ScoAffirmService;
-import com.oseasy.initiate.modules.sco.vo.ScoProjectVo;
-import com.oseasy.initiate.modules.sys.utils.UserUtils;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.sco.entity.ScoAffirm;
+import com.hch.platform.pcore.modules.sco.service.ScoAffirmService;
+import com.hch.platform.pcore.modules.sco.vo.ScoProjectVo;
+import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

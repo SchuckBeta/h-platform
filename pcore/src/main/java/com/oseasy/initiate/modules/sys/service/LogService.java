@@ -1,16 +1,16 @@
 /**
  * Copyright &copy; 2012-2013 <a href="httparamMap://github.com/oseasy/initiate">JeeSite</a> All rights reserved.
  */
-package com.oseasy.initiate.modules.sys.service;
+package com.hch.platform.pcore.modules.sys.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.oseasy.initiate.common.persistence.Page;
-import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.DateUtil;
-import com.oseasy.initiate.modules.sys.dao.LogDao;
-import com.oseasy.initiate.modules.sys.entity.Log;
+import com.hch.platform.pcore.common.persistence.Page;
+import com.hch.platform.pcore.common.service.CrudService;
+import com.hch.platform.putil.common.utils.DateUtil;
+import com.hch.platform.pcore.modules.sys.dao.LogDao;
+import com.hch.platform.pcore.modules.sys.entity.Log;
 
 /**
  * 日志Service

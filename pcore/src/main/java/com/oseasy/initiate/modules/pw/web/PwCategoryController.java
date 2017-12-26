@@ -1,15 +1,15 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.oseasy.initiate.common.config.Global;
-import com.oseasy.initiate.common.config.SysIds;
-import com.oseasy.initiate.common.utils.StringUtil;
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.pw.entity.PwCategory;
-import com.oseasy.initiate.modules.pw.service.PwCategoryService;
-import com.oseasy.initiate.modules.pw.utils.SpaceUtils;
-import com.oseasy.initiate.modules.pw.vo.Msg;
+import com.hch.platform.pconfig.common.Global;
+import com.hch.platform.pcore.common.config.SysIds;
+import com.hch.platform.putil.common.utils.StringUtil;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.pw.entity.PwCategory;
+import com.hch.platform.pcore.modules.pw.service.PwCategoryService;
+import com.hch.platform.pcore.modules.pw.utils.SpaceUtils;
+import com.hch.platform.pcore.modules.pw.vo.Msg;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

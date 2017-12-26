@@ -1,8 +1,8 @@
-package com.oseasy.initiate.modules.pw.web;
+package com.hch.platform.pcore.modules.pw.web;
 
-import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.modules.pw.entity.PwSpace;
-import com.oseasy.initiate.modules.pw.service.PwSpaceService;
+import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.modules.pw.entity.PwSpace;
+import com.hch.platform.pcore.modules.pw.service.PwSpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

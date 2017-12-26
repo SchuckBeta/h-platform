@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.oseasy.initiate.test.entity;
+package com.hch.platform.pcore.test.entity;
 
 import org.hibernate.validator.constraints.Length;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.List;
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.modules.sys.entity.Area;
-import com.oseasy.initiate.modules.sys.entity.Office;
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.modules.sys.entity.Area;
+import com.hch.platform.pcore.modules.sys.entity.Office;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 主子表生成Entity
@@ -21,7 +21,7 @@ import com.oseasy.initiate.modules.sys.entity.User;
 public class TestDataMain extends DataEntity<TestDataMain> {
 	
 	private static final long serialVersionUID = 1L;
-	private User user;		// 归属用户
+	private AbsUser user;		// 归属用户
 	private Office office;		// 归属部门
 	private Area area;		// 归属区域
 	private String name;		// 名称
@@ -37,11 +37,11 @@ public class TestDataMain extends DataEntity<TestDataMain> {
 		super(id);
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 	

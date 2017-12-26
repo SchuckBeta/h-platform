@@ -1,6 +1,6 @@
-package com.oseasy.initiate.modules.pw.vo;
+package com.hch.platform.pcore.modules.pw.vo;
 
-import com.oseasy.initiate.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 import java.util.Date;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PwAppointmentVo {
 
-    private User user;
+    private AbsUser user;
 
     private List<String> roomTypes;
 
@@ -34,11 +34,11 @@ public class PwAppointmentVo {
 
     private String searchDay;
 
-    public User getUser() {
+    public AbsUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbsUser user) {
         this.user = user;
     }
 
