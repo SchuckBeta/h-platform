@@ -71,6 +71,7 @@ target
 /temp
 
 
+###############################
 # ptool #
 /ptool/.settings
 /ptool/*.project
@@ -97,6 +98,7 @@ target
 /pcore/temp
 /pcore/bin
 
+
 # pcms #
 /pcms/.settings
 /pcms/*.project
@@ -105,6 +107,7 @@ target
 /pcms/temp
 /pcms/bin
 
+
 # pactivit #
 /pactivit/.settings
 /pactivit/*.project
@@ -112,6 +115,7 @@ target
 /pactivit/logs
 /pactivit/temp
 /pactivit/bin
+
 
 # pfastdfs #
 /pfastdfs/.settings
@@ -156,6 +160,60 @@ target
 /ptask/logs
 /ptask/temp
 /ptask/bin
+
+
+# pactyw #
+/pactyw/.settings
+/pactyw/*.project
+/pactyw/*.classpath
+/pactyw/logs
+/pactyw/temp
+/pactyw/bin
+
+
+# pconfig #
+/pconfig/.settings
+/pconfig/*.project
+/pconfig/*.classpath
+/pconfig/logs
+/pconfig/temp
+/pconfig/bin
+
+
+# pmsg #
+/pmsg/.settings
+/pmsg/*.project
+/pmsg/*.classpath
+/pmsg/logs
+/pmsg/temp
+/pmsg/bin
+
+
+# pno #
+/pno/.settings
+/pno/*.project
+/pno/*.classpath
+/pno/logs
+/pno/temp
+/pno/bin
+
+
+# putil #
+/putil/.settings
+/putil/*.project
+/putil/*.classpath
+/putil/logs
+/putil/temp
+/putil/bin
+
+
+# ptest #
+/ptest/.settings
+/ptest/*.project
+/ptest/*.classpath
+/ptest/logs
+/ptest/temp
+/ptest/bin
 
 
 
