@@ -29,5 +29,6 @@
   	<module>pfastdfs</module>
   	<module>pactivit</module>
   	<module>ptask</module>
+  	<module>pcore</module>
   </modules>
 </project>
