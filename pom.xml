@@ -1318,8 +1318,8 @@
 	<modules>
 	   <module>pconfig</module>
 	 	<module>putil</module>
-	 	<!-- <module>pcore</module>
-	 	<module>psys</module>
+	 	<module>pcore</module>
+	 	<!-- <module>psys</module>
 	 	<module>pcms</module>
 	 	<module>pftp</module> -->
 	 	<!-- <module>ptool</module>
