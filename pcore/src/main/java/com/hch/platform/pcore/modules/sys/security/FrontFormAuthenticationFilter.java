@@ -12,14 +12,10 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
-import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
 import com.hch.platform.putil.common.utils.StringUtil;
-import com.hch.platform.pcore.modules.sys.entity.AbsUser;
-import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
  * 表单验证（包含验证码）过滤类
@@ -131,29 +127,6 @@ public class FrontFormAuthenticationFilter extends FormAuthenticationFilter {
 		return super.getSuccessUrl();
 	}
 
-	@Override
-	protected void issueSuccessRedirect(ServletRequest request,
-			ServletResponse response) throws Exception {
-		
-		String url=getSuccessUrl();
-		SavedRequest r=WebUtils.getAndClearSavedRequest(request);
-		if (r!=null) {
-			String rurl = r.getRequestUrl();
-			if (rurl!=null) {
-				url=rurl;
-			}
-		}
-		AbsUser user=UserUtils.getUser();
-		if("1".equals(user.getPassc())){//需要修改密码
-			url="/f/sys/frontStudentExpansion/frontUserPassword";
-		}else if(UserUtils.checkInfoPerfect(user)){
-			url="/f/infoPerfect?userType="+user.getUserType();
-		}
-		WebUtils.issueRedirect(request, response, url, null, true);
-		ShiroHttpServletRequest sreq=(ShiroHttpServletRequest)request;
-		sreq.getSession().setAttribute("notifyShow", "null");//登录后重置消息是否弹出
-	}
-	
 	/**
 	 * 登录失败调用事件
 	 */

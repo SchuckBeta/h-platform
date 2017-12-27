@@ -28,7 +28,7 @@ import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
 import com.hch.platform.pcore.modules.sys.entity.Dict;
 import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
 import com.hch.platform.pcore.modules.sys.service.UserService;
 import com.hch.platform.pcore.modules.sys.utils.DictUtils;
@@ -84,7 +84,7 @@ public class StudentExpansionController extends BaseController {
 	@RequiresPermissions("sys:studentExpansion:view")
 	@RequestMapping(value = "form")
 	public String form(StudentExpansion studentExpansion, Model model,HttpServletRequest request) {
-		User user=null;
+		AbsUser user=null;
 		if (studentExpansion.getUser()!=null) {
 			user = studentExpansion.getUser();
 			if (user!=null) {
@@ -133,7 +133,7 @@ public class StudentExpansionController extends BaseController {
 		studentExpansionService.delete(studentExpansion);
 		addMessage(redirectAttributes, "删除学生扩展信息表成功");
 		//删除用户表
-		User user= UserUtils.get(studentExpansion.getUser().getId());
+		AbsUser user= UserUtils.get(studentExpansion.getUser().getId());
 		userService.delete(user);
 		return "redirect:" + Global.getAdminPath() + "/sys/studentExpansion/?repage";
 	}
@@ -155,7 +155,7 @@ public class StudentExpansionController extends BaseController {
 			}else{
 				successCount++;
 				studentExpansionService.delete(studentExpansion);
-				User user= UserUtils.get(studentExpansion.getUser().getId());
+				AbsUser user= UserUtils.get(studentExpansion.getUser().getId());
 				userService.delete(user);
 			}
 		}
@@ -199,7 +199,7 @@ public class StudentExpansionController extends BaseController {
 		FTPClient ftpClient=ftpUtil.getftpClient();*/
 		//ftpUtil.remove(ftpClient, fileName.substring(0,fileName.lastIndexOf("/")+1), fileName.substring(fileName.lastIndexOf("/")+1));
 		JSONObject obj = new JSONObject();
-		User user = userService.findUserById(userId);
+		AbsUser user = userService.findUserById(userId);
 		user.setPhoto("");
 		userService.updateUser(user);
 		if (ftpdel) {

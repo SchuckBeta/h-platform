@@ -11,7 +11,7 @@ import com.hch.platform.pcore.modules.project.enums.ProjectStatusEnum;
 import com.hch.platform.pcore.modules.project.vo.ProjectDeclareListVo;
 import com.hch.platform.pcore.modules.proproject.dao.ProProjectDao;
 import com.hch.platform.pcore.modules.proproject.entity.ProProject;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * Created by zhangzheng on 2017/3/18.
@@ -76,7 +76,7 @@ public class ProjectUtils {
 
     //获得立项审核的待办任务个数
     public static long getAuditListCount(){
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         Act act = new Act();
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         if (StringUtil.equals(user.getUserType(),"6")) { //学校管理员
@@ -93,7 +93,7 @@ public class ProjectUtils {
 
     //获得中期检查的待办任务个数
     public static long getMidCount(){
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         Act act = new Act();
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         if (StringUtil.equals(user.getUserType(),"3")|| StringUtil.equals(user.getUserType(),"6")) { //学校管理员 学院秘书
@@ -110,7 +110,7 @@ public class ProjectUtils {
 
     //获得结项审核待办任务个数
     public static long  closeAuditCount(){
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         Act act = new Act();
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
        if(StringUtil.equals(user.getUserType(),"4")||StringUtil.equals(user.getUserType(),"5")){  //专家
@@ -125,7 +125,7 @@ public class ProjectUtils {
 
     //答辩评分的待办数量
     public static long  closeReplyingCount(){
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         Act act = new Act();
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         if (StringUtil.equals(user.getUserType(),"3")|| StringUtil.equals(user.getUserType(),"6")) { //学校管理员 学院秘书
@@ -140,7 +140,7 @@ public class ProjectUtils {
 
     // 结果评定的待办数量
     public static long  assessCount(){
-        User user = UserUtils.getUser();
+        AbsUser user = UserUtils.getUser();
         Act act = new Act();
         act.setProcDefKey("state_project_audit");  //国创项目流程名称
         if (StringUtil.equals(user.getUserType(),"3")|| StringUtil.equals(user.getUserType(),"6")) { //学校管理员 学院秘书

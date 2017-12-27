@@ -29,8 +29,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import com.hch.platform.pconfig.common.Global;
-
 /**
  * Mybatis的mapper文件中的sql语句被修改后, 只能重启服务器才能被加载, 非常耗时,所以就写了一个自动加载的类,
  * 配置后检查xml文件更改,如果发生变化,重新加载xml里面的内容.

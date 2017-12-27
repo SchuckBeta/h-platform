@@ -14,7 +14,7 @@ import com.hch.platform.putil.common.utils.StringUtil;
 import com.hch.platform.pcore.common.utils.cache.CacheUtils;
 import com.hch.platform.pcore.common.utils.sms.SMSUtilAlidayu;
 import com.hch.platform.pcore.common.web.BaseController;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.SeekPwdService;
 
 @Controller
@@ -34,7 +34,7 @@ public class SeekPwdController extends BaseController {
 		String flag = "3";
 		if (StringUtil.isNotBlank(valiCode)) {
 			if (valiCode.equalsIgnoreCase(validateCode)) {
-				User exitUser = seekPwdService.findUserByPhone(phoneMailNumber);
+				AbsUser exitUser = seekPwdService.findUserByPhone(phoneMailNumber);
 				if (exitUser != null) {
 					request.getSession().removeAttribute("validateCode");
 					flag = "1";

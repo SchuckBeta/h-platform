@@ -25,7 +25,7 @@ import com.hch.platform.pconfig.common.Global;
 import com.hch.platform.putil.common.utils.StringUtil;
 import com.hch.platform.pcore.common.web.BaseController;
 import com.hch.platform.pcore.modules.sys.entity.Office;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.OfficeService;
 import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -77,7 +77,7 @@ public class OfficeController extends BaseController {
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = "form")
 	public String form(Office office, Model model) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (office.getParent()==null || office.getParent().getId()==null) {
 			office.setParent(user.getOffice());
 		}

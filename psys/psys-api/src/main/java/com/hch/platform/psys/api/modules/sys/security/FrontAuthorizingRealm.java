@@ -29,7 +29,7 @@ import com.hch.platform.pcore.common.utils.SpringContextHolder;
 import com.hch.platform.pcore.common.web.Servlets;
 import com.hch.platform.pcore.modules.sys.entity.Menu;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.SystemService;
 import com.hch.platform.pcore.modules.sys.utils.LogUtils;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -74,7 +74,7 @@ public class FrontAuthorizingRealm extends SystemAuthorizingRealm {
 		}*/
 		
 		// 校验用户名密码
-		User user = getSystemService().getUserByMobile(token.getUsername());
+		AbsUser user = getSystemService().getUserByMobile(token.getUsername());
 		if (user != null&&("1".equals(user.getUserType())||"2".equals(user.getUserType()))) {
 			if (Global.NO.equals(user.getLoginFlag())) {
 				throw new AuthenticationException("msg:该已帐号禁止登录.");
@@ -132,7 +132,7 @@ public class FrontAuthorizingRealm extends SystemAuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
+		AbsUser user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();

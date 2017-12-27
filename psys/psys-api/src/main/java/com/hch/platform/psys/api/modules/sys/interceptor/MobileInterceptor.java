@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hch.platform.pcore.common.service.BaseService;
 import com.hch.platform.putil.common.utils.StringUtil;
-import com.hch.platform.pcore.common.utils.UserAgentUtils;
+import com.hch.platform.putil.common.utils.UserAgentUtils;
 
 /**
  * 手机端视图拦截器

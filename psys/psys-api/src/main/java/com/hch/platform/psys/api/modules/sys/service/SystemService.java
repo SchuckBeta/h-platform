@@ -39,7 +39,7 @@ import com.hch.platform.pcore.modules.sys.entity.Menu;
 import com.hch.platform.pcore.modules.sys.entity.Office;
 import com.hch.platform.pcore.modules.sys.entity.Role;
 import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.security.SystemAuthorizingRealm;
 import com.hch.platform.pcore.modules.sys.utils.LogUtils;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -86,7 +86,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param id
 	 * @return
 	 */
-	public User getUser(String id) {
+	public AbsUser getUser(String id) {
 		return UserUtils.get(id);
 	}
 
@@ -95,27 +95,27 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param loginName
 	 * @return
 	 */
-	public User getUserByLoginName(String loginName) {
-		return 	 userDao.getByLoginName(new User(null, loginName));
+	public AbsUser getUserByLoginName(String loginName) {
+		return 	 userDao.getByLoginName(new AbsUser(null, loginName));
 	}
 
-	public User getUserByLoginNameOrNo(String loginNameOrNo) {
+	public AbsUser getUserByLoginNameOrNo(String loginNameOrNo) {
 		return userDao.getByLoginNameOrNo(loginNameOrNo,null);
 	}
-	public User getUserByLoginNameAndNo(String loginNameOrNo,String no) {
+	public AbsUser getUserByLoginNameAndNo(String loginNameOrNo,String no) {
 		return userDao.getByLoginNameAndNo(loginNameOrNo,no);
 	}
-	public User getUserByNo(String no) {
+	public AbsUser getUserByNo(String no) {
 		return 	 userDao.getByNo(no);
 	}
 
-	public User getUserByMobile(String mobile) {
+	public AbsUser getUserByMobile(String mobile) {
 		return UserUtils.getByMobile(mobile);
 	}
-	public User getUserByMobile(String mobile,String id) {
+	public AbsUser getUserByMobile(String mobile,String id) {
 		return UserUtils.getByMobile(mobile,id);
 	}
-	public Page<User> findUser(Page<User> page, User user) {
+	public Page<AbsUser> findUser(Page<AbsUser> page, AbsUser user) {
 		// 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 		//user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
 		// 设置分页参数
@@ -129,7 +129,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		return  userDao.getTeacherTypeByUserId(userId);
 	}
 
-	public Page<User> findListTree(Page<User> page, User user) {
+	public Page<AbsUser> findListTree(Page<AbsUser> page, AbsUser user) {
 		// 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 		//user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
 		// 设置分页参数
@@ -145,7 +145,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param user 用户
 	 * @return Page
 	 */
-	public Page<User> findListTreeByTeacher(Page<User> page, User user) {
+	public Page<AbsUser> findListTreeByTeacher(Page<AbsUser> page, AbsUser user) {
 	  // 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 	  //user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
 	  // 设置分页参数
@@ -161,13 +161,13 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param user 用户
 	 * @return Page
 	 */
-	public Page<User> findListTreeByStudent(Page<User> page, User user) {
+	public Page<AbsUser> findListTreeByStudent(Page<AbsUser> page, AbsUser user) {
 	  // 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 	  //user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
 	  // 设置分页参数
 	  user.setPage(page);
 	  // 执行分页查询
-	  List<User> list=userDao.findListTreeByStudent(user);
+	  List<AbsUser> list=userDao.findListTreeByStudent(user);
 	  page.setList(list);
 	  return page;
 	}
@@ -178,7 +178,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param user 用户
 	 * @return Page
 	 */
-	public Page<User> findListTreeByUser(Page<User> page, User user) {
+	public Page<AbsUser> findListTreeByUser(Page<AbsUser> page, AbsUser user) {
 	  // 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 	  //user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
 	  // 设置分页参数
@@ -193,10 +193,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param user
 	 * @return
 	 */
-	public List<User> findUser(User user) {
+	public List<AbsUser> findUser(AbsUser user) {
 		// 生成数据权限过滤条件（dsf为dataScopeFilter的简写，在xml中使用 ${sqlMap.dsf}调用权限SQL）
 		//user.getSqlMap().put("dsf", dataScopeFilter(user.getCurrentUser(), "o", "a"));
-		List<User> list = userDao.findList(user);
+		List<AbsUser> list = userDao.findList(user);
 		return list;
 	}
 
@@ -206,10 +206,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> findUserByOfficeId(String officeId) {
-		List<User> list = (List<User>)CacheUtils.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId);
+	public List<AbsUser> findUserByOfficeId(String officeId) {
+		List<AbsUser> list = (List<AbsUser>)CacheUtils.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId);
 		if (list == null) {
-			User user = new User();
+			AbsUser user = new AbsUser();
 			user.setOffice(new Office(officeId));
 			list = userDao.findUserByOfficeId(user);
 			CacheUtils.put(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId, list);
@@ -224,10 +224,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> findUserByProfessionId(String professionalId) {
-		List<User> list = (List<User>)CacheUtils.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + professionalId);
+	public List<AbsUser> findUserByProfessionId(String professionalId) {
+		List<AbsUser> list = (List<AbsUser>)CacheUtils.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + professionalId);
 		if (list == null) {
-			User user = new User();
+			AbsUser user = new AbsUser();
 			user.setProfessional(professionalId);
 			list = userDao.findUserByProfessionId(user);
 			CacheUtils.put(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + professionalId, list);
@@ -247,7 +247,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	@Transactional(readOnly = false)
-	public void saveUser(User user) {
+	public void saveUser(AbsUser user) {
 		if (StringUtil.isBlank(user.getId())) {
 			user.preInsert();
 			userDao.insert(user);
@@ -265,7 +265,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			}
 		}else{
 			// 清除原用户机构用户缓存
-			User oldUser = userDao.get(user.getId());
+			AbsUser oldUser = userDao.get(user.getId());
 			if (oldUser.getOffice() != null && oldUser.getOffice().getId() != null) {
 				CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + oldUser.getOffice().getId());
 			}
@@ -301,7 +301,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	@Transactional(readOnly = false)
-	public void updateUserInfo(User user) {
+	public void updateUserInfo(AbsUser user) {
 		user.preUpdate();
 		userDao.updateUserInfo(user);
 		// 清除用户缓存
@@ -311,7 +311,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	@Transactional(readOnly = false)
-	public void deleteUser(User user) {
+	public void deleteUser(AbsUser user) {
 		userDao.delete(user);
 		// 同步到Activiti
 		deleteActivitiUser(user);
@@ -323,7 +323,7 @@ public class SystemService extends BaseService implements InitializingBean {
 
 	@Transactional(readOnly = false)
 	public void updatePasswordById(String id, String loginName, String newPassword) {
-		User user = new User(id);
+		AbsUser user = new AbsUser(id);
 		user.setPassword(entryptPassword(newPassword));
 		userDao.updatePasswordById(user);
 		// 清除用户缓存
@@ -334,7 +334,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	@Transactional(readOnly = false)
-	public void updateUserLoginInfo(User user) {
+	public void updateUserLoginInfo(AbsUser user) {
 		// 保存上次登录信息
 		user.setOldLoginIp(user.getLoginIp());
 		user.setOldLoginDate(user.getLoginDate());
@@ -446,7 +446,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	@Transactional(readOnly = false)
-	public Boolean outUserInRole(Role role, User user) {
+	public Boolean outUserInRole(Role role, AbsUser user) {
 		List<Role> roles = user.getRoleList();
 		for (Role e : roles) {
 			if (e.getId().equals(role.getId())) {
@@ -459,7 +459,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 
 	@Transactional(readOnly = false)
-	public User assignUserToRole(Role role, User user) {
+	public AbsUser assignUserToRole(Role role, AbsUser user) {
 		if (user == null) {
 			return null;
 		}
@@ -588,7 +588,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		 	// 同步用户数据
 			List<org.activiti.engine.identity.User> userList = identityService.createUserQuery().list();
 			if (userList.size() == 0) {
-			 	Iterator<User> users = userDao.findAllList(new User()).iterator();
+			 	Iterator<AbsUser> users = userDao.findAllList(new AbsUser()).iterator();
 			 	while(users.hasNext()) {
 			 		saveActivitiUser(users.next());
 			 	}
@@ -622,8 +622,8 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 
 		// 创建用户与用户组关系
-		List<User> userList = findUser(new User(new Role(role.getId())));
-		for (User e : userList) {
+		List<AbsUser> userList = findUser(new AbsUser(new Role(role.getId())));
+		for (AbsUser e : userList) {
 			String userId = e.getLoginName();//ObjectUtils.toString(user.getId());
 			// 如果该用户不存在，则创建一个
 			org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
@@ -649,7 +649,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 	}
 
-	private void saveActivitiUser(User user) {
+	private void saveActivitiUser(AbsUser user) {
 		if (!Global.isSynActivitiIndetity()) {
 			return;
 		}
@@ -684,7 +684,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 	}
 
-	private void deleteActivitiUser(User user) {
+	private void deleteActivitiUser(AbsUser user) {
 		if (!Global.isSynActivitiIndetity()) {
 			return;
 		}
@@ -715,7 +715,7 @@ public class SystemService extends BaseService implements InitializingBean {
       Role role = new Role(rid);
       List<String> repairedIds = Lists.newArrayList();
       for (String id : uids) {
-        User user = new User(id);
+        AbsUser user = new AbsUser(id);
         user.getRoleList().add(role);
         insertUserRole(user);
         repairedIds.add(id);
@@ -730,7 +730,7 @@ public class SystemService extends BaseService implements InitializingBean {
    * @param user
    */
   @Transactional(readOnly = false)
-  public void insertUserRole(User user) {
+  public void insertUserRole(AbsUser user) {
     userDao.insertUserRole(user);
   };
 }

@@ -29,7 +29,7 @@ import com.hch.platform.pcore.modules.sys.entity.BackTeacherExpansion;
 import com.hch.platform.pcore.modules.sys.entity.Dict;
 import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 import com.hch.platform.pcore.modules.sys.entity.Office;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.BackTeacherExpansionService;
 import com.hch.platform.pcore.modules.sys.service.OfficeService;
 import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
@@ -208,9 +208,9 @@ public class FrontTeacherExpansionController extends BaseController {
 			return form(backTeacherExpansion, custRedict, okurl, backurl, model, request);
 		}
 		if (StringUtil.isNotBlank(backTeacherExpansion.getId())) {
-			User user=backTeacherExpansion.getUser();
+			AbsUser user=backTeacherExpansion.getUser();
 			if(StringUtil.isNotEmpty(user.getId())&&teamUserHistoryService.getBuildingCountByUserId(user.getId())>0){//修改时有正在进行的项目大赛
-				User old=UserUtils.get(user.getId());
+				AbsUser old=UserUtils.get(user.getId());
 				if(old!=null&&StringUtil.isNotEmpty(old.getId())){
 					if(old.getUserType()!=null&&!old.getUserType().equals(user.getUserType())){//用户类型变化了
 						addMessage(model, "保存失败，该用户有正在进行的项目或大赛，不能修改用户类型");
@@ -226,7 +226,7 @@ public class FrontTeacherExpansionController extends BaseController {
 			}
 			backTeacherExpansionService.updateAll(backTeacherExpansion);
 		}else {
-			User exitUser = userService.getByMobile(backTeacherExpansion.getUser());
+			AbsUser exitUser = userService.getByMobile(backTeacherExpansion.getUser());
 			if (exitUser != null) {
 				List<Dict> dictList = DictUtils.getDictList("technology_field");
 				model.addAttribute("allDomains", dictList);
@@ -268,7 +268,7 @@ public class FrontTeacherExpansionController extends BaseController {
 		}
 		model.addAttribute("mobile", mobile);
 		/*记录浏览量*/
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
     	if(user!=null&&StringUtil.isNotEmpty(user.getId())&&!user.getId().equals(backTeacherExpansion.getUser().getId())){
     		InteractiveUtil.updateViews(backTeacherExpansion.getUser().getId(), request,CacheUtils.USER_VIEWS_QUEUE);
     	}

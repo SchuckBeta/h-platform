@@ -27,7 +27,7 @@ import com.hch.platform.pcore.common.supcan.treelist.cols.Group;
 import com.hch.platform.pcore.common.utils.SpringContextHolder;
 import com.hch.platform.pcore.common.utils.cache.CacheUtils;
 import com.hch.platform.putil.common.utils.StringUtil;
-import com.hch.platform.pcore.common.web.BaseController;
+import com.hch.platform.pcore.common.web.AbsBaseController;
 
 /**
  * 硕正Controller
@@ -36,7 +36,7 @@ import com.hch.platform.pcore.common.web.BaseController;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/supcan")
-public class SupcanController extends BaseController {
+public class SupcanController extends AbsBaseController {
 
 	private static final String SUPCAN_CACHE = "supcanCache";
 	

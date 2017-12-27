@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import com.hch.platform.pcore.common.persistence.CrudDao;
 import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 角色DAO接口

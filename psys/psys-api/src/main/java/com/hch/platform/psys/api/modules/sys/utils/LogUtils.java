@@ -23,7 +23,7 @@ import com.hch.platform.pcore.modules.sys.dao.LogDao;
 import com.hch.platform.pcore.modules.sys.dao.MenuDao;
 import com.hch.platform.pcore.modules.sys.entity.Log;
 import com.hch.platform.pcore.modules.sys.entity.Menu;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
  * 字典工具类
@@ -48,7 +48,7 @@ public class LogUtils {
 	 * 保存日志
 	 */
 	public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (user != null && user.getId() != null) {
 			Log log = new Log();
 			log.setTitle(title);

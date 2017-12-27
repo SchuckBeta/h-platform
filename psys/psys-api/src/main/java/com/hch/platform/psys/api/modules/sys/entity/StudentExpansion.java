@@ -1,7 +1,7 @@
 package com.hch.platform.pcore.modules.sys.entity;
 
 import com.hch.platform.pcore.modules.project.vo.ProjectExpVo;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.team.entity.Team;
 import org.hibernate.validator.constraints.Length;
 
@@ -25,7 +25,7 @@ import com.hch.platform.putil.common.utils.StringUtil;
 public class StudentExpansion extends DataEntity<StudentExpansion> {
 
 	private static final long serialVersionUID = 1L;
-	private User user;		// 人员基本信息ID
+	private AbsUser user;		// 人员基本信息ID
 	private String projectExperience;		// 项目经历
 	private String contestExperience;		// 大赛经历
 	private String award;		// 获奖作品
@@ -222,11 +222,11 @@ public class StudentExpansion extends DataEntity<StudentExpansion> {
 		super(id);
 	}
 
-	public User getUser() {
+	public AbsUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AbsUser user) {
 		this.user = user;
 	}
 

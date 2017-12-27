@@ -37,7 +37,7 @@ import com.hch.platform.pcore.modules.sys.entity.Menu;
 import com.hch.platform.pcore.modules.sys.entity.Office;
 import com.hch.platform.pcore.modules.sys.entity.Role;
 import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.security.SystemAuthorizingRealm.Principal;
 
 /**
@@ -75,7 +75,7 @@ public class UserUtils {
 	public static final String CACHE_OFFICE = "office";
 
 	//返回true 说明未完善
-	public static boolean checkInfoPerfect(User user){
+	public static boolean checkInfoPerfect(AbsUser user){
 		if(user==null||StringUtil.isEmpty(user.getId())){
 			return false;
 		}
@@ -212,7 +212,7 @@ public class UserUtils {
 	 * @return
 	 */
 	public static boolean checkIsLikeForUserInfo(String foreignId){
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if(StringUtil.isEmpty(user.getId())){
 			return true;
 		}
@@ -233,8 +233,8 @@ public class UserUtils {
 	 * @param id
 	 * @return 取不到返回null
 	 */
-	public static User get(String id) {
-	User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_ID_ + id);
+	public static AbsUser get(String id) {
+	AbsUser user = (AbsUser)CacheUtils.get(USER_CACHE, USER_CACHE_ID_ + id);
 		if (user ==  null) {
 			user = userDao.get(id);
 			if (user == null) {
@@ -252,10 +252,10 @@ public class UserUtils {
 	 * @param loginName
 	 * @return 取不到返回null
 	 */
-	public static User getByLoginName(String loginName) {
-		User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginName);
+	public static AbsUser getByLoginName(String loginName) {
+		AbsUser user = (AbsUser)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginName);
 		if (user == null) {
-			user = userDao.getByLoginName(new User(null, loginName));
+			user = userDao.getByLoginName(new AbsUser(null, loginName));
 			if (user == null) {
 				return null;
 			}
@@ -266,8 +266,8 @@ public class UserUtils {
 		return user;
 	}
 
-	public static User getByLoginNameOrNo(String loginNameOrNo) {
-		User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginNameOrNo);
+	public static AbsUser getByLoginNameOrNo(String loginNameOrNo) {
+		AbsUser user = (AbsUser)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginNameOrNo);
 		if (user == null) {
 			user = userDao.getByLoginNameOrNo(loginNameOrNo,null);
 			if (user == null) {
@@ -281,7 +281,7 @@ public class UserUtils {
 
 
 	public static boolean isExistNo(String no) {
-		User	user = userDao.getByLoginNameOrNo(no,null);
+		AbsUser	user = userDao.getByLoginNameOrNo(no,null);
 		if (user == null) {
 			return false;
 		}
@@ -293,29 +293,29 @@ public class UserUtils {
 	 * @return 取不到返回null
 	 */
 	public static boolean isExistMobile(String mobile) {
-		User p=new User();
+		AbsUser p=new AbsUser();
 		p.setMobile(mobile);
-		User	user = userDao.getByMobile(p);
+		AbsUser	user = userDao.getByMobile(p);
 		if (user == null) {
 			return false;
 		}
 		return true;
 	}
-	public static User getByMobile(String mobile) {
-		User p=new User();
+	public static AbsUser getByMobile(String mobile) {
+		AbsUser p=new AbsUser();
 		p.setMobile(mobile);
-		User	user = userDao.getByMobile(p);
+		AbsUser	user = userDao.getByMobile(p);
 		if (user == null) {
 			return null;
 		}
 		user.setRoleList(roleDao.findList(new Role(user)));
 		return user;
 	}
-	public static User getByMobile(String mobile,String id) {
-		User p=new User();
+	public static AbsUser getByMobile(String mobile,String id) {
+		AbsUser p=new AbsUser();
 		p.setMobile(mobile);
 		p.setId(id);
-		User	user = userDao.getByMobileWithId(p);
+		AbsUser	user = userDao.getByMobileWithId(p);
 		if (user == null) {
 			return null;
 		}
@@ -340,7 +340,7 @@ public class UserUtils {
 	 * 清除指定用户缓存
 	 * @param user
 	 */
-	public static void clearCache(User user) {
+	public static void clearCache(AbsUser user) {
 		CacheUtils.remove(USER_CACHE, USER_CACHE_ID_ + user.getId());
 		CacheUtils.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName());
 		CacheUtils.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getOldLoginName());
@@ -353,17 +353,17 @@ public class UserUtils {
 	 * 获取当前用户
 	 * @return 取不到返回 new User()
 	 */
-	public static User getUser() {
+	public static AbsUser getUser() {
 		Principal principal = getPrincipal();
 		if (principal!=null) {
-			User user = get(principal.getId());
+			AbsUser user = get(principal.getId());
 			if (user != null) {
 				return user;
 			}
-			return new User();
+			return new AbsUser();
 		}
 		// 如果没有登录，则返回实例化空的User对象。
-		return new User();
+		return new AbsUser();
 	}
 
 	/**
@@ -374,7 +374,7 @@ public class UserUtils {
 		@SuppressWarnings("unchecked")
 		List<Role> roleList = (List<Role>)getCache(CACHE_ROLE_LIST);
 		if (roleList == null) {
-			User user = getUser();
+			AbsUser user = getUser();
 			if (user.getAdmin()) {
 				roleList = roleDao.findAllList(new Role());
 			}else{
@@ -408,7 +408,7 @@ public class UserUtils {
 		@SuppressWarnings("unchecked")
 		List<Menu> menuList = (List<Menu>)getCache(CACHE_MENU_LIST);
 		if (menuList == null) {
-			User user = getUser();
+			AbsUser user = getUser();
 			if (user.getAdmin()) {
 				menuList = menuDao.findAllList(new Menu());
 			}else{
@@ -452,7 +452,7 @@ public class UserUtils {
 		@SuppressWarnings("unchecked")
 		List<Office> officeList = (List<Office>)getCache(CACHE_OFFICE_LIST);
 		if (officeList == null) {
-			User user = getUser();
+			AbsUser user = getUser();
 			if (user.getAdmin()) {
 				officeList = officeDao.findAllList(new Office());
 			}else{

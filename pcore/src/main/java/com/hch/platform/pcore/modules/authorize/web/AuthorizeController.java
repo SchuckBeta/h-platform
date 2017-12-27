@@ -26,18 +26,18 @@ import com.hch.platform.putil.common.utils.DateUtil;
 import com.hch.platform.putil.common.utils.license.License;
 import com.hch.platform.pcore.common.utils.license.MachineCacheUtils;
 import com.hch.platform.putil.common.utils.rsa.Base64;
-import com.hch.platform.pcore.common.web.BaseController;
-import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
+import com.hch.platform.pcore.common.web.AbsBaseController;
+import com.hch.platform.pcore.modules.authorize.service.AbsAuthorizeService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
-public class AuthorizeController extends BaseController {
+public class AuthorizeController extends AbsBaseController {
 	public static final String GET_LICENSE_URL = Global.getConfig("getLicenseUrl");
 	private static Logger logger = LoggerFactory.getLogger(AuthorizeController.class);
 	@Autowired
-	private AuthorizeService authorizeService;
+	private AbsAuthorizeService authorizeService;
 	/**根据编号判断授权信息
 	 * @param num MenuPlusEnum 枚举值序号从0开始
 	 * @return

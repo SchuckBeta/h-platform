@@ -18,9 +18,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.hch.platform.pconfig.common.Global;
 import com.hch.platform.pconfig.common.config.SysIds;
-import com.hch.platform.pcore.common.persistence.DataEntity;
+import com.hch.platform.pcore.common.persistence.AbsDataEntity;
 import com.hch.platform.pcore.modules.sys.enums.EuserType;
-import com.hch.platform.pcore.modules.sys.utils.DictUtils;
 import com.hch.platform.putil.common.utils.StringUtil;
 import com.hch.platform.putil.common.utils.excel.annotation.ExcelField;
 
@@ -29,7 +28,7 @@ import com.hch.platform.putil.common.utils.excel.annotation.ExcelField;
  *
  *
  */
-public abstract class AbsUser extends DataEntity<AbsUser> {
+public abstract class AbsUser extends AbsDataEntity<AbsUser> {
 
 	private static final long serialVersionUID = 1L;
 	private String[] ids;
@@ -54,7 +53,7 @@ public abstract class AbsUser extends DataEntity<AbsUser> {
 
 	private String systemType; // 允许登陆的系统类型 0 前台 1后台
 
-	private Role role; // 根据角色查询用户条件
+	private AbsRole role; // 根据角色查询用户条件
 
 	private String degree;// 学位； 1：学士2：硕士3：博士
 	private String education;// 学历
@@ -88,6 +87,7 @@ public abstract class AbsUser extends DataEntity<AbsUser> {
 	private String currState;//现状 查询条件
 	private String currStateStr;//列表显示
 
+	public abstract String getDomainlt();
 
 	public String getCurrStateStr() {
 		return currStateStr;
@@ -307,14 +307,6 @@ public abstract class AbsUser extends DataEntity<AbsUser> {
 		this.domain = domain;
 	}
 
-	public String getDomainlt() {
-		if (StringUtils.isNotBlank(domain)) {
-			String domainNames = DictUtils.getDictLabels(domain, "technology_field", "未知");
-			return domainNames;
-		}
-		return domainlt;
-	}
-
 	public void setDomainlt(String domainlt) {
 		this.domainlt = domainlt;
 	}
@@ -357,12 +349,12 @@ public abstract class AbsUser extends DataEntity<AbsUser> {
 		this.loginName = loginName;
 	}
 
-	public AbsUser(Role role) {
+	public AbsUser(AbsRole role) {
 		super();
 		this.role = role;
 	}
 
-	public AbsUser(String id, Role role) {
+	public AbsUser(String id, AbsRole role) {
     super();
     this.id = id;
     this.role = role;
@@ -539,11 +531,11 @@ public abstract class AbsUser extends DataEntity<AbsUser> {
 		this.oldLoginDate = oldLoginDate;
 	}
 
-	public Role getRole() {
+	public AbsRole getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(AbsRole role) {
 		this.role = role;
 	}
 
@@ -640,5 +632,5 @@ public abstract class AbsUser extends DataEntity<AbsUser> {
 		return id;
 	}
 
-	public abstract Role getRoleList();
+	public abstract AbsRole getRoleList();
 }

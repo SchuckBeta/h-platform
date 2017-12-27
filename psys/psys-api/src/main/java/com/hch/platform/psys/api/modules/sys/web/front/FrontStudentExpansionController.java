@@ -36,7 +36,7 @@ import com.hch.platform.pcore.modules.sys.entity.Dict;
 import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 import com.hch.platform.pcore.modules.sys.entity.Office;
 import com.hch.platform.pcore.modules.sys.entity.StudentExpansion;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.BackTeacherExpansionService;
 import com.hch.platform.pcore.modules.sys.service.OfficeService;
 import com.hch.platform.pcore.modules.sys.service.StudentExpansionService;
@@ -176,7 +176,7 @@ public class FrontStudentExpansionController extends BaseController {
 			studentExpansion.getUser().setLikes("0");
 		}
 		/*记录浏览量*/
-		User user= UserUtils.getUser();
+		AbsUser user= UserUtils.getUser();
     	if(user!=null&&StringUtil.isNotEmpty(user.getId())&&!user.getId().equals(studentExpansion.getUser().getId())){
     		InteractiveUtil.updateViews(studentExpansion.getUser().getId(), request,CacheUtils.USER_VIEWS_QUEUE);
     	}
@@ -252,7 +252,7 @@ public class FrontStudentExpansionController extends BaseController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				User user=studentExpansion.getUser();
+				AbsUser user=studentExpansion.getUser();
 				if (user!=null) {
 					user.setPhoto(arrUrl[i]);
 					userService.updateUser(user);
@@ -298,7 +298,7 @@ public class FrontStudentExpansionController extends BaseController {
 //				logger.error(e);
 //			}
 //		}
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if ("2".equals(user.getUserType())) {
 			String teachId = backTeacherExpansionService.findTeacherIdByUser(user.getId());
 			return "redirect:"+Global.getFrontPath()+"/sys/frontTeacherExpansion/form?custRedict=1&id="+teachId;
@@ -343,7 +343,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="frontUserPassword")
 	public String frontUserPassword(Model model) {
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if("1".equals(user.getUserType())){
 			StudentExpansion studentExpansion=studentExpansionService.getByUserId(String.valueOf(user.getId()));//查出用户基本信息
 			if (studentExpansion!=null) {
@@ -371,7 +371,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="frontUserMobile")
 	public String frontUserMobile(Model model) {
-	  User user=UserUtils.getUser();
+	  AbsUser user=UserUtils.getUser();
 	  if("1".equals(user.getUserType())){
 		  StudentExpansion studentExpansion=studentExpansionService.getByUserId(String.valueOf(user.getId()));//查出用户基本信息
 		  if (studentExpansion!=null) {
@@ -399,7 +399,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="updatePassWord")
 	public String updatePassWord(String oldPassword, String newPassword, Model model,RedirectAttributes redirectAttributes) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(oldPassword) && StringUtil.isNotBlank(newPassword)) {
 			if (SystemService.validatePassword(oldPassword, user.getPassword())) {
 				if(oldPassword.equals(newPassword)){
@@ -434,7 +434,7 @@ public class FrontStudentExpansionController extends BaseController {
 	 */
 	@RequestMapping(value="updateMobile")
 	public String updateMobile(String mobile ,Model model,RedirectAttributes redirectAttributes) {
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		if (StringUtil.isNotBlank(mobile) ) {
 			user.setMobile(mobile);
 			userService.updateMobile(user);
@@ -478,7 +478,7 @@ public class FrontStudentExpansionController extends BaseController {
 			addMessage(redirectAttributes, "修改学生信息成功");
 		}
 
-	 	User user=UserUtils.getUser();
+	 	AbsUser user=UserUtils.getUser();
 	 	if (user!=null) {
 	 		CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_ID_ + user.getId());
 			CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LOGIN_NAME_ + user.getLoginName());
@@ -489,7 +489,7 @@ public class FrontStudentExpansionController extends BaseController {
 	@RequestMapping(value="uploadFTP")
 	public String uploadFTP(HttpServletRequest request) {
 		String arrUrl = request.getParameter("arrUrl");
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if (user!=null) {
 			user.setPhoto(arrUrl);
 			userService.updateUser(user);

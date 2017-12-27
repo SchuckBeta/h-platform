@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.hch.platform.pcore.common.persistence.CrudDao;
 import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
-import com.hch.platform.pcore.modules.sys.entity.Role;
+import com.hch.platform.pcore.modules.sys.entity.AbsRole;
 import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
 /**
@@ -18,34 +18,34 @@ import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 
  */
 @MyBatisDao
-public interface RoleDao extends CrudDao<Role> {
+public interface RoleDao extends CrudDao<AbsRole> {
 
-	public Role getByName(Role role);
+	public AbsRole getByName(AbsRole role);
 
-	public Role getByEnname(Role role);
+	public AbsRole getByEnname(AbsRole role);
 
 	/**
 	 * 维护角色与菜单权限关系
 	 * @param role
 	 * @return
 	 */
-	public int deleteRoleMenu(Role role);
+	public int deleteRoleMenu(AbsRole role);
 
-	public int insertRoleMenu(Role role);
+	public int insertRoleMenu(AbsRole role);
 
 	/**
 	 * 维护角色与公司部门关系
 	 * @param role
 	 * @return
 	 */
-	public int deleteRoleOffice(Role role);
+	public int deleteRoleOffice(AbsRole role);
 
-	public int insertRoleOffice(Role role);
+	public int insertRoleOffice(AbsRole role);
 
-	public List<Role> findListByUserId(@Param(value = "userId") String userId);
+	public List<AbsRole> findListByUserId(@Param(value = "userId") String userId);
 
-	public Role getNamebyId(String id);
+	public AbsRole getNamebyId(String id);
 
 
-	public List<Role> findListByIds(@Param("ids") List<String> ids);
+	public List<AbsRole> findListByIds(@Param("ids") List<String> ids);
 }

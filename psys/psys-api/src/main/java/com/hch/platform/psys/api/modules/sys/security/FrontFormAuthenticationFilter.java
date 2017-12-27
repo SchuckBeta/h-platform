@@ -18,7 +18,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Service;
 
 import com.hch.platform.putil.common.utils.StringUtil;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 
 /**
@@ -143,7 +143,7 @@ public class FrontFormAuthenticationFilter extends FormAuthenticationFilter {
 				url=rurl;
 			}
 		}
-		User user=UserUtils.getUser();
+		AbsUser user=UserUtils.getUser();
 		if("1".equals(user.getPassc())){//需要修改密码
 			url="/f/sys/frontStudentExpansion/frontUserPassword";
 		}else if(UserUtils.checkInfoPerfect(user)){

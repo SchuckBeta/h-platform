@@ -7,7 +7,7 @@ import com.hch.platform.pcore.common.web.BaseController;
 import com.hch.platform.pcore.modules.oa.entity.OaNotify;
 import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.SystemService;
 import com.hch.platform.pcore.modules.sys.service.UserService;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;

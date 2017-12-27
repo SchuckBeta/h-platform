@@ -5,13 +5,13 @@ import javax.servlet.ServletContextEvent;
 
 import org.springframework.web.context.WebApplicationContext;
 
-import com.hch.platform.pcore.modules.sys.service.SystemService;
+import com.hch.platform.pcore.modules.sys.service.AbsSystemService;
 
 public class WebContextListener extends org.springframework.web.context.ContextLoaderListener {
 	
 	@Override
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
-		if (!SystemService.printKeyLoadMessage()) {
+		if (!AbsSystemService.printKeyLoadMessage()) {
 			return null;
 		}
 		return super.initWebApplicationContext(servletContext);

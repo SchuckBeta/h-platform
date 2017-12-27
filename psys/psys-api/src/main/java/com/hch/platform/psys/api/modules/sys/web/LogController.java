@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.hch.platform.pcore.common.persistence.Page;
 import com.hch.platform.pcore.common.web.BaseController;
 import com.hch.platform.pcore.modules.sys.entity.Log;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.LogService;
 import com.hch.platform.pcore.modules.sys.service.UserService;
 
@@ -52,7 +52,7 @@ public class LogController extends BaseController {
 	@RequestMapping(value = "/validatePhone")
 	public Boolean validatePhone(HttpServletRequest request) {
 		String mobile =  request.getParameter("mobile");
-		User user = new User();
+		AbsUser user = new AbsUser();
 		user.setMobile(mobile);
 		user.setDelFlag("0");
 		user = userService.getByMobile(user);

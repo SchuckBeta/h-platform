@@ -34,7 +34,7 @@ import com.hch.platform.pcore.common.utils.SpringContextHolder;
 import com.hch.platform.pcore.common.web.Servlets;
 import com.hch.platform.pcore.modules.sys.entity.Menu;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.SystemService;
 import com.hch.platform.pcore.modules.sys.utils.LogUtils;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -78,7 +78,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 		
 		// 校验用户名密码
-		User user = getSystemService().getUserByLoginName(token.getUsername());
+		AbsUser user = getSystemService().getUserByLoginName(token.getUsername());
 		if (user != null) {
 			if ("1".equals(user.getUserType())||"2".equals(user.getUserType())) {
 				throw new  UnknownAccountException();
@@ -139,7 +139,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginName(principal.getLoginName());
+		AbsUser user = getSystemService().getUserByLoginName(principal.getLoginName());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();
@@ -264,14 +264,14 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		private String no;//工号
 //		private Map<String, Object> cacheMap;
 
-		public Principal(User user, boolean mobileLogin) {
+		public Principal(AbsUser user, boolean mobileLogin) {
 			this.id = user.getId();
 			this.loginName = user.getLoginName();
 			this.name = user.getName();
 			this.mobileLogin = mobileLogin;
 			this.no = user.getNo();
 		}
-		public Principal(User user, boolean mobileLogin,String loginType) {
+		public Principal(AbsUser user, boolean mobileLogin,String loginType) {
 			this.id = user.getId();
 			this.loginName = user.getLoginName();
 			this.name = user.getName();

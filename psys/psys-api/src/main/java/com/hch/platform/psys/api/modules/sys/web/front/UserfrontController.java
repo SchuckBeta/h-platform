@@ -24,7 +24,7 @@ import com.hch.platform.pcore.common.web.BaseController;
 import com.hch.platform.pcore.modules.oa.entity.OaNotify;
 import com.hch.platform.pcore.modules.oa.service.OaNotifyService;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.SystemService;
 import com.hch.platform.pcore.modules.sys.service.UserService;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -44,17 +44,17 @@ public class UserfrontController extends BaseController {
 	UserService userService;
 
 	@ModelAttribute
-	public User get(@RequestParam(required=false) String id) {
+	public AbsUser get(@RequestParam(required=false) String id) {
 		if (StringUtil.isNotBlank(id)) {
-			User user = systemService.getUser(id);
+			AbsUser user = systemService.getUser(id);
 			return user;
 		}else{
-			return new User();
+			return new AbsUser();
 		}
 	}
 
 	@RequestMapping(value = {"index"})
-	public String index(User user, Model model,HttpServletRequest request) {
+	public String index(AbsUser user, Model model,HttpServletRequest request) {
 		String teamId = request.getParameter("teamId");
 		String opType = request.getParameter("opType");
 		String userType = request.getParameter("userType");
@@ -68,7 +68,7 @@ public class UserfrontController extends BaseController {
 
 
 	@RequestMapping(value = {"indexPublish"})
-	public String indexPublish(User user, Model model,HttpServletRequest request) {
+	public String indexPublish(AbsUser user, Model model,HttpServletRequest request) {
 		String teamId = request.getParameter("teamId");
 		String opType = request.getParameter("opType");
 		String userType = request.getParameter("userType");
@@ -84,9 +84,9 @@ public class UserfrontController extends BaseController {
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String officeId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<User> list = systemService.findUserByOfficeId(officeId);
+		List<AbsUser> list = systemService.findUserByOfficeId(officeId);
 		for (int i=0; i<list.size(); i++) {
-			User e = list.get(i);
+			AbsUser e = list.get(i);
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("id", "u_"+e.getId());
 			map.put("pId", officeId);
@@ -97,7 +97,7 @@ public class UserfrontController extends BaseController {
 	}
 
 	@RequestMapping("userListTree")
-	public String userListTree(User user, String grade, String professionId,String allTeacher,HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String userListTree(AbsUser user, String grade, String professionId,String allTeacher,HttpServletRequest request, HttpServletResponse response, Model model) {
 		String userType = request.getParameter("userType");
 		String teacherType = request.getParameter("teacherType");
 		String userName = request.getParameter("userName");
@@ -116,16 +116,16 @@ public class UserfrontController extends BaseController {
 			user.setProfessional(professionId);
 		}
 
-    Page<User> page = null;
+    Page<AbsUser> page = null;
     if(StringUtil.isNotEmpty(userType)){
       user.setUserType(userType);
 
       if((userType).equals("1")){
-        page = systemService.findListTreeByStudent(new Page<User>(request, response), user);
+        page = systemService.findListTreeByStudent(new Page<AbsUser>(request, response), user);
       }else if((userType).equals("2")){
-        page = systemService.findListTreeByTeacher(new Page<User>(request, response), user);
+        page = systemService.findListTreeByTeacher(new Page<AbsUser>(request, response), user);
       }else{
-        page = systemService.findListTreeByUser(new Page<User>(request, response), user);
+        page = systemService.findListTreeByUser(new Page<AbsUser>(request, response), user);
       }
     }
 
@@ -136,24 +136,24 @@ public class UserfrontController extends BaseController {
 
 
 	@RequestMapping("userListTreePublish")
-	public String userListTreePublish(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String userListTreePublish(AbsUser user, HttpServletRequest request, HttpServletResponse response, Model model) {
 		String userType = request.getParameter("userType");
-    Page<User> page = null;
+    Page<AbsUser> page = null;
     if(StringUtil.isNotEmpty(userType)){
       user.setUserType(userType);
       if((userType).equals("1")){
-        page = systemService.findListTreeByStudent(new Page<User>(request, response), user);
+        page = systemService.findListTreeByStudent(new Page<AbsUser>(request, response), user);
       }else if((userType).equals("2")){
-        page = systemService.findListTreeByTeacher(new Page<User>(request, response), user);
+        page = systemService.findListTreeByTeacher(new Page<AbsUser>(request, response), user);
       }else{
-        page = systemService.findListTreeByUser(new Page<User>(request, response), user);
+        page = systemService.findListTreeByUser(new Page<AbsUser>(request, response), user);
       }
     }
 
 		if (page!=null) {
-			List<User> userList = page.getList();
+			List<AbsUser> userList = page.getList();
 			if (userList!=null&&userList.size()>0) {
-				for(User usertmp:userList) {
+				for(AbsUser usertmp:userList) {
 					List<Role> roleList = systemService.findListByUserId(usertmp.getId());
 					usertmp.setRoleList(roleList);
 				}
@@ -227,14 +227,14 @@ public class UserfrontController extends BaseController {
 	@RequestMapping("checkMobileExist")
 	@ResponseBody
 	public Boolean checkMobileExist(String mobile) {
-		User userForSearch=new User();
+		AbsUser userForSearch=new AbsUser();
 		userForSearch.setMobile(mobile);
-		User cuser=UserUtils.getUser();
+		AbsUser cuser=UserUtils.getUser();
 		if(cuser==null||StringUtil.isEmpty(cuser.getId())){
 			return false;
 		}
 		userForSearch.setId(cuser.getId());
-		User user = userService.getByMobileWithId(userForSearch);
+		AbsUser user = userService.getByMobileWithId(userForSearch);
 		if (user==null) {
 			return true;
 		}else{
@@ -263,7 +263,7 @@ public class UserfrontController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value="uploadPhoto")
-	public boolean uploadFTP(HttpServletRequest request,User user) {
+	public boolean uploadFTP(HttpServletRequest request,AbsUser user) {
 		String arrUrl = request.getParameter("arrUrl");
 		if (user!=null) {
 			user.setPhoto(arrUrl);

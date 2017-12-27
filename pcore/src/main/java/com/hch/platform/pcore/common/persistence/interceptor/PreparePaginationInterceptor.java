@@ -27,7 +27,7 @@ import com.hch.platform.putil.common.utils.Reflections;
 @Intercepts({
 	@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class})
 })
-public class PreparePaginationInterceptor extends BaseInterceptor {
+public class PreparePaginationInterceptor extends AbsBaseInterceptor {
 
     private static final long serialVersionUID = 1L;
 

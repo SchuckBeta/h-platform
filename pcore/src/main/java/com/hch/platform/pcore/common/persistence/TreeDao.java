@@ -11,7 +11,7 @@ import java.util.List;
  * @version 2014-05-16
  * @param <T>
  */
-public interface TreeDao<T extends TreeEntity<T>> extends CrudDao<T> {
+public interface TreeDao<T extends AbsTreeEntity<T>> extends CrudDao<T> {
 
 	/**
 	 * 找到所有子节点

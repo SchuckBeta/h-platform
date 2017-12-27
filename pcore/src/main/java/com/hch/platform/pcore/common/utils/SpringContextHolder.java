@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
+import com.hch.platform.pcore.modules.authorize.service.AbsAuthorizeService;
 
 /**
  * 以静态变量保存Spring ApplicationContext, 可在任何代码任何地方任何时候取出ApplicaitonContext.
@@ -25,7 +25,7 @@ import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
 @Lazy(false)
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
 	@Autowired
-	private AuthorizeService authorizeService;
+	private AbsAuthorizeService authorizeService;
 	private static ApplicationContext applicationContext = null;
 
 	private static Logger logger = LoggerFactory.getLogger(SpringContextHolder.class);

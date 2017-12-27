@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Param;
 import com.hch.platform.pcore.common.persistence.CrudDao;
 import com.hch.platform.pcore.common.persistence.annotation.MyBatisDao;
 import com.hch.platform.pcore.modules.sys.entity.AbsUser;
-import com.hch.platform.pcore.modules.sys.vo.UserVo;
 
 /**
  * 用户DAO接口
@@ -20,9 +19,6 @@ import com.hch.platform.pcore.modules.sys.vo.UserVo;
  */
 @MyBatisDao
 public interface UserDao extends CrudDao<AbsUser> {
-	public List<UserVo> findListByVo(AbsUser vo);
-	public List<UserVo> getTeaInfo(@Param("idsArr")String[] idsArr);
-	public List<UserVo> getStudentInfo(@Param("idsArr")String[] idsArr);
 	public void updateLikes(@Param("param") Map<String,Integer> param);
 	//批量更新浏览量
     public void updateViews(@Param("param") Map<String,Integer> param);

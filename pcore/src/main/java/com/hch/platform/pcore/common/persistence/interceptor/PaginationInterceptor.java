@@ -28,7 +28,7 @@ import com.hch.platform.putil.common.utils.StringUtil;
  */
 @Intercepts({@Signature(type = Executor.class, method = "query",
         args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
-public class PaginationInterceptor extends BaseInterceptor {
+public class PaginationInterceptor extends AbsBaseInterceptor {
 
     private static final long serialVersionUID = 1L;
 

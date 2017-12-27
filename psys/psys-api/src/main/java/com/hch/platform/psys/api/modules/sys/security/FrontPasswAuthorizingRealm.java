@@ -33,7 +33,7 @@ import com.hch.platform.pcore.common.web.Servlets;
 import com.hch.platform.pcore.modules.cms.web.front.FrontController;
 import com.hch.platform.pcore.modules.sys.entity.Menu;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.SystemService;
 import com.hch.platform.pcore.modules.sys.utils.LogUtils;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -82,7 +82,7 @@ public class FrontPasswAuthorizingRealm extends SystemAuthorizingRealm {
 		}
 		// 校验用户名密码
 		//User user = getSystemService().getUserByLoginName(token.getUsername());
-		User user = getSystemService().getUserByLoginNameOrNo(token.getUsername());
+		AbsUser user = getSystemService().getUserByLoginNameOrNo(token.getUsername());
 		if (user != null) {
 			if (!"1".equals(user.getUserType())&&!"2".equals(user.getUserType())) {
 				throw new  UnknownAccountException();
@@ -143,7 +143,7 @@ public class FrontPasswAuthorizingRealm extends SystemAuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
+		AbsUser user = getSystemService().getUserByLoginNameAndNo(principal.getLoginName(),principal.getNo());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();

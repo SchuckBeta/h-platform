@@ -27,7 +27,7 @@ import com.hch.platform.putil.common.utils.StringUtil;
 import com.hch.platform.pcore.common.web.BaseController;
 import com.hch.platform.pcore.modules.sys.entity.Office;
 import com.hch.platform.pcore.modules.sys.entity.Role;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.service.OfficeService;
 import com.hch.platform.pcore.modules.sys.service.SystemService;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
@@ -134,7 +134,7 @@ public class RoleController extends BaseController {
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "assign")
 	public String assign(Role role, Model model) {
-		List<User> userList = systemService.findUser(new User(new Role(role.getId())));
+		List<AbsUser> userList = systemService.findUser(new AbsUser(new Role(role.getId())));
 		model.addAttribute("userList", userList);
 		return "modules/sys/roleAssign";
 	}
@@ -148,7 +148,7 @@ public class RoleController extends BaseController {
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = "usertorole")
 	public String selectUserToRole(Role role, Model model) {
-		List<User> userList = systemService.findUser(new User(new Role(role.getId())));
+		List<AbsUser> userList = systemService.findUser(new AbsUser(new Role(role.getId())));
 		model.addAttribute("role", role);
 		model.addAttribute("userList", userList);
 		model.addAttribute("selectIds", Collections3.extractToString(userList, "name", ","));
@@ -167,10 +167,10 @@ public class RoleController extends BaseController {
 	@RequestMapping(value = "users")
 	public List<Map<String, Object>> users(String officeId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		User user = new User();
+		AbsUser user = new AbsUser();
 		user.setOffice(new Office(officeId));
-		Page<User> page = systemService.findUser(new Page<User>(1, -1), user);
-		for (User e : page.getList()) {
+		Page<AbsUser> page = systemService.findUser(new Page<AbsUser>(1, -1), user);
+		for (AbsUser e : page.getList()) {
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("id", e.getId());
 			map.put("pId", 0);
@@ -195,7 +195,7 @@ public class RoleController extends BaseController {
 			return "redirect:" + adminPath + "/sys/role/assign?id="+roleId;
 		}
 		Role role = systemService.getRole(roleId);
-		User user = systemService.getUser(userId);
+		AbsUser user = systemService.getUser(userId);
 		if (UserUtils.getUser().getId().equals(userId)) {
 			addMessage(redirectAttributes, "无法从角色【" + role.getName() + "】中移除用户【" + user.getName() + "】自己！");
 		}else {
@@ -230,7 +230,7 @@ public class RoleController extends BaseController {
 		StringBuilder msg = new StringBuilder();
 		int newNum = 0;
 		for (int i = 0; i < idsArr.length; i++) {
-			User user = systemService.assignUserToRole(role, systemService.getUser(idsArr[i]));
+			AbsUser user = systemService.assignUserToRole(role, systemService.getUser(idsArr[i]));
 			if (null != user) {
 				msg.append("<br/>新增用户【" + user.getName() + "】到角色【" + role.getName() + "】！");
 				newNum++;

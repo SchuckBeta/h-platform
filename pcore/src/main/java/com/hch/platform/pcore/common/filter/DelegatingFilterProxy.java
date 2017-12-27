@@ -34,8 +34,8 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.hch.platform.pcore.common.utils.SpringContextHolder;
 import com.hch.platform.putil.common.utils.license.License;
-import com.hch.platform.pcore.modules.authorize.service.AuthorizeService;
-import com.hch.platform.pcore.modules.authorize.service.SysLicenseService;
+import com.hch.platform.pcore.modules.authorize.service.AbsAuthorizeService;
+import com.hch.platform.pcore.modules.authorize.service.AbsSysLicenseService;
 
 /**
  * Proxy for a standard Servlet Filter, delegating to a Spring-managed bean that
@@ -95,7 +95,7 @@ import com.hch.platform.pcore.modules.authorize.service.SysLicenseService;
  * @see org.springframework.web.WebApplicationInitializer
  */
 public class DelegatingFilterProxy extends GenericFilterBean {
-	private static AuthorizeService authorizeService = SpringContextHolder.getBean(AuthorizeService.class);
+	private static AbsAuthorizeService authorizeService = SpringContextHolder.getBean(AbsAuthorizeService.class);
 	private String contextAttribute;
 
 	private WebApplicationContext webApplicationContext;
@@ -285,7 +285,7 @@ public class DelegatingFilterProxy extends GenericFilterBean {
 		//fifter  start
 
 		if ("/a".equals(url) || url.indexOf("/a?") > -1||"/a/login".equals(url) || url.indexOf("/a/login?") > -1) {// 只对指定过滤参数后缀进行过滤
-			if (SysLicenseService.unValid) {
+			if (AbsSysLicenseService.unValid) {
 				hresponse.sendRedirect("/a/authorize");
 				return;
 			}

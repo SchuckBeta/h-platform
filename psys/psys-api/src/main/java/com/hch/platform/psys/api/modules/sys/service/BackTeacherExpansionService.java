@@ -30,7 +30,7 @@ import com.hch.platform.pcore.modules.sys.entity.GContestUndergo;
 import com.hch.platform.pcore.modules.sys.entity.Office;
 import com.hch.platform.pcore.modules.sys.entity.Role;
 import com.hch.platform.pcore.modules.sys.entity.TeacherKeyword;
-import com.hch.platform.pcore.modules.sys.entity.User;
+import com.hch.platform.pcore.modules.sys.entity.AbsUser;
 import com.hch.platform.pcore.modules.sys.utils.RegexUtils;
 import com.hch.platform.pcore.modules.sys.utils.UserUtils;
 import com.hch.platform.pcore.modules.team.dao.TeamDao;
@@ -120,7 +120,7 @@ public class BackTeacherExpansionService extends CrudService<BackTeacherExpansio
 		}
 		BackTeacherExpansion tc=new BackTeacherExpansion();
 		tc.setTeachertype(type);
-		User nuser=new User();
+		AbsUser nuser=new AbsUser();
 		nuser.setName(name);
 		nuser.setNo(no);
 		nuser.setMobile(mobile);
@@ -130,7 +130,7 @@ public class BackTeacherExpansionService extends CrudService<BackTeacherExpansio
 		if(StringUtil.isNotEmpty(profes)){
 			nuser.setProfessional(profes);
 		}
-		User user = UserUtils.getUser();
+		AbsUser user = UserUtils.getUser();
 		nuser.setPassword(SystemService.entryptPassword("123456"));
 		List<Role> roleList=new ArrayList<Role>();
 		roleList.add(roleDao.get(SysIds.SYS_ROLE_USER.getId()));
@@ -232,7 +232,7 @@ public class BackTeacherExpansionService extends CrudService<BackTeacherExpansio
 	public void updateAll(BackTeacherExpansion backTeacherExpansion) {
 		try {
 			save(backTeacherExpansion);
-			User user = backTeacherExpansion.getUser();
+			AbsUser user = backTeacherExpansion.getUser();
 			userDao.update(user);
 
 			if (user.getLoginName().equals(UserUtils.getUser().getLoginName())) {
@@ -254,7 +254,7 @@ public class BackTeacherExpansionService extends CrudService<BackTeacherExpansio
 			backTeacherExpansion.getUser().setId(uid);
 			backTeacherExpansion.setDelFlag("0");
 			save(backTeacherExpansion);
-			User user = backTeacherExpansion.getUser();
+			AbsUser user = backTeacherExpansion.getUser();
 			//String password = user.getPassword();
 			//默认密码
 			String password = "123456";
@@ -339,7 +339,7 @@ public class BackTeacherExpansionService extends CrudService<BackTeacherExpansio
 
 	}
 
-	public List<Team> findTeamByUserId(User user) {
+	public List<Team> findTeamByUserId(AbsUser user) {
 		return dao.findTeamById(user.getId());
 	}
 	public List<BackTeacherExpansion> findTeacherAward(String userId) {
