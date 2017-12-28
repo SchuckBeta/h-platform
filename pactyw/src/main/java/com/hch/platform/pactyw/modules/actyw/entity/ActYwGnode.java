@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.persistence.TreeEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.tool.process.gnodcmd.validate.IvalidateRtpl;
 import com.oseasy.initiate.modules.sys.entity.Office;
 import com.oseasy.initiate.modules.sys.entity.Role;

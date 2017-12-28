@@ -3,7 +3,7 @@ package com.oseasy.initiate.modules.actyw.tool.process.vo;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 更改添加到Rt的节点的属性.

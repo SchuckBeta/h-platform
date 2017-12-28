@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.hch.platform.pconfig.common.Global;
 import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.tool.process.gnodcmd.validate.IvalidateRtpl;
 import com.oseasy.initiate.modules.sys.entity.Office;
 import com.oseasy.initiate.modules.sys.entity.Role;

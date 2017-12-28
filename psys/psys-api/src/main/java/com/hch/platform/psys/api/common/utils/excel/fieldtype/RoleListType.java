@@ -8,7 +8,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.utils.Collections3;
 import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.sys.entity.Role;
 import com.oseasy.initiate.modules.sys.service.SystemService;
 

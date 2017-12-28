@@ -19,7 +19,7 @@ import com.oseasy.initiate.common.ftp.exceptions.FtpException;
 import com.oseasy.initiate.common.ftp.vo.FileVo;
 import com.oseasy.initiate.common.ftp.vo.VsFile;
 import com.oseasy.initiate.common.utils.FileUtil;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * Created by zhangchuansheng on 2017/7/20. 提供连接 ，上传，下载的方法

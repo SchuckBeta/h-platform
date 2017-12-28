@@ -2,7 +2,7 @@ package com.oseasy.initiate.modules.actyw.tool.process.vo;
 
 import java.io.Serializable;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
 

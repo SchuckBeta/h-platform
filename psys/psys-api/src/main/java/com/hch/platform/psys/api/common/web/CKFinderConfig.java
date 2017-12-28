@@ -2,7 +2,7 @@
  *
  */
 
-package com.hch.platform.pcore.common.web;
+package com.hch.platform.psys.api.common.web;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;

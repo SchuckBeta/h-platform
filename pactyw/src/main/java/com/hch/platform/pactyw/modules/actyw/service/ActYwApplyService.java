@@ -20,7 +20,7 @@ import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.persistence.AttachMentEntity;
 import com.hch.platform.pcore.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.act.dao.ActDao;
 import com.oseasy.initiate.modules.act.entity.Act;
 import com.oseasy.initiate.modules.act.service.ActTaskService;

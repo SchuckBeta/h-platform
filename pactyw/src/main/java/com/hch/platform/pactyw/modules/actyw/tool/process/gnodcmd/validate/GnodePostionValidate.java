@@ -2,7 +2,7 @@ package com.oseasy.initiate.modules.actyw.tool.process.gnodcmd.validate;
 
 import java.util.List;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
 import com.oseasy.initiate.modules.actyw.tool.process.cmd.ActYwRstatus;

@@ -10,7 +10,7 @@ import com.oseasy.initiate.modules.actyw.tool.process.vo.FormType;
 import com.oseasy.initiate.modules.sys.entity.Office;
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 项目流程表单Entity.

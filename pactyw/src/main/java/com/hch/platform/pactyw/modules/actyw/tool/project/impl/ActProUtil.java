@@ -3,7 +3,7 @@ package com.oseasy.initiate.modules.actyw.tool.project.impl;
 import com.hch.platform.pconfig.common.Global;
 import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.utils.SpringContextHolder;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYw;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.service.ActYwGnodeService;

@@ -9,7 +9,7 @@
 
 package com.oseasy.initiate.modules.actyw.tool.process.vo;
 
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 
 /**
  * 流程图节点元素子类型.

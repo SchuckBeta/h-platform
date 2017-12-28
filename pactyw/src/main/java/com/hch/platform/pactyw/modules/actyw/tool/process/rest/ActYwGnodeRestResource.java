@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
 import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.config.SysJkey;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYwForm;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;

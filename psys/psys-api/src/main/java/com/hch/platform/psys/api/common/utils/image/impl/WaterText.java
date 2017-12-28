@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.oseasy.initiate.common.config.Rstatus;
 import com.oseasy.initiate.common.config.RstatusGroup;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.common.utils.image.IWater;
 
 /**

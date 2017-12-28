@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.hch.platform.pconfig.common.Global;
 import com.hch.platform.pcore.common.persistence.Page;
 import com.oseasy.initiate.common.web.BaseController;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYwForm;
 import com.oseasy.initiate.modules.actyw.entity.ActYwNode;
 import com.oseasy.initiate.modules.actyw.service.ActYwFormService;

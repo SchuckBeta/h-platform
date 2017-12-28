@@ -4,7 +4,7 @@ import com.hch.platform.pconfig.common.Global;
 import org.hibernate.validator.constraints.Length;
 
 import com.oseasy.initiate.common.persistence.DataEntity;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.project.entity.ProjectDeclare;
 import com.oseasy.initiate.modules.proproject.entity.ProProject;
 

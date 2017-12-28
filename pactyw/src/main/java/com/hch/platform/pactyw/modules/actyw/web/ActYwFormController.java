@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hch.platform.pconfig.common.Global;
 import com.hch.platform.pcore.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.common.utils.file.impl.FormResourceMngImpl;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.actyw.entity.ActYwForm;

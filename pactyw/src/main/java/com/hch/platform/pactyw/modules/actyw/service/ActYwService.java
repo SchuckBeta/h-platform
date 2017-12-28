@@ -20,7 +20,7 @@ import com.hch.platform.pcore.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
 import com.oseasy.initiate.common.utils.DateUtil;
 import com.oseasy.initiate.common.utils.IdGen;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.act.service.ActModelService;
 import com.oseasy.initiate.modules.act.vo.ActRstatus;
 import com.oseasy.initiate.modules.actyw.dao.ActYwDao;

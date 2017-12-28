@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGnode;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
 import com.oseasy.initiate.modules.actyw.entity.ActYwNode;

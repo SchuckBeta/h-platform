@@ -2,7 +2,7 @@ package com.oseasy.initiate.modules.actyw.tool.query.web;
 
 
 import com.hch.platform.pcore.common.persistence.Page;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.common.web.BaseController;
 import com.oseasy.initiate.modules.actyw.tool.query.entity.ActYwRuTask;
 import com.oseasy.initiate.modules.actyw.tool.query.service.ActYwRuTaskService;

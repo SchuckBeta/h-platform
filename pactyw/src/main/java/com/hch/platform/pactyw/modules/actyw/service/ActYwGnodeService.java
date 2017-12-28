@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oseasy.initiate.common.config.SysIds;
 import com.oseasy.initiate.common.service.TreeService;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.act.service.ActTaskService;
 import com.oseasy.initiate.modules.actyw.dao.ActYwDao;
 import com.oseasy.initiate.modules.actyw.dao.ActYwFormDao;

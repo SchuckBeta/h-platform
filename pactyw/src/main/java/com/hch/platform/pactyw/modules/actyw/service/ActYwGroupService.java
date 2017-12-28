@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 import com.hch.platform.pconfig.common.Global;
 import com.hch.platform.pcore.common.persistence.Page;
 import com.oseasy.initiate.common.service.CrudService;
-import com.oseasy.initiate.common.utils.StringUtil;
+import com.hch.platform.putil.common.utils.StringUtil;
 import com.oseasy.initiate.modules.actyw.dao.ActYwGroupDao;
 import com.oseasy.initiate.modules.actyw.entity.ActYwGroup;
 import com.oseasy.initiate.modules.actyw.tool.process.vo.FlowType;
